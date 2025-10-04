@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDA.az Mobile - Live Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            border: 12px solid #1f2937;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            background: white;
+            position: relative;
+        }
+        .screen {
+            width: 100%;
+            height: 607px;
+            overflow-y: auto;
+            background: #F9FAFB;
+        }
+        .tab-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeIn 0.3s ease-out; }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            transition: all 0.2s;
+            color: #6b7280;
+        }
+        .tab-item.active { color: #10B981; }
+        .tab-item:hover { opacity: 0.7; }
+        .gradient-text {
+            background: linear-gradient(135deg, #10B981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="text-center py-12 px-4">
+        <div class="inline-block bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            ✅ Production Ready
+        </div>
+        <h1 class="text-5xl md:text-6xl font-bold mb-4 gradient-text">
+            🚗 DDA.az Mobile
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+            React Native • TypeScript • 15 Screens • 3 Languages
+        </p>
+        
+        <!-- Demo Container -->
+        <div class="flex justify-center">
+            <div class="phone-frame">
+                <div id="screen" class="screen">
+                    <!-- Content loads here -->
+                </div>
+                
+                <!-- Tab Bar -->
+                <div class="tab-bar">
+                    <div class="tab-item active" onclick="showScreen('home')">
+                        <span style="font-size: 24px">🏠</span>
+                        <span style="font-size: 10px; margin-top: 2px">Ana səhifə</span>
+                    </div>
+                    <div class="tab-item" onclick="showScreen('learn')">
+                        <span style="font-size: 24px">📚</span>
+                        <span style="font-size: 10px; margin-top: 2px">Öyrən</span>
+                    </div>
+                    <div class="tab-item" onclick="showScreen('simulator')">
+                        <span style="font-size: 24px">🎯</span>
+                        <span style="font-size: 10px; margin-top: 2px">Simulator</span>
+                    </div>
+                    <div class="tab-item" onclick="showScreen('packages')">
+                        <span style="font-size: 24px">💎</span>
+                        <span style="font-size: 10px; margin-top: 2px">Paketlər</span>
+                    </div>
+                    <div class="tab-item" onclick="showScreen('profile')">
+                        <span style="font-size: 24px">👤</span>
+                        <span style="font-size: 10px; margin-top: 2px">Profil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="max-w-4xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+            <div class="bg-white rounded-2xl p-6 shadow-xl">
+                <div class="text-4xl mb-3">⚡</div>
+                <div class="text-2xl font-bold text-gray-800">15+</div>
+                <div class="text-gray-600">Ekran</div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-xl">
+                <div class="text-4xl mb-3">🌍</div>
+                <div class="text-2xl font-bold text-gray-800">3</div>
+                <div class="text-gray-600">Dil (AZ/EN/RU)</div>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-xl">
+                <div class="text-4xl mb-3">💻</div>
+                <div class="text-2xl font-bold text-gray-800">8K+</div>
+                <div class="text-gray-600">Kod Sətri</div>
+            </div>
+        </div>
+
+        <!-- GitHub Link -->
+        <div class="mt-12">
+            <a href="https://github.com/tur4l999/DDA-app-1" target="_blank" 
+               class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-semibold px-8 py-4 rounded-full transition shadow-lg">
+                📂 GitHub Repository
+            </a>
+        </div>
+
+        <!-- Run Instructions -->
+        <div class="mt-12 max-w-2xl mx-auto bg-gray-800 text-white rounded-2xl p-8 shadow-2xl">
+            <div class="text-2xl font-bold mb-4">🚀 Real Proyekti İşə Salmaq</div>
+            <div class="bg-gray-900 rounded-lg p-4 text-left">
+                <code class="text-sm">
+                    <div class="text-emerald-400"># Repository-ni clone edin</div>
+                    <div class="mb-2">git clone https://github.com/tur4l999/DDA-app-1</div>
+                    <div class="text-emerald-400"># Dependencies yükləyin</div>
+                    <div class="mb-2">npm install</div>
+                    <div class="text-emerald-400"># Proyekti başladın</div>
+                    <div>npm start</div>
+                </code>
+            </div>
+            <div class="mt-4 text-sm text-gray-400">
+                ⚠️ React Native local simulyator tələb edir (Expo Go tətbiqi və ya Xcode/Android Studio)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const screens = {
+            home: `
+                <div class="p-6 animate-in">
+                    <div class="mb-6">
+                        <div class="text-2xl font-bold mb-1">Salam, İstifadəçi! 👋</div>
+                        <div class="text-gray-600 text-sm">Gündəlik məqsəd: 5 dəqiqə</div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-6 shadow-lg mb-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-24 h-24 rounded-full border-8 border-emerald-500 flex items-center justify-center">
+                                <div class="text-2xl font-bold">65%</div>
+                            </div>
+                            <div class="flex-1 ml-6">
+                                <div class="font-semibold mb-2">Tərəqqiniz</div>
+                                <div class="text-sm text-gray-600 mb-3">5 / 8 Dərslər</div>
+                                <div class="flex gap-4">
+                                    <div class="text-center">
+                                        <div class="font-bold text-lg">3 🔥</div>
+                                        <div class="text-xs text-gray-500">ardıcıl gün</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="font-bold text-lg">85%</div>
+                                        <div class="text-xs text-gray-500">Son nəticə</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-lg font-semibold mb-3">Tez keçidlər</div>
+
+                    <div class="bg-white rounded-xl p-4 shadow-md mb-3 flex items-center">
+                        <div class="text-3xl mr-4">📚</div>
+                        <div class="flex-1">
+                            <div class="font-semibold">Dərsi davam etdir</div>
+                            <div class="text-sm text-gray-500">Davam et</div>
+                        </div>
+                        <div class="text-2xl text-gray-400">›</div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-4 shadow-md mb-3 flex items-center">
+                        <div class="text-3xl mr-4">🎯</div>
+                        <div class="flex-1">
+                            <div class="font-semibold">10 suallıq test</div>
+                            <div class="text-sm text-gray-500">10 sual · 15 dəq</div>
+                        </div>
+                        <div class="text-2xl text-gray-400">›</div>
+                    </div>
+
+                    <div class="bg-emerald-500 rounded-xl p-6 shadow-lg text-white text-center mt-6">
+                        <div class="text-4xl mb-2">💎</div>
+                        <div class="font-bold text-lg mb-1">Premium funksiyalar</div>
+                        <div class="text-sm opacity-90 mb-3">Bütün dərslərə giriş, reklamsız təcrübə</div>
+                        <div class="bg-white text-emerald-500 px-4 py-2 rounded-lg inline-block font-semibold text-sm">
+                            Bax →
+                        </div>
+                    </div>
+                </div>
+            `,
+            learn: `
+                <div class="p-6 animate-in pb-20">
+                    <div class="bg-white rounded-xl p-4 shadow-lg mb-4">
+                        <div class="flex items-center mb-3">
+                            <div class="text-4xl mr-4">🚦</div>
+                            <div class="flex-1">
+                                <div class="font-bold text-lg">Yol Hərəkəti Qaydaları</div>
+                                <div class="text-sm text-gray-500">3 dərs · 45%</div>
+                            </div>
+                        </div>
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-500" style="width: 45%"></div>
+                        </div>
+                        <div class="mt-3 space-y-2">
+                            <div class="flex items-center justify-between py-2 border-t">
+                                <div class="flex items-center flex-1">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 text-center leading-8 text-sm font-semibold mr-3">1</div>
+                                    <div>
+                                        <div class="font-medium text-sm">Piyada Keçidi</div>
+                                        <div class="text-xs text-gray-500">5 dəq</div>
+                                    </div>
+                                </div>
+                                <div class="text-emerald-500 text-lg">✓</div>
+                            </div>
+                            <div class="flex items-center justify-between py-2 border-t">
+                                <div class="flex items-center flex-1">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 text-center leading-8 text-sm font-semibold mr-3">2</div>
+                                    <div>
+                                        <div class="font-medium text-sm">Sürət Məhdudiyyətləri</div>
+                                        <div class="text-xs text-gray-500">4 dəq</div>
+                                    </div>
+                                </div>
+                                <div class="text-yellow-500 text-lg">⏸</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            simulator: `
+                <div class="p-6 animate-in pb-20">
+                    <div class="bg-white rounded-xl p-4 shadow-lg mb-4">
+                        <div class="font-bold text-lg mb-3">Statistikanız</div>
+                        <div class="flex justify-around">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-emerald-500">85%</div>
+                                <div class="text-xs text-gray-500 mt-1">Ən yaxşı</div>
+                            </div>
+                            <div class="w-px bg-gray-200"></div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-emerald-500">72%</div>
+                                <div class="text-xs text-gray-500 mt-1">Orta</div>
+                            </div>
+                            <div class="w-px bg-gray-200"></div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-gray-700">12</div>
+                                <div class="text-xs text-gray-500 mt-1">Cəhdlər</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-5 shadow-lg mb-4">
+                        <div class="flex items-start mb-4">
+                            <div class="text-5xl mr-4">🎯</div>
+                            <div class="flex-1">
+                                <div class="font-bold text-xl mb-1">İmtahan rejimi</div>
+                                <div class="text-sm text-gray-600">10 sual · 15 dəqiqə</div>
+                            </div>
+                        </div>
+                        <button class="w-full bg-emerald-500 text-white font-semibold py-3 rounded-xl hover:bg-emerald-600 transition">
+                            İmtahana başla
+                        </button>
+                    </div>
+                </div>
+            `,
+            packages: `
+                <div class="p-6 animate-in pb-20">
+                    <div class="text-center mb-6">
+                        <div class="text-2xl font-bold mb-1">Paketini seç</div>
+                        <div class="text-sm text-gray-600">Bütün funksiyalara giriş</div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-5 shadow-lg mb-4 border-2 border-emerald-500 relative">
+                        <div class="absolute -top-3 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            Ən çox seçilən
+                        </div>
+                        <div class="font-bold text-xl mb-1">Standart</div>
+                        <div class="text-3xl font-bold text-emerald-500 mb-1">9.99 AZN</div>
+                        <div class="text-xs text-gray-500 mb-4">Aylıq</div>
+                        <button class="w-full bg-emerald-500 text-white font-semibold py-3 rounded-xl hover:bg-emerald-600 transition">
+                            İndi al
+                        </button>
+                    </div>
+                </div>
+            `,
+            profile: `
+                <div class="p-6 animate-in pb-20">
+                    <div class="bg-white rounded-xl p-6 shadow-lg mb-4 text-center">
+                        <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto mb-3">
+                            İ
+                        </div>
+                        <div class="font-bold text-xl mb-1">İstifadəçi</div>
+                        <div class="text-sm text-gray-600 mb-3">+994 50 123 45 67</div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-4 shadow-lg mb-4">
+                        <div class="flex justify-around">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold mb-1">3 🔥</div>
+                                <div class="text-xs text-gray-500">Ardıcıl gün</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold mb-1">12</div>
+                                <div class="text-xs text-gray-500">Tamamlandı</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold mb-1">85%</div>
+                                <div class="text-xs text-gray-500">Orta bal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        function showScreen(screenId) {
+            document.getElementById('screen').innerHTML = screens[screenId];
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.tab-item').classList.add('active');
+        }
+
+        // Initialize
+        showScreen('home');
+    </script>
+</body>
+</html>
