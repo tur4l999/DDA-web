@@ -1,4 +1,4 @@
-import { BookOpen, Video, HelpCircle, FileText, AlertTriangle, BarChart3, Award, BookMarked, Settings } from 'lucide-react'
+import { BookOpen, Video, HelpCircle, FileText, AlertTriangle, BarChart3, Award, BookMarked } from 'lucide-react'
 
 const cards = [
   {
@@ -14,16 +14,16 @@ const cards = [
     icon: Video,
     title: '3D Video',
     description: 'Praktiki video dərslər',
-    color: 'from-purple-500 to-purple-600',
-    hoverColor: 'hover:from-purple-600 hover:to-purple-700'
+    color: 'from-emerald-500 to-emerald-600',
+    hoverColor: 'hover:from-emerald-600 hover:to-emerald-700'
   },
   {
     id: 3,
     icon: HelpCircle,
     title: 'Suallar',
     description: 'Test sualları',
-    color: 'from-green-500 to-green-600',
-    hoverColor: 'hover:from-green-600 hover:to-green-700'
+    color: 'from-rose-500 to-rose-600',
+    hoverColor: 'hover:from-rose-600 hover:to-rose-700'
   },
   {
     id: 4,
@@ -46,52 +46,41 @@ const cards = [
     icon: AlertTriangle,
     title: 'Cərimələr',
     description: 'Cərimə məlumatları',
-    color: 'from-pink-500 to-pink-600',
-    hoverColor: 'hover:from-pink-600 hover:to-pink-700'
+    color: 'from-amber-500 to-amber-600',
+    hoverColor: 'hover:from-amber-600 hover:to-amber-700'
   },
   {
     id: 7,
     icon: BarChart3,
     title: 'Statistika',
     description: 'Nəticələrim',
-    color: 'from-cyan-500 to-cyan-600',
-    hoverColor: 'hover:from-cyan-600 hover:to-cyan-700'
+    color: 'from-sky-500 to-sky-600',
+    hoverColor: 'hover:from-sky-600 hover:to-sky-700'
   },
   {
     id: 8,
     icon: Award,
     title: 'Nailiyyətlər',
     description: 'Suallar',
-    color: 'from-yellow-500 to-yellow-600',
-    hoverColor: 'hover:from-yellow-600 hover:to-yellow-700'
-  },
-  {
-    id: 9,
-    icon: Settings,
-    title: 'Tənzimləmələr',
-    description: 'İmtahanlar',
-    color: 'from-indigo-500 to-indigo-600',
-    hoverColor: 'hover:from-indigo-600 hover:to-indigo-700'
+    color: 'from-violet-500 to-violet-600',
+    hoverColor: 'hover:from-violet-600 hover:to-violet-700'
   }
 ]
 
 export default function ModularActionCards({ setCurrentPage }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       {cards.map((card) => (
         <button
           key={card.id}
-          onClick={() => {
-            if (card.id === 7) setCurrentPage('classes')
-          }}
-          className={`bg-gradient-to-br ${card.color} ${card.hoverColor} rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}
+          className={`bg-gradient-to-br ${card.color} ${card.hoverColor} rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}
         >
-          <div className="flex flex-col items-start">
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-4 group-hover:bg-white/30 transition-colors">
-              <card.icon className="w-6 h-6" />
+          <div className="flex flex-col items-start h-full">
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2.5 mb-3 group-hover:bg-white/30 transition-colors">
+              <card.icon className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-lg text-left leading-tight mb-1">{card.title}</h3>
-            <p className="text-sm text-white/80 text-left">{card.description}</p>
+            <h3 className="font-bold text-sm text-left leading-tight">{card.title}</h3>
+            <p className="text-xs text-white/75 text-left mt-1">{card.description}</p>
           </div>
         </button>
       ))}

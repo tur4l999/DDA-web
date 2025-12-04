@@ -8,11 +8,7 @@ export default function ProfileCard() {
         <h3 className="text-lg font-bold mb-1">Tural Qarayev</h3>
         <p className="text-green-100 text-xs mb-5">Test Academy</p>
 
-        <button className="w-full bg-white text-primary-700 font-semibold py-2 px-4 rounded-lg hover:bg-green-50 transition-colors text-sm mb-3">
-          Avtoməktəbə qoşul
-        </button>
-
-        <button className="w-full bg-primary-600 hover:bg-primary-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm border border-white/30">
+        <button className="w-full bg-white hover:bg-gray-100 text-primary-700 font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
           Şəhadətnamə Müraciəti
         </button>
       </div>

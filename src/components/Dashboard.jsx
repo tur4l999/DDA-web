@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Menu, Settings, Bell, ExternalLink, Search, Calendar, Globe } from 'lucide-react'
 import ModularActionCards from './ModularActionCards'
 import OnlineClassCard from './OnlineClassCard'
+import ClassesList from './ClassesList'
 import ProfileCard from './ProfileCard'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
@@ -81,6 +82,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <ModularActionCards setCurrentPage={setCurrentPage} />
+
+                <ClassesList />
 
                 <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-100">
                   <div className="border-b border-gray-100 px-6 py-4">
