@@ -4,11 +4,16 @@ import Dashboard from './components/Dashboard'
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState('dashboard')
 
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <Dashboard onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <Dashboard
+        onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   )
 }
