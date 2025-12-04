@@ -69,18 +69,19 @@ const cards = [
 
 export default function ModularActionCards({ setCurrentPage }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
       {cards.map((card) => (
         <button
           key={card.id}
-          className={`bg-gradient-to-br ${card.color} ${card.hoverColor} rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group`}
+          className={`relative overflow-hidden bg-gradient-to-br ${card.color} ${card.hoverColor} rounded-2xl p-4 sm:p-5 text-white shadow-md hover:shadow-2xl transition-all duration-300 hover:scale-105 group`}
         >
-          <div className="flex flex-col items-start h-full">
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2.5 mb-3 group-hover:bg-white/30 transition-colors">
-              <card.icon className="w-5 h-5" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative flex flex-col items-start h-full">
+            <div className="bg-white/25 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 mb-3 group-hover:bg-white/40 transition-all duration-300 group-hover:scale-110">
+              <card.icon className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="font-bold text-sm text-left leading-tight">{card.title}</h3>
-            <p className="text-xs text-white/75 text-left mt-1">{card.description}</p>
+            <h3 className="font-bold text-xs sm:text-sm text-left leading-tight mb-1">{card.title}</h3>
+            <p className="text-xs text-white/80 text-left group-hover:text-white/95 transition-colors">{card.description}</p>
           </div>
         </button>
       ))}
