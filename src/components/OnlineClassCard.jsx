@@ -9,6 +9,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
       date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 16.5 * 60 * 60 * 1000),
       duration: 60,
       status: 'waiting',
+      language: 'az'
     },
     {
       id: 2,
@@ -17,6 +18,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
       date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 19.5 * 60 * 60 * 1000),
       duration: 45,
       status: 'started',
+      language: 'ru'
     },
     {
       id: 3,
@@ -25,8 +27,13 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
       date: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000 + 18 * 60 * 60 * 1000),
       duration: 60,
       status: 'waiting',
+      language: 'az'
     }
   ]
+
+  const getLanguageLabel = (lang) => {
+    return lang === 'az' ? '🇦🇿 AZ' : '🇷🇺 RU'
+  }
 
   const getStatusColor = (status) => {
     switch(status) {
@@ -76,9 +83,16 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
       <div className="p-5 space-y-3 max-h-[calc(100vh-24rem)] overflow-y-auto">
         {classes.slice(0, maxItems).map((cls) => (
           <div key={cls.id} className="group relative bg-gradient-to-br from-gray-50 to-white rounded-xl border-2 border-gray-100 p-4 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-start justify-between mb-3">
-              <h4 className="text-sm font-bold text-gray-900 line-clamp-2 flex-1 pr-2 group-hover:text-primary-700 transition-colors">{cls.title}</h4>
-              <span className={`${getStatusColor(cls.status)} px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shadow-sm`}>
+            <div className="absolute top-2 right-2 flex items-center space-x-1">
+              <span className="bg-white px-2 py-1 rounded-lg text-xs font-bold shadow-sm border border-gray-200">
+                {getLanguageLabel(cls.language)}
+              </span>
+            </div>
+            <div className="flex items-start justify-between mb-3 pr-16">
+              <h4 className="text-sm font-bold text-gray-900 line-clamp-2 flex-1 group-hover:text-primary-700 transition-colors">{cls.title}</h4>
+            </div>
+            <div className="mb-3">
+              <span className={`${getStatusColor(cls.status)} px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shadow-sm inline-block`}>
                 {getStatusLabel(cls.status)}
               </span>
             </div>

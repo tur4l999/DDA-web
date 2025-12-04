@@ -59,11 +59,12 @@ const cards = [
   },
   {
     id: 8,
-    icon: Award,
-    title: 'Nailiyyətlər',
-    description: 'Suallar',
+    icon: Video,
+    title: 'Onlayn Dərslər',
+    description: 'Canlı və keçmiş dərslər',
     color: 'from-violet-500 to-violet-600',
-    hoverColor: 'hover:from-violet-600 hover:to-violet-700'
+    hoverColor: 'hover:from-violet-600 hover:to-violet-700',
+    page: 'classes'
   }
 ]
 
@@ -73,6 +74,7 @@ export default function ModularActionCards({ setCurrentPage }) {
       {cards.map((card) => (
         <button
           key={card.id}
+          onClick={() => card.page && setCurrentPage(card.page)}
           className={`relative overflow-hidden bg-gradient-to-br ${card.color} ${card.hoverColor} rounded-2xl p-4 sm:p-5 text-white shadow-md hover:shadow-2xl transition-all duration-300 hover:scale-105 group`}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
