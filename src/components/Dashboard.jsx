@@ -70,22 +70,14 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
           </div>
 
           <div className="max-w-[1200px] mx-auto relative z-10">
-            {/* Top row: Greeting + Profile */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-              {/* Greeting */}
-              <div className="lg:col-span-2">
-                <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Salam, Tural Qarayev!
-                </h1>
-                <p className="text-white/90 text-sm lg:text-base">
-                  Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
-                </p>
-              </div>
-
-              {/* Profile Card */}
-              <div>
-                <ProfileCard />
-              </div>
+            {/* Greeting */}
+            <div className="mb-4">
+              <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
+                Salam, Tural Qarayev!
+              </h1>
+              <p className="text-white/90 text-sm lg:text-base">
+                Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
+              </p>
             </div>
 
             {/* First 4 Action Cards - in hero - 1 row */}
@@ -94,41 +86,37 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 onClick={() => setCurrentPage('topics')}
                 className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                  <BookOpen className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
+                <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                  <BookOpen className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Təlim Mövzuları</h3>
-                <p className="text-xs text-gray-600">Bütün kurs mövzuları</p>
+                <h3 className="font-semibold text-gray-900 text-sm">Təlim Mövzuları</h3>
               </button>
 
               <button
                 className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                  <Video className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
+                <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                  <Video className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm mb-0.5">3D Video</h3>
-                <p className="text-xs text-gray-600">Praktiki videolar</p>
+                <h3 className="font-semibold text-gray-900 text-sm">3D Video</h3>
               </button>
 
               <button
                 className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                  <HelpCircle className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
+                <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                  <HelpCircle className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Suallar</h3>
-                <p className="text-xs text-gray-600">Test sualları</p>
+                <h3 className="font-semibold text-gray-900 text-sm">Suallar</h3>
               </button>
 
               <button
                 className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                  <FileText className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
+                <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                  <FileText className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
-                <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Video Dərslər</h3>
-                <p className="text-xs text-gray-600">Təlim videoları</p>
+                <h3 className="font-semibold text-gray-900 text-sm">Video Dərslər</h3>
               </button>
             </div>
           </div>
@@ -137,58 +125,54 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
         {/* Main Content - White Background */}
         <div className="px-4 lg:px-8 py-6">
           <div className="max-w-[1200px] mx-auto">
-            {/* Other 4 Modules - 1 row */}
-            <div className="mb-6">
-              <h2 className="text-base font-semibold text-gray-900 mb-3">Digər modullar</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <button
-                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                    <BookMarked className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Maddələr</h3>
-                  <p className="text-xs text-gray-500">Qanun maddələri</p>
-                </button>
-
-                <button
-                  onClick={() => setCurrentPage('penalties')}
-                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                    <AlertTriangle className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Cərimələr</h3>
-                  <p className="text-xs text-gray-500">Cərimə məlumatları</p>
-                </button>
-
-                <button
-                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                    <BarChart3 className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Statistika</h3>
-                  <p className="text-xs text-gray-500">Nəticələriniz</p>
-                </button>
-
-                <button
-                  onClick={() => setCurrentPage('classes')}
-                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                    <Calendar className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Onlayn Dərslər</h3>
-                  <p className="text-xs text-gray-500">Canlı dərslər</p>
-                </button>
-              </div>
-            </div>
-
-            {/* Bottom section: Results + Online Classes */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Simulator Results */}
-              <div className="lg:col-span-2">
+              {/* Left Column: Modules + Results */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Other 4 Modules - 1 row */}
+                <div>
+                  <h2 className="text-base font-semibold text-gray-900 mb-3">Digər modullar</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
+                        <BookMarked className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-sm">Maddələr</h3>
+                    </button>
+
+                    <button
+                      onClick={() => setCurrentPage('penalties')}
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
+                        <AlertTriangle className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-sm">Cərimələr</h3>
+                    </button>
+
+                    <button
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
+                        <BarChart3 className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-sm">Statistika</h3>
+                    </button>
+
+                    <button
+                      onClick={() => setCurrentPage('classes')}
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
+                        <Calendar className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-sm">Onlayn Dərslər</h3>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Simulator Results */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
                   <div className="px-6 py-4 border-b border-gray-100">
                     <h3 className="text-base font-semibold text-gray-900">Simulyator Nəticələri</h3>
@@ -209,8 +193,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 </div>
               </div>
 
-              {/* Online Classes */}
-              <div>
+              {/* Right Column: Profile + Online Classes */}
+              <div className="space-y-6">
+                <ProfileCard />
                 <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
               </div>
             </div>
