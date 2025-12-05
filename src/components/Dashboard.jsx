@@ -140,7 +140,6 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               <div className="lg:col-span-2 space-y-6">
                 {/* Other 4 Modules - 1 row */}
                 <div>
-                  <h2 className="text-base font-semibold text-gray-900 mb-3">Digər modullar</h2>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <button
                       className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
