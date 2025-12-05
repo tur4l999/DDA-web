@@ -59,7 +59,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
       <main className="flex-1 overflow-y-auto bg-gray-50">
         {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-6 pb-32 -mx-4 lg:-mx-8 overflow-hidden">
+        <div className="gradient-bg relative px-4 lg:px-8 pt-6 pb-6 -mx-4 lg:-mx-8 overflow-visible">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-[0.08]">
             <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,8 +124,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 </div>
               </div>
 
-              {/* Right: Profile Card */}
-              <div>
+              {/* Right: Profile Card - with overlap */}
+              <div className="relative lg:-mb-24 z-20">
                 <ProfileCard />
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
         </div>
 
         {/* Main Content - White Background */}
-        <div className="px-4 lg:px-8 py-6 -mt-24">
+        <div className="px-4 lg:px-8 pt-32 lg:pt-6 pb-6">
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column: Modules + Results */}
