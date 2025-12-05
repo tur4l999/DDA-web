@@ -70,20 +70,20 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
           </div>
 
           <div className="max-w-[1200px] mx-auto relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              {/* Left: Greeting + 4 Cards */}
-              <div className="lg:col-span-2">
-                {/* Greeting */}
-                <div className="mb-4">
-                  <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-                    Salam, Tural Qarayev!
-                  </h1>
-                  <p className="text-white/90 text-sm lg:text-base">
-                    Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
-                  </p>
-                </div>
+            {/* Greeting */}
+            <div className="mb-4">
+              <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
+                Salam, Tural Qarayev!
+              </h1>
+              <p className="text-white/90 text-sm lg:text-base">
+                Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
+              </p>
+            </div>
 
-                {/* First 4 Action Cards */}
+            {/* 4 Cards + Profile */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {/* Left: First 4 Action Cards */}
+              <div className="lg:col-span-2">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <button
                     onClick={() => setCurrentPage('topics')}
