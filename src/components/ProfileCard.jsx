@@ -16,21 +16,16 @@ export default function ProfileCard() {
         </button>
       </div>
 
-      <div className="relative mt-6 pt-6 border-t-2 border-white/30">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between bg-white/10 backdrop-blur-sm rounded-xl p-3 hover:bg-white/20 transition-all">
-            <span className="text-green-100 text-sm font-semibold flex items-center space-x-2">
-              <span>✅</span>
-              <span>Tamamlanmış</span>
-            </span>
-            <span className="font-black text-xl bg-white/20 px-3 py-1 rounded-lg">4</span>
+      <div className="relative mt-5 pt-5 border-t-2 border-white/30">
+        <div className="flex items-center justify-around">
+          <div className="text-center">
+            <span className="font-black text-2xl block">4</span>
+            <span className="text-green-100 text-xs font-medium">Tamamlanmış</span>
           </div>
-          <div className="flex items-center justify-between bg-white/10 backdrop-blur-sm rounded-xl p-3 hover:bg-white/20 transition-all">
-            <span className="text-green-100 text-sm font-semibold flex items-center space-x-2">
-              <span>📝</span>
-              <span>Tamamlanmamış</span>
-            </span>
-            <span className="font-black text-xl bg-white/20 px-3 py-1 rounded-lg">20</span>
+          <div className="w-px h-10 bg-white/30"></div>
+          <div className="text-center">
+            <span className="font-black text-2xl block">20</span>
+            <span className="text-green-100 text-xs font-medium">Tamamlanmamış</span>
           </div>
         </div>
       </div>

@@ -47,24 +47,18 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             </button>
           </div>
 
-          <div className="flex items-center justify-center p-4 bg-gray-50 border-b border-gray-200">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full flex items-center justify-center shadow-md">
-              <span className="text-white text-lg">👤</span>
-            </div>
-          </div>
-
           <nav className="flex-1 overflow-y-auto py-4">
             {menuItems.map((item, index) => (
               <button
                 key={index}
-                className={`w-full flex items-center space-x-3 px-6 py-3.5 text-left transition-colors ${
+                className={`w-full flex items-center space-x-3 px-6 py-4 text-left transition-colors ${
                   item.active
                     ? 'bg-primary-50 text-primary-700 border-r-4 border-primary-600'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 <item.icon className="w-5 h-5" />
-                <span className="font-semibold text-base">{item.label}</span>
+                <span className="font-semibold text-lg">{item.label}</span>
               </button>
             ))}
           </nav>
