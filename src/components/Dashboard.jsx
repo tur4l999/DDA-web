@@ -59,7 +59,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
       <main className="flex-1 overflow-y-auto bg-gray-50">
         {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-12 pb-8 -mx-4 lg:-mx-8 overflow-visible">
+        <div className="gradient-bg relative px-4 lg:px-8 pt-16 pb-12 -mx-4 lg:-mx-8 overflow-visible">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-[0.06]">
             <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -125,7 +125,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </div>
 
               {/* Right: Profile Card - with overlap */}
-              <div className="relative lg:-mb-24 z-20">
+              <div className="relative lg:-mb-32 z-20">
                 <ProfileCard />
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column: Modules + Results */}
-              <div className="lg:col-span-2 space-y-6 lg:pt-6">
+              <div className="lg:col-span-2 space-y-6 lg:pt-12">
                 {/* Other 4 Modules - 1 row */}
                 <div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -203,7 +203,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </div>
 
               {/* Right Column: Online Classes */}
-              <div className="lg:pt-6">
+              <div className="lg:pt-12">
                 <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
               </div>
             </div>
