@@ -271,13 +271,13 @@ export default function OnlineClasses({ onBack }) {
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
         {/* Next Up Card */}
         {nextLesson && view === 'list' && (
-          <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-6 mb-6 shadow-xl">
+          <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] rounded-2xl p-6 mb-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-green-100 font-bold mb-2">Növbəti dərs</p>
-                <h3 className="text-2xl font-black text-white mb-3">{nextLesson.title}</h3>
+                <p className="text-green-100 font-medium mb-2 text-sm">Növbəti dərs</p>
+                <h3 className="text-xl font-bold text-white mb-3">{nextLesson.title}</h3>
                 <div className="flex flex-wrap items-center gap-4 text-sm text-green-50">
-                  <span className="font-semibold">
+                  <span className="font-medium">
                     {new Intl.DateTimeFormat('az-AZ', {
                       day: '2-digit',
                       month: 'long',
@@ -286,17 +286,17 @@ export default function OnlineClasses({ onBack }) {
                     }).format(nextLesson.date)}
                   </span>
                   <span>•</span>
-                  <span className="font-semibold">{nextLesson.instructor}</span>
+                  <span className="font-medium">{nextLesson.instructor}</span>
                   <span>•</span>
-                  <span className="font-semibold">{nextLesson.duration} dəq</span>
+                  <span className="font-medium">{nextLesson.duration} dəq</span>
                 </div>
               </div>
               <button
                 onClick={() => handleJoin(nextLesson)}
                 disabled={nextLesson.status !== 'started'}
-                className={`px-8 py-4 rounded-xl font-black text-lg shadow-lg transition-all ${
+                className={`px-6 py-3 rounded-xl font-semibold shadow-md transition-all ${
                   nextLesson.status === 'started'
-                    ? 'bg-white text-green-600 hover:bg-green-50'
+                    ? 'bg-white text-[#007A3A] hover:bg-gray-50'
                     : 'bg-white/30 text-white/50 cursor-not-allowed'
                 }`}
               >
@@ -309,66 +309,66 @@ export default function OnlineClasses({ onBack }) {
         {/* Quick Filters */}
         {view === 'list' && (
           <div className="flex flex-wrap gap-2 mb-6">
-            <button
-              onClick={() => { setQuickFilter('all'); setCurrentPage(1) }}
-              className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-                quickFilter === 'all'
-                  ? 'bg-primary-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
-              }`}
-            >
-              Hamısı
-            </button>
-            <button
-              onClick={() => { setQuickFilter('week'); setCurrentPage(1) }}
-              className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-                quickFilter === 'week'
-                  ? 'bg-primary-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
-              }`}
-            >
-              Bu həftə
-            </button>
-            <button
-              onClick={() => { setQuickFilter('started'); setCurrentPage(1) }}
-              className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-                quickFilter === 'started'
-                  ? 'bg-green-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
-              }`}
-            >
-              Başladı
-            </button>
-            <button
-              onClick={() => { setQuickFilter('waiting'); setCurrentPage(1) }}
-              className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-                quickFilter === 'waiting'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
-              }`}
-            >
-              Gözləyir
-            </button>
-            <button
-              onClick={() => { setQuickFilter('completed'); setCurrentPage(1) }}
-              className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-                quickFilter === 'completed'
-                  ? 'bg-gray-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
-              }`}
-            >
-              Tamamlandı
-            </button>
-            <button
-              onClick={() => { setQuickFilter('replay'); setCurrentPage(1) }}
-              className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${
-                quickFilter === 'replay'
-                  ? 'bg-purple-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
-              }`}
-            >
-              Təkrar videosu olanlar
-            </button>
+              <button
+                onClick={() => { setQuickFilter('all'); setCurrentPage(1) }}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
+                  quickFilter === 'all'
+                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                Hamısı
+              </button>
+              <button
+                onClick={() => { setQuickFilter('week'); setCurrentPage(1) }}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
+                  quickFilter === 'week'
+                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                Bu həftə
+              </button>
+              <button
+                onClick={() => { setQuickFilter('started'); setCurrentPage(1) }}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
+                  quickFilter === 'started'
+                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                Başladı
+              </button>
+              <button
+                onClick={() => { setQuickFilter('waiting'); setCurrentPage(1) }}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
+                  quickFilter === 'waiting'
+                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                Gözləyir
+              </button>
+              <button
+                onClick={() => { setQuickFilter('completed'); setCurrentPage(1) }}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
+                  quickFilter === 'completed'
+                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                Tamamlandı
+              </button>
+              <button
+                onClick={() => { setQuickFilter('replay'); setCurrentPage(1) }}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
+                  quickFilter === 'replay'
+                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                Təkrar videosu olanlar
+              </button>
           </div>
         )}
 

@@ -60,19 +60,14 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-      <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-5">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="px-6 py-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2">
-              <Calendar className="w-5 h-5 text-white" />
-            </div>
-            <h3 className="text-lg font-bold text-white">Onlayn Dərslər</h3>
-          </div>
+          <h3 className="text-base font-semibold text-gray-900">Onlayn Dərslər</h3>
           {showViewAll && (
             <button 
               onClick={() => setCurrentPage && setCurrentPage('classes')}
-              className="text-white/90 hover:text-white text-sm font-medium flex items-center space-x-1 transition-colors"
+              className="text-[#007A3A] hover:text-[#005A2A] text-sm font-medium flex items-center space-x-1 transition-colors"
             >
               <span>Hamısı</span>
               <ArrowRight className="w-4 h-4" />
@@ -82,7 +77,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
       </div>
       <div className="p-5 space-y-3 max-h-[calc(100vh-24rem)] overflow-y-auto">
         {classes.slice(0, maxItems).map((cls) => (
-          <div key={cls.id} className="group relative bg-gradient-to-br from-gray-50 to-white rounded-xl border-2 border-gray-100 p-4 hover:border-primary-200 hover:shadow-lg transition-all duration-300">
+          <div key={cls.id} className="group relative bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 p-4 hover:border-[#007A3A] hover:shadow-md transition-all">
             <div className="absolute top-2 right-2 flex items-center space-x-1">
               <span className="bg-white px-2 py-1 rounded-lg text-xs font-bold shadow-sm border border-gray-200">
                 {getLanguageLabel(cls.language)}
