@@ -1,7 +1,7 @@
 import { Clock, User, Bell, Calendar, ArrowRight } from 'lucide-react'
 
 export default function OnlineClassCard({ maxItems = 2, showViewAll = false, setCurrentPage }) {
-  const classes = [
+  const allClasses = [
     {
       id: 1,
       title: 'Yol nişanları',
@@ -28,11 +28,31 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
       duration: 60,
       status: 'waiting',
       language: 'az'
+    },
+    {
+      id: 4,
+      title: 'Sürət limitləri',
+      instructor: 'Ə.Talibov',
+      date: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000),
+      duration: 60,
+      status: 'started',
+      language: 'az'
     }
   ]
 
+  // Filter: only "started" and "waiting" status, sorted by date
+  const classes = allClasses
+    .filter(cls => cls.status === 'started' || cls.status === 'waiting')
+    .sort((a, b) => a.date - b.date)
+    .slice(0, maxItems)
+
   const getLanguageLabel = (lang) => {
-    return lang === 'az' ? '🇦🇿 AZ' : '🇷🇺 RU'
+    const flags = {
+      az: 'AZ',
+      ru: 'RU',
+      en: 'EN'
+    }
+    return flags[lang] || lang.toUpperCase()
   }
 
   const getStatusColor = (status) => {
@@ -61,9 +81,9 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100">
+      <div className="px-5 py-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-semibold text-gray-900">Onlayn Dərslər</h3>
+          <h3 className="text-base font-semibold text-gray-900">Ən yaxın dərslər</h3>
           {showViewAll && (
             <button 
               onClick={() => setCurrentPage && setCurrentPage('classes')}
@@ -75,57 +95,68 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
           )}
         </div>
       </div>
-      <div className="p-5 space-y-3 max-h-[calc(100vh-24rem)] overflow-y-auto">
-        {classes.slice(0, maxItems).map((cls) => (
-          <div key={cls.id} className="group relative bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 p-4 hover:border-[#007A3A] hover:shadow-md transition-all">
-            <div className="absolute top-2 right-2 flex items-center space-x-1">
-              <span className="bg-white px-2 py-1 rounded-lg text-xs font-bold shadow-sm border border-gray-200">
-                {getLanguageLabel(cls.language)}
-              </span>
-            </div>
-            <div className="flex items-start justify-between mb-3 pr-16">
-              <h4 className="text-sm font-bold text-gray-900 line-clamp-2 flex-1 group-hover:text-primary-700 transition-colors">{cls.title}</h4>
-            </div>
-            <div className="mb-3">
-              <span className={`${getStatusColor(cls.status)} px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shadow-sm inline-block`}>
-                {getStatusLabel(cls.status)}
-              </span>
-            </div>
-
-            <div className="space-y-2 text-xs mb-4">
-              <div className="flex items-center space-x-2 text-gray-600">
-                <div className="bg-gray-100 rounded-lg p-1.5">
-                  <User className="w-3.5 h-3.5" />
-                </div>
-                <span className="truncate font-medium">{cls.instructor}</span>
-              </div>
-
-              <div className="flex items-center space-x-2 text-gray-600">
-                <div className="bg-gray-100 rounded-lg p-1.5">
-                  <Clock className="w-3.5 h-3.5" />
-                </div>
-                <span className="font-medium">{formatDate(cls.date)} ({cls.duration} dəq)</span>
+      <div className="p-4 space-y-3">
+        {classes.map((cls) => (
+          <div key={cls.id} className="group bg-white border border-gray-200 hover:border-[#007A3A] rounded-xl p-4 hover:shadow-md transition-all">
+            {/* Header with title and status */}
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <h4 className="text-sm font-semibold text-gray-900 line-clamp-1 flex-1">{cls.title}</h4>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span className={`${getStatusColor(cls.status)} px-2.5 py-1 rounded-lg text-xs font-semibold`}>
+                  {getStatusLabel(cls.status)}
+                </span>
+                <span className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                  {getLanguageLabel(cls.language)}
+                </span>
               </div>
             </div>
 
+            {/* Date/Time/Duration info */}
+            <div className="flex items-center gap-4 text-xs text-gray-600 mb-3">
+              <div className="flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5" />
+                <span className="font-medium">{formatDate(cls.date)}</span>
+              </div>
+              <span className="text-gray-300">•</span>
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5" />
+                <span className="font-medium">{cls.duration} dəq</span>
+              </div>
+            </div>
+
+            {/* Instructor */}
+            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+              <User className="w-3.5 h-3.5" />
+              <span>{cls.instructor}</span>
+            </div>
+
+            {/* CTA */}
             {cls.status === 'started' && (
-              <button className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-300 text-sm shadow-md hover:shadow-lg transform hover:scale-[1.02] flex items-center justify-center space-x-2">
+              <button className="w-full bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                 </span>
-                <span>Canlı Qoşul</span>
+                <span>Dərsə qoşul</span>
               </button>
             )}
 
             {cls.status === 'waiting' && (
-              <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-300 text-sm shadow-md hover:shadow-lg transform hover:scale-[1.02] flex items-center justify-center space-x-2">
+              <button className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2">
                 <Bell className="w-4 h-4" />
-                <span>Xatırladat</span>
+                <span>Xatırlat</span>
               </button>
             )}
           </div>
         ))}
+
+        {/* Empty state */}
+        {classes.length === 0 && (
+          <div className="text-center py-8">
+            <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+            <p className="text-sm text-gray-500">Yaxın zamanda dərs yoxdur</p>
+          </div>
+        )}
       </div>
     </div>
   )
