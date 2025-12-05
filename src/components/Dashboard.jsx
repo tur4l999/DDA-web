@@ -60,35 +60,46 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-white/50">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Tamamlanmış</p>
-                  <span className="text-2xl">✅</span>
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border-2 border-white/50 mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xl">✅</span>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-600">Tamamlanmış</p>
+                      <p className="text-2xl font-black text-primary-600">4</p>
+                    </div>
+                  </div>
+                  <div className="w-px h-12 bg-gray-300"></div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xl">📝</span>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-600">Tamamlanmamış</p>
+                      <p className="text-2xl font-black text-orange-600">20</p>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-4xl font-black text-primary-600">4</p>
-                <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full" style={{width: '16.7%'}}></div>
+                <div className="text-right">
+                  <p className="text-xs font-semibold text-gray-600">Ümumi</p>
+                  <p className="text-2xl font-black text-gray-900">24</p>
                 </div>
               </div>
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-white/50">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Tamamlanmamış</p>
-                  <span className="text-2xl">📝</span>
-                </div>
-                <p className="text-4xl font-black text-orange-600">20</p>
-                <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" style={{width: '83.3%'}}></div>
-                </div>
+              <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div className="absolute h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full transition-all duration-500" style={{width: '16.7%'}}></div>
+                <div className="absolute h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-500" style={{width: '83.3%', left: '16.7%'}}></div>
+              </div>
+              <div className="flex items-center justify-between mt-2 text-xs font-semibold">
+                <span className="text-primary-600">16.7%</span>
+                <span className="text-orange-600">83.3%</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="px-4 lg:px-8 -mt-32 relative z-10">
+        <div className="px-4 lg:px-8 -mt-40 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 mt-32">
+              <div className="lg:col-span-2 mt-40">
                 <ModularActionCards setCurrentPage={setCurrentPage} />
 
                 <div className="mt-8 bg-white rounded-2xl shadow-lg border-2 border-gray-100">

@@ -47,12 +47,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             </button>
           </div>
 
-          <div className="flex items-center space-x-3 p-6 bg-gray-50 border-b border-gray-200">
-            <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-gray-600 text-lg">👤</span>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900">Tural Qarayev</p>
+          <div className="flex items-center justify-center p-6 bg-gray-50 border-b border-gray-200">
+            <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-white text-2xl">👤</span>
             </div>
           </div>
 
