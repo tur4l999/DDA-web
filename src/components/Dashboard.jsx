@@ -59,7 +59,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
       <main className="flex-1 overflow-y-auto bg-gray-50">
         {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-8 pb-8 -mx-4 lg:-mx-8 overflow-hidden">
+        <div className="gradient-bg relative px-4 lg:px-8 pt-6 pb-6 -mx-4 lg:-mx-8 overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-[0.08]">
             <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,14 +71,14 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
           <div className="max-w-[1200px] mx-auto relative z-10">
             {/* Top row: Greeting + Profile */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
               {/* Greeting */}
               <div className="lg:col-span-2">
-                <h1 className="text-3xl lg:text-4xl font-bold text-white mb-3">
+                <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
                   Salam, Tural Qarayev!
                 </h1>
-                <p className="text-white/90 text-base lg:text-lg leading-relaxed">
-                  Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən. Bu gün bir mövzu tamamla!
+                <p className="text-white/90 text-sm lg:text-base">
+                  Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
                 </p>
               </div>
 
@@ -89,12 +89,12 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             </div>
 
             {/* First 4 Action Cards - in hero - 1 row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <button
                 onClick={() => setCurrentPage('topics')}
-                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-2xl p-4 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-11 h-11 rounded-xl bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                   <BookOpen className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Təlim Mövzuları</h3>
@@ -102,9 +102,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </button>
 
               <button
-                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-2xl p-4 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-11 h-11 rounded-xl bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                   <Video className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm mb-0.5">3D Video</h3>
@@ -112,9 +112,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </button>
 
               <button
-                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-2xl p-4 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-11 h-11 rounded-xl bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                   <HelpCircle className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Suallar</h3>
@@ -122,9 +122,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </button>
 
               <button
-                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-2xl p-4 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
               >
-                <div className="w-11 h-11 rounded-xl bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                   <FileText className="w-5 h-5 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Video Dərslər</h3>
@@ -135,16 +135,16 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
         </div>
 
         {/* Main Content - White Background */}
-        <div className="px-4 lg:px-8 py-8">
+        <div className="px-4 lg:px-8 py-6">
           <div className="max-w-[1200px] mx-auto">
             {/* Other 4 Modules - 1 row */}
             <div className="mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Digər modullar</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <h2 className="text-base font-semibold text-gray-900 mb-3">Digər modullar</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <button
-                  className="group bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                     <BookMarked className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Maddələr</h3>
@@ -153,9 +153,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
                 <button
                   onClick={() => setCurrentPage('penalties')}
-                  className="group bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                     <AlertTriangle className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Cərimələr</h3>
@@ -163,9 +163,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 </button>
 
                 <button
-                  className="group bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                     <BarChart3 className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Statistika</h3>
@@ -174,9 +174,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
                 <button
                   onClick={() => setCurrentPage('classes')}
-                  className="group bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                  className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                     <Calendar className="w-5 h-5 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-semibold text-gray-900 text-sm mb-0.5">Onlayn Dərslər</h3>
