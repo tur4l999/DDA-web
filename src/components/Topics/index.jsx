@@ -7,12 +7,20 @@ import VideoContent from './VideoContent'
 import QuestionsContent from './QuestionsContent'
 import PenaltiesContent from './PenaltiesContent'
 import VideoModal from '../Penalties/VideoModal'
+import AskTeacherModal from './AskTeacherModal'
+import QuestionThreadModal from './QuestionThreadModal'
+import Toast from './Toast'
 
 export default function TopicsPage({ onBack }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('materials')
   const [selectedPenalty, setSelectedPenalty] = useState(null)
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
+  const [isAskTeacherModalOpen, setIsAskTeacherModalOpen] = useState(false)
+  const [isQuestionThreadModalOpen, setIsQuestionThreadModalOpen] = useState(false)
+  const [selectedQuestion, setSelectedQuestion] = useState(null)
+  const [questions, setQuestions] = useState([])
+  const [toast, setToast] = useState(null)
   const [currentTopic, setCurrentTopic] = useState({
     id: 1,
     code: 'M1',
@@ -29,6 +37,50 @@ export default function TopicsPage({ onBack }) {
 
   const handleExamClick = () => {
     alert('İmtahana başlanır...')
+  }
+
+  const handleContactTeacher = () => {
+    setIsAskTeacherModalOpen(true)
+  }
+
+  const handleQuestionSubmit = (questionData) => {
+    // Add question to list (optimistic UI)
+    setQuestions(prev => [questionData, ...prev])
+    
+    // Show toast
+    showToast('Sualınız göndərildi', 'success')
+  }
+
+  const handleQuestionClick = (question) => {
+    setSelectedQuestion(question)
+    setIsQuestionThreadModalOpen(true)
+  }
+
+  const handleReply = (questionId, reply) => {
+    setQuestions(prev => prev.map(q => {
+      if (q.id === questionId) {
+        return {
+          ...q,
+          replies: [...(q.replies || []), reply],
+          status: 'answered'
+        }
+      }
+      return q
+    }))
+
+    // Update selected question if it's open
+    if (selectedQuestion?.id === questionId) {
+      setSelectedQuestion(prev => ({
+        ...prev,
+        replies: [...(prev.replies || []), reply],
+        status: 'answered'
+      }))
+    }
+  }
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 3000)
   }
 
   const topics = [
@@ -69,16 +121,10 @@ export default function TopicsPage({ onBack }) {
       case 'video':
         return <VideoContent />
       case 'questions':
-        return <QuestionsContent />
+        return <QuestionsContent questions={questions} onQuestionClick={handleQuestionClick} />
       case 'contact':
-        return (
-          <div className="max-w-[860px] mx-auto">
-            <div className="text-center py-16 bg-gray-50 border border-gray-200 rounded-xl">
-              <p className="text-gray-600 font-medium mb-1">Müəllimlə əlaqə</p>
-              <p className="text-sm text-gray-500">Tezliklə əlavə ediləcək</p>
-            </div>
-          </div>
-        )
+        handleContactTeacher()
+        return null
       case 'penalties':
         return <PenaltiesContent topicRelated={true} onVideoClick={handleVideoClick} />
       default:
@@ -117,12 +163,29 @@ export default function TopicsPage({ onBack }) {
         </main>
       </div>
 
-      {/* Video Modal */}
+      {/* Modals */}
       <VideoModal
         penalty={selectedPenalty}
         isOpen={isVideoModalOpen}
         onClose={() => setIsVideoModalOpen(false)}
       />
+
+      <AskTeacherModal
+        isOpen={isAskTeacherModalOpen}
+        onClose={() => setIsAskTeacherModalOpen(false)}
+        currentTopic={currentTopic}
+        onSubmit={handleQuestionSubmit}
+      />
+
+      <QuestionThreadModal
+        isOpen={isQuestionThreadModalOpen}
+        onClose={() => setIsQuestionThreadModalOpen(false)}
+        question={selectedQuestion}
+        onReply={handleReply}
+      />
+
+      {/* Toast */}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
   )
 }
