@@ -71,7 +71,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
           <div className="max-w-[1200px] mx-auto relative z-10">
             {/* Greeting */}
-            <div className="mb-5">
+            <div className="mb-12 lg:mb-16">
               <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
                 Salam, Tural Qarayev!
               </h1>
@@ -81,9 +81,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             </div>
 
             {/* 4 Cards + Profile */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:items-start">
               {/* Left: First 4 Action Cards */}
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 lg:mt-8">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <button
                     onClick={() => setCurrentPage('topics')}
@@ -125,7 +125,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </div>
 
               {/* Right: Profile Card - with overlap */}
-              <div className="relative lg:-mb-32 z-20">
+              <div className="relative lg:-mb-28 z-20">
                 <ProfileCard />
               </div>
             </div>
