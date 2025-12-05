@@ -125,7 +125,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </div>
 
               {/* Right: Profile Card - with overlap */}
-              <div className="relative lg:-mb-24 z-20">
+              <div className="relative lg:-mb-20 z-20">
                 <ProfileCard />
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
         </div>
 
         {/* Main Content - White Background */}
-        <div className="px-4 lg:px-8 pt-32 lg:pt-6 pb-6">
+        <div className="px-4 lg:px-8 pt-6 pb-6">
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column: Modules + Results */}

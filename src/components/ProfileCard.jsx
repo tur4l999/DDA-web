@@ -2,7 +2,7 @@ import { Award, MapPin } from 'lucide-react'
 
 export default function ProfileCard() {
   return (
-    <div className="bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 rounded-xl shadow-lg p-4 text-white border border-white/20 overflow-hidden relative h-full">
+    <div className="bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 rounded-xl shadow-xl p-5 text-white border border-white/20 overflow-hidden relative" style={{ minHeight: '200px' }}>
       {/* Background Illustration */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
         <svg className="absolute right-0 top-0 w-40 h-40" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
