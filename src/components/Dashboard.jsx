@@ -59,19 +59,19 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
       <main className="flex-1 overflow-y-auto bg-gray-50">
         {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-6 pb-6 -mx-4 lg:-mx-8 overflow-visible">
+        <div className="gradient-bg relative px-4 lg:px-8 pt-12 pb-8 -mx-4 lg:-mx-8 overflow-visible">
           {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-[0.08]">
-            <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 300C240 200 480 400 720 300C960 200 1200 400 1440 300V600H0V300Z" fill="white"/>
-              <circle cx="200" cy="100" r="60" fill="white" opacity="0.3"/>
-              <circle cx="1200" cy="150" r="80" fill="white" opacity="0.2"/>
+          <div className="absolute inset-0 opacity-[0.06]">
+            <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+              <path d="M0 400C240 300 480 500 720 400C960 300 1200 500 1440 400V600H0V400Z" fill="white"/>
+              <circle cx="200" cy="100" r="60" fill="white" opacity="0.2"/>
+              <circle cx="1200" cy="150" r="80" fill="white" opacity="0.15"/>
             </svg>
           </div>
 
           <div className="max-w-[1200px] mx-auto relative z-10">
             {/* Greeting */}
-            <div className="mb-4">
+            <div className="mb-5">
               <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
                 Salam, Tural Qarayev!
               </h1>
@@ -125,7 +125,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </div>
 
               {/* Right: Profile Card - with overlap */}
-              <div className="relative lg:-mb-20 z-20">
+              <div className="relative lg:-mb-24 z-20">
                 <ProfileCard />
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column: Modules + Results */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-2 space-y-6 lg:pt-6">
                 {/* Other 4 Modules - 1 row */}
                 <div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -203,7 +203,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </div>
 
               {/* Right Column: Online Classes */}
-              <div>
+              <div className="lg:pt-6">
                 <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
               </div>
             </div>
