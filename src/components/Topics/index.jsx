@@ -122,9 +122,6 @@ export default function TopicsPage({ onBack }) {
         return <VideoContent />
       case 'questions':
         return <QuestionsContent questions={questions} onQuestionClick={handleQuestionClick} />
-      case 'contact':
-        handleContactTeacher()
-        return null
       case 'penalties':
         return <PenaltiesContent topicRelated={true} onVideoClick={handleVideoClick} />
       default:
@@ -156,6 +153,7 @@ export default function TopicsPage({ onBack }) {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           onExamClick={handleExamClick}
+          onContactClick={handleContactTeacher}
         />
 
         <main className="flex-1 px-4 lg:px-6 py-8">

@@ -10,7 +10,7 @@ const tabs = [
   { id: 'penalties', label: 'Cərimələr', icon: AlertTriangle }
 ]
 
-export default function TabNavigation({ activeTab, onTabChange, onExamClick }) {
+export default function TabNavigation({ activeTab, onTabChange, onExamClick, onContactClick }) {
   return (
     <div className="sticky top-[73px] sm:top-[89px] z-20 bg-white border-b border-gray-200 shadow-sm">
       <div className="px-4 lg:px-6 py-2">
@@ -19,10 +19,12 @@ export default function TabNavigation({ activeTab, onTabChange, onExamClick }) {
           <div className="flex gap-1 flex-1">
             {tabs.map(tab => {
               const Icon = tab.icon
+              const isContactTab = tab.id === 'contact'
+              
               return (
                 <button
                   key={tab.id}
-                  onClick={() => onTabChange(tab.id)}
+                  onClick={() => isContactTab ? onContactClick?.() : onTabChange(tab.id)}
                   className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all rounded-lg ${
                     activeTab === tab.id
                       ? 'bg-[#007A3A]/10 text-[#007A3A]'
