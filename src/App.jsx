@@ -8,7 +8,12 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      <Sidebar 
+        isOpen={isSidebarOpen} 
+        setIsOpen={setIsSidebarOpen}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
       <Dashboard
         onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
         currentPage={currentPage}

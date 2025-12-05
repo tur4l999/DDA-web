@@ -4,12 +4,17 @@ import ModularActionCards from './ModularActionCards'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
+import TopicsPage from './Topics'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
 
   if (currentPage === 'classes') {
     return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
+  }
+
+  if (currentPage === 'topics') {
+    return <TopicsPage onBack={() => setCurrentPage('dashboard')} />
   }
 
   return (

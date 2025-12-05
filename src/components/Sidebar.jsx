@@ -1,19 +1,19 @@
 import { Home, BookOpen, FileText, BarChart3, Car, HelpCircle, FileCheck, CreditCard, ShoppingBag, Monitor, X } from 'lucide-react'
 
 const menuItems = [
-  { icon: Home, label: 'Əsas səhifə', active: true },
-  { icon: BookOpen, label: 'Təlim mövzuları', active: false },
-  { icon: FileText, label: 'İmtahan', active: false },
-  { icon: BarChart3, label: 'Nəticələrim', active: false },
-  { icon: Car, label: 'Praktiki Təcrübə', active: false },
-  { icon: HelpCircle, label: 'Sual-cavab', active: false },
-  { icon: FileCheck, label: 'Appelyasiya', active: false },
-  { icon: CreditCard, label: 'Ödənişlər', active: false },
-  { icon: ShoppingBag, label: 'Online mağaza', active: false },
-  { icon: Monitor, label: 'İmtahan simulyatoru', active: false },
+  { icon: Home, label: 'Əsas səhifə', page: 'dashboard' },
+  { icon: BookOpen, label: 'Təlim mövzuları', page: 'topics' },
+  { icon: FileText, label: 'İmtahan', page: null },
+  { icon: BarChart3, label: 'Nəticələrim', page: null },
+  { icon: Car, label: 'Praktiki Təcrübə', page: null },
+  { icon: HelpCircle, label: 'Sual-cavab', page: null },
+  { icon: FileCheck, label: 'Appelyasiya', page: null },
+  { icon: CreditCard, label: 'Ödənişlər', page: null },
+  { icon: ShoppingBag, label: 'Online mağaza', page: null },
+  { icon: Monitor, label: 'İmtahan simulyatoru', page: null },
 ]
 
-export default function Sidebar({ isOpen, setIsOpen }) {
+export default function Sidebar({ isOpen, setIsOpen, currentPage, setCurrentPage }) {
   return (
     <>
       <div
@@ -51,8 +51,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             {menuItems.map((item, index) => (
               <button
                 key={index}
+                onClick={() => item.page && setCurrentPage(item.page)}
                 className={`w-full flex items-center space-x-3 px-6 py-4 text-left transition-colors ${
-                  item.active
+                  currentPage === item.page
                     ? 'bg-primary-50 text-primary-700 border-r-4 border-primary-600'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}

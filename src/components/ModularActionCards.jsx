@@ -6,7 +6,7 @@ const cards = [
     icon: BookOpen,
     title: 'Təlim Mövzuları',
     description: 'Bütün kurs mövzuları',
-    page: null
+    page: 'topics'
   },
   {
     id: 2,
