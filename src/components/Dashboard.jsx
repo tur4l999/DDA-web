@@ -60,7 +60,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-white/50">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Tamamlanmış</p>
@@ -81,24 +81,14 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   <div className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full" style={{width: '83.3%'}}></div>
                 </div>
               </div>
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-white/50">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Tərəqqi</p>
-                  <span className="text-2xl">📊</span>
-                </div>
-                <p className="text-4xl font-black text-primary-600">30%</p>
-                <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full" style={{width: '30%'}}></div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        <div className="px-4 lg:px-8 py-8">
+        <div className="px-4 lg:px-8 -mt-32 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 mt-32">
                 <ModularActionCards setCurrentPage={setCurrentPage} />
 
                 <div className="mt-8 bg-white rounded-2xl shadow-lg border-2 border-gray-100">
