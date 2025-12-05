@@ -60,35 +60,35 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               </p>
             </div>
 
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl border-2 border-white/50 mb-6">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-xl border-2 border-white/50 mb-6 max-w-xl">
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
                   <div className="flex items-center space-x-2">
-                    <span className="text-xl">✅</span>
+                    <span className="text-lg">✅</span>
                     <div>
                       <p className="text-xs font-semibold text-gray-600">Tamamlanmış</p>
-                      <p className="text-2xl font-black text-primary-600">4</p>
+                      <p className="text-xl font-black text-primary-600">4</p>
                     </div>
                   </div>
-                  <div className="w-px h-12 bg-gray-300"></div>
+                  <div className="w-px h-10 bg-gray-300"></div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-xl">📝</span>
+                    <span className="text-lg">📝</span>
                     <div>
                       <p className="text-xs font-semibold text-gray-600">Tamamlanmamış</p>
-                      <p className="text-2xl font-black text-orange-600">20</p>
+                      <p className="text-xl font-black text-orange-600">20</p>
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-xs font-semibold text-gray-600">Ümumi</p>
-                  <p className="text-2xl font-black text-gray-900">24</p>
+                  <p className="text-xl font-black text-gray-900">24</p>
                 </div>
               </div>
-              <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div className="relative h-2.5 bg-gray-200 rounded-full overflow-hidden">
                 <div className="absolute h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full transition-all duration-500" style={{width: '16.7%'}}></div>
                 <div className="absolute h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full transition-all duration-500" style={{width: '83.3%', left: '16.7%'}}></div>
               </div>
-              <div className="flex items-center justify-between mt-2 text-xs font-semibold">
+              <div className="flex items-center justify-between mt-1.5 text-xs font-semibold">
                 <span className="text-primary-600">16.7%</span>
                 <span className="text-orange-600">83.3%</span>
               </div>
@@ -96,10 +96,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
           </div>
         </div>
 
-        <div className="px-4 lg:px-8 -mt-40 relative z-10">
+        <div className="px-4 lg:px-8 -mt-48 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 mt-40">
+              <div className="lg:col-span-2 mt-48">
                 <ModularActionCards setCurrentPage={setCurrentPage} />
 
                 <div className="mt-8 bg-white rounded-2xl shadow-lg border-2 border-gray-100">
