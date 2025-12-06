@@ -355,12 +355,15 @@ export default function OnlineClasses({ onBack }) {
                 <h3 className="text-xl font-bold text-white mb-3">{nextLesson.title}</h3>
                 <div className="flex flex-wrap items-center gap-4 text-sm text-green-50">
                   <span className="font-medium">
-                    {new Intl.DateTimeFormat('az-AZ', {
-                      day: '2-digit',
-                      month: 'long',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    }).format(nextLesson.date)}
+                    {(() => {
+                      const d = new Date(nextLesson.date)
+                      const day = String(d.getDate()).padStart(2, '0')
+                      const month = String(d.getMonth() + 1).padStart(2, '0')
+                      const year = d.getFullYear()
+                      const hours = String(d.getHours()).padStart(2, '0')
+                      const minutes = String(d.getMinutes()).padStart(2, '0')
+                      return `${day}.${month}.${year} ${hours}:${minutes}`
+                    })()}
                   </span>
                   <span>•</span>
                   <span className="font-medium">{nextLesson.instructor}</span>
@@ -526,7 +529,6 @@ export default function OnlineClasses({ onBack }) {
                           : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      Sonrakı →
                       Sonrakı →
                     </button>
                   </div>

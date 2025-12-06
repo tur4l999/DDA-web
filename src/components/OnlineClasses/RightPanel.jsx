@@ -43,18 +43,19 @@ export default function RightPanel({
   }
 
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('az-AZ', { 
-      day: 'numeric',
-      month: 'long',
-      weekday: 'long'
-    })
+    const d = new Date(date)
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    const weekday = d.toLocaleDateString('az-AZ', { weekday: 'long' })
+    return `${day}.${month}.${year}, ${weekday}`
   }
 
   const formatTime = (date) => {
-    return new Date(date).toLocaleTimeString('az-AZ', { 
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    const d = new Date(date)
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+    return `${hours}:${minutes}`
   }
 
   const getLanguageLabel = (lang) => {
