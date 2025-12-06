@@ -1,216 +1,362 @@
-import { X, Paperclip, Send, CheckCircle, Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { X, Upload, Image as ImageIcon, Loader, AlertCircle, Trash2, ZoomIn } from 'lucide-react'
+import { useState, useRef } from 'react'
 
 export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmit }) {
   const [message, setMessage] = useState('')
-  const [file, setFile] = useState(null)
-  const [priority, setPriority] = useState('normal')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-
-  const maxLength = 1000
-  const remainingChars = maxLength - message.length
-
-  const handleSubmit = async () => {
-    if (!message.trim() || isSubmitting) return
-
-    setIsSubmitting(true)
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    const questionData = {
-      id: Date.now(),
-      topicId: currentTopic.id,
-      topicCode: currentTopic.code,
-      topicTitle: currentTopic.title,
-      message: message.trim(),
-      file: file?.name || null,
-      priority,
-      status: 'waiting',
-      createdAt: new Date().toISOString(),
-      replies: []
-    }
-
-    onSubmit?.(questionData)
-
-    setIsSubmitting(false)
-    setIsSuccess(true)
-
-    // Show success state for 1.5s then close
-    setTimeout(() => {
-      setIsSuccess(false)
-      setMessage('')
-      setFile(null)
-      setPriority('normal')
-      onClose()
-    }, 1500)
-  }
-
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files?.[0]
-    if (selectedFile) {
-      setFile(selectedFile)
-    }
-  }
-
-  const removeFile = () => {
-    setFile(null)
-  }
+  const [imageFile, setImageFile] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [error, setError] = useState(null)
+  const [isCompressing, setIsCompressing] = useState(false)
+  const fileInputRef = useRef(null)
 
   if (!isOpen) return null
 
+  const MAX_FILE_SIZE = 3 * 1024 * 1024 // 3MB absolute max
+  const TARGET_FILE_SIZE = 2 * 1024 * 1024 // 2MB ideal
+  const MAX_DIMENSION = 1600
+
+  const compressImage = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const img = new Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          let width = img.width
+          let height = img.height
+
+          // Resize if needed
+          if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+            if (width > height) {
+              height = (height / width) * MAX_DIMENSION
+              width = MAX_DIMENSION
+            } else {
+              width = (width / height) * MAX_DIMENSION
+              height = MAX_DIMENSION
+            }
+          }
+
+          canvas.width = width
+          canvas.height = height
+          const ctx = canvas.getContext('2d')
+          ctx.drawImage(img, 0, 0, width, height)
+
+          // Try WebP first (better compression)
+          canvas.toBlob(
+            (blob) => {
+              if (blob && blob.size <= TARGET_FILE_SIZE) {
+                resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' }))
+              } else {
+                // Fallback to JPEG with quality adjustment
+                let quality = 0.8
+                const tryCompress = () => {
+                  canvas.toBlob(
+                    (jpegBlob) => {
+                      if (jpegBlob && jpegBlob.size <= TARGET_FILE_SIZE) {
+                        resolve(new File([jpegBlob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }))
+                      } else if (quality > 0.5) {
+                        quality -= 0.1
+                        tryCompress()
+                      } else {
+                        resolve(new File([jpegBlob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }))
+                      }
+                    },
+                    'image/jpeg',
+                    quality
+                  )
+                }
+                tryCompress()
+              }
+            },
+            'image/webp',
+            0.85
+          )
+        }
+        img.onerror = reject
+        img.src = e.target.result
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setError(null)
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      setError('Yalnız şəkil faylları yükləyə bilərsiniz (JPG, PNG, WebP)')
+      return
+    }
+
+    // Check file size
+    if (file.size > MAX_FILE_SIZE) {
+      setError('Şəkil çox böyükdür. Maksimum 3MB olmalıdır.')
+      return
+    }
+
+    try {
+      let processedFile = file
+
+      // Compress if needed
+      if (file.size > TARGET_FILE_SIZE) {
+        setIsCompressing(true)
+        setError('Şəkil böyükdür, avtomatik sıxılır...')
+        processedFile = await compressImage(file)
+        setIsCompressing(false)
+        setError(null)
+      }
+
+      // Create preview
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target.result)
+        setImageFile(processedFile)
+      }
+      reader.readAsDataURL(processedFile)
+    } catch (err) {
+      setIsCompressing(false)
+      setError('Şəkil emal edilərkən xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.')
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setImageFile(null)
+    setImagePreview(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    if (!message.trim()) {
+      setError('Zəhmət olmasa mesaj yazın')
+      return
+    }
+
+    setIsUploading(true)
+    setUploadProgress(0)
+
+    // Simulate upload progress
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 90) {
+          clearInterval(interval)
+          return 90
+        }
+        return prev + 10
+      })
+    }, 200)
+
+    // Simulate API call
+    setTimeout(() => {
+      clearInterval(interval)
+      setUploadProgress(100)
+      
+      const questionData = {
+        id: Date.now(),
+        topic: currentTopic,
+        message: message,
+        image: imageFile ? URL.createObjectURL(imageFile) : null,
+        date: new Date(),
+        status: 'pending',
+        replies: []
+      }
+
+      onSubmit?.(questionData)
+      
+      // Reset and close
+      setTimeout(() => {
+        setMessage('')
+        setImageFile(null)
+        setImagePreview(null)
+        setIsUploading(false)
+        setUploadProgress(0)
+        setError(null)
+        onClose()
+      }, 500)
+    }, 1500)
+  }
+
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024 * 1024) {
+      return `${(bytes / 1024).toFixed(1)} KB`
+    }
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+  }
+
   return (
     <>
-      {/* Backdrop */}
-      <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity"
-        onClick={isSuccess ? null : onClose}
-      />
-
-      {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
+      <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={onClose}>
         <div 
-          className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-[580px] pointer-events-auto max-h-[90vh] sm:max-h-[85vh] flex flex-col"
+          className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
-          {isSuccess ? (
-            // Success State
-            <div className="flex flex-col items-center justify-center py-16 px-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle className="w-8 h-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Sualınız göndərildi</h3>
-              <p className="text-sm text-gray-600 text-center">Müəllim tezliklə cavab verəcək</p>
+          {/* Header */}
+          <div className="sticky top-0 bg-gradient-to-r from-[#007A3A] to-[#005A2A] px-6 py-5 rounded-t-3xl flex items-center justify-between z-10">
+            <div>
+              <h2 className="text-xl font-black text-white">Müəllimə sual ver</h2>
+              <p className="text-sm text-white/80">Sualınızı yazın, tezliklə cavablandırılacaq</p>
             </div>
-          ) : (
-            <>
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-900">Müəllimə sual ver</h2>
-                  <p className="text-sm text-gray-600 mt-0.5">
-                    Mövzu: <span className="font-medium text-gray-900">{currentTopic.code} · {currentTopic.title}</span>
+            <button
+              onClick={onClose}
+              className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            {/* Topic (read-only) */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Mövzu</label>
+              <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium">
+                {currentTopic?.code} - {currentTopic?.title}
+              </div>
+            </div>
+
+            {/* Message */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Mesajınız
+                <span className="text-gray-400 font-normal ml-2">({message.length}/500)</span>
+              </label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value.slice(0, 500))}
+                placeholder="Sualınızı ətraflı yazın..."
+                rows={5}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A]/20 focus:border-[#007A3A] resize-none"
+              />
+            </div>
+
+            {/* Image upload */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Şəkil əlavə et <span className="text-gray-400 font-normal">(opsional)</span>
+              </label>
+              
+              {!imagePreview ? (
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-[#007A3A] hover:bg-[#007A3A]/5 transition-all cursor-pointer"
+                >
+                  <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <p className="text-sm font-medium text-gray-700 mb-1">
+                    Şəkil yükləmək üçün klikləyin
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    JPG, PNG, WebP (maksimum 3MB)
                   </p>
                 </div>
-                <button
-                  onClick={onClose}
-                  className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
-              </div>
-
-              {/* Body */}
-              <div className="flex-1 overflow-y-auto px-6 py-6">
-                {/* Message Input */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Sual <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
-                    placeholder="Sualınızı yazın…"
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A] focus:border-transparent resize-none text-sm"
-                  />
-                  <div className="flex items-center justify-between mt-2">
-                    <span className={`text-xs ${remainingChars < 100 ? 'text-orange-600' : 'text-gray-500'}`}>
-                      {remainingChars} simvol qalıb
-                    </span>
+              ) : (
+                <div className="space-y-3">
+                  {/* Preview */}
+                  <div className="relative bg-gray-900 rounded-xl overflow-hidden" style={{ maxHeight: '420px' }}>
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-full object-contain"
+                      style={{ maxHeight: '420px' }}
+                    />
+                    {isCompressing && (
+                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                        <div className="text-center text-white">
+                          <Loader className="w-8 h-8 animate-spin mx-auto mb-2" />
+                          <p className="text-sm font-medium">Sıxılır...</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                {/* File Upload */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Əlavə fayl (opsional)
-                  </label>
-                  {file ? (
-                    <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-xl">
-                      <Paperclip className="w-5 h-5 text-gray-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-700 flex-1 truncate">{file.name}</span>
-                      <button
-                        onClick={removeFile}
-                        className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-200 transition-colors"
-                      >
-                        <X className="w-4 h-4 text-gray-600" />
-                      </button>
+                  {/* File info */}
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center gap-3">
+                      <ImageIcon className="w-5 h-5 text-[#007A3A]" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{imageFile?.name}</p>
+                        <p className="text-xs text-gray-500">{formatFileSize(imageFile?.size || 0)}</p>
+                      </div>
                     </div>
-                  ) : (
-                    <label className="flex items-center gap-3 p-3 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-colors cursor-pointer">
-                      <Paperclip className="w-5 h-5 text-gray-500" />
-                      <span className="text-sm text-gray-600">Şəkil əlavə et</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-                    </label>
-                  )}
-                </div>
-
-                {/* Priority */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Prioritet
-                  </label>
-                  <div className="flex gap-2">
                     <button
-                      onClick={() => setPriority('normal')}
-                      className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg border-2 transition-all ${
-                        priority === 'normal'
-                          ? 'bg-[#007A3A]/10 border-[#007A3A] text-[#007A3A]'
-                          : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"
+                      title="Şəkli sil"
                     >
-                      Adi
-                    </button>
-                    <button
-                      onClick={() => setPriority('urgent')}
-                      className={`flex-1 px-4 py-2.5 text-sm font-medium rounded-lg border-2 transition-all ${
-                        priority === 'urgent'
-                          ? 'bg-orange-50 border-orange-500 text-orange-700'
-                          : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      Təcili
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
-              </div>
+              )}
 
-              {/* Footer */}
-              <div className="flex gap-3 px-6 py-5 border-t border-gray-200 bg-gray-50">
-                <button
-                  onClick={onClose}
-                  disabled={isSubmitting}
-                  className="flex-1 px-4 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Ləğv et
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={!message.trim() || isSubmitting}
-                  className="flex-1 px-4 py-3 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#007A3A] flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      <span>Göndərilir...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5" />
-                      <span>Göndər</span>
-                    </>
-                  )}
-                </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+            </div>
+
+            {/* Error message */}
+            {error && (
+              <div className={`flex items-start gap-3 p-4 rounded-xl ${
+                isCompressing ? 'bg-blue-50 border border-blue-200' : 'bg-red-50 border border-red-200'
+              }`}>
+                {isCompressing ? (
+                  <Loader className="w-5 h-5 text-blue-600 animate-spin flex-shrink-0 mt-0.5" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                )}
+                <p className={`text-sm font-medium ${isCompressing ? 'text-blue-800' : 'text-red-800'}`}>
+                  {error}
+                </p>
               </div>
-            </>
-          )}
+            )}
+
+            {/* Upload progress */}
+            {isUploading && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium text-gray-700">Göndərilir...</span>
+                  <span className="text-gray-500">{uploadProgress}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] h-full transition-all duration-300"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={onClose}
+                disabled={isUploading}
+                className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Ləğv et
+              </button>
+              <button
+                type="submit"
+                disabled={isUploading || !message.trim() || isCompressing}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-[#007A3A] to-[#005A2A] text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isUploading ? 'Göndərilir...' : 'Göndər'}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>
