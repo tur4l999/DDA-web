@@ -151,39 +151,39 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 <div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
                     <button
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
+                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                        <BookMarked className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                        <BookMarked className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                       </div>
                       <h3 className="font-semibold text-gray-900 text-sm">Maddələr</h3>
                     </button>
 
                     <button
                       onClick={() => setCurrentPage('penalties')}
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
+                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                        <AlertTriangle className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                       </div>
                       <h3 className="font-semibold text-gray-900 text-sm">Cərimələr</h3>
                     </button>
 
                     <button
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
+                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                        <BarChart3 className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                        <BarChart3 className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                       </div>
                       <h3 className="font-semibold text-gray-900 text-sm">Statistika</h3>
                     </button>
 
                     <button
                       onClick={() => setCurrentPage('classes')}
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
+                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
-                        <Calendar className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                        <Calendar className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
                       </div>
                       <h3 className="font-semibold text-gray-900 text-sm">Onlayn Dərslər</h3>
                     </button>
