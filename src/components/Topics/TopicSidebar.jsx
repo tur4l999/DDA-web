@@ -74,7 +74,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                   onTopicSelect(topic)
                   onClose()
                 }}
-                className={`w-full flex items-start gap-3 px-4 py-3 text-left transition-colors border-l-4 ${
+                className={`w-full flex items-start gap-3 px-4 py-3 text-left transition-colors border-r-4 ${
                   currentTopic?.id === topic.id
                     ? 'bg-[#007A3A]/5 border-[#007A3A]'
                     : 'border-transparent hover:bg-gray-50'

@@ -119,7 +119,7 @@ export default function TopicsPage({ onBack }) {
       case 'video':
         return <VideoContent />
       case 'questions':
-        return <QuestionsContent questions={questions} onQuestionClick={handleQuestionClick} />
+        return <QuestionsContent />
       case 'penalties':
         return <PenaltiesContent topicRelated={true} onVideoClick={handleVideoClick} />
       default:
