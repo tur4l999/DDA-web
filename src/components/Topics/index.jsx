@@ -91,9 +91,37 @@ export default function TopicsPage({ onBack }) {
   const topics = [
     { id: 1, code: 'M1', title: 'Ümumi müddəalar', category: 'Əsaslar', completed: false, progress: 45 },
     { id: 2, code: 'M2', title: 'Yol nişanları', category: 'Nişanlar', completed: true, progress: 100 },
-    { id: 3, code: 'M3', title: 'Yol xətləri', category: 'Nişanlar', completed: false, progress: 0 },
+    { 
+      id: 3, 
+      code: 'M3', 
+      title: 'Yol xətləri', 
+      category: 'Nişanlar', 
+      completed: false, 
+      progress: 35,
+      subTopics: [
+        { id: '3.1', code: 'M3.1', title: 'Kəsilməz xətlər', completed: true, progress: 100 },
+        { id: '3.2', code: 'M3.2', title: 'Kəsilən xətlər', completed: true, progress: 100 },
+        { id: '3.3', code: 'M3.3', title: 'Sarı rəngli xətlər', completed: false, progress: 60 },
+        { id: '3.4', code: 'M3.4', title: 'Mavi rəngli xətlər', completed: false, progress: 0 },
+        { id: '3.5', code: 'M3.5', title: 'Ox işarələri', completed: false, progress: 40 },
+        { id: '3.6', code: 'M3.6', title: 'Piyada keçidi xətləri', completed: false, progress: 80 },
+        { id: '3.7', code: 'M3.7', title: 'Dayanma xətləri', completed: false, progress: 20 },
+        { id: '3.8', code: 'M3.8', title: 'Saxlama zonası xətləri', completed: false, progress: 0 }
+      ]
+    },
     { id: 4, code: 'M4', title: 'Sürücünün vəzifələri', category: 'Qanunlar', completed: false, progress: 20 },
-    { id: 5, code: 'M5', title: 'Siqnallar', category: 'Əməliyyatlar', completed: false, progress: 0 }
+    { 
+      id: 5, 
+      code: 'M5', 
+      title: 'Siqnallar', 
+      category: 'Əməliyyatlar', 
+      completed: false, 
+      progress: 50,
+      subTopics: [
+        { id: '5.1', code: 'M5.1', title: 'İşıqlı siqnallar', completed: true, progress: 100 },
+        { id: '5.2', code: 'M5.2', title: 'Səs siqnalları', completed: false, progress: 0 }
+      ]
+    }
   ]
 
   const progress = {
