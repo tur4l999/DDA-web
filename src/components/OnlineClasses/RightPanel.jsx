@@ -47,7 +47,8 @@ export default function RightPanel({
     const day = String(d.getDate()).padStart(2, '0')
     const month = String(d.getMonth() + 1).padStart(2, '0')
     const year = d.getFullYear()
-    const weekday = d.toLocaleDateString('az-AZ', { weekday: 'long' })
+    const weekdays = ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə']
+    const weekday = weekdays[d.getDay()]
     return `${day}.${month}.${year}, ${weekday}`
   }
 
