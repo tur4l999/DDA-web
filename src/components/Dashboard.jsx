@@ -59,7 +59,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
       <main className="flex-1 overflow-y-auto bg-gray-50">
         {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-8 pb-6 -mx-4 lg:-mx-8 overflow-visible min-h-[280px] lg:min-h-[240px]">
+        <div className="gradient-bg relative px-4 lg:px-8 pt-8 pb-3 -mx-4 lg:-mx-8 overflow-visible min-h-[260px] lg:min-h-[220px]">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-[0.06]">
             <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -142,7 +142,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
         </div>
 
         {/* Main Content - White Background */}
-        <div className="px-4 lg:px-8 pt-6 pb-6">
+        <div className="px-4 lg:px-8 pt-3 pb-6">
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
               {/* Left Column: Modules + Results - LOCKED BOUNDARY */}
