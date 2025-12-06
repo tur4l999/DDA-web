@@ -1,8 +1,9 @@
 import { ChevronLeft, ChevronRight, Video } from 'lucide-react'
 import { useState } from 'react'
 
-export default function CalendarView({ lessons, onSelectLesson }) {
+export default function CalendarView({ lessons, onSelectLesson, onDateSelect }) {
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [selectedDay, setSelectedDay] = useState(null)
 
   const getMonthStart = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), 1)
@@ -117,15 +118,22 @@ export default function CalendarView({ lessons, onSelectLesson }) {
           const hasReplay = dayLessons.some(l => l.status === 'completed' && l.replayUrl)
           const hasLive = dayLessons.some(l => l.status === 'started')
 
+          const isSelected = selectedDay?.toDateString() === day.date.toDateString()
+
           return (
             <div
               key={index}
               className={`bg-white min-h-[100px] p-2 transition-all ${
-                day.isCurrentMonth ? 'hover:bg-gray-50' : 'bg-gray-50 opacity-50'
+                day.isCurrentMonth ? 'hover:bg-gray-50 cursor-pointer' : 'bg-gray-50 opacity-50'
               } ${isToday ? 'ring-2 ring-primary-500 ring-inset' : ''} ${
-                hasLessons ? 'cursor-pointer' : ''
+                isSelected ? 'bg-primary-50 ring-2 ring-primary-400' : ''
               }`}
-              onClick={() => hasLessons && onSelectLesson?.(dayLessons[0])}
+              onClick={() => {
+                if (day.isCurrentMonth) {
+                  setSelectedDay(day.date)
+                  onDateSelect?.(day.date)
+                }
+              }}
             >
               <div className="flex items-center justify-between mb-1">
                 <span className={`text-sm font-bold ${

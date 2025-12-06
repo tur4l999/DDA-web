@@ -1,10 +1,13 @@
 import { useState, useMemo } from 'react'
-import { Search, Filter, List, Calendar as CalendarIcon, ArrowLeft, SlidersHorizontal } from 'lucide-react'
+import { Search, Filter, List, Calendar as CalendarIcon, ArrowLeft, SlidersHorizontal, Bookmark } from 'lucide-react'
 import FilterDrawer from './FilterDrawer'
 import LessonCard from './LessonCard'
 import LessonDetailsModal from './LessonDetailsModal'
 import VideoPlayerModal from './VideoPlayerModal'
 import CalendarView from './CalendarView'
+import RightPanel from './RightPanel'
+import MobileRightPanel from './MobileRightPanel'
+import Toast from './Toast'
 
 export default function OnlineClasses({ onBack }) {
   const [view, setView] = useState('list') // 'list' or 'calendar'
@@ -15,7 +18,22 @@ export default function OnlineClasses({ onBack }) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
   const [isVideoOpen, setIsVideoOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [bookmarkedLessons, setBookmarkedLessons] = useState([])
+  const [rightPanelTab, setRightPanelTab] = useState('bookmarks')
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [toast, setToast] = useState(null)
   const itemsPerPage = 9
+
+  // Auto-switch tab based on view mode
+  const handleViewChange = (newView) => {
+    setView(newView)
+    if (newView === 'calendar') {
+      setRightPanelTab('selectedDay')
+      setSelectedDate(new Date())
+    } else {
+      setRightPanelTab('bookmarks')
+    }
+  }
 
   const [filters, setFilters] = useState({
     dateRange: { start: '', end: '' },
@@ -193,8 +211,38 @@ export default function OnlineClasses({ onBack }) {
   }
 
   const handleToggleBookmark = (lessonId, bookmarked) => {
-    console.log(`Bookmark toggled for lesson ${lessonId}: ${bookmarked}`)
+    const lesson = lessons.find(l => l.id === lessonId)
+    if (!lesson) return
+
+    setBookmarkedLessons(prev => {
+      const isBookmarked = prev.some(l => l.id === lessonId)
+      if (isBookmarked) {
+        setToast('Saxlanılanlardan silindi')
+        return prev.filter(l => l.id !== lessonId)
+      } else {
+        setRightPanelTab('bookmarks')
+        setToast('Saxlanılanlara əlavə edildi')
+        return [lesson, ...prev]
+      }
+    })
   }
+
+  const handleRemoveBookmark = (lessonId) => {
+    setBookmarkedLessons(prev => prev.filter(l => l.id !== lessonId))
+  }
+
+  const handleDateSelectFromCalendar = (date) => {
+    setSelectedDate(date)
+    setRightPanelTab('selectedDay')
+  }
+
+  const lessonsForSelectedDate = useMemo(() => {
+    if (!selectedDate) return []
+    return filteredLessons.filter(lesson => {
+      const lessonDate = new Date(lesson.date)
+      return lessonDate.toDateString() === selectedDate.toDateString()
+    })
+  }, [selectedDate, filteredLessons])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -218,7 +266,7 @@ export default function OnlineClasses({ onBack }) {
             {/* View Toggle */}
             <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
               <button
-                onClick={() => setView('list')}
+                onClick={() => handleViewChange('list')}
                 className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
                   view === 'list'
                     ? 'bg-white text-primary-600 shadow-md'
@@ -229,7 +277,7 @@ export default function OnlineClasses({ onBack }) {
                 <span className="hidden sm:inline">Siyahı</span>
               </button>
               <button
-                onClick={() => setView('calendar')}
+                onClick={() => handleViewChange('calendar')}
                 className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
                   view === 'calendar'
                     ? 'bg-white text-primary-600 shadow-md'
@@ -269,9 +317,12 @@ export default function OnlineClasses({ onBack }) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {/* Next Up Card */}
-        {nextLesson && view === 'list' && (
-          <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] rounded-2xl p-6 mb-6 shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
+          {/* Left Column: Main Content */}
+          <div className="max-w-full overflow-hidden">
+            {/* Next Up Card */}
+            {nextLesson && view === 'list' && (
+              <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] rounded-2xl p-6 mb-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <p className="text-green-100 font-medium mb-2 text-sm">Növbəti dərs</p>
@@ -369,15 +420,15 @@ export default function OnlineClasses({ onBack }) {
               >
                 Təkrar videosu olanlar
               </button>
-          </div>
-        )}
+            </div>
+          )}
 
-        {/* Content */}
-        {view === 'list' ? (
-          <>
-            {paginatedLessons.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
+          {/* Content */}
+          {view === 'list' ? (
+            <>
+              {paginatedLessons.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 gap-5 mb-8">
                   {paginatedLessons.map(lesson => (
                     <LessonCard
                       key={lesson.id}
@@ -388,10 +439,10 @@ export default function OnlineClasses({ onBack }) {
                       onToggleBookmark={handleToggleBookmark}
                     />
                   ))}
-                </div>
+                  </div>
 
-                {/* Pagination */}
-                {totalPages > 1 && (
+                  {/* Pagination */}
+                  {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-2">
                     <button
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
@@ -445,24 +496,41 @@ export default function OnlineClasses({ onBack }) {
                     >
                       Sonrakı →
                     </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
-                <div className="text-6xl mb-4">🔍</div>
-                <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
-                <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
-              </div>
-            )}
-          </>
-        ) : (
-          <CalendarView
-            lessons={filteredLessons}
-            onSelectLesson={handleViewDetails}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
+                  <div className="text-6xl mb-4">🔍</div>
+                  <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
+                  <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
+                </div>
+              )}
+            </>
+          ) : (
+            <CalendarView
+              lessons={filteredLessons}
+              onSelectLesson={handleViewDetails}
+              onDateSelect={handleDateSelectFromCalendar}
+            />
+          )}
+        </div>
+
+        {/* Right Panel - Smart Sidebar */}
+        <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
+          <RightPanel
+            activeTab={rightPanelTab}
+            onTabChange={setRightPanelTab}
+            bookmarkedLessons={bookmarkedLessons}
+            onRemoveBookmark={handleRemoveBookmark}
+            selectedDate={selectedDate}
+            lessonsForDate={lessonsForSelectedDate}
+            onJoinLesson={handleJoin}
+            onViewDetails={handleViewDetails}
           />
-        )}
+        </div>
       </div>
+    </div>
 
       {/* Modals */}
       <FilterDrawer
@@ -488,6 +556,21 @@ export default function OnlineClasses({ onBack }) {
         isOpen={isVideoOpen}
         onClose={() => setIsVideoOpen(false)}
       />
+
+      {/* Mobile Right Panel */}
+      <MobileRightPanel
+        activeTab={rightPanelTab}
+        onTabChange={setRightPanelTab}
+        bookmarkedLessons={bookmarkedLessons}
+        onRemoveBookmark={handleRemoveBookmark}
+        selectedDate={selectedDate}
+        lessonsForDate={lessonsForSelectedDate}
+        onJoinLesson={handleJoin}
+        onViewDetails={handleViewDetails}
+      />
+
+      {/* Toast Notification */}
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </div>
   )
 }
