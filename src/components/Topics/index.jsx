@@ -121,7 +121,29 @@ export default function TopicsPage({ onBack }) {
         { id: '5.1', code: 'M5.1', title: 'İşıqlı siqnallar', completed: true, progress: 100 },
         { id: '5.2', code: 'M5.2', title: 'Səs siqnalları', completed: false, progress: 0 }
       ]
-    }
+    },
+    { id: 6, code: 'M6', title: 'Trafik işıqları', category: 'Nişanlar', completed: false, progress: 65 },
+    { id: 7, code: 'M7', title: 'Hərəkət sürəti', category: 'Qanunlar', completed: false, progress: 30 },
+    { id: 8, code: 'M8', title: 'Manevr qaydaları', category: 'Əməliyyatlar', completed: false, progress: 55 },
+    { id: 9, code: 'M9', title: 'Yerdəyişmə və dönmə', category: 'Əməliyyatlar', completed: false, progress: 40 },
+    { id: 10, code: 'M10', title: 'Qabaqdan keçmə', category: 'Əməliyyatlar', completed: false, progress: 0 },
+    { id: 11, code: 'M11', title: 'Dayanma və saxlama', category: 'Əməliyyatlar', completed: false, progress: 75 },
+    { id: 12, code: 'M12', title: 'Piyada keçidləri', category: 'Təhlükəsizlik', completed: false, progress: 90 },
+    { id: 13, code: 'M13', title: 'Uşaq daşıma qaydaları', category: 'Təhlükəsizlik', completed: false, progress: 100 },
+    { id: 14, code: 'M14', title: 'Təhlükəli yük daşıma', category: 'Təhlükəsizlik', completed: false, progress: 0 },
+    { id: 15, code: 'M15', title: 'Yol-nəqliyyat hadisələri', category: 'Təhlükəsizlik', completed: false, progress: 25 },
+    { id: 16, code: 'M16', title: 'İlk tibbi yardım', category: 'Təhlükəsizlik', completed: false, progress: 60 },
+    { id: 17, code: 'M17', title: 'Avtomobilin texniki vəziyyəti', category: 'Texniki', completed: false, progress: 45 },
+    { id: 18, code: 'M18', title: 'Mühərrikin quruluşu', category: 'Texniki', completed: false, progress: 0 },
+    { id: 19, code: 'M19', title: 'Əyləc sistemi', category: 'Texniki', completed: false, progress: 80 },
+    { id: 20, code: 'M20', title: 'Sükan idarəetmə', category: 'Texniki', completed: false, progress: 70 },
+    { id: 21, code: 'M21', title: 'Işıqlandırma sistemi', category: 'Texniki', completed: false, progress: 55 },
+    { id: 22, code: 'M22', title: 'Avtomobil sənədləri', category: 'Hüquqi', completed: false, progress: 100 },
+    { id: 23, code: 'M23', title: 'Sığorta', category: 'Hüquqi', completed: false, progress: 85 },
+    { id: 24, code: 'M24', title: 'İnzibati məsuliyyət', category: 'Hüquqi', completed: false, progress: 40 },
+    { id: 25, code: 'M25', title: 'Yol nəqliyyat cinayətləri', category: 'Hüquqi', completed: false, progress: 0 },
+    { id: 26, code: 'M26', title: 'Ətraf mühit', category: 'Ekoloji', completed: false, progress: 50 },
+    { id: 27, code: 'M27', title: 'Yanacaq qənaəti', category: 'Ekoloji', completed: false, progress: 35 }
   ]
 
   const progress = {
