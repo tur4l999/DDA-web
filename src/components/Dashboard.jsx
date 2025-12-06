@@ -59,7 +59,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
       <main className="flex-1 overflow-y-auto bg-gray-50">
         {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-8 pb-6 -mx-4 lg:-mx-8 overflow-visible">
+        <div className="gradient-bg relative px-4 lg:px-8 pt-8 pb-6 -mx-4 lg:-mx-8 overflow-visible min-h-[280px] lg:min-h-[240px]">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-[0.06]">
             <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -69,21 +69,30 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             </svg>
           </div>
 
-          <div className="max-w-[1200px] mx-auto relative z-10">
-            {/* Greeting */}
-            <div className="mb-4">
-              <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-                Salam, Tural Qarayev!
-              </h1>
-              <p className="text-white/90 text-sm lg:text-base">
-                Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
-              </p>
+          <div className="max-w-[1200px] mx-auto relative z-10 h-full flex flex-col justify-between">
+            {/* Top Zone: Greeting + Profile */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {/* Greeting */}
+              <div className="lg:col-span-2">
+                <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
+                  Salam, Tural Qarayev!
+                </h1>
+                <p className="text-white/90 text-sm lg:text-base">
+                  Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
+                </p>
+              </div>
+
+              {/* Profile Card - Absolute positioned for overlap */}
+              <div className="hidden lg:block absolute right-4 lg:right-8 top-8 w-full lg:w-[calc((100%-3rem)/3)] z-30" style={{ maxWidth: '400px' }}>
+                <div className="relative -mb-28">
+                  <ProfileCard />
+                </div>
+              </div>
             </div>
 
-            {/* 4 Cards + Profile */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              {/* Left: First 4 Action Cards */}
-              <div className="lg:col-span-2">
+            {/* Bottom Zone: 4 Cards pushed to hero bottom */}
+            <div className="mt-auto pt-4">
+              <div className="lg:w-[calc(200%/3)]">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <button
                     onClick={() => setCurrentPage('topics')}
@@ -123,11 +132,11 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   </button>
                 </div>
               </div>
+            </div>
 
-              {/* Right: Profile Card - with overlap */}
-              <div className="relative lg:-mb-28 z-20">
-                <ProfileCard />
-              </div>
+            {/* Mobile Profile Card */}
+            <div className="lg:hidden mt-4">
+              <ProfileCard />
             </div>
           </div>
         </div>
@@ -137,7 +146,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column: Modules + Results */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="lg:col-span-2 space-y-6 lg:pr-4">
                 {/* Other 4 Modules - 1 row */}
                 <div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -202,8 +211,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 </div>
               </div>
 
-              {/* Right Column: Online Classes */}
-              <div className="lg:pt-8">
+              {/* Right Column: Online Classes - clear space for profile overlap */}
+              <div className="lg:pt-32">
                 <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
               </div>
             </div>
