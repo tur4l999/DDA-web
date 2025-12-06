@@ -71,9 +71,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
           <div className="max-w-[1200px] mx-auto relative z-10 h-full flex flex-col justify-between">
             {/* Top Zone: Greeting + Profile */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
               {/* Greeting */}
-              <div className="lg:col-span-2">
+              <div>
                 <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
                   Salam, Tural Qarayev!
                 </h1>
@@ -82,8 +82,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 </p>
               </div>
 
-              {/* Profile Card - Absolute positioned for overlap */}
-              <div className="hidden lg:block absolute right-4 lg:right-8 top-8 w-full lg:w-[calc((100%-3rem)/3)] z-30" style={{ maxWidth: '400px' }}>
+              {/* Profile Card - Absolute positioned for overlap, locked to right column */}
+              <div className="hidden lg:block absolute right-0 top-8 w-[400px] z-30">
                 <div className="relative -mb-28">
                   <ProfileCard />
                 </div>
@@ -92,11 +92,11 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
             {/* Bottom Zone: 4 Cards pushed to hero bottom */}
             <div className="mt-auto pt-4">
-              <div className="lg:w-[calc(200%/3)]">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="lg:max-w-[calc(100%-424px)]">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
                   <button
                     onClick={() => setCurrentPage('topics')}
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                   >
                     <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                       <BookOpen className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
@@ -105,7 +105,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   </button>
 
                   <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                   >
                     <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                       <Video className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
@@ -114,7 +114,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   </button>
 
                   <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                   >
                     <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                       <HelpCircle className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
@@ -123,7 +123,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   </button>
 
                   <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5"
+                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
                   >
                     <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
                       <FileText className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
@@ -144,14 +144,14 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
         {/* Main Content - White Background */}
         <div className="px-4 lg:px-8 pt-6 pb-6">
           <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Left Column: Modules + Results */}
-              <div className="lg:col-span-2 space-y-6 lg:pr-4">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
+              {/* Left Column: Modules + Results - LOCKED BOUNDARY */}
+              <div className="space-y-6 max-w-full overflow-hidden">
                 {/* Other 4 Modules - 1 row */}
                 <div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
                     <button
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
                       <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                         <BookMarked className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
@@ -161,7 +161,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
                     <button
                       onClick={() => setCurrentPage('penalties')}
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
                       <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                         <AlertTriangle className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
@@ -170,7 +170,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     </button>
 
                     <button
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
                       <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                         <BarChart3 className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
@@ -180,7 +180,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
                     <button
                       onClick={() => setCurrentPage('classes')}
-                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5"
+                      className="group bg-white border border-gray-200 rounded-xl p-3 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left hover:-translate-y-0.5 max-w-full overflow-hidden"
                     >
                       <div className="w-9 h-9 rounded-lg bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-2">
                         <Calendar className="w-4 h-4 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
@@ -211,8 +211,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 </div>
               </div>
 
-              {/* Right Column: Online Classes - clear space for profile overlap */}
-              <div className="lg:pt-32">
+              {/* Right Column: Online Classes - LOCKED BOUNDARY, clear space for profile overlap */}
+              <div className="lg:pt-32 max-w-full overflow-hidden">
                 <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
               </div>
             </div>
