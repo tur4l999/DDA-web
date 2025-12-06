@@ -62,21 +62,6 @@ export default function RightPanel({
     return languages[lang] || lang.toUpperCase()
   }
 
-  const filteredBookmarks = bookmarkedLessons.filter(lesson => {
-    if (chipFilter === 'all') return true
-    if (chipFilter === 'thisWeek') {
-      const lessonDate = new Date(lesson.date)
-      const today = new Date()
-      const weekFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)
-      return lessonDate >= today && lessonDate <= weekFromNow
-    }
-    if (chipFilter === 'started') return lesson.status === 'started'
-    if (chipFilter === 'waiting') return lesson.status === 'waiting'
-    if (chipFilter === 'completed') return lesson.status === 'completed'
-    if (chipFilter === 'hasReplay') return lesson.hasReplay
-    return true
-  })
-
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 h-full flex flex-col overflow-hidden">
       {/* Tabs - Sticky */}
@@ -120,27 +105,10 @@ export default function RightPanel({
       <div className="flex-1 overflow-y-auto">
         {activeTab === 'bookmarks' && (
           <div className="p-4 space-y-4">
-            {/* Filter Chips */}
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-              {filterChips.map(chip => (
-                <button
-                  key={chip.id}
-                  onClick={() => setChipFilter(chip.id)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-lg whitespace-nowrap transition-all ${
-                    chipFilter === chip.id
-                      ? 'bg-[#007A3A] text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {chip.label}
-                </button>
-              ))}
-            </div>
-
             {/* Bookmarked Lessons */}
-            {filteredBookmarks.length > 0 ? (
+            {bookmarkedLessons.length > 0 ? (
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-3">
-                {filteredBookmarks.map(lesson => (
+                {bookmarkedLessons.map(lesson => (
                   <div
                     key={lesson.id}
                     className="bg-gray-50 border border-gray-200 rounded-xl p-3 hover:border-[#007A3A] transition-all"
@@ -210,9 +178,7 @@ export default function RightPanel({
             ) : (
               <div className="text-center py-12">
                 <Bookmark className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-sm text-gray-600 font-medium mb-1">
-                  {chipFilter === 'all' ? 'Saxlanılan dərs yoxdur' : 'Filtrə uyğun dərs yoxdur'}
-                </p>
+                <p className="text-sm text-gray-600 font-medium mb-1">Saxlanılan dərs yoxdur</p>
                 <p className="text-xs text-gray-500">
                   Dərs kartındakı işarə düyməsini basın
                 </p>

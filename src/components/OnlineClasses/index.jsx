@@ -143,6 +143,8 @@ export default function OnlineClasses({ onBack }) {
       result = result.filter(l => l.status === 'completed')
     } else if (quickFilter === 'replay') {
       result = result.filter(l => l.status === 'completed' && l.replayUrl)
+    } else if (quickFilter === 'bookmarked') {
+      result = result.filter(l => bookmarkedLessons.some(b => b.id === l.id))
     }
 
     // Advanced filters
@@ -178,7 +180,7 @@ export default function OnlineClasses({ onBack }) {
     }
 
     return result
-  }, [lessons, searchQuery, quickFilter, filters])
+  }, [lessons, searchQuery, quickFilter, filters, bookmarkedLessons])
 
   // Get next upcoming lesson
   const nextLesson = useMemo(() => {
@@ -317,11 +319,35 @@ export default function OnlineClasses({ onBack }) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
-          {/* Left Column: Main Content */}
-          <div className="max-w-full overflow-hidden">
+        {view === 'calendar' ? (
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
+            {/* Left Column: Calendar */}
+            <div className="max-w-full overflow-hidden">
+              <CalendarView
+                lessons={filteredLessons}
+                onSelectLesson={handleViewDetails}
+                onDateSelect={handleDateSelectFromCalendar}
+              />
+            </div>
+
+            {/* Right Panel - Smart Sidebar */}
+            <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
+              <RightPanel
+                activeTab={rightPanelTab}
+                onTabChange={setRightPanelTab}
+                bookmarkedLessons={bookmarkedLessons}
+                onRemoveBookmark={handleRemoveBookmark}
+                selectedDate={selectedDate}
+                lessonsForDate={lessonsForSelectedDate}
+                onJoinLesson={handleJoin}
+                onViewDetails={handleViewDetails}
+              />
+            </div>
+          </div>
+        ) : (
+          <div>
             {/* Next Up Card */}
-            {nextLesson && view === 'list' && (
+            {nextLesson && (
               <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] rounded-2xl p-6 mb-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -355,11 +381,10 @@ export default function OnlineClasses({ onBack }) {
               </button>
             </div>
           </div>
-        )}
+            )}
 
-        {/* Quick Filters */}
-        {view === 'list' && (
-          <div className="flex flex-wrap gap-2 mb-6">
+            {/* Quick Filters */}
+            <div className="flex flex-wrap gap-2 mb-6">
               <button
                 onClick={() => { setQuickFilter('all'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
@@ -420,15 +445,22 @@ export default function OnlineClasses({ onBack }) {
               >
                 Təkrar videosu olanlar
               </button>
+              <button
+                onClick={() => { setQuickFilter('bookmarked'); setCurrentPage(1) }}
+                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
+                  quickFilter === 'bookmarked'
+                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                Saxlanılanlar
+              </button>
             </div>
-          )}
 
-          {/* Content */}
-          {view === 'list' ? (
-            <>
-              {paginatedLessons.length > 0 ? (
-                <>
-                  <div className="grid grid-cols-1 gap-5 mb-8">
+            {/* Content */}
+            {paginatedLessons.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
                   {paginatedLessons.map(lesson => (
                     <LessonCard
                       key={lesson.id}
@@ -439,10 +471,10 @@ export default function OnlineClasses({ onBack }) {
                       onToggleBookmark={handleToggleBookmark}
                     />
                   ))}
-                  </div>
+                </div>
 
-                  {/* Pagination */}
-                  {totalPages > 1 && (
+                {/* Pagination */}
+                {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-2">
                     <button
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
@@ -495,42 +527,21 @@ export default function OnlineClasses({ onBack }) {
                       }`}
                     >
                       Sonrakı →
+                      Sonrakı →
                     </button>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
-                  <div className="text-6xl mb-4">🔍</div>
-                  <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
-                  <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
-                </div>
-              )}
-            </>
-          ) : (
-            <CalendarView
-              lessons={filteredLessons}
-              onSelectLesson={handleViewDetails}
-              onDateSelect={handleDateSelectFromCalendar}
-            />
-          )}
-        </div>
-
-        {/* Right Panel - Smart Sidebar */}
-        <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
-          <RightPanel
-            activeTab={rightPanelTab}
-            onTabChange={setRightPanelTab}
-            bookmarkedLessons={bookmarkedLessons}
-            onRemoveBookmark={handleRemoveBookmark}
-            selectedDate={selectedDate}
-            lessonsForDate={lessonsForSelectedDate}
-            onJoinLesson={handleJoin}
-            onViewDetails={handleViewDetails}
-          />
-        </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
+                <div className="text-6xl mb-4">🔍</div>
+                <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
+                <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
-    </div>
 
       {/* Modals */}
       <FilterDrawer
@@ -557,17 +568,19 @@ export default function OnlineClasses({ onBack }) {
         onClose={() => setIsVideoOpen(false)}
       />
 
-      {/* Mobile Right Panel */}
-      <MobileRightPanel
-        activeTab={rightPanelTab}
-        onTabChange={setRightPanelTab}
-        bookmarkedLessons={bookmarkedLessons}
-        onRemoveBookmark={handleRemoveBookmark}
-        selectedDate={selectedDate}
-        lessonsForDate={lessonsForSelectedDate}
-        onJoinLesson={handleJoin}
-        onViewDetails={handleViewDetails}
-      />
+      {/* Mobile Right Panel - Only for Calendar View */}
+      {view === 'calendar' && (
+        <MobileRightPanel
+          activeTab={rightPanelTab}
+          onTabChange={setRightPanelTab}
+          bookmarkedLessons={bookmarkedLessons}
+          onRemoveBookmark={handleRemoveBookmark}
+          selectedDate={selectedDate}
+          lessonsForDate={lessonsForSelectedDate}
+          onJoinLesson={handleJoin}
+          onViewDetails={handleViewDetails}
+        />
+      )}
 
       {/* Toast Notification */}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
