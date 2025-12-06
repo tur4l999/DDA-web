@@ -1,8 +1,9 @@
-import { Home, BookOpen, FileText, BarChart3, Car, HelpCircle, FileCheck, CreditCard, ShoppingBag, Monitor, X } from 'lucide-react'
+import { Home, BookOpen, FileText, BarChart3, Car, HelpCircle, FileCheck, CreditCard, ShoppingBag, Monitor, Calendar, X } from 'lucide-react'
 
 const menuItems = [
   { icon: Home, label: 'Əsas səhifə', page: 'dashboard' },
   { icon: BookOpen, label: 'Təlim mövzuları', page: 'topics' },
+  { icon: Calendar, label: 'Onlayn dərslər', page: 'classes' },
   { icon: FileText, label: 'İmtahan', page: null },
   { icon: BarChart3, label: 'Nəticələrim', page: null },
   { icon: Car, label: 'Praktiki Təcrübə', page: null },
