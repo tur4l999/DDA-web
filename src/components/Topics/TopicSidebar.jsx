@@ -1,7 +1,7 @@
 import { Search, ChevronDown, Check, Circle } from 'lucide-react'
 import { useState } from 'react'
 
-export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, onTopicSelect }) {
+export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, onTopicSelect, isCollapsed }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [filter, setFilter] = useState('all')
 
@@ -28,9 +28,9 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
       )}
 
       {/* Sidebar */}
-      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-80 bg-white border-r border-gray-200 transform transition-transform duration-300 ${
+      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-80 bg-white border-r border-gray-200 transform transition-all duration-200 ${
         isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      }`}>
+      } ${isCollapsed ? 'lg:hidden' : ''}`}>
         <div className="h-full flex flex-col">
           {/* Search */}
           <div className="p-4 border-b border-gray-100">

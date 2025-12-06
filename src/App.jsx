@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard'
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [currentPage, setCurrentPage] = useState('dashboard')
 
   return (
@@ -11,6 +12,8 @@ function App() {
       <Sidebar 
         isOpen={isSidebarOpen} 
         setIsOpen={setIsSidebarOpen}
+        isCollapsed={isSidebarCollapsed}
+        setIsCollapsed={setIsSidebarCollapsed}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />

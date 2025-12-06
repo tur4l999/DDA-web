@@ -1,16 +1,16 @@
-import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle } from 'lucide-react'
+import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle, Lock } from 'lucide-react'
 
 const tabs = [
-  { id: 'materials', label: 'Maddələr', icon: BookMarked },
-  { id: 'text', label: 'Dərs materialı', icon: FileText },
-  { id: '3dvideo', label: '3D video', icon: Video },
-  { id: 'video', label: 'Video dərs', icon: BookOpen },
-  { id: 'questions', label: 'Suallar', icon: HelpCircle },
-  { id: 'contact', label: 'Müəllimlə əlaqə', icon: MessageCircle },
-  { id: 'penalties', label: 'Cərimələr', icon: AlertTriangle }
+  { id: 'materials', label: 'Maddələr', icon: BookMarked, requiresPackage: false },
+  { id: 'text', label: 'Dərs materialı', icon: FileText, requiresPackage: false },
+  { id: '3dvideo', label: '3D video', icon: Video, requiresPackage: true },
+  { id: 'video', label: 'Video dərs', icon: BookOpen, requiresPackage: true },
+  { id: 'questions', label: 'Suallar', icon: HelpCircle, requiresPackage: false },
+  { id: 'contact', label: 'Müəllimlə əlaqə', icon: MessageCircle, requiresPackage: false },
+  { id: 'penalties', label: 'Cərimələr', icon: AlertTriangle, requiresPackage: false }
 ]
 
-export default function TabNavigation({ activeTab, onTabChange, onExamClick, onContactClick }) {
+export default function TabNavigation({ activeTab, onTabChange, onExamClick, onContactClick, userPackage = 'basic', onPaywallOpen }) {
   return (
     <div className="sticky top-[73px] sm:top-[89px] z-20 bg-white border-b border-gray-200 shadow-sm">
       <div className="px-4 lg:px-6 py-2">
@@ -20,20 +20,42 @@ export default function TabNavigation({ activeTab, onTabChange, onExamClick, onC
             {tabs.map(tab => {
               const Icon = tab.icon
               const isContactTab = tab.id === 'contact'
+              const isLocked = tab.requiresPackage && userPackage === 'basic'
+              const hasAccess = !isLocked || ['premium', 'standard'].includes(userPackage)
               
               return (
-                <button
-                  key={tab.id}
-                  onClick={() => isContactTab ? onContactClick?.() : onTabChange(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all rounded-lg ${
-                    activeTab === tab.id
-                      ? 'bg-[#007A3A]/10 text-[#007A3A]'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" strokeWidth={1.5} />
-                  <span>{tab.label}</span>
-                </button>
+                <div key={tab.id} className="relative group">
+                  <button
+                    onClick={() => {
+                      if (isContactTab) {
+                        onContactClick?.()
+                      } else if (isLocked) {
+                        onPaywallOpen?.()
+                      } else {
+                        onTabChange(tab.id)
+                      }
+                    }}
+                    className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all rounded-lg ${
+                      activeTab === tab.id && hasAccess
+                        ? 'bg-[#007A3A]/10 text-[#007A3A]'
+                        : isLocked
+                          ? 'text-gray-400 hover:bg-gray-50 cursor-not-allowed'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" strokeWidth={1.5} />
+                    <span>{tab.label}</span>
+                    {isLocked && <Lock className="w-3 h-3" />}
+                  </button>
+                  
+                  {/* Tooltip */}
+                  {isLocked && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      Paket tələb olunur
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                    </div>
+                  )}
+                </div>
               )
             })}
           </div>
