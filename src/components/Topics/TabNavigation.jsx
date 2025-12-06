@@ -3,7 +3,7 @@ import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, Alert
 const tabs = [
   { id: 'materials', label: 'Maddələr', icon: BookMarked, requiresPackage: false },
   { id: 'text', label: 'Dərs materialı', icon: FileText, requiresPackage: false },
-  { id: '3dvideo', label: '3D video', icon: Video, requiresPackage: true },
+  { id: '3dvideo', label: '3D video', icon: Video, requiresPackage: false },
   { id: 'video', label: 'Video dərs', icon: BookOpen, requiresPackage: true },
   { id: 'questions', label: 'Suallar', icon: HelpCircle, requiresPackage: false },
   { id: 'contact', label: 'Müəllimlə əlaqə', icon: MessageCircle, requiresPackage: false },
