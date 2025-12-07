@@ -12,8 +12,8 @@ const tabs = [
 
 export default function TabNavigation({ activeTab, onTabChange, onExamClick, onContactClick, userPackage = 'basic', onPaywallOpen }) {
   return (
-    <div className="sticky top-[73px] sm:top-[89px] z-20 bg-white border-b border-gray-200 shadow-sm">
-      <div className="px-4 lg:px-6 py-2">
+    <div className="sticky top-[57px] z-20 bg-white border-b border-gray-200 shadow-sm">
+      <div className="px-4 lg:px-6 py-1.5">
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
           {/* Regular tabs */}
           <div className="flex gap-1 flex-1">

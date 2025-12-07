@@ -3,7 +3,7 @@ import { Menu } from 'lucide-react'
 export default function StickyHeader({ topic, onMenuToggle }) {
   return (
     <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
-      <div className="px-4 lg:px-6 py-4">
+      <div className="px-4 lg:px-6 py-2.5">
         <div className="flex items-center gap-4">
           {/* Mobile menu button */}
           <button
