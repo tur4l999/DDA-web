@@ -89,61 +89,83 @@ export default function TopicsPage({ onBack }) {
   }
 
   const topics = [
-    { id: 1, code: 'M1', title: 'Ümumi müddəalar', category: 'Əsaslar', completed: false, progress: 45 },
-    { id: 2, code: 'M2', title: 'Yol nişanları', category: 'Nişanlar', completed: true, progress: 100 },
+    { id: 1, code: 'M1', title: 'Ümumi müddəalar', completed: false, progress: 45 },
+    { 
+      id: 2, 
+      code: 'M2', 
+      title: 'Yol hərəkəti iştirakçılarının vəzifələri, NV-nin idarəetmə hüququ, sürücülük vəsiqəsi', 
+      completed: false, 
+      progress: 60,
+      subTopics: [
+        { id: '2.1', code: 'M2.1', title: 'NV-nin idarəetmə hüququ. Sürücülük vəsiqəsi.', completed: true, progress: 100 },
+        { id: '2.2', code: 'M2.2', title: 'Yol hərəkəti iştirakçılarının vəzifələri.', completed: false, progress: 40 }
+      ]
+    },
     { 
       id: 3, 
       code: 'M3', 
-      title: 'Yol xətləri', 
-      category: 'Nişanlar', 
+      title: 'Yol nişanları', 
+      completed: false, 
+      progress: 55,
+      subTopics: [
+        { id: '3.1', code: 'M3.1', title: 'Yol nişanlarının tətbiqi. Xəbərdarlıq nişanları.', completed: true, progress: 100 },
+        { id: '3.2', code: 'M3.2', title: 'Üstünlük nişanları.', completed: true, progress: 100 },
+        { id: '3.3', code: 'M3.3', title: 'Qadağan nişanları.', completed: false, progress: 70 },
+        { id: '3.4', code: 'M3.4', title: 'Məcburi hərəkət istiqaməti nişanları.', completed: false, progress: 50 },
+        { id: '3.5', code: 'M3.5', title: 'Məlumatverici-göstərici nişanlar.', completed: false, progress: 40 },
+        { id: '3.6', code: 'M3.6', title: 'Servis nişanları.', completed: false, progress: 80 },
+        { id: '3.7', code: 'M3.7', title: 'Əlavə məlumat nişanları (lövhəcikləri).', completed: false, progress: 30 },
+        { id: '3.8', code: 'M3.8', title: 'Nəqliyyat vasitələrinin tanınma nişanları.', completed: false, progress: 60 }
+      ]
+    },
+    { id: 4, code: 'M4', title: 'Yolun nişanlanma xətləri', completed: false, progress: 35 },
+    { id: 5, code: 'M5', title: 'Nizamlayıcının və svetoforların siqnalları', completed: false, progress: 50 },
+    { id: 6, code: 'M6', title: 'Xüsusi siqnalların tətbiqi', completed: false, progress: 65 },
+    { id: 7, code: 'M7', title: 'Qəza dayanma siqnalının və qəza dayanma nişanının tətbiqi', completed: false, progress: 30 },
+    { id: 8, code: 'M8', title: 'Hərəkətə başlama və manevretmə', completed: false, progress: 55 },
+    { id: 9, code: 'M9', title: 'NV-nin yolun hərəkət hissəsində yerləşdiyilməsi', completed: false, progress: 40 },
+    { id: 10, code: 'M10', title: 'Hərəkət sürəti', completed: false, progress: 45 },
+    { id: 11, code: 'M11', title: 'Ötmə və qarşılıqlı keçmə', completed: false, progress: 50 },
+    { 
+      id: 12, 
+      code: 'M12', 
+      title: 'Dayanma, durma və parklanma', 
+      completed: false, 
+      progress: 60,
+      subTopics: [
+        { id: '12.1', code: 'M12.1', title: 'Dayanma və durma', completed: true, progress: 100 },
+        { id: '12.2', code: 'M12.2', title: 'Parklanma', completed: false, progress: 40 }
+      ]
+    },
+    { id: 13, code: 'M13', title: 'Yolayrıcıların keçilməsi', completed: false, progress: 70 },
+    { id: 14, code: 'M14', title: 'Piyada keçidləri və ümumi istifadədə olan NV-nin dayanması', completed: false, progress: 80 },
+    { id: 15, code: 'M15', title: 'Avtomagistrallarda hərəkət', completed: false, progress: 25 },
+    { id: 16, code: 'M16', title: 'Dəmiryol keçidlərində hərəkət', completed: false, progress: 60 },
+    { id: 17, code: 'M17', title: 'NV-nin üstün hərəkət rejimi ilə hərəkəti və bununla əlaqədar digər sürücülərin vəzifələri', completed: false, progress: 45 },
+    { id: 18, code: 'M18', title: 'Yaşayış zonalarında hərəkət. Sürmə təlimi', completed: false, progress: 55 },
+    { id: 19, code: 'M19', title: 'NV-də səs siqnalları və xarici işıq cihazlarının istifadə edilməsi', completed: false, progress: 80 },
+    { id: 20, code: 'M20', title: 'Nasaz NV və onların yedəyə alınması', completed: false, progress: 70 },
+    { id: 21, code: 'M21', title: 'Adamların və yüklərin daşınması', completed: false, progress: 55 },
+    { id: 22, code: 'M22', title: 'NV-nin nasazlıqları və istismarı qadağan edən səbəblər', completed: false, progress: 65 },
+    { id: 23, code: 'M23', title: 'Yol hərəkəti təhlükəsizliyinin əsasları', completed: false, progress: 85 },
+    { id: 24, code: 'M24', title: 'İlk tibbi yardımın göstərilməsi', completed: false, progress: 90 },
+    { id: 25, code: 'M25', title: 'Velosiped, kiçik elektik nəqliyyat vasitələri, moped və at arabalarının sürülməsinə dair tələblər', completed: false, progress: 40 },
+    { id: 26, code: 'M26', title: 'Sürücülərin cavabdehliyi', completed: false, progress: 50 },
+    { 
+      id: 27, 
+      code: 'M27', 
+      title: 'Avtomobilin quruluşu', 
       completed: false, 
       progress: 35,
       subTopics: [
-        { id: '3.1', code: 'M3.1', title: 'Kəsilməz xətlər', completed: true, progress: 100 },
-        { id: '3.2', code: 'M3.2', title: 'Kəsilən xətlər', completed: true, progress: 100 },
-        { id: '3.3', code: 'M3.3', title: 'Sarı rəngli xətlər', completed: false, progress: 60 },
-        { id: '3.4', code: 'M3.4', title: 'Mavi rəngli xətlər', completed: false, progress: 0 },
-        { id: '3.5', code: 'M3.5', title: 'Ox işarələri', completed: false, progress: 40 },
-        { id: '3.6', code: 'M3.6', title: 'Piyada keçidi xətləri', completed: false, progress: 80 },
-        { id: '3.7', code: 'M3.7', title: 'Dayanma xətləri', completed: false, progress: 20 },
-        { id: '3.8', code: 'M3.8', title: 'Saxlama zonası xətləri', completed: false, progress: 0 }
+        { id: '27.1', code: 'M27.1', title: 'Avtomobilin ümumi quruluşu', completed: false, progress: 60 },
+        { id: '27.2', code: 'M27.2', title: 'Benzin DYM', completed: false, progress: 40 },
+        { id: '27.3', code: 'M27.3', title: 'Dizel DYM', completed: false, progress: 30 },
+        { id: '27.4', code: 'M27.4', title: 'Çarxqolu-sürgüqolu mexanizmi', completed: false, progress: 20 },
+        { id: '27.5', code: 'M27.5', title: 'Qaz paylama mexanizmi', completed: false, progress: 50 },
+        { id: '27.6', code: 'M27.6', title: 'Mühərrikin yağlama sistemi', completed: false, progress: 70 }
       ]
-    },
-    { id: 4, code: 'M4', title: 'Sürücünün vəzifələri', category: 'Qanunlar', completed: false, progress: 20 },
-    { 
-      id: 5, 
-      code: 'M5', 
-      title: 'Siqnallar', 
-      category: 'Əməliyyatlar', 
-      completed: false, 
-      progress: 50,
-      subTopics: [
-        { id: '5.1', code: 'M5.1', title: 'İşıqlı siqnallar', completed: true, progress: 100 },
-        { id: '5.2', code: 'M5.2', title: 'Səs siqnalları', completed: false, progress: 0 }
-      ]
-    },
-    { id: 6, code: 'M6', title: 'Trafik işıqları', category: 'Nişanlar', completed: false, progress: 65 },
-    { id: 7, code: 'M7', title: 'Hərəkət sürəti', category: 'Qanunlar', completed: false, progress: 30 },
-    { id: 8, code: 'M8', title: 'Manevr qaydaları', category: 'Əməliyyatlar', completed: false, progress: 55 },
-    { id: 9, code: 'M9', title: 'Yerdəyişmə və dönmə', category: 'Əməliyyatlar', completed: false, progress: 40 },
-    { id: 10, code: 'M10', title: 'Qabaqdan keçmə', category: 'Əməliyyatlar', completed: false, progress: 0 },
-    { id: 11, code: 'M11', title: 'Dayanma və saxlama', category: 'Əməliyyatlar', completed: false, progress: 75 },
-    { id: 12, code: 'M12', title: 'Piyada keçidləri', category: 'Təhlükəsizlik', completed: false, progress: 90 },
-    { id: 13, code: 'M13', title: 'Uşaq daşıma qaydaları', category: 'Təhlükəsizlik', completed: false, progress: 100 },
-    { id: 14, code: 'M14', title: 'Təhlükəli yük daşıma', category: 'Təhlükəsizlik', completed: false, progress: 0 },
-    { id: 15, code: 'M15', title: 'Yol-nəqliyyat hadisələri', category: 'Təhlükəsizlik', completed: false, progress: 25 },
-    { id: 16, code: 'M16', title: 'İlk tibbi yardım', category: 'Təhlükəsizlik', completed: false, progress: 60 },
-    { id: 17, code: 'M17', title: 'Avtomobilin texniki vəziyyəti', category: 'Texniki', completed: false, progress: 45 },
-    { id: 18, code: 'M18', title: 'Mühərrikin quruluşu', category: 'Texniki', completed: false, progress: 0 },
-    { id: 19, code: 'M19', title: 'Əyləc sistemi', category: 'Texniki', completed: false, progress: 80 },
-    { id: 20, code: 'M20', title: 'Sükan idarəetmə', category: 'Texniki', completed: false, progress: 70 },
-    { id: 21, code: 'M21', title: 'Işıqlandırma sistemi', category: 'Texniki', completed: false, progress: 55 },
-    { id: 22, code: 'M22', title: 'Avtomobil sənədləri', category: 'Hüquqi', completed: false, progress: 100 },
-    { id: 23, code: 'M23', title: 'Sığorta', category: 'Hüquqi', completed: false, progress: 85 },
-    { id: 24, code: 'M24', title: 'İnzibati məsuliyyət', category: 'Hüquqi', completed: false, progress: 40 },
-    { id: 25, code: 'M25', title: 'Yol nəqliyyat cinayətləri', category: 'Hüquqi', completed: false, progress: 0 },
-    { id: 26, code: 'M26', title: 'Ətraf mühit', category: 'Ekoloji', completed: false, progress: 50 },
-    { id: 27, code: 'M27', title: 'Yanacaq qənaəti', category: 'Ekoloji', completed: false, progress: 35 }
+    }
   ]
 
   const progress = {

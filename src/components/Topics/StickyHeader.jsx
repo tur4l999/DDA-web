@@ -27,7 +27,6 @@ export default function StickyHeader({ topic, onBack, onMenuToggle, progress }) 
             <h1 className="text-base lg:text-lg font-semibold text-gray-900">
               {topic.code} · {topic.title}
             </h1>
-            <p className="text-xs text-gray-500 mt-0.5">{topic.category}</p>
           </div>
 
           {/* Right - Progress */}
