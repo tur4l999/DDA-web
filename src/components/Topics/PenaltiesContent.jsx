@@ -254,19 +254,12 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                 <div className="flex items-start gap-4">
                   {/* Left side: Info */}
                   <div className="flex-1 min-w-0">
-                    {/* Related Article + İXM Badge */}
-                    <div className="flex items-center justify-between gap-3 mb-1.5">
-                      {penalty.relatedArticles && penalty.relatedArticles.length > 0 && (
-                        <span className="text-xs font-semibold text-gray-500">
-                          {penalty.relatedArticles.join(', ')}
-                        </span>
-                      )}
-                      
-                      {/* İXM Badge - stable position */}
-                      <span className="text-sm font-bold text-white bg-gradient-to-r from-gray-700 to-gray-800 px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap flex-shrink-0">
-                        İXM {penalty.article}
+                    {/* Related Article */}
+                    {penalty.relatedArticles && penalty.relatedArticles.length > 0 && (
+                      <span className="text-xs font-semibold text-gray-500 mb-1.5 inline-block">
+                        {penalty.relatedArticles.join(', ')}
                       </span>
-                    </div>
+                    )}
 
                     {/* Title */}
                     <h3 className="text-sm font-bold text-gray-900 leading-tight mb-2">{penalty.title}</h3>
@@ -316,34 +309,42 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                     )}
                   </div>
 
-                  {/* Right side: Video (if exists) */}
-                  {penalty.hasVideo && (
-                    <button
-                      onClick={() => onVideoClick?.(penalty)}
-                      className="group w-36 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-[#007A3A] transition-all"
-                    >
-                      <div className="relative aspect-video bg-gray-200">
-                        <img 
-                          src={penalty.videoThumbnail} 
-                          alt={penalty.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                          loading="lazy"
-                        />
-                        
-                        {/* Play overlay */}
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                          <div className="w-8 h-8 bg-white/95 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-md">
-                            <Play className="w-4 h-4 text-[#007A3A] ml-0.5" fill="currentColor" />
+                  {/* Right side: İXM Badge + Video - Fixed width container */}
+                  <div className="flex flex-col gap-2 items-end" style={{ width: '176px' }}>
+                    {/* İXM Badge - stable position */}
+                    <span className="text-sm font-bold text-white bg-gradient-to-r from-gray-700 to-gray-800 px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap">
+                      İXM {penalty.article}
+                    </span>
+
+                    {/* Video (if exists) */}
+                    {penalty.hasVideo && (
+                      <button
+                        onClick={() => onVideoClick?.(penalty)}
+                        className="group w-full bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-[#007A3A] transition-all"
+                      >
+                        <div className="relative aspect-video bg-gray-200">
+                          <img 
+                            src={penalty.videoThumbnail} 
+                            alt={penalty.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                            loading="lazy"
+                          />
+                          
+                          {/* Play overlay */}
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                            <div className="w-8 h-8 bg-white/95 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-md">
+                              <Play className="w-4 h-4 text-[#007A3A] ml-0.5" fill="currentColor" />
+                            </div>
+                          </div>
+
+                          {/* Duration badge */}
+                          <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                            {penalty.videoDuration}
                           </div>
                         </div>
-
-                        {/* Duration badge */}
-                        <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                          {penalty.videoDuration}
-                        </div>
-                      </div>
-                    </button>
-                  )}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
