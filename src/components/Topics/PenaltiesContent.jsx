@@ -256,7 +256,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                   <div className="flex-1 min-w-0">
                     {/* Related Article */}
                     {penalty.relatedArticles && penalty.relatedArticles.length > 0 && (
-                      <span className="text-xs font-semibold text-gray-500 mb-1.5 inline-block">
+                      <span className="text-sm font-bold text-gray-600 mb-1.5 inline-block">
                         {penalty.relatedArticles.join(', ')}
                       </span>
                     )}
