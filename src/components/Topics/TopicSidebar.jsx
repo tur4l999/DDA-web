@@ -1,4 +1,4 @@
-import { Search, ChevronDown, ChevronRight, Check, Circle } from 'lucide-react'
+import { Search, Plus, Minus, Check, Circle } from 'lucide-react'
 import { useState } from 'react'
 
 export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, onTopicSelect, isCollapsed }) {
@@ -90,12 +90,13 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                           e.stopPropagation()
                           toggleExpand(topic.id)
                         }}
-                        className="w-8 h-11 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors flex-shrink-0"
+                        className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-[#007A3A] hover:bg-[#007A3A]/10 rounded-md transition-colors flex-shrink-0"
+                        title={isExpanded ? 'Bağla' : 'Aç'}
                       >
                         {isExpanded ? (
-                          <ChevronDown className="w-4 h-4" />
+                          <Minus className="w-3.5 h-3.5" strokeWidth={2.5} />
                         ) : (
-                          <ChevronRight className="w-4 h-4" />
+                          <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
                         )}
                       </button>
                     )}

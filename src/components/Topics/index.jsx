@@ -213,22 +213,23 @@ export default function TopicsPage({ onBack }) {
         />
       </div>
 
-      {/* Collapse toggle button */}
-      <button
-        onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-        className="absolute left-80 top-1/2 -translate-y-1/2 z-50 w-8 h-16 bg-white border border-gray-200 rounded-r-lg shadow-md hover:shadow-lg hover:bg-primary-50 hover:border-primary-300 transition-all flex items-center justify-center group"
-        style={{ left: isPanelCollapsed ? '0' : '320px' }}
-        title={isPanelCollapsed ? 'Paneli genişləndir' : 'Paneli yığışdır'}
-      >
-        <svg 
-          className={`w-4 h-4 text-gray-600 group-hover:text-primary-700 transition-transform ${isPanelCollapsed ? 'rotate-180' : ''}`}
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
+          {/* Collapse toggle button - Modern, compact design */}
+          <button
+            onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
+            className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-200 rounded-r-md shadow-sm hover:shadow-md hover:bg-[#007A3A]/5 hover:border-[#007A3A] transition-all flex items-center justify-center group"
+            style={{ left: isPanelCollapsed ? '0' : '320px' }}
+            title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
+          >
+            <svg
+              className={`w-3 h-3 text-gray-500 group-hover:text-[#007A3A] transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">

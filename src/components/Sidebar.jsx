@@ -45,24 +45,16 @@ export default function Sidebar({ isOpen, setIsOpen, isCollapsed, setIsCollapsed
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setIsCollapsed(!isCollapsed)}
-                className="hidden lg:flex w-8 h-8 items-center justify-center rounded-lg hover:bg-primary-50 hover:text-primary-700 text-gray-600 transition-all hover:shadow-sm"
-                title={isCollapsed ? 'Genişləndir' : 'Yığışdır'}
-              >
-                {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="lg:hidden text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+            {/* Mobile close button only */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="lg:hidden text-gray-500 hover:text-gray-700"
+            >
+              <X className="w-6 h-6" />
+            </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto py-4">
+          <nav className="flex-1 overflow-y-auto py-4 pb-16">
             {menuItems.map((item, index) => (
               <div key={index} className="relative">
                 <button
@@ -91,6 +83,26 @@ export default function Sidebar({ isOpen, setIsOpen, isCollapsed, setIsCollapsed
               </div>
             ))}
           </nav>
+
+          {/* Collapse button at bottom - Desktop only */}
+          <div className="hidden lg:block border-t border-gray-200">
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className={`w-full flex items-center justify-center p-4 hover:bg-[#007A3A]/5 text-gray-600 hover:text-[#007A3A] transition-all ${
+                isCollapsed ? 'px-4' : 'px-6'
+              }`}
+              title={isCollapsed ? 'Menyunu genişləndir' : 'Menyunu yığışdır'}
+            >
+              {isCollapsed ? (
+                <ChevronRight className="w-5 h-5" strokeWidth={2} />
+              ) : (
+                <div className="flex items-center gap-3 w-full">
+                  <ChevronLeft className="w-5 h-5" strokeWidth={2} />
+                  <span className="text-sm font-semibold">Menyunu gizlət</span>
+                </div>
+              )}
+            </button>
+          </div>
         </div>
       </aside>
     </>
