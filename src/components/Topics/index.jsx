@@ -234,9 +234,7 @@ export default function TopicsPage({ onBack }) {
       <div className="flex-1 flex flex-col min-w-0">
         <StickyHeader
           topic={currentTopic}
-          onBack={onBack}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
-          progress={progress}
         />
 
         <TabNavigation

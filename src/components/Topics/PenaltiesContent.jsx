@@ -182,17 +182,6 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
 
   return (
     <div className="max-w-[1200px] mx-auto">
-      {/* Context info */}
-      {topicRelated && (
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-start gap-3">
-          <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-semibold text-blue-900 mb-1">Bu mövzu üzrə əlaqəli cərimələr</p>
-            <p className="text-xs text-blue-700">Yalnız bu mövzu ilə əlaqəli inzibati xətalar göstərilir</p>
-          </div>
-        </div>
-      )}
-
       {/* Search */}
       <div className="mb-6">
         <div className="relative">
@@ -263,67 +252,57 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
             >
               <div className="p-4">
                 <div className="flex items-start gap-4">
-                  {/* Left side: Icon + Info */}
+                  {/* Icon */}
+                  <div className={`w-10 h-10 bg-gradient-to-br ${getFineColor(penalty.fineAmount)} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                    <AlertCircle className="w-5 h-5 text-white" strokeWidth={2} />
+                  </div>
+
+                  {/* Left side: Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start gap-3 mb-2">
-                      {/* Icon */}
-                      <div className={`w-10 h-10 bg-gradient-to-br ${getFineColor(penalty.fineAmount)} rounded-lg flex items-center justify-center flex-shrink-0`}>
-                        <AlertCircle className="w-5 h-5 text-white" strokeWidth={2} />
+                    {/* Related Article above title */}
+                    {penalty.relatedArticles && penalty.relatedArticles.length > 0 && (
+                      <span className="text-xs font-semibold text-gray-500 mb-1.5 inline-block">
+                        {penalty.relatedArticles.join(', ')}
+                      </span>
+                    )}
+
+                    {/* Title */}
+                    <h3 className="text-sm font-bold text-gray-900 leading-tight mb-2">{penalty.title}</h3>
+
+                    {/* Fine & Points - smaller and refined */}
+                    <div className="flex items-center gap-2 flex-wrap mb-2">
+                      <div className={`bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-2.5 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm`}>
+                        {penalty.fine}
                       </div>
-
-                      {/* Title & Article */}
-                      <div className="flex-1 min-w-0">
-                        {/* Article number above title */}
-                        <div className="flex items-center justify-between gap-3 mb-1.5">
-                          <span className="text-xs font-semibold text-gray-500">
-                            Maddə {penalty.article}
+                      {penalty.points && (
+                        <>
+                          <span className="text-gray-300 font-bold text-sm">+</span>
+                          <span className="text-xs font-bold text-red-700 bg-red-50 px-2.5 py-1 rounded-md border border-red-200">
+                            {penalty.points}
                           </span>
-                          
-                          {/* İXM Badge - larger */}
-                          <span className="text-sm font-bold text-white bg-gradient-to-r from-gray-700 to-gray-800 px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap flex-shrink-0">
-                            İXM {penalty.article}
-                          </span>
-                        </div>
-
-                        {/* Title */}
-                        <h3 className="text-sm font-bold text-gray-900 leading-tight mb-2">{penalty.title}</h3>
-
-                        {/* Fine & Points - smaller and refined */}
-                        <div className="flex items-center gap-2 flex-wrap mb-2">
-                          <div className={`bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-2.5 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm`}>
-                            {penalty.fine}
-                          </div>
-                          {penalty.points && (
-                            <>
-                              <span className="text-gray-300 font-bold text-sm">+</span>
-                              <span className="text-xs font-bold text-red-700 bg-red-50 px-2.5 py-1 rounded-md border border-red-200">
-                                {penalty.points}
-                              </span>
-                            </>
-                          )}
-                        </div>
-
-                        {/* Expand/Collapse button for full description */}
-                        {penalty.fullDescription && (
-                          <button
-                            onClick={() => setExpandedPenalty(isExpanded ? null : penalty.id)}
-                            className="flex items-center gap-1.5 text-xs font-semibold text-[#007A3A] hover:text-[#005A2A] transition-colors mt-2"
-                          >
-                            {isExpanded ? (
-                              <>
-                                <ChevronUp className="w-3.5 h-3.5" />
-                                Açıqlamanı gizlət
-                              </>
-                            ) : (
-                              <>
-                                <ChevronDown className="w-3.5 h-3.5" />
-                                Ətraflı açıqlama
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </div>
+                        </>
+                      )}
                     </div>
+
+                    {/* Expand/Collapse button for full description */}
+                    {penalty.fullDescription && (
+                      <button
+                        onClick={() => setExpandedPenalty(isExpanded ? null : penalty.id)}
+                        className="flex items-center gap-1.5 text-xs font-semibold text-[#007A3A] hover:text-[#005A2A] transition-colors mt-2"
+                      >
+                        {isExpanded ? (
+                          <>
+                            <ChevronUp className="w-3.5 h-3.5" />
+                            Açıqlamanı gizlət
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="w-3.5 h-3.5" />
+                            Ətraflı açıqlama
+                          </>
+                        )}
+                      </button>
+                    )}
 
                     {/* Expanded description */}
                     {isExpanded && penalty.fullDescription && (
@@ -335,34 +314,42 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                     )}
                   </div>
 
-                  {/* Right side: Small video thumbnail (YouTube style) */}
-                  {penalty.hasVideo && (
-                    <button
-                      onClick={() => onVideoClick?.(penalty)}
-                      className="group w-36 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-[#007A3A] transition-all"
-                    >
-                      <div className="relative aspect-video bg-gray-200">
-                        <img 
-                          src={penalty.videoThumbnail} 
-                          alt={penalty.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                          loading="lazy"
-                        />
-                        
-                        {/* Play overlay */}
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                          <div className="w-8 h-8 bg-white/95 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-md">
-                            <Play className="w-4 h-4 text-[#007A3A] ml-0.5" fill="currentColor" />
+                  {/* Right side: İXM Badge + Video (always aligned) */}
+                  <div className="flex flex-col gap-2 items-end flex-shrink-0">
+                    {/* İXM Badge - larger */}
+                    <span className="text-sm font-bold text-white bg-gradient-to-r from-gray-700 to-gray-800 px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap">
+                      İXM {penalty.article}
+                    </span>
+
+                    {/* Video thumbnail (if exists) */}
+                    {penalty.hasVideo && (
+                      <button
+                        onClick={() => onVideoClick?.(penalty)}
+                        className="group w-36 bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-[#007A3A] transition-all"
+                      >
+                        <div className="relative aspect-video bg-gray-200">
+                          <img 
+                            src={penalty.videoThumbnail} 
+                            alt={penalty.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                            loading="lazy"
+                          />
+                          
+                          {/* Play overlay */}
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                            <div className="w-8 h-8 bg-white/95 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-md">
+                              <Play className="w-4 h-4 text-[#007A3A] ml-0.5" fill="currentColor" />
+                            </div>
+                          </div>
+
+                          {/* Duration badge */}
+                          <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                            {penalty.videoDuration}
                           </div>
                         </div>
-
-                        {/* Duration badge */}
-                        <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                          {penalty.videoDuration}
-                        </div>
-                      </div>
-                    </button>
-                  )}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
