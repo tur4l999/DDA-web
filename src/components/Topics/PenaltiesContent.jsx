@@ -163,103 +163,75 @@ export default function PenaltiesContent({ topicRelated = false, onVideoClick })
         </button>
       </div>
 
-      {/* Penalties list - PROMINENT CARDS */}
-      <div className="space-y-5 mb-10">
+      {/* Penalties list - Compact cards with embedded small videos */}
+      <div className="space-y-4">
         {filteredPenalties.map(penalty => (
           <div
             key={penalty.id}
-            className={`bg-white border-2 rounded-2xl overflow-hidden hover:shadow-2xl transition-all ${getSeverityBg(penalty.severity)}`}
+            className="bg-white border border-gray-200 rounded-xl hover:shadow-lg hover:border-[#007A3A] transition-all"
           >
-            <div className="p-6">
-              <div className="flex items-start gap-5">
-                {/* Icon */}
-                <div className={`w-14 h-14 bg-gradient-to-br ${getSeverityColor(penalty.severity)} rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg`}>
-                  <AlertCircle className="w-7 h-7 text-white" strokeWidth={2} />
-                </div>
-
-                {/* Content */}
+            <div className="p-4">
+              <div className="flex items-start gap-4">
+                {/* Left side: Icon + Info */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <h3 className="text-xl font-bold text-gray-900 leading-tight">{penalty.title}</h3>
-                    
-                    {/* Fine amount - PROMINENT */}
-                    <div className={`bg-gradient-to-br ${getSeverityColor(penalty.severity)} text-white px-5 py-3 rounded-xl shadow-lg flex-shrink-0`}>
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-2xl font-black">{penalty.fineMin}</span>
-                        <span className="text-sm font-semibold">-</span>
-                        <span className="text-2xl font-black">{penalty.fineMax}</span>
-                        <span className="text-sm font-bold ml-1">AZN</span>
+                  <div className="flex items-start gap-3 mb-3">
+                    {/* Icon */}
+                    <div className={`w-10 h-10 bg-gradient-to-br ${getSeverityColor(penalty.severity)} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                      <AlertCircle className="w-5 h-5 text-white" strokeWidth={2} />
+                    </div>
+
+                    {/* Title & Fine */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base font-bold text-gray-900 mb-1">{penalty.title}</h3>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <div className={`bg-gradient-to-br ${getSeverityColor(penalty.severity)} text-white px-3 py-1 rounded-lg text-sm font-bold`}>
+                          {penalty.fineMin}-{penalty.fineMax} AZN
+                        </div>
+                        {penalty.article && (
+                          <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                            {penalty.article}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-base text-gray-700 mb-4 leading-relaxed">{penalty.description}</p>
-
-                  {/* Article reference */}
-                  {penalty.article && (
-                    <div className="flex items-center gap-2 mb-4">
-                      <Scale className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm font-semibold text-gray-900 bg-gray-100 px-3 py-1 rounded-lg">
-                        {penalty.article}
-                      </span>
-                    </div>
-                  )}
+                  <p className="text-sm text-gray-700 leading-relaxed">{penalty.description}</p>
                 </div>
+
+                {/* Right side: Small video thumbnail (YouTube style) */}
+                {penalty.hasVideo && (
+                  <button
+                    onClick={() => onVideoClick?.(penalty)}
+                    className="group w-40 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-[#007A3A] transition-all"
+                  >
+                    <div className="relative aspect-video bg-gray-200">
+                      <img 
+                        src={penalty.videoThumbnail} 
+                        alt={penalty.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                        loading="lazy"
+                      />
+                      
+                      {/* Play overlay */}
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                        <div className="w-8 h-8 bg-white/95 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-md">
+                          <Play className="w-4 h-4 text-[#007A3A] ml-0.5" fill="currentColor" />
+                        </div>
+                      </div>
+
+                      {/* Duration badge */}
+                      <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                        {penalty.videoDuration}
+                      </div>
+                    </div>
+                  </button>
+                )}
               </div>
             </div>
           </div>
         ))}
       </div>
-
-      {/* Video section - COMPACT GRID */}
-      {filteredPenalties.some(p => p.hasVideo) && (
-        <div className="mt-10">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="w-1 h-6 bg-[#007A3A] rounded-full"></div>
-            <h3 className="text-lg font-bold text-gray-900">Video izahlar</h3>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            {filteredPenalties.filter(p => p.hasVideo).map(penalty => (
-              <button
-                key={`video-${penalty.id}`}
-                onClick={() => onVideoClick?.(penalty)}
-                className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-[#007A3A] transition-all"
-              >
-                {/* Thumbnail */}
-                <div className="relative aspect-video bg-gray-100 overflow-hidden">
-                  <img 
-                    src={penalty.videoThumbnail} 
-                    alt={penalty.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  
-                  {/* Play overlay */}
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                    <div className="w-10 h-10 bg-white/90 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-lg">
-                      <Play className="w-5 h-5 text-[#007A3A] ml-0.5" fill="currentColor" />
-                    </div>
-                  </div>
-
-                  {/* Duration badge */}
-                  <div className="absolute bottom-1.5 right-1.5 bg-black/80 text-white text-xs font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                    <Clock className="w-2.5 h-2.5" />
-                    {penalty.videoDuration}
-                  </div>
-                </div>
-
-                {/* Title */}
-                <div className="p-2.5">
-                  <h4 className="text-xs font-semibold text-gray-900 line-clamp-2 group-hover:text-[#007A3A] transition-colors leading-tight">
-                    {penalty.title}
-                  </h4>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Empty state */}
       {filteredPenalties.length === 0 && (
