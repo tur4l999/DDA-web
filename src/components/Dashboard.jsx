@@ -4,7 +4,7 @@ import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
 import TopicsPage from './Topics'
-import PenaltiesPage from './Penalties'
+import PenaltiesPage from './PenaltiesPage'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
