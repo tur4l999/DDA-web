@@ -271,26 +271,29 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                         <AlertCircle className="w-5 h-5 text-white" strokeWidth={2} />
                       </div>
 
-                      {/* Title & Fine */}
+                      {/* Title & Article */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-3 mb-2">
                           <h3 className="text-sm font-bold text-gray-900 leading-tight">{penalty.title}</h3>
                           
-                          {/* Fine amount */}
-                          <div className={`bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-3 py-1.5 rounded-lg text-sm font-bold whitespace-nowrap flex-shrink-0`}>
-                            {penalty.fine}
-                          </div>
-                        </div>
-
-                        {/* Article & Points */}
-                        <div className="flex items-center gap-2 flex-wrap mb-2">
-                          <span className="text-xs font-semibold text-gray-900 bg-gray-100 px-2.5 py-1 rounded-lg">
+                          {/* Article */}
+                          <span className="text-xs font-semibold text-gray-900 bg-gray-100 px-2.5 py-1 rounded-lg whitespace-nowrap flex-shrink-0">
                             İXM {penalty.article}
                           </span>
+                        </div>
+
+                        {/* Fine & Points */}
+                        <div className="flex items-center gap-2 flex-wrap mb-2">
+                          <div className={`bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-3 py-1.5 rounded-lg text-sm font-bold whitespace-nowrap`}>
+                            {penalty.fine}
+                          </div>
                           {penalty.points && (
-                            <span className="text-xs font-semibold text-red-700 bg-red-50 px-2.5 py-1 rounded-lg border border-red-200">
-                              {penalty.points}
-                            </span>
+                            <>
+                              <span className="text-gray-400 font-bold">+</span>
+                              <span className="text-xs font-semibold text-red-700 bg-red-50 px-2.5 py-1 rounded-lg border border-red-200">
+                                {penalty.points}
+                              </span>
+                            </>
                           )}
                         </div>
 
