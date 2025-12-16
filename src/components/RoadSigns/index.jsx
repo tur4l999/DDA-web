@@ -12,14 +12,30 @@ export default function RoadSigns({ onBack }) {
 
   // Filter signs based on selected group, search query, and active filter
   const getFilteredSigns = () => {
-    let signs = roadSignsData[selectedGroup] || []
+    let signs = []
+    let searchingAllGroups = false
 
-    // Apply search filter
+    // If search query exists, search across ALL groups
     if (searchQuery.trim()) {
+      searchingAllGroups = true
+      // Search in all groups
+      Object.keys(roadSignsData).forEach(groupId => {
+        const groupSigns = roadSignsData[groupId].map(sign => ({
+          ...sign,
+          groupId: parseInt(groupId),
+          groupName: groups.find(g => g.id === parseInt(groupId))?.name
+        }))
+        signs = [...signs, ...groupSigns]
+      })
+      
+      // Filter by search query
       signs = signs.filter(sign =>
         sign.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         sign.code.toLowerCase().includes(searchQuery.toLowerCase())
       )
+    } else {
+      // No search query - show selected group only
+      signs = roadSignsData[selectedGroup] || []
     }
 
     // Apply additional filters
@@ -29,10 +45,10 @@ export default function RoadSigns({ onBack }) {
       signs = signs.filter(sign => sign.commonMistakes)
     }
 
-    return signs
+    return { signs, searchingAllGroups }
   }
 
-  const filteredSigns = getFilteredSigns()
+  const { signs: filteredSigns, searchingAllGroups } = getFilteredSigns()
   const currentGroup = groups.find(g => g.id === selectedGroup)
 
   return (
@@ -103,12 +119,25 @@ export default function RoadSigns({ onBack }) {
             <div className="flex-1 min-w-0">
               {/* Group Header */}
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  {currentGroup?.id}. {currentGroup?.name}
-                </h2>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {currentGroup?.description}
-                </p>
+                {searchingAllGroups ? (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Axtarış nəticələri
+                    </h2>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      "{searchQuery}" üzrə bütün qruplarda {filteredSigns.length} nişan tapıldı
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      {currentGroup?.id}. {currentGroup?.name}
+                    </h2>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {currentGroup?.description}
+                    </p>
+                  </>
+                )}
               </div>
 
               {/* Filter Chips */}
@@ -148,13 +177,23 @@ export default function RoadSigns({ onBack }) {
               {/* Signs Grid */}
               {filteredSigns.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredSigns.map((sign) => (
-                    <SignCard key={sign.code} sign={sign} groupName={currentGroup?.name} />
+                  {filteredSigns.map((sign, index) => (
+                    <SignCard 
+                      key={`${sign.groupId || selectedGroup}-${sign.code}-${index}`} 
+                      sign={sign} 
+                      groupName={sign.groupName || currentGroup?.name} 
+                    />
                   ))}
                 </div>
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-gray-500 text-lg">Axtarış üzrə nəticə tapılmadı</p>
+                  <div className="max-w-md mx-auto">
+                    <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500 text-lg mb-2">Axtarış üzrə nəticə tapılmadı</p>
+                    <p className="text-gray-400 text-sm">
+                      Başqa açar söz və ya nişan kodu ilə yenidən cəhd edin
+                    </p>
+                  </div>
                 </div>
               )}
             </div>

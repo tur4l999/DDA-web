@@ -50,7 +50,14 @@ export default function SignCard({ sign, groupName }) {
             <h3 className="text-lg font-bold text-gray-900 mb-1">
               {sign.code} {sign.name}
             </h3>
-            <p className="text-xs text-gray-500">Kateqoriya: {groupName}</p>
+            <div className="flex items-center gap-2 flex-wrap">
+              <p className="text-xs text-gray-500">Kateqoriya: {groupName}</p>
+              {sign.groupId && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200">
+                  Qrup {sign.groupId}
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Description */}
