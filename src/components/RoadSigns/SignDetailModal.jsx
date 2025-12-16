@@ -87,25 +87,6 @@ export default function SignDetailModal({ sign, groupName, onClose }) {
                 <p className="text-gray-700 leading-relaxed">{sign.additionalInfo}</p>
               </div>
             )}
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 pt-2">
-              {sign.examImportance === 'high' && (
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-red-100 text-red-700">
-                  İmtahan üçün vacib
-                </span>
-              )}
-              {sign.examImportance === 'medium' && (
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-amber-100 text-amber-700">
-                  Orta əhəmiyyətli
-                </span>
-              )}
-              {sign.commonMistakes && (
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-orange-100 text-orange-700">
-                  Çox səhv edilir
-                </span>
-              )}
-            </div>
           </div>
         </div>
       </div>

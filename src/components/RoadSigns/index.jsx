@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import { Search, ChevronLeft, Triangle, Circle, Octagon, Square, Info, Wrench, PlusCircle } from 'lucide-react'
-import SignCard from './SignCard'
+import SignListItem from './SignListItem'
 import GroupSidebar from './GroupSidebar'
 import { roadSignsData } from './roadSignsData'
 
 export default function RoadSigns({ onBack }) {
   const [selectedGroup, setSelectedGroup] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeFilter, setActiveFilter] = useState('all')
-  const [isMobileGroupsOpen, setIsMobileGroupsOpen] = useState(false)
 
-  // Filter signs based on selected group, search query, and active filter
+  // Filter signs based on selected group and search query
   const getFilteredSigns = () => {
     let signs = []
     let searchingAllGroups = false
@@ -38,13 +36,6 @@ export default function RoadSigns({ onBack }) {
       signs = roadSignsData[selectedGroup] || []
     }
 
-    // Apply additional filters
-    if (activeFilter === 'exam') {
-      signs = signs.filter(sign => sign.examImportance === 'high')
-    } else if (activeFilter === 'mistakes') {
-      signs = signs.filter(sign => sign.commonMistakes)
-    }
-
     return { signs, searchingAllGroups }
   }
 
@@ -56,33 +47,18 @@ export default function RoadSigns({ onBack }) {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-4 lg:px-8 py-6 sticky top-0 z-20 shadow-sm">
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            {/* Left side - Title and subtitle */}
-            <div className="flex items-center gap-4 flex-1 min-w-[250px]">
-              <button
-                onClick={onBack}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Yol nişanları</h1>
-                <p className="text-sm text-gray-600 mt-1">
-                  Burada bütün yol nişanlarını qruplar üzrə görə, hər nişanın şəkli və izahı ilə tanış ola bilərsən.
-                </p>
-              </div>
-            </div>
-
-            {/* Right side - Search */}
-            <div className="relative w-full lg:w-96">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Nişan adı və ya nömrə ilə axtar..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-              />
+          <div className="flex items-center gap-4">
+            <button
+              onClick={onBack}
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Yol nişanları</h1>
+              <p className="text-sm text-gray-600 mt-1">
+                Burada bütün yol nişanlarını qruplar üzrə görə, hər nişanın şəkli və izahı ilə tanış ola bilərsən.
+              </p>
             </div>
           </div>
         </div>
@@ -117,6 +93,20 @@ export default function RoadSigns({ onBack }) {
 
             {/* Right Content Area */}
             <div className="flex-1 min-w-0">
+              {/* Search Box */}
+              <div className="mb-6">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Nişan adı və ya nömrə ilə axtar..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm bg-white shadow-sm"
+                  />
+                </div>
+              </div>
+
               {/* Group Header */}
               <div className="mb-6">
                 {searchingAllGroups ? (
@@ -140,45 +130,11 @@ export default function RoadSigns({ onBack }) {
                 )}
               </div>
 
-              {/* Filter Chips */}
-              <div className="flex gap-2 mb-6 flex-wrap">
-                <button
-                  onClick={() => setActiveFilter('all')}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeFilter === 'all'
-                      ? 'bg-primary-500 text-white shadow-md'
-                      : 'bg-white text-gray-700 border border-gray-300 hover:border-primary-500'
-                  }`}
-                >
-                  Hamısı
-                </button>
-                <button
-                  onClick={() => setActiveFilter('exam')}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeFilter === 'exam'
-                      ? 'bg-primary-500 text-white shadow-md'
-                      : 'bg-white text-gray-700 border border-gray-300 hover:border-primary-500'
-                  }`}
-                >
-                  İmtahana düşənlər
-                </button>
-                <button
-                  onClick={() => setActiveFilter('mistakes')}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeFilter === 'mistakes'
-                      ? 'bg-primary-500 text-white shadow-md'
-                      : 'bg-white text-gray-700 border border-gray-300 hover:border-primary-500'
-                  }`}
-                >
-                  Ən çox səhv edilənlər
-                </button>
-              </div>
-
-              {/* Signs Grid */}
+              {/* Signs List */}
               {filteredSigns.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
                   {filteredSigns.map((sign, index) => (
-                    <SignCard 
+                    <SignListItem 
                       key={`${sign.groupId || selectedGroup}-${sign.code}-${index}`} 
                       sign={sign} 
                       groupName={sign.groupName || currentGroup?.name} 
@@ -186,7 +142,7 @@ export default function RoadSigns({ onBack }) {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12">
+                <div className="text-center py-12 bg-white border border-gray-200">
                   <div className="max-w-md mx-auto">
                     <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                     <p className="text-gray-500 text-lg mb-2">Axtarış üzrə nəticə tapılmadı</p>
