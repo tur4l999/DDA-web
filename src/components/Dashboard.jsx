@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar } from 'lucide-react'
+import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, Signpost } from 'lucide-react'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
 import TopicsPage from './Topics'
 import PenaltiesPage from './PenaltiesPage'
+import RoadSigns from './RoadSigns'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -19,6 +20,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'penalties') {
     return <PenaltiesPage onBack={() => setCurrentPage('dashboard')} />
+  }
+
+  if (currentPage === 'roadSigns') {
+    return <RoadSigns onBack={() => setCurrentPage('dashboard')} />
   }
 
   return (
@@ -150,14 +155,15 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 {/* Other 4 Modules - 1 row */}
                 <div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
-                    <button
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <BookMarked className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Maddələr</h3>
-                    </button>
+                  <button
+                    onClick={() => setCurrentPage('roadSigns')}
+                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
+                      <Signpost className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 text-sm">Yol nişanları</h3>
+                  </button>
 
                     <button
                       onClick={() => setCurrentPage('penalties')}
