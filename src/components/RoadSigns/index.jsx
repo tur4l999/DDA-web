@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Search, ChevronDown } from 'lucide-react'
+import { Search, ChevronDown, List, AlertTriangle, ArrowUpCircle, Ban, Navigation, Info, Wrench, Plus } from 'lucide-react'
 import RoadSignCard from './RoadSignCard'
 import { roadSignsData } from './roadSignsData'
 
@@ -12,65 +12,73 @@ const RoadSigns = () => {
     {
       id: 'all',
       name: 'Hamısı',
-      icon: '📋',
+      icon: List,
       description: 'Bütün nişanlar',
-      color: 'bg-gray-100'
+      color: 'bg-gray-100',
+      iconColor: 'text-gray-600'
     },
     {
       id: 'warning',
       name: 'Xəbərdarlıq nişanları',
-      icon: '⚠️',
+      icon: AlertTriangle,
       description: 'Yol təhlükələri haqqında məlumat verir',
       count: roadSignsData.filter(s => s.category === 'warning').length,
-      color: 'bg-yellow-50'
+      color: 'bg-yellow-50',
+      iconColor: 'text-yellow-600'
     },
     {
       id: 'priority',
       name: 'Üstünlük nişanları',
-      icon: '🔺',
+      icon: ArrowUpCircle,
       description: 'Yolda hərəkət prioriteti müəyyən edir',
       count: roadSignsData.filter(s => s.category === 'priority').length,
-      color: 'bg-blue-50'
+      color: 'bg-blue-50',
+      iconColor: 'text-blue-600'
     },
     {
       id: 'prohibitory',
       name: 'Qadağan nişanları',
-      icon: '🚫',
+      icon: Ban,
       description: 'Müəyyən hərəkətləri qadağan edir',
       count: roadSignsData.filter(s => s.category === 'prohibitory').length,
-      color: 'bg-red-50'
+      color: 'bg-red-50',
+      iconColor: 'text-red-600'
     },
     {
       id: 'mandatory',
       name: 'Məcburi nişanlar',
-      icon: '🔵',
+      icon: Navigation,
       description: 'Müəyyən istiqamətə hərəkət tələb edir',
       count: roadSignsData.filter(s => s.category === 'mandatory').length,
-      color: 'bg-blue-50'
+      color: 'bg-blue-50',
+      iconColor: 'text-blue-600'
     },
     {
       id: 'information',
       name: 'İnformasiya nişanları',
-      icon: 'ℹ️',
+      icon: Info,
       description: 'Yol şəraiti haqqında məlumat verir',
       count: roadSignsData.filter(s => s.category === 'information').length,
-      color: 'bg-green-50'
+      color: 'bg-green-50',
+      iconColor: 'text-green-600'
     },
     {
       id: 'service',
       name: 'Xidmət nişanları',
-      icon: '🔧',
+      icon: Wrench,
       description: 'Yol xidmətləri haqqında məlumat',
       count: roadSignsData.filter(s => s.category === 'service').length,
-      color: 'bg-purple-50'
+      color: 'bg-purple-50',
+      iconColor: 'text-purple-600'
     },
     {
       id: 'additional',
       name: 'Əlavə nişanlar',
-      icon: '➕',
+      icon: Plus,
       description: 'Digər nişanları tamamlayır',
       count: roadSignsData.filter(s => s.category === 'additional').length,
-      color: 'bg-gray-50'
+      color: 'bg-gray-50',
+      iconColor: 'text-gray-600'
     }
   ]
 
@@ -132,34 +140,39 @@ const RoadSigns = () => {
                 
                 <h2 className="text-lg font-bold text-gray-900 px-3 py-2">Qruplar</h2>
                 <div className="mt-3 space-y-1">
-                  {groups.map((group) => (
-                    <button
-                      key={group.id}
-                      onClick={() => setSelectedGroup(group.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all relative ${
-                        selectedGroup === group.id
-                          ? 'bg-primary-50 text-primary-700'
-                          : 'text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      {selectedGroup === group.id && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-600 rounded-r-full" />
-                      )}
-                      <span className="text-2xl">{group.icon}</span>
-                      <div className="flex-1 text-left">
-                        <div className={`text-sm font-semibold ${
-                          selectedGroup === group.id ? 'text-primary-700' : 'text-gray-900'
-                        }`}>
-                          {group.name}
-                        </div>
-                        {group.count !== undefined && (
-                          <div className="text-xs text-gray-500 mt-0.5">
-                            {group.count} nişan
-                          </div>
+                  {groups.map((group) => {
+                    const IconComponent = group.icon
+                    return (
+                      <button
+                        key={group.id}
+                        onClick={() => setSelectedGroup(group.id)}
+                        className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all relative ${
+                          selectedGroup === group.id
+                            ? 'bg-primary-50 text-primary-700'
+                            : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {selectedGroup === group.id && (
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-600 rounded-r-full" />
                         )}
-                      </div>
-                    </button>
-                  ))}
+                        <IconComponent className={`w-5 h-5 ${
+                          selectedGroup === group.id ? 'text-primary-600' : group.iconColor
+                        }`} />
+                        <div className="flex-1 text-left">
+                          <div className={`text-sm font-semibold ${
+                            selectedGroup === group.id ? 'text-primary-700' : 'text-gray-900'
+                          }`}>
+                            {group.name}
+                          </div>
+                          {group.count !== undefined && (
+                            <div className="text-xs text-gray-500 mt-0.5">
+                              {group.count} nişan
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             </aside>
@@ -184,7 +197,9 @@ const RoadSigns = () => {
                   className="w-full flex items-center justify-between px-3 py-2"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{selectedGroupData?.icon}</span>
+                    {selectedGroupData?.icon && (
+                      <selectedGroupData.icon className={`w-5 h-5 ${selectedGroupData.iconColor}`} />
+                    )}
                     <span className="font-semibold text-gray-900">{selectedGroupData?.name}</span>
                   </div>
                   <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${
@@ -194,28 +209,33 @@ const RoadSigns = () => {
                 
                 {isMobileGroupsOpen && (
                   <div className="mt-2 space-y-1 border-t border-gray-100 pt-2">
-                    {groups.map((group) => (
-                      <button
-                        key={group.id}
-                        onClick={() => {
-                          setSelectedGroup(group.id)
-                          setIsMobileGroupsOpen(false)
-                        }}
-                        className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${
-                          selectedGroup === group.id
-                            ? 'bg-primary-50 text-primary-700'
-                            : 'text-gray-700'
-                        }`}
-                      >
-                        <span className="text-xl">{group.icon}</span>
-                        <div className="flex-1 text-left">
-                          <div className="text-sm font-semibold">{group.name}</div>
-                          {group.count !== undefined && (
-                            <div className="text-xs text-gray-500">{group.count} nişan</div>
-                          )}
-                        </div>
-                      </button>
-                    ))}
+                    {groups.map((group) => {
+                      const IconComponent = group.icon
+                      return (
+                        <button
+                          key={group.id}
+                          onClick={() => {
+                            setSelectedGroup(group.id)
+                            setIsMobileGroupsOpen(false)
+                          }}
+                          className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${
+                            selectedGroup === group.id
+                              ? 'bg-primary-50 text-primary-700'
+                              : 'text-gray-700'
+                          }`}
+                        >
+                          <IconComponent className={`w-5 h-5 ${
+                            selectedGroup === group.id ? 'text-primary-600' : group.iconColor
+                          }`} />
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-semibold">{group.name}</div>
+                            {group.count !== undefined && (
+                              <div className="text-xs text-gray-500">{group.count} nişan</div>
+                            )}
+                          </div>
+                        </button>
+                      )
+                    })}
                   </div>
                 )}
               </div>
