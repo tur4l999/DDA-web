@@ -108,12 +108,12 @@ const RoadSigns = () => {
   return (
     <div className="flex flex-col h-full bg-[#F5F7FA]">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-6">
+      <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-[1400px] mx-auto">
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Yol nişanları</h1>
-            <p className="text-sm lg:text-base text-gray-600 mt-2">
-              Burada bütün yol nişanlarını qruplar üzrə görə, hər nişanın şəkli və izahı ilə tanış ola bilərsən.
+            <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Yol nişanları</h1>
+            <p className="text-xs lg:text-sm text-gray-600 mt-1">
+              Burada bütün yol nişanlarını qruplar üzrə görə, hər nişanın şəkli və izahı ilə tanış ola bilərsiniz.
             </p>
           </div>
         </div>
