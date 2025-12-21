@@ -3,12 +3,6 @@ import { X, BookOpen, FileQuestion, AlertCircle } from 'lucide-react'
 const RoadSignModal = ({ sign, categoryName, isOpen, onClose }) => {
   if (!isOpen) return null
 
-  const importanceLabels = {
-    high: 'Yüksək',
-    medium: 'Orta',
-    low: 'Aşağı'
-  }
-
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
@@ -99,23 +93,14 @@ const RoadSignModal = ({ sign, categoryName, isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2">
-              <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium ${
-                sign.examImportance === 'high'
-                  ? 'bg-red-100 text-red-700 border border-red-200'
-                  : sign.examImportance === 'medium'
-                  ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
-                  : 'bg-green-100 text-green-700 border border-green-200'
-              }`}>
-                İmtahan üçün vaciblik: {importanceLabels[sign.examImportance]}
-              </span>
-              {sign.commonMistake && (
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-orange-100 text-orange-700 border border-orange-200">
-                  Tez-tez səhv edilir
+            {/* Tags - Only common mistake */}
+            {sign.commonMistake && (
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-orange-100 text-orange-700 border border-orange-200">
+                  ⚠️ Tez-tez səhv edilən nişan
                 </span>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Action Buttons */}

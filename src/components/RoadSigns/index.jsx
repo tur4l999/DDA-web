@@ -6,7 +6,6 @@ import { roadSignsData } from './roadSignsData'
 const RoadSigns = () => {
   const [selectedGroup, setSelectedGroup] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeFilter, setActiveFilter] = useState('all')
   const [isMobileGroupsOpen, setIsMobileGroupsOpen] = useState(false)
 
   const groups = [
@@ -75,12 +74,6 @@ const RoadSigns = () => {
     }
   ]
 
-  const filters = [
-    { id: 'all', name: 'Hamısı' },
-    { id: 'exam', name: 'İmtahana düşənlər' },
-    { id: 'mistakes', name: 'Ən çox səhv edilənlər' }
-  ]
-
   const filteredSigns = useMemo(() => {
     let signs = roadSignsData
 
@@ -99,15 +92,8 @@ const RoadSigns = () => {
       )
     }
 
-    // Additional filters
-    if (activeFilter === 'exam') {
-      signs = signs.filter(sign => sign.examImportance === 'high')
-    } else if (activeFilter === 'mistakes') {
-      signs = signs.filter(sign => sign.commonMistake)
-    }
-
     return signs
-  }, [selectedGroup, searchQuery, activeFilter])
+  }, [selectedGroup, searchQuery])
 
   const selectedGroupData = groups.find(g => g.id === selectedGroup)
 
@@ -237,26 +223,9 @@ const RoadSigns = () => {
                   <p className="text-sm text-gray-600 mt-1">{selectedGroupData?.description}</p>
                 </div>
 
-                {/* Filter Chips */}
-                <div className="flex flex-wrap gap-2">
-                  {filters.map((filter) => (
-                    <button
-                      key={filter.id}
-                      onClick={() => setActiveFilter(filter.id)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                        activeFilter === filter.id
-                          ? 'bg-primary-500 text-white shadow-sm'
-                          : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300'
-                      }`}
-                    >
-                      {filter.name}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Road Signs Grid */}
+                {/* Road Signs List */}
                 {filteredSigns.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
+                  <div className="space-y-6 pb-6">
                     {filteredSigns.map((sign) => (
                       <RoadSignCard key={sign.id} sign={sign} />
                     ))}
