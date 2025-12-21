@@ -5,6 +5,7 @@ import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
 import TopicsPage from './Topics'
 import PenaltiesPage from './PenaltiesPage'
+import RoadSigns from './RoadSigns'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -19,6 +20,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'penalties') {
     return <PenaltiesPage onBack={() => setCurrentPage('dashboard')} />
+  }
+
+  if (currentPage === 'road-signs') {
+    return <RoadSigns />
   }
 
   return (
