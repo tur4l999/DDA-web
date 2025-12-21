@@ -40,6 +40,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             <h2 className="hidden lg:block text-sm text-gray-900 font-semibold">Test Academy</h2>
           </div>
           <div className="flex items-center space-x-4">
+            <div className="hidden sm:flex items-center bg-gray-100 rounded-lg px-3 py-2">
+              <span className="text-sm text-gray-700 font-medium">44 gün</span>
+            </div>
             <div className="hidden sm:flex items-center bg-gray-100 rounded-lg px-3 py-2 space-x-2">
               <Globe className="w-4 h-4 text-gray-600" />
               <select
@@ -205,10 +208,12 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                       <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                         <div>
                           <p className="text-sm font-semibold text-gray-900">03.12.2025 19:15</p>
-                          <p className="text-xs text-gray-500">30% (3/10)</p>
                         </div>
-                        <div className="w-24 bg-gray-200 rounded-full h-2">
-                          <div className="bg-[#007A3A] h-2 rounded-full" style={{ width: '30%' }}></div>
+                        <div className="flex flex-col items-end space-y-1">
+                          <p className="text-xs text-gray-500">30% (3/10)</p>
+                          <div className="w-24 bg-gray-200 rounded-full h-2">
+                            <div className="bg-[#007A3A] h-2 rounded-full" style={{ width: '30%' }}></div>
+                          </div>
                         </div>
                       </div>
                     </div>

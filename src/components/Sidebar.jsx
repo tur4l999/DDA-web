@@ -42,7 +42,7 @@ export default function Sidebar({ isOpen, setIsOpen, isCollapsed, setIsCollapsed
               {!isCollapsed && (
                 <div className="overflow-hidden">
                   <h1 className="text-lg font-bold text-gray-900 whitespace-nowrap">Digital Driving</h1>
-                  <p className="text-xs text-gray-500 whitespace-nowrap">Academy</p>
+                  <p className="text-lg font-bold text-gray-900 whitespace-nowrap">Academy</p>
                 </div>
               )}
             </div>
