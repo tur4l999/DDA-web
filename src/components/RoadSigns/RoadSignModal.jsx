@@ -1,4 +1,4 @@
-import { X, BookOpen, FileQuestion, AlertCircle } from 'lucide-react'
+import { X, AlertCircle } from 'lucide-react'
 
 const RoadSignModal = ({ sign, categoryName, isOpen, onClose }) => {
   if (!isOpen) return null
@@ -93,26 +93,6 @@ const RoadSignModal = ({ sign, categoryName, isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Tags - Only common mistake */}
-            {sign.commonMistake && (
-              <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-orange-100 text-orange-700 border border-orange-200">
-                  ⚠️ Tez-tez səhv edilən nişan
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
-            <button className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition-colors shadow-sm hover:shadow-md">
-              <FileQuestion className="w-5 h-5" />
-              <span>Bu nişan üzrə sual həll et</span>
-            </button>
-            <button className="sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-xl border border-gray-200 transition-colors">
-              <BookOpen className="w-5 h-5" />
-              <span>Mövzuya bax</span>
-            </button>
           </div>
         </div>
       </div>

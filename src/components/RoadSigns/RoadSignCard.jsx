@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BookOpen, FileQuestion, ZoomIn } from 'lucide-react'
+import { ZoomIn } from 'lucide-react'
 import RoadSignModal from './RoadSignModal'
 
 const RoadSignCard = ({ sign }) => {
@@ -98,32 +98,6 @@ const RoadSignCard = ({ sign }) => {
             )}
           </div>
 
-          {/* Tags - Only common mistake */}
-          {sign.commonMistake && (
-            <div className="pt-4 border-t border-gray-200">
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-orange-100 text-orange-700 border border-orange-200">
-                ⚠️ Tez-tez səhv edilən nişan
-              </span>
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors shadow-sm hover:shadow-md"
-            >
-              <FileQuestion className="w-5 h-5" />
-              <span>Bu nişan üzrə sual həll et</span>
-            </button>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-xl border-2 border-gray-200 hover:border-primary-300 transition-all"
-            >
-              <BookOpen className="w-5 h-5" />
-              <span>Mövzuya bax</span>
-            </button>
-          </div>
         </div>
       </div>
 
