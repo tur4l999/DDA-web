@@ -192,39 +192,47 @@ export default function QuestionsContent() {
 
   return (
     <div className="max-w-[900px] mx-auto pb-8">
-      {/* Stats Overview - Modern & Minimal */}
+      {/* Stats Overview - Horizontal Compact */}
       <div className="bg-white border border-gray-200/80 rounded-2xl p-3 mb-6 shadow-sm">
-        <div className="grid grid-cols-4 gap-3">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mb-1.5 shadow-lg shadow-blue-500/25">
+        <div className="flex items-center justify-around gap-2">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg shadow-blue-500/25">
               <Target className="w-4 h-4 text-white" />
             </div>
-            <p className="text-lg font-bold text-gray-900 mb-0">{stats.total}</p>
-            <p className="text-[10px] text-gray-500 font-medium">Ümumi</p>
+            <div>
+              <p className="text-lg font-bold text-gray-900 leading-none">{stats.total}</p>
+              <p className="text-[10px] text-gray-500 font-medium leading-tight">Ümumi</p>
+            </div>
           </div>
           
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg mb-1.5 shadow-lg shadow-emerald-500/25">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg shadow-lg shadow-emerald-500/25">
               <CheckCircle className="w-4 h-4 text-white" />
             </div>
-            <p className="text-lg font-bold text-gray-900 mb-0">{stats.correct}</p>
-            <p className="text-[10px] text-gray-500 font-medium">Düzgün</p>
+            <div>
+              <p className="text-lg font-bold text-gray-900 leading-none">{stats.correct}</p>
+              <p className="text-[10px] text-gray-500 font-medium leading-tight">Düzgün</p>
+            </div>
           </div>
           
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-rose-500 to-rose-600 rounded-lg mb-1.5 shadow-lg shadow-rose-500/25">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-rose-500 to-rose-600 rounded-lg shadow-lg shadow-rose-500/25">
               <XCircle className="w-4 h-4 text-white" />
             </div>
-            <p className="text-lg font-bold text-gray-900 mb-0">{stats.incorrect}</p>
-            <p className="text-[10px] text-gray-500 font-medium">Səhv</p>
+            <div>
+              <p className="text-lg font-bold text-gray-900 leading-none">{stats.incorrect}</p>
+              <p className="text-[10px] text-gray-500 font-medium leading-tight">Səhv</p>
+            </div>
           </div>
           
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-gray-400 to-gray-500 rounded-lg mb-1.5 shadow-lg shadow-gray-500/25">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-gray-400 to-gray-500 rounded-lg shadow-lg shadow-gray-500/25">
               <HelpCircle className="w-4 h-4 text-white" />
             </div>
-            <p className="text-lg font-bold text-gray-900 mb-0">{stats.unanswered}</p>
-            <p className="text-[10px] text-gray-500 font-medium">Cavabsız</p>
+            <div>
+              <p className="text-lg font-bold text-gray-900 leading-none">{stats.unanswered}</p>
+              <p className="text-[10px] text-gray-500 font-medium leading-tight">Cavabsız</p>
+            </div>
           </div>
         </div>
       </div>
