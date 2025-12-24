@@ -7,6 +7,7 @@ import VideoContent from './VideoContent'
 import ThreeDVideoContent from './ThreeDVideoContent'
 import QuestionsContent from './QuestionsContent'
 import PenaltiesContent from './PenaltiesContent'
+import ArticlesContent from './ArticlesContent'
 import VideoModal from '../Penalties/VideoModal'
 import AskTeacherModal from './AskTeacherModal'
 import QuestionThreadModal from './QuestionThreadModal'
@@ -176,14 +177,7 @@ export default function TopicsPage({ onBack }) {
   const renderContent = () => {
     switch (activeTab) {
       case 'materials':
-        return (
-          <div className="max-w-[860px] mx-auto">
-            <div className="text-center py-16 bg-gray-50 border border-gray-200 rounded-xl">
-              <p className="text-gray-600 font-medium mb-1">Maddələr</p>
-              <p className="text-sm text-gray-500">Qanun maddələri tezliklə əlavə ediləcək</p>
-            </div>
-          </div>
-        )
+        return <ArticlesContent />
       case 'text':
         return <TextContent />
       case '3dvideo':
