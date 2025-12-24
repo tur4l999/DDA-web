@@ -139,77 +139,52 @@ export default function QuestionsContent() {
   return (
     <div className="max-w-[900px] mx-auto pb-8">
       {/* Stats Overview - Compact */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <Target className="w-5 h-5 text-white" />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shadow-sm shadow-blue-500/30">
+              <Target className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-              <p className="text-xs text-gray-600 font-medium">Ümumi</p>
+              <p className="text-lg font-bold text-gray-900">{stats.total}</p>
+              <p className="text-[10px] text-gray-600 font-medium">Ümumi</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
-              <CheckCircle className="w-5 h-5 text-white" />
+        <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shadow-sm shadow-emerald-500/30">
+              <CheckCircle className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.correct}</p>
-              <p className="text-xs text-gray-600 font-medium">Düzgün</p>
+              <p className="text-lg font-bold text-gray-900">{stats.correct}</p>
+              <p className="text-[10px] text-gray-600 font-medium">Düzgün</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-rose-50 to-rose-100/50 border border-rose-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-rose-500 rounded-xl flex items-center justify-center shadow-lg shadow-rose-500/30">
-              <XCircle className="w-5 h-5 text-white" />
+        <div className="bg-gradient-to-br from-rose-50 to-rose-100/50 border border-rose-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-rose-500 rounded-lg flex items-center justify-center shadow-sm shadow-rose-500/30">
+              <XCircle className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.incorrect}</p>
-              <p className="text-xs text-gray-600 font-medium">Səhv</p>
+              <p className="text-lg font-bold text-gray-900">{stats.incorrect}</p>
+              <p className="text-[10px] text-gray-600 font-medium">Səhv</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 border border-gray-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-500 rounded-xl flex items-center justify-center shadow-lg shadow-gray-500/30">
-              <HelpCircle className="w-5 h-5 text-white" />
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gray-500 rounded-lg flex items-center justify-center shadow-sm shadow-gray-500/30">
+              <HelpCircle className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.unanswered}</p>
-              <p className="text-xs text-gray-600 font-medium">Cavabsız</p>
+              <p className="text-lg font-bold text-gray-900">{stats.unanswered}</p>
+              <p className="text-[10px] text-gray-600 font-medium">Cavabsız</p>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Progress Card */}
-      <div className="bg-gradient-to-br from-[#007A3A] via-[#006835] to-[#005A2A] rounded-3xl p-6 mb-8 text-white shadow-xl shadow-[#007A3A]/20 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-black/10 rounded-full blur-3xl -ml-24 -mb-24"></div>
-        
-        <div className="relative">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-xl font-bold mb-1">Ümumi nəticə</h3>
-              <p className="text-sm text-white/90">Bu mövzu üzrə irəliləyişiniz</p>
-            </div>
-            <div className="text-right">
-              <p className="text-4xl font-black">{Math.round((stats.correct / stats.total) * 100)}%</p>
-              <p className="text-xs text-white/90 font-medium">Düzgün cavab</p>
-            </div>
-          </div>
-          <div className="w-full bg-white/20 rounded-full h-3 shadow-inner">
-            <div 
-              className="bg-gradient-to-r from-white to-white/90 rounded-full h-3 transition-all duration-700 ease-out shadow-lg"
-              style={{ width: `${(stats.correct / stats.total) * 100}%` }}
-            />
           </div>
         </div>
       </div>
