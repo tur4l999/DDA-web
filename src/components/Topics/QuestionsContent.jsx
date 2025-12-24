@@ -17,12 +17,12 @@ export default function QuestionsContent() {
   const sampleQuestions = [
     {
       id: 1,
-      text: 'Sürücü hərəkət zamanı əsas yola çıxarkən hansı qaydaya əməl etməlidir?',
-      options: ['Sol tərəfə işarə verir', 'Yavaşlayır və yol verir', 'Sürəti artırır', 'Siqnal verir'],
+      text: 'Şəkildə göstərilən yol nişanı nəyi bildirir?',
+      options: ['Dayanmaq qadağandır', 'Durmaq qadağandır', 'Ötmə qadağandır', 'Sürət məhdudiyyəti'],
       correctAnswer: 1,
-      explanation: 'Əsas yola çıxarkən sürücü təhlükəsizlik naminə yavaşlamalı və əsas yolda hərəkət edən nəqliyyat vasitələrinə yol verməlidir. Bu, yol hərəkəti qaydalarının əsas tələblərindən biridir.',
+      explanation: '"Durmaq qadağandır" nişanı mavi fonda qırmızı dairə içərisində bir xətt şəklindədir. Bu nişan olan ərazidə nəqliyyat vasitələrinin daimi olaraq dayanması qadağandır, lakin yük-boşaltma və sərnişin düşürmə üçün qısa müddətli dayanma icazə verilir.',
       difficulty: 'medium',
-      image: null
+      image: 'https://images.unsplash.com/photo-1449247666642-264389f5f5b1?w=400&h=300&fit=crop'
     },
     {
       id: 2,
@@ -67,6 +67,60 @@ export default function QuestionsContent() {
       correctAnswer: 2,
       explanation: 'Piyada keçidi qarşısında sürücü sürəti azaltmalı və piyadalara yol vermək üçün hazır olmalıdır. Piyada təhlükəsizliyi yol hərəkətinin ən vacib aspektlərindən biridir.',
       difficulty: 'easy',
+      image: null
+    },
+    {
+      id: 7,
+      text: 'Avtomobil yolunda maksimum yol verməkdən imtina edilə bilməz?',
+      options: ['Təcili yardım avtomobilləri', 'Taksi avtomobilləri', 'Marşrut avtomobilləri', 'Avtobus'],
+      correctAnswer: 0,
+      explanation: 'Təcili yardım avtomobilləri xüsusi siqnalları işıqlandırılmış halda hərəkət edərkən bütün nəqliyyat vasitələri onlara yol verməlidirlər.',
+      difficulty: 'medium',
+      image: null
+    },
+    {
+      id: 8,
+      text: 'Yolun sol tərəfində dayanmaq icazə verilirmi?',
+      options: ['Heç vaxt', 'Yalnız birməhəllili yollarda', 'Hər yerdə', 'Yalnız gecə saatlarında'],
+      correctAnswer: 1,
+      explanation: 'Yolun sol tərəfində dayanmaq yalnız birməhəllili yollarda və yolun hər iki tərəfində fasilə xətti olan hallarda icazə verilir.',
+      difficulty: 'hard',
+      image: null
+    },
+    {
+      id: 9,
+      text: 'Qırmızı svetofor siqnalında nə etməlisiniz?',
+      options: ['Yavaş-yavaş keçmək', 'Dayanmaq', 'Sürətlə keçmək', 'Gözləmək'],
+      correctAnswer: 1,
+      explanation: 'Qırmızı svetofor siqnalı hərəkəti qadağan edir. Sürücü dayanma xəttindən əvvəl dayanmalıdır.',
+      difficulty: 'easy',
+      image: null
+    },
+    {
+      id: 10,
+      text: 'Şəhər xaricində icazə verilən maksimum sürət nə qədərdir?',
+      options: ['70 km/s', '80 km/s', '90 km/s', '100 km/s'],
+      correctAnswer: 2,
+      explanation: 'Şəhər xaricində yaşayış məntəqələri xaricində icazə verilən maksimum sürət 90 km/saatdır.',
+      difficulty: 'easy',
+      image: null
+    },
+    {
+      id: 11,
+      text: 'Nəqliyyat vasitəsinin texniki vəziyyəti hansı hallarda yoxlanılır?',
+      options: ['İldə 1 dəfə', 'İldə 2 dəfə', 'Hər ay', 'Hər həftə'],
+      correctAnswer: 0,
+      explanation: 'Nəqliyyat vasitələrinin texniki vəziyyəti ildə bir dəfə müntəzəm yoxlanılır.',
+      difficulty: 'medium',
+      image: null
+    },
+    {
+      id: 12,
+      text: 'Avtomagistralda minimum sürət nə qədərdir?',
+      options: ['40 km/s', '50 km/s', '60 km/s', '70 km/s'],
+      correctAnswer: 2,
+      explanation: 'Avtomagistralda minimum hərəkət sürəti 60 km/saatdır. Bu, yolun axıcılığını təmin etmək üçün müəyyən edilmişdir.',
+      difficulty: 'hard',
       image: null
     }
   ]
@@ -138,53 +192,39 @@ export default function QuestionsContent() {
 
   return (
     <div className="max-w-[900px] mx-auto pb-8">
-      {/* Stats Overview - Compact */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shadow-sm shadow-blue-500/30">
-              <Target className="w-4 h-4 text-white" />
+      {/* Stats Overview - Modern & Minimal */}
+      <div className="bg-white border border-gray-200/80 rounded-2xl p-4 mb-6 shadow-sm">
+        <div className="grid grid-cols-4 gap-4">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl mb-2 shadow-lg shadow-blue-500/25">
+              <Target className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <p className="text-lg font-bold text-gray-900">{stats.total}</p>
-              <p className="text-[10px] text-gray-600 font-medium">Ümumi</p>
-            </div>
+            <p className="text-2xl font-bold text-gray-900 mb-0.5">{stats.total}</p>
+            <p className="text-xs text-gray-500 font-medium">Ümumi</p>
           </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shadow-sm shadow-emerald-500/30">
-              <CheckCircle className="w-4 h-4 text-white" />
+          
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl mb-2 shadow-lg shadow-emerald-500/25">
+              <CheckCircle className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <p className="text-lg font-bold text-gray-900">{stats.correct}</p>
-              <p className="text-[10px] text-gray-600 font-medium">Düzgün</p>
-            </div>
+            <p className="text-2xl font-bold text-gray-900 mb-0.5">{stats.correct}</p>
+            <p className="text-xs text-gray-500 font-medium">Düzgün</p>
           </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-rose-50 to-rose-100/50 border border-rose-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-rose-500 rounded-lg flex items-center justify-center shadow-sm shadow-rose-500/30">
-              <XCircle className="w-4 h-4 text-white" />
+          
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-rose-500 to-rose-600 rounded-xl mb-2 shadow-lg shadow-rose-500/25">
+              <XCircle className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <p className="text-lg font-bold text-gray-900">{stats.incorrect}</p>
-              <p className="text-[10px] text-gray-600 font-medium">Səhv</p>
-            </div>
+            <p className="text-2xl font-bold text-gray-900 mb-0.5">{stats.incorrect}</p>
+            <p className="text-xs text-gray-500 font-medium">Səhv</p>
           </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gray-500 rounded-lg flex items-center justify-center shadow-sm shadow-gray-500/30">
-              <HelpCircle className="w-4 h-4 text-white" />
+          
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-gray-400 to-gray-500 rounded-xl mb-2 shadow-lg shadow-gray-500/25">
+              <HelpCircle className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <p className="text-lg font-bold text-gray-900">{stats.unanswered}</p>
-              <p className="text-[10px] text-gray-600 font-medium">Cavabsız</p>
-            </div>
+            <p className="text-2xl font-bold text-gray-900 mb-0.5">{stats.unanswered}</p>
+            <p className="text-xs text-gray-500 font-medium">Cavabsız</p>
           </div>
         </div>
       </div>
@@ -334,25 +374,25 @@ export default function QuestionsContent() {
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="bg-white border-2 border-gray-200 rounded-3xl shadow-lg p-6">
-        <div className="flex items-center gap-3">
+      {/* Navigation - Compact for 50 questions */}
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-3">
+        <div className="flex items-center gap-2">
           {/* Previous Button */}
           <button
             onClick={goToPrevious}
             disabled={currentQuestionIndex === 0}
-            className={`flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${
+            className={`flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
               currentQuestionIndex === 0
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-br from-[#007A3A] to-[#005A2A] text-white hover:shadow-lg hover:shadow-[#007A3A]/30 hover:scale-105 active:scale-95'
+                : 'bg-gradient-to-br from-[#007A3A] to-[#005A2A] text-white hover:shadow-md hover:scale-105 active:scale-95'
             }`}
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Question Numbers */}
-          <div className="flex-1 overflow-x-auto">
-            <div className="flex gap-2 min-w-min px-1">
+          {/* Question Numbers - Scrollable */}
+          <div className="flex-1 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-1.5 min-w-min px-0.5 py-1">
               {sampleQuestions.map((_, index) => {
                 const questionAnswer = userAnswers[sampleQuestions[index].id]
                 const isQuestionAnswered = questionAnswer !== undefined
@@ -362,14 +402,14 @@ export default function QuestionsContent() {
                   <button
                     key={index}
                     onClick={() => goToQuestion(index)}
-                    className={`flex-shrink-0 w-11 h-11 rounded-xl font-bold text-sm transition-all ${
+                    className={`flex-shrink-0 w-8 h-8 rounded-lg font-semibold text-xs transition-all ${
                       index === currentQuestionIndex
-                        ? 'bg-gradient-to-br from-[#007A3A] to-[#005A2A] text-white shadow-lg shadow-[#007A3A]/30 scale-110'
+                        ? 'bg-gradient-to-br from-[#007A3A] to-[#005A2A] text-white shadow-md ring-2 ring-[#007A3A]/30 ring-offset-1 scale-110'
                         : isQuestionAnswered
                           ? isQuestionCorrect
-                            ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-2 border-emerald-300'
-                            : 'bg-rose-100 text-rose-700 hover:bg-rose-200 border-2 border-rose-300'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-gray-300'
+                            ? 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-sm'
+                            : 'bg-rose-500 text-white hover:bg-rose-600 shadow-sm'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-300'
                     } hover:scale-105 active:scale-95`}
                   >
                     {index + 1}
@@ -383,13 +423,13 @@ export default function QuestionsContent() {
           <button
             onClick={goToNext}
             disabled={currentQuestionIndex === sampleQuestions.length - 1}
-            className={`flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${
+            className={`flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
               currentQuestionIndex === sampleQuestions.length - 1
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-br from-[#007A3A] to-[#005A2A] text-white hover:shadow-lg hover:shadow-[#007A3A]/30 hover:scale-105 active:scale-95'
+                : 'bg-gradient-to-br from-[#007A3A] to-[#005A2A] text-white hover:shadow-md hover:scale-105 active:scale-95'
             }`}
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>
