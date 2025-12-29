@@ -210,12 +210,12 @@ export default function TopicsPage({ onBack }) {
           {/* Collapse toggle button - Modern, compact design */}
           <button
             onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-            className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-200 rounded-r-md shadow-sm hover:shadow-md hover:bg-[#007A3A]/5 hover:border-[#007A3A] transition-all flex items-center justify-center group"
+            className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-200 rounded-r-md shadow-sm hover:shadow-md hover:bg-primary-600/5 hover:border-primary-600 transition-all flex items-center justify-center group"
             style={{ left: isPanelCollapsed ? '0' : '320px' }}
             title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
           >
             <svg
-              className={`w-3 h-3 text-gray-500 group-hover:text-[#007A3A] transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
+              className={`w-3 h-3 text-gray-500 group-hover:text-primary-600 transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

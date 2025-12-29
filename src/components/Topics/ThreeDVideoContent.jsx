@@ -75,7 +75,7 @@ export default function ThreeDVideoContent() {
             <div
               key={video.id}
               onClick={() => handleVideoClick(video)}
-              className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-[#007A3A] transition-all cursor-pointer"
+              className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl hover:border-primary-600 transition-all cursor-pointer"
             >
               {/* Thumbnail */}
               <div className="relative aspect-video bg-gray-100 overflow-hidden">
@@ -89,7 +89,7 @@ export default function ThreeDVideoContent() {
                 {/* Play overlay */}
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                   <div className="w-16 h-16 bg-white/90 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-lg">
-                    <Play className="w-8 h-8 text-[#007A3A] ml-1" fill="currentColor" />
+                    <Play className="w-8 h-8 text-primary-600 ml-1" fill="currentColor" />
                   </div>
                 </div>
 
@@ -100,14 +100,14 @@ export default function ThreeDVideoContent() {
                 </div>
 
                 {/* Topic badge */}
-                <div className="absolute top-2 left-2 bg-[#007A3A] text-white text-xs font-bold px-2 py-1 rounded">
+                <div className="absolute top-2 left-2 bg-primary-600 text-white text-xs font-bold px-2 py-1 rounded">
                   {video.topic}
                 </div>
               </div>
 
               {/* Info */}
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 mb-2 group-hover:text-[#007A3A] transition-colors">
+                <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 mb-2 group-hover:text-primary-600 transition-colors">
                   {video.title}
                 </h3>
                 <div className="flex items-center justify-between text-xs text-gray-500">
