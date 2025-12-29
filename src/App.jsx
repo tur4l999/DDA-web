@@ -1,28 +1,38 @@
 import { useState } from 'react'
-import Sidebar from './components/Sidebar'
+import Layout from './components/Layout'
 import Dashboard from './components/Dashboard'
+import OnlineClasses from './components/OnlineClasses'
+import TopicsPage from './components/Topics'
+import PenaltiesPage from './components/PenaltiesPage'
+import RoadSigns from './components/RoadSigns'
+import Exam from './components/Exam'
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [currentPage, setCurrentPage] = useState('dashboard')
 
+  const renderContent = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return <Dashboard setCurrentPage={setCurrentPage} />
+      case 'classes':
+        return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
+      case 'topics':
+        return <TopicsPage onBack={() => setCurrentPage('dashboard')} />
+      case 'penalties':
+        return <PenaltiesPage onBack={() => setCurrentPage('dashboard')} />
+      case 'road-signs':
+        return <RoadSigns />
+      case 'exam':
+        return <Exam onBack={() => setCurrentPage('dashboard')} />
+      default:
+        return <Dashboard setCurrentPage={setCurrentPage} />
+    }
+  }
+
   return (
-    <div className="flex h-screen bg-gray-50">
-      <Sidebar 
-        isOpen={isSidebarOpen} 
-        setIsOpen={setIsSidebarOpen}
-        isCollapsed={isSidebarCollapsed}
-        setIsCollapsed={setIsSidebarCollapsed}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-      <Dashboard
-        onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-    </div>
+    <Layout currentPage={currentPage} setCurrentPage={setCurrentPage}>
+      {renderContent()}
+    </Layout>
   )
 }
 
