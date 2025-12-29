@@ -18,29 +18,29 @@ const RoadSignCard = ({ sign }) => {
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        {/* Content Section - Word Document Style */}
+      <div className="bg-white rounded-2xl shadow-soft overflow-hidden">
+        {/* Modern Content Section */}
         <div className="p-6 lg:p-8 space-y-6">
-          {/* Title & Category */}
-          <div className="border-b border-gray-200 pb-4">
-            <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">
+          {/* Modern Title & Category */}
+          <div className="pb-4">
+            <h3 className="text-xl lg:text-2xl font-semibold text-neutral-900 mb-2">
               {sign.code} {sign.name}
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-neutral-600 font-medium">
               Kateqoriya: {categoryNames[sign.category]}
             </p>
           </div>
 
-          {/* Image Section */}
-          <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 flex items-center justify-center">
+          {/* Modern Image Section */}
+          <div className="relative bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-2xl p-8 flex items-center justify-center">
             <div 
               className="relative cursor-pointer"
               onClick={() => setIsModalOpen(true)}
               onMouseEnter={() => setIsImageHovered(true)}
               onMouseLeave={() => setIsImageHovered(false)}
             >
-              <div className={`bg-white rounded-xl shadow-md border-2 border-gray-200 p-6 transition-all duration-300 ${
-                isImageHovered ? 'border-primary-400 shadow-xl scale-105' : ''
+              <div className={`bg-white rounded-2xl shadow-soft-md p-6 transition-smooth ${
+                isImageHovered ? 'shadow-soft-lg scale-105' : ''
               }`}>
                 <img
                   src={sign.image || '/placeholder-sign.png'}
@@ -52,44 +52,44 @@ const RoadSignCard = ({ sign }) => {
                 />
               </div>
               
-              {/* Zoom indicator */}
-              <div className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-all duration-300 rounded-xl ${
-                isImageHovered ? 'bg-opacity-20' : ''
+              {/* Modern Zoom indicator */}
+              <div className={`absolute inset-0 flex items-center justify-center bg-neutral-900 bg-opacity-0 transition-smooth rounded-2xl ${
+                isImageHovered ? 'bg-opacity-10' : ''
               }`}>
                 {isImageHovered && (
-                  <div className="bg-white rounded-full p-3 shadow-lg">
-                    <ZoomIn className="w-6 h-6 text-primary-600" />
+                  <div className="bg-white rounded-full p-3 shadow-soft-lg">
+                    <ZoomIn className="w-6 h-6 text-primary-600" strokeWidth={2} />
                   </div>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Description - Word Document Style */}
-          <div className="space-y-4 text-base text-gray-800 leading-relaxed">
+          {/* Modern Description with Better Typography */}
+          <div className="space-y-5 text-base text-neutral-700 text-educational">
             <div className="space-y-2">
-              <h4 className="font-bold text-gray-900 text-lg">Mənası:</h4>
+              <h4 className="font-semibold text-neutral-900 text-lg">Mənası:</h4>
               <p className="pl-4">{sign.meaning}</p>
             </div>
             
             {sign.application && (
               <div className="space-y-2">
-                <h4 className="font-bold text-gray-900 text-lg">Harada tətbiq olunur:</h4>
+                <h4 className="font-semibold text-neutral-900 text-lg">Harada tətbiq olunur:</h4>
                 <p className="pl-4">{sign.application}</p>
               </div>
             )}
             
             {sign.specialCases && (
               <div className="space-y-2">
-                <h4 className="font-bold text-gray-900 text-lg">Xüsusi hallar:</h4>
+                <h4 className="font-semibold text-neutral-900 text-lg">Xüsusi hallar:</h4>
                 <p className="pl-4">{sign.specialCases}</p>
               </div>
             )}
 
             {sign.detailedDescription && (
               <div className="space-y-2">
-                <h4 className="font-bold text-gray-900 text-lg">Ətraflı məlumat:</h4>
-                <div className="pl-4 space-y-2">
+                <h4 className="font-semibold text-neutral-900 text-lg">Ətraflı məlumat:</h4>
+                <div className="pl-4 space-y-3">
                   {sign.detailedDescription.split('\n').map((paragraph, index) => (
                     <p key={index}>{paragraph}</p>
                   ))}

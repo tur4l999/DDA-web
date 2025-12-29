@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Modern animations */
 @keyframes slide-up {
   from {
     opacity: 0;
@@ -13,23 +14,91 @@
   }
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
 }
 
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
 @layer base {
+  /* Modern, eye-friendly base styles */
   body {
-    @apply bg-gray-50 text-gray-900;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
+    @apply bg-neutral-100 text-neutral-800;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.011em;
+  }
+
+  /* Improved readability for educational content */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-neutral-900;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    @apply text-neutral-700;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-400 ring-offset-2 ring-offset-neutral-50;
   }
 }
 
 @layer utilities {
+  /* Modern gradient backgrounds - Soft Ocean Blue/Teal */
   .gradient-bg {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+  }
+
+  .gradient-bg-soft {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+  }
+
+  /* Glassmorphism effect (subtle) */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-effect-dark {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Text shadow for better readability on gradients */
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Smooth hover transitions */
+  .transition-smooth {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Better line heights for educational content */
+  .text-educational {
+    line-height: 1.8;
+    letter-spacing: 0.01em;
   }
 }

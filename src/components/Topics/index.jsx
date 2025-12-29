@@ -194,9 +194,9 @@ export default function TopicsPage({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex relative">
+    <div className="min-h-screen bg-neutral-50 flex relative">
       {/* Sidebar with collapse */}
-      <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-80'} relative`}>
+      <div className={`transition-all duration-300 ease-out ${isPanelCollapsed ? 'w-0' : 'w-80'} relative`}>
         <TopicSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -207,15 +207,15 @@ export default function TopicsPage({ onBack }) {
         />
       </div>
 
-          {/* Collapse toggle button - Modern, compact design */}
+          {/* Modern Collapse toggle button */}
           <button
             onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-            className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-200 rounded-r-md shadow-sm hover:shadow-md hover:bg-[#007A3A]/5 hover:border-[#007A3A] transition-all flex items-center justify-center group"
+            className="absolute top-1/2 -translate-y-1/2 z-50 w-7 h-14 bg-white rounded-r-2xl shadow-soft hover:shadow-soft-md hover:bg-primary-50 transition-smooth flex items-center justify-center group"
             style={{ left: isPanelCollapsed ? '0' : '320px' }}
             title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
           >
             <svg
-              className={`w-3 h-3 text-gray-500 group-hover:text-[#007A3A] transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
+              className={`w-3.5 h-3.5 text-neutral-500 group-hover:text-primary-600 transition-smooth ${isPanelCollapsed ? 'rotate-180' : ''}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -241,7 +241,7 @@ export default function TopicsPage({ onBack }) {
           onPaywallOpen={() => setIsPaywallModalOpen(true)}
         />
 
-        <main className={`flex-1 px-4 lg:px-6 py-8 transition-all duration-200 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
+        <main className={`flex-1 px-4 lg:px-6 py-8 transition-all duration-300 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
           {renderContent()}
         </main>
       </div>

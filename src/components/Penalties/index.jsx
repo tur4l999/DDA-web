@@ -97,55 +97,55 @@ export default function PenaltiesPage({ onBack }) {
   })).filter(category => category.penalties.length > 0)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
+    <div className="min-h-screen bg-neutral-50">
+      {/* Modern Header */}
+      <div className="sticky top-0 z-30 glass-effect border-b border-neutral-200/60 shadow-soft">
         <div className="px-4 lg:px-6 py-4">
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-3">
               <button
                 onClick={onBack}
-                className="w-9 h-9 flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors"
+                className="w-9 h-9 flex items-center justify-center hover:bg-neutral-100 rounded-xl transition-smooth"
               >
-                <ArrowLeft className="w-5 h-5 text-gray-600" />
+                <ArrowLeft className="w-5 h-5 text-neutral-600" />
               </button>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Cərimələr</h1>
-                <p className="text-xs text-gray-500">İnzibati Xətalar Məcəlləsi</p>
+                <h1 className="text-xl font-semibold text-neutral-900">Cərimələr</h1>
+                <p className="text-xs text-neutral-500 font-medium">İnzibati Xətalar Məcəlləsi</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="w-9 h-9 flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors"
+                className="w-9 h-9 flex items-center justify-center hover:bg-neutral-100 rounded-xl transition-smooth"
               >
-                <SlidersHorizontal className="w-5 h-5 text-gray-600" />
+                <SlidersHorizontal className="w-5 h-5 text-neutral-600" />
               </button>
             </div>
           </div>
 
-          {/* Search */}
+          {/* Modern Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
             <input
               type="text"
               placeholder="Pozuntu növünü axtar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A]/20 focus:border-[#007A3A] bg-gray-50"
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-neutral-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 bg-neutral-50 transition-smooth"
             />
           </div>
         </div>
       </div>
 
-      {/* Content */}
+      {/* Modern Content */}
       <main className="px-4 lg:px-6 py-6 max-w-6xl mx-auto">
         {filteredData.length > 0 ? (
           <div className="space-y-8">
             {filteredData.map(category => (
               <div key={category.id}>
-                <h2 className="text-base font-semibold text-gray-900 mb-4">
+                <h2 className="text-base font-semibold text-neutral-900 mb-4">
                   {category.category}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -161,12 +161,12 @@ export default function PenaltiesPage({ onBack }) {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white border border-gray-200 rounded-2xl">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <Search className="w-8 h-8 text-gray-400" />
+          <div className="text-center py-16 bg-white rounded-2xl shadow-soft">
+            <div className="w-16 h-16 mx-auto mb-4 bg-neutral-100 rounded-full flex items-center justify-center">
+              <Search className="w-8 h-8 text-neutral-400" />
             </div>
-            <p className="text-gray-600 font-medium mb-1">Heç bir nəticə tapılmadı</p>
-            <p className="text-sm text-gray-500">Axtarış sorğusunu dəyişin</p>
+            <p className="text-neutral-900 font-semibold mb-2">Heç bir nəticə tapılmadı</p>
+            <p className="text-sm text-neutral-500">Axtarış sorğusunu dəyişin</p>
           </div>
         )}
       </main>
@@ -178,55 +178,55 @@ export default function PenaltiesPage({ onBack }) {
         onClose={() => setIsVideoModalOpen(false)}
       />
 
-      {/* Filter Panel (placeholder) */}
+      {/* Modern Filter Panel */}
       {isFilterOpen && (
         <>
           <div 
-            className="fixed inset-0 bg-black/50 z-40"
+            className="fixed inset-0 bg-neutral-900/30 backdrop-blur-sm z-40"
             onClick={() => setIsFilterOpen(false)}
           />
-          <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-50 p-6">
+          <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-soft-xl z-50 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-900">Filtrlər</h3>
+              <h3 className="text-lg font-semibold text-neutral-900">Filtrlər</h3>
               <button
                 onClick={() => setIsFilterOpen(false)}
-                className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-lg"
+                className="w-8 h-8 flex items-center justify-center hover:bg-neutral-100 rounded-xl transition-smooth"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-neutral-700 mb-2">
                   Cərimə aralığı
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="number"
                     placeholder="Min"
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                    className="flex-1 px-3 py-2 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-smooth"
                   />
                   <input
                     type="number"
                     placeholder="Max"
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                    className="flex-1 px-3 py-2 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-smooth"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-neutral-700 mb-2">
                   Kateqoriya
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm">
+                <select className="w-full px-3 py-2 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:border-primary-400 transition-smooth">
                   <option>Hamısı</option>
                   <option>Əsas pozuntu növləri</option>
                   <option>Sürücü davranışı</option>
                 </select>
               </div>
 
-              <button className="w-full py-2.5 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold rounded-xl transition-colors">
+              <button className="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-smooth shadow-soft-md hover:shadow-soft-lg">
                 Tətbiq et
               </button>
             </div>

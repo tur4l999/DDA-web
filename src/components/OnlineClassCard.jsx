@@ -81,14 +81,14 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-100">
+    <div className="bg-white rounded-2xl shadow-soft overflow-hidden">
+      <div className="px-5 py-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-semibold text-gray-900">Ən yaxın dərslər</h3>
+          <h3 className="text-base font-semibold text-neutral-900">Ən yaxın dərslər</h3>
           {showViewAll && (
             <button 
               onClick={() => setCurrentPage && setCurrentPage('classes')}
-              className="text-[#007A3A] hover:text-[#005A2A] text-sm font-medium flex items-center space-x-1 transition-colors"
+              className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center space-x-1 transition-smooth"
             >
               <span>Hamısı</span>
               <ArrowRight className="w-4 h-4" />
@@ -96,29 +96,29 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
           )}
         </div>
       </div>
-      <div className="p-4 space-y-3">
+      <div className="px-4 pb-4 space-y-3">
         {classes.map((cls) => (
-          <div key={cls.id} className="group bg-white border border-gray-200 hover:border-[#007A3A] rounded-xl p-4 hover:shadow-md transition-all">
+          <div key={cls.id} className="group bg-neutral-50 hover:bg-white rounded-2xl p-4 hover:shadow-soft-md transition-smooth border border-transparent hover:border-primary-200">
             {/* Header with title and status */}
             <div className="flex items-start justify-between gap-3 mb-3">
-              <h4 className="text-sm font-semibold text-gray-900 line-clamp-1 flex-1">{cls.title}</h4>
+              <h4 className="text-sm font-semibold text-neutral-900 line-clamp-1 flex-1">{cls.title}</h4>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className={`${getStatusColor(cls.status)} px-2.5 py-1 rounded-lg text-xs font-semibold`}>
+                <span className={`${getStatusColor(cls.status)} px-2.5 py-1.5 rounded-xl text-xs font-semibold`}>
                   {getStatusLabel(cls.status)}
                 </span>
-                <span className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                <span className="bg-neutral-100 text-neutral-700 px-2.5 py-1.5 rounded-xl text-xs font-semibold">
                   {getLanguageLabel(cls.language)}
                 </span>
               </div>
             </div>
 
             {/* Date/Time/Duration info */}
-            <div className="flex items-center gap-4 text-xs text-gray-600 mb-3">
+            <div className="flex items-center gap-4 text-xs text-neutral-600 mb-3">
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
                 <span className="font-medium">{formatDate(cls.date)}</span>
               </div>
-              <span className="text-gray-300">•</span>
+              <span className="text-neutral-300">•</span>
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 <span className="font-medium">{cls.duration} dəq</span>
@@ -126,14 +126,14 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
             </div>
 
             {/* Instructor */}
-            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+            <div className="flex items-center gap-2 text-xs text-neutral-500 mb-3">
               <User className="w-3.5 h-3.5" />
               <span>{cls.instructor}</span>
             </div>
 
-            {/* CTA */}
+            {/* Modern CTA */}
             {cls.status === 'started' && (
-              <button className="w-full bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+              <button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-smooth text-sm flex items-center justify-center gap-2 shadow-soft-md hover:shadow-soft-lg">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -143,7 +143,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
             )}
 
             {cls.status === 'waiting' && (
-              <button className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+              <button className="w-full bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-300 font-medium py-2.5 px-4 rounded-xl transition-smooth text-sm flex items-center justify-center gap-2 shadow-soft">
                 <Bell className="w-4 h-4" />
                 <span>Xatırlat</span>
               </button>
@@ -151,11 +151,13 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
           </div>
         ))}
 
-        {/* Empty state */}
+        {/* Modern Empty state */}
         {classes.length === 0 && (
           <div className="text-center py-8">
-            <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-500">Yaxın zamanda dərs yoxdur</p>
+            <div className="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8 text-neutral-400" />
+            </div>
+            <p className="text-sm text-neutral-500 font-medium">Yaxın zamanda dərs yoxdur</p>
           </div>
         )}
       </div>

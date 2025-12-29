@@ -12,11 +12,11 @@ const tabs = [
 
 export default function TabNavigation({ activeTab, onTabChange, onExamClick, onContactClick, userPackage = 'basic', onPaywallOpen }) {
   return (
-    <div className="sticky top-[57px] z-20 bg-white border-b border-gray-200 shadow-sm">
-      <div className="px-4 lg:px-6 py-1.5">
+    <div className="sticky top-[61px] z-20 glass-effect border-b border-neutral-200/60 shadow-soft">
+      <div className="px-4 lg:px-6 py-2">
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
           {/* Regular tabs */}
-          <div className="flex gap-1 flex-1">
+          <div className="flex gap-1.5 flex-1">
             {tabs.map(tab => {
               const Icon = tab.icon
               const isContactTab = tab.id === 'contact'
@@ -35,24 +35,24 @@ export default function TabNavigation({ activeTab, onTabChange, onExamClick, onC
                         onTabChange(tab.id)
                       }
                     }}
-                    className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all rounded-lg ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-smooth rounded-xl ${
                       activeTab === tab.id && hasAccess
-                        ? 'bg-[#007A3A]/10 text-[#007A3A]'
+                        ? 'bg-primary-50 text-primary-700 shadow-soft'
                         : isLocked
-                          ? 'text-gray-400 hover:bg-gray-50 cursor-not-allowed'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          ? 'text-neutral-400 hover:bg-neutral-50 cursor-not-allowed'
+                          : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
                     }`}
                   >
-                    <Icon className="w-4 h-4" strokeWidth={1.5} />
+                    <Icon className="w-4 h-4" strokeWidth={activeTab === tab.id ? 2 : 1.5} />
                     <span>{tab.label}</span>
                     {isLocked && <Lock className="w-3 h-3" />}
                   </button>
                   
-                  {/* Tooltip */}
+                  {/* Modern Tooltip */}
                   {isLocked && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-neutral-900 text-white text-xs rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-soft-lg">
                       Paket tələb olunur
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-neutral-900"></div>
                     </div>
                   )}
                 </div>
@@ -60,10 +60,10 @@ export default function TabNavigation({ activeTab, onTabChange, onExamClick, onC
             })}
           </div>
 
-          {/* Primary CTA - İmtahan ver */}
+          {/* Modern Primary CTA - İmtahan ver */}
           <button
             onClick={onExamClick}
-            className="flex items-center gap-2 px-4 py-2 bg-[#007A3A] hover:bg-[#005A2A] text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold rounded-xl transition-smooth whitespace-nowrap shadow-soft-md hover:shadow-soft-lg"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
