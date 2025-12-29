@@ -88,7 +88,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
           {showViewAll && (
             <button 
               onClick={() => setCurrentPage && setCurrentPage('classes')}
-              className="text-[#007A3A] hover:text-[#005A2A] text-sm font-medium flex items-center space-x-1 transition-colors"
+              className="text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center space-x-1 transition-colors"
             >
               <span>Hamısı</span>
               <ArrowRight className="w-4 h-4" />
@@ -98,7 +98,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
       </div>
       <div className="p-4 space-y-3">
         {classes.map((cls) => (
-          <div key={cls.id} className="group bg-white border border-gray-200 hover:border-[#007A3A] rounded-xl p-4 hover:shadow-md transition-all">
+          <div key={cls.id} className="group bg-white border border-gray-200 hover:border-primary-500 rounded-xl p-4 hover:shadow-md transition-all">
             {/* Header with title and status */}
             <div className="flex items-start justify-between gap-3 mb-3">
               <h4 className="text-sm font-semibold text-gray-900 line-clamp-1 flex-1">{cls.title}</h4>
@@ -133,7 +133,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
 
             {/* CTA */}
             {cls.status === 'started' && (
-              <button className="w-full bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+              <button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>

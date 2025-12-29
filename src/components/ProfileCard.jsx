@@ -29,7 +29,7 @@ export default function ProfileCard() {
           </div>
           
           <h3 className="text-base font-bold mb-1">Tural Qarayev</h3>
-          <div className="flex items-center justify-center gap-1 text-green-100 text-xs mb-3">
+          <div className="flex items-center justify-center gap-1 text-primary-100 text-xs mb-3">
             <MapPin className="w-3 h-3" strokeWidth={2} />
             <span>Test Academy</span>
           </div>
@@ -47,12 +47,12 @@ export default function ProfileCard() {
             <div className="flex items-center justify-around">
               <div className="text-center">
                 <span className="font-bold text-lg block">4</span>
-                <span className="text-green-100 text-[10px]">Tamamlanmış</span>
+                <span className="text-primary-100 text-[10px]">Tamamlanmış</span>
               </div>
               <div className="w-px h-8 bg-white/20"></div>
               <div className="text-center">
                 <span className="font-bold text-lg block">20</span>
-                <span className="text-green-100 text-[10px]">Qalır</span>
+                <span className="text-primary-100 text-[10px]">Qalır</span>
               </div>
             </div>
           </div>

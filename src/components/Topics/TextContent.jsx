@@ -45,7 +45,7 @@ function TableOfContents({ sections, activeSection }) {
               href={`#${section.id}`}
               className={`block text-sm py-1 transition-colors ${
                 activeSection === section.id
-                  ? 'text-[#007A3A] font-medium'
+                  ? 'text-primary-600 font-medium'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -110,15 +110,15 @@ export default function TextContent({ content }) {
               <h3 className="font-semibold text-gray-900 mb-3">Sürücünün vəzifələri</h3>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex gap-2">
-                  <span className="text-[#007A3A] font-bold">1.</span>
+                  <span className="text-primary-600 font-bold">1.</span>
                   <span>Sürücülük vəsiqəsi və nəqliyyat vasitəsinin qeydiyyat sənədləri olmalıdır</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-[#007A3A] font-bold">2.</span>
+                  <span className="text-primary-600 font-bold">2.</span>
                   <span>Texniki baxışdan keçmə şəhadətnaməsi olmalıdır</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-[#007A3A] font-bold">3.</span>
+                  <span className="text-primary-600 font-bold">3.</span>
                   <span>İcbari sığorta sənədi olmalıdır</span>
                 </li>
               </ul>
@@ -135,13 +135,13 @@ export default function TextContent({ content }) {
         </article>
 
         {/* CTA Section */}
-        <div className="mt-8 p-6 bg-[#007A3A]/5 border border-[#007A3A]/20 rounded-xl">
+        <div className="mt-8 p-6 bg-primary-600/5 border border-primary-600/20 rounded-xl">
           <div className="flex items-center justify-between gap-4">
             <div>
               <h3 className="font-semibold text-gray-900 mb-1">Mövzunu başa vurdunuz?</h3>
               <p className="text-sm text-gray-600">İmtahana başlayın və biliklərinizi yoxlayın</p>
             </div>
-            <button className="px-6 py-3 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold rounded-xl transition-colors shadow-sm whitespace-nowrap">
+            <button className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors shadow-sm whitespace-nowrap">
               İmtahana başla
             </button>
           </div>

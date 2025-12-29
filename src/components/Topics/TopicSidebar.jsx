@@ -14,7 +14,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
   })
 
   const getTopicStatus = (topic) => {
-    if (topic.completed) return <Check className="w-4 h-4 text-[#007A3A]" />
+    if (topic.completed) return <Check className="w-4 h-4 text-primary-600" />
     return <Circle className="w-4 h-4 text-gray-300" />
   }
 
@@ -50,7 +50,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                 placeholder="Mövzunu axtar..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A]/20 focus:border-[#007A3A]"
+                className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600"
               />
             </div>
 
@@ -62,7 +62,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                   onClick={() => setFilter(f)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                     filter === f
-                      ? 'bg-[#007A3A] text-white'
+                      ? 'bg-primary-600 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -90,7 +90,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                           e.stopPropagation()
                           toggleExpand(topic.id)
                         }}
-                        className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-[#007A3A] hover:bg-[#007A3A]/10 rounded-md transition-colors flex-shrink-0"
+                        className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-primary-600 hover:bg-primary-600/10 rounded-md transition-colors flex-shrink-0"
                         title={isExpanded ? 'Bağla' : 'Aç'}
                       >
                         {isExpanded ? (
@@ -111,7 +111,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                         !hasSubTopics ? 'pl-4' : 'pl-0'
                       } ${
                         currentTopic?.id === topic.id
-                          ? 'bg-[#007A3A]/5 border-[#007A3A]'
+                          ? 'bg-primary-600/5 border-primary-600'
                           : 'border-transparent hover:bg-gray-50'
                       }`}
                     >
@@ -120,7 +120,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className={`text-sm font-medium ${
-                          currentTopic?.id === topic.id ? 'text-[#007A3A]' : 'text-gray-900'
+                          currentTopic?.id === topic.id ? 'text-primary-600' : 'text-gray-900'
                         }`}>
                           {topic.code}. {topic.title}
                         </p>
@@ -131,7 +131,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                             </div>
                             <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-[#007A3A] rounded-full transition-all"
+                                className="h-full bg-primary-600 rounded-full transition-all"
                                 style={{ width: `${topic.progress}%` }}
                               />
                             </div>
@@ -153,7 +153,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                           }}
                           className={`w-full flex items-start gap-2 pl-12 pr-4 py-2.5 text-left transition-colors ${
                             currentTopic?.id === subTopic.id
-                              ? 'bg-[#007A3A]/10 text-[#007A3A]'
+                              ? 'bg-primary-600/10 text-primary-600'
                               : 'hover:bg-gray-100/80 text-gray-700'
                           }`}
                         >
@@ -162,7 +162,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className={`text-xs font-medium ${
-                              currentTopic?.id === subTopic.id ? 'text-[#007A3A]' : 'text-gray-700'
+                              currentTopic?.id === subTopic.id ? 'text-primary-600' : 'text-gray-700'
                             }`}>
                               {subTopic.code}. {subTopic.title}
                             </p>
@@ -170,7 +170,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                               <div className="mt-1.5">
                                 <div className="h-0.5 bg-gray-200 rounded-full overflow-hidden">
                                   <div 
-                                    className="h-full bg-[#007A3A] rounded-full transition-all"
+                                    className="h-full bg-primary-600 rounded-full transition-all"
                                     style={{ width: `${subTopic.progress}%` }}
                                   />
                                 </div>

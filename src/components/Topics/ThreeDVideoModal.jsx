@@ -25,7 +25,7 @@ export default function ThreeDVideoModal({ video, isOpen, onClose }) {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] px-6 py-4 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-4 flex items-center justify-between">
             <div className="flex-1">
               <h3 className="text-lg font-bold text-white">{video.title}</h3>
               <p className="text-sm text-white/70">{video.topic} • {video.duration}</p>
