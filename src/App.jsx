@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Sidebar from './components/Sidebar'
-import Dashboard from './components/Dashboard'
+import SidebarNew from './components/SidebarNew'
+import DashboardNew from './components/DashboardNew'
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar 
+      <SidebarNew 
         isOpen={isSidebarOpen} 
         setIsOpen={setIsSidebarOpen}
         isCollapsed={isSidebarCollapsed}
@@ -17,7 +17,7 @@ function App() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
-      <Dashboard
+      <DashboardNew
         onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
