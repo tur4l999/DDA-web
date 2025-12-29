@@ -26,7 +26,7 @@ export default function TopicsPage({ onBack }) {
   const [selectedQuestion, setSelectedQuestion] = useState(null)
   const [questions, setQuestions] = useState([])
   const [toast, setToast] = useState(null)
-  const [userPackage, setUserPackage] = useState('basic') // 'basic', 'standard', 'premium'
+  const [userPackage, setUserPackage] = useState('basic')
   const [currentTopic, setCurrentTopic] = useState({
     id: 1,
     code: 'M1',
@@ -50,10 +50,7 @@ export default function TopicsPage({ onBack }) {
   }
 
   const handleQuestionSubmit = (questionData) => {
-    // Add question to list (optimistic UI)
     setQuestions(prev => [questionData, ...prev])
-    
-    // Show toast
     showToast('Sualınız göndərildi', 'success')
   }
 
@@ -74,7 +71,6 @@ export default function TopicsPage({ onBack }) {
       return q
     }))
 
-    // Update selected question if it's open
     if (selectedQuestion?.id === questionId) {
       setSelectedQuestion(prev => ({
         ...prev,
@@ -169,11 +165,6 @@ export default function TopicsPage({ onBack }) {
     }
   ]
 
-  const progress = {
-    completed: 4,
-    total: 24
-  }
-
   const renderContent = () => {
     switch (activeTab) {
       case 'materials':
@@ -194,9 +185,9 @@ export default function TopicsPage({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex relative">
+    <div className="min-h-screen bg-surface-50 flex relative">
       {/* Sidebar with collapse */}
-      <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-80'} relative`}>
+      <div className={`transition-all duration-300 ease-out ${isPanelCollapsed ? 'w-0' : 'w-80'} relative`}>
         <TopicSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -207,23 +198,23 @@ export default function TopicsPage({ onBack }) {
         />
       </div>
 
-          {/* Collapse toggle button - Modern, compact design */}
-          <button
-            onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-            className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-200 rounded-r-md shadow-sm hover:shadow-md hover:bg-[#007A3A]/5 hover:border-[#007A3A] transition-all flex items-center justify-center group"
-            style={{ left: isPanelCollapsed ? '0' : '320px' }}
-            title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
-          >
-            <svg
-              className={`w-3 h-3 text-gray-500 group-hover:text-[#007A3A] transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+      {/* Collapse toggle button */}
+      <button
+        onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
+        className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-slate-200 rounded-r-lg shadow-soft hover:shadow-soft-md hover:bg-primary-50 hover:border-primary-200 transition-all flex items-center justify-center group"
+        style={{ left: isPanelCollapsed ? '0' : '320px' }}
+        title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
+      >
+        <svg
+          className={`w-3 h-3 text-slate-400 group-hover:text-primary-600 transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          strokeWidth={2.5}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
@@ -241,7 +232,7 @@ export default function TopicsPage({ onBack }) {
           onPaywallOpen={() => setIsPaywallModalOpen(true)}
         />
 
-        <main className={`flex-1 px-4 lg:px-6 py-8 transition-all duration-200 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
+        <main className={`flex-1 px-4 lg:px-8 py-8 transition-all duration-300 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
           {renderContent()}
         </main>
       </div>
@@ -272,7 +263,6 @@ export default function TopicsPage({ onBack }) {
         onClose={() => setIsPaywallModalOpen(false)}
       />
 
-      {/* Toast */}
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
   )

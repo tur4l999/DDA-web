@@ -28,191 +28,164 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <header className="bg-white border-b border-gray-200 px-4 lg:px-8 py-4 sticky top-0 z-10 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+      {/* Header - Minimal with blur */}
+      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 px-4 lg:px-8 py-4 sticky top-0 z-10">
+        <div className="flex items-center justify-between max-w-[1400px] mx-auto">
+          <div className="flex items-center gap-4">
             <button
               onClick={onMenuClick}
-              className="lg:hidden text-gray-600 hover:text-gray-900"
+              className="lg:hidden p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
-            <h2 className="hidden lg:block text-sm text-gray-900 font-semibold">Test Academy</h2>
+            <span className="hidden lg:block text-sm text-slate-500 font-medium">Test Academy</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="hidden sm:flex items-center bg-gray-100 rounded-lg px-3 py-2">
-              <span className="text-sm text-gray-700 font-medium">44 gün</span>
+          
+          <div className="flex items-center gap-3">
+            {/* Days badge */}
+            <div className="hidden sm:flex items-center bg-primary-50 text-primary-700 rounded-xl px-3 py-2">
+              <span className="text-sm font-semibold">44 gün</span>
             </div>
-            <div className="hidden sm:flex items-center bg-gray-100 rounded-lg px-3 py-2 space-x-2">
-              <Globe className="w-4 h-4 text-gray-600" />
+            
+            {/* Language selector */}
+            <div className="hidden sm:flex items-center bg-slate-50 rounded-xl px-3 py-2 gap-2">
+              <Globe className="w-4 h-4 text-slate-500" />
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="bg-transparent text-sm text-gray-700 font-medium focus:outline-none"
+                className="bg-transparent text-sm text-slate-700 font-medium focus:outline-none cursor-pointer"
               >
                 <option value="az">Azərbaycan</option>
                 <option value="ru">Русский</option>
               </select>
             </div>
-            <button className="text-gray-600 hover:text-gray-900 relative">
+            
+            {/* Notifications */}
+            <button className="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
               <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-500 rounded-full ring-2 ring-white"></span>
             </button>
-            <button className="text-gray-600 hover:text-gray-900">
+            
+            {/* Settings */}
+            <button className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
               <Settings className="w-5 h-5" />
             </button>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto bg-gray-50">
-        {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-8 pb-3 -mx-4 lg:-mx-8 overflow-visible min-h-[260px] lg:min-h-[220px]">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-[0.06]">
-            <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <path d="M0 400C240 300 480 500 720 400C960 300 1200 500 1440 400V600H0V400Z" fill="white"/>
-              <circle cx="200" cy="100" r="60" fill="white" opacity="0.2"/>
-              <circle cx="1200" cy="150" r="80" fill="white" opacity="0.15"/>
+      <main className="flex-1 overflow-y-auto bg-surface-50">
+        {/* Hero Section - Softer gradient */}
+        <div className="gradient-primary relative px-4 lg:px-8 pt-10 pb-6">
+          {/* Subtle background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <svg className="w-full h-full" viewBox="0 0 1440 400" fill="none" preserveAspectRatio="none">
+              <circle cx="100" cy="50" r="80" fill="white" opacity="0.2"/>
+              <circle cx="1340" cy="100" r="120" fill="white" opacity="0.15"/>
+              <circle cx="700" cy="150" r="60" fill="white" opacity="0.1"/>
             </svg>
           </div>
 
-          <div className="max-w-[1200px] mx-auto relative z-10 h-full flex flex-col justify-between">
-            {/* Top Zone: Greeting + Profile */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
+          <div className="max-w-[1400px] mx-auto relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
               {/* Greeting */}
-              <div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Salam, Tural Qarayev!
-                </h1>
-                <p className="text-white/90 text-sm lg:text-base">
-                  Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
-                </p>
-              </div>
-
-              {/* Profile Card - Absolute positioned for overlap, locked to right column */}
-              <div className="hidden lg:block absolute right-0 top-8 w-[400px] z-30">
-                <div className="relative -mb-28">
-                  <ProfileCard />
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
+                    Salam, Tural Qarayev!
+                  </h1>
+                  <p className="text-white/80 text-sm lg:text-base leading-relaxed">
+                    Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
+                  </p>
                 </div>
-              </div>
-            </div>
 
-            {/* Bottom Zone: 4 Cards pushed to hero bottom */}
-            <div className="mt-auto pt-4">
-              <div className="lg:max-w-[calc(100%-424px)]">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
-                  <button
+                {/* Quick Action Cards - First Row */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <ActionCard
+                    icon={BookOpen}
+                    title="Təlim Mövzuları"
                     onClick={() => setCurrentPage('topics')}
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <BookOpen className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">Təlim Mövzuları</h3>
-                  </button>
-
-                  <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <Video className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">3D Video</h3>
-                  </button>
-
-                  <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <HelpCircle className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">Suallar</h3>
-                  </button>
-
-                  <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <FileText className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">Video Dərslər</h3>
-                  </button>
+                  />
+                  <ActionCard
+                    icon={Video}
+                    title="3D Video"
+                    onClick={() => {}}
+                  />
+                  <ActionCard
+                    icon={HelpCircle}
+                    title="Suallar"
+                    onClick={() => {}}
+                  />
+                  <ActionCard
+                    icon={FileText}
+                    title="Video Dərslər"
+                    onClick={() => {}}
+                  />
                 </div>
+              </div>
+
+              {/* Profile Card - Desktop */}
+              <div className="hidden lg:block">
+                <ProfileCard />
               </div>
             </div>
 
             {/* Mobile Profile Card */}
-            <div className="lg:hidden mt-4">
+            <div className="lg:hidden mt-6">
               <ProfileCard />
             </div>
           </div>
         </div>
 
-        {/* Main Content - White Background */}
-        <div className="px-4 lg:px-8 pt-3 pb-6">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
-              {/* Left Column: Modules + Results - LOCKED BOUNDARY */}
-              <div className="space-y-6 max-w-full overflow-hidden">
-                {/* Other 4 Modules - 1 row */}
-                <div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
-                    <button
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <BookMarked className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Maddələr</h3>
-                    </button>
-
-                    <button
-                      onClick={() => setCurrentPage('penalties')}
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Cərimələr</h3>
-                    </button>
-
-                    <button
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <BarChart3 className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Statistika</h3>
-                    </button>
-
-                    <button
-                      onClick={() => setCurrentPage('classes')}
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <Calendar className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Onlayn Dərslər</h3>
-                    </button>
-                  </div>
+        {/* Main Content */}
+        <div className="px-4 lg:px-8 py-8">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
+              {/* Left Column */}
+              <div className="space-y-8">
+                {/* Second Row Action Cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <ActionCard
+                    icon={BookMarked}
+                    title="Maddələr"
+                    onClick={() => {}}
+                    variant="light"
+                  />
+                  <ActionCard
+                    icon={AlertTriangle}
+                    title="Cərimələr"
+                    onClick={() => setCurrentPage('penalties')}
+                    variant="light"
+                  />
+                  <ActionCard
+                    icon={BarChart3}
+                    title="Statistika"
+                    onClick={() => {}}
+                    variant="light"
+                  />
+                  <ActionCard
+                    icon={Calendar}
+                    title="Onlayn Dərslər"
+                    onClick={() => setCurrentPage('classes')}
+                    variant="light"
+                  />
                 </div>
 
                 {/* Simulator Results */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
-                  <div className="px-6 py-4 border-b border-gray-100">
-                    <h3 className="text-base font-semibold text-gray-900">Simulyator Nəticələri</h3>
+                <div className="card">
+                  <div className="px-6 py-4 border-b border-slate-100">
+                    <h3 className="text-base font-semibold text-slate-900">Simulyator Nəticələri</h3>
                   </div>
                   <div className="p-6">
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                      <div className="flex items-center justify-between p-4 bg-surface-50 rounded-2xl hover:bg-surface-100 transition-colors cursor-pointer">
                         <div>
-                          <p className="text-sm font-semibold text-gray-900">03.12.2025 19:15</p>
+                          <p className="text-sm font-semibold text-slate-900">03.12.2025 19:15</p>
                         </div>
-                        <div className="flex flex-col items-end space-y-1">
-                          <p className="text-xs text-gray-500">30% (3/10)</p>
-                          <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div className="bg-[#007A3A] h-2 rounded-full" style={{ width: '30%' }}></div>
+                        <div className="flex flex-col items-end gap-2">
+                          <p className="text-xs text-slate-500 font-medium">30% (3/10)</p>
+                          <div className="w-24 bg-slate-200 rounded-full h-1.5">
+                            <div className="bg-primary-500 h-1.5 rounded-full transition-all" style={{ width: '30%' }}></div>
                           </div>
                         </div>
                       </div>
@@ -221,8 +194,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 </div>
               </div>
 
-              {/* Right Column: Online Classes - LOCKED BOUNDARY, clear space for profile overlap */}
-              <div className="lg:pt-32 max-w-full overflow-hidden">
+              {/* Right Column - Online Classes */}
+              <div>
                 <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
               </div>
             </div>
@@ -230,5 +203,32 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
         </div>
       </main>
     </div>
+  )
+}
+
+// Action Card Component
+function ActionCard({ icon: Icon, title, onClick, variant = 'default' }) {
+  const isLight = variant === 'light'
+  
+  return (
+    <button
+      onClick={onClick}
+      className={`group text-left p-4 rounded-2xl transition-all duration-200 ${
+        isLight
+          ? 'bg-white border border-slate-200/80 hover:border-primary-200 hover:shadow-soft-md'
+          : 'bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20'
+      }`}
+    >
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 transition-colors duration-200 ${
+        isLight
+          ? 'bg-primary-50 group-hover:bg-primary-100'
+          : 'bg-white/20 group-hover:bg-white/30'
+      }`}>
+        <Icon className={`w-5 h-5 ${isLight ? 'text-primary-600' : 'text-white'}`} strokeWidth={1.75} />
+      </div>
+      <h3 className={`font-semibold text-sm ${isLight ? 'text-slate-900' : 'text-white'}`}>
+        {title}
+      </h3>
+    </button>
   )
 }

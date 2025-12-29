@@ -21,12 +21,12 @@ export default function VideoContent() {
   if (videos.length === 0) {
     return (
       <div className="max-w-[860px] mx-auto">
-        <div className="text-center py-16 bg-gray-50 border border-gray-200 rounded-xl">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
-            <Play className="w-8 h-8 text-gray-400" />
+        <div className="text-center py-16 card">
+          <div className="w-16 h-16 mx-auto mb-4 bg-slate-100 rounded-full flex items-center justify-center">
+            <Play className="w-8 h-8 text-slate-400" />
           </div>
-          <p className="text-gray-600 font-medium mb-1">Bu mövzuda video yoxdur</p>
-          <p className="text-sm text-gray-500">Tezliklə əlavə ediləcək</p>
+          <p className="text-slate-900 font-medium mb-1">Bu mövzuda video yoxdur</p>
+          <p className="text-sm text-slate-500">Tezliklə əlavə ediləcək</p>
         </div>
       </div>
     )
@@ -36,29 +36,31 @@ export default function VideoContent() {
     <div className="max-w-[860px] mx-auto">
       {/* Main Video Player */}
       <div className="mb-6">
-        <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden mb-4">
+        <div className="aspect-video bg-slate-900 rounded-2xl overflow-hidden mb-4">
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
-              <div className="w-20 h-20 mx-auto mb-4 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <Play className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 mx-auto mb-4 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+                <Play className="w-10 h-10 text-white" fill="currentColor" />
               </div>
-              <p className="text-white font-medium">Video oynatıcı</p>
+              <p className="text-white/80 font-medium">Video oynatıcı</p>
             </div>
           </div>
         </div>
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-gray-900">{videos[0].title}</h3>
-            <p className="text-sm text-gray-500">{videos[0].duration}</p>
+            <h3 className="font-semibold text-slate-900">{videos[0].title}</h3>
+            <p className="text-sm text-slate-500">{videos[0].duration}</p>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer group">
             <input
               type="checkbox"
               checked={watchedVideos.includes(videos[0].id)}
               onChange={() => toggleWatched(videos[0].id)}
-              className="w-4 h-4 text-[#007A3A] rounded focus:ring-[#007A3A]"
+              className="w-5 h-5 text-primary-600 rounded-lg border-slate-300 focus:ring-primary-500"
             />
-            <span className="text-sm font-medium text-gray-700">Videonu izlədim</span>
+            <span className="text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">
+              Videonu izlədim
+            </span>
           </label>
         </div>
       </div>
@@ -66,27 +68,27 @@ export default function VideoContent() {
       {/* Video List */}
       {videos.length > 1 && (
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Video siyahısı</h3>
-          <div className="space-y-2">
+          <h3 className="font-semibold text-slate-900 mb-3">Video siyahısı</h3>
+          <div className="space-y-3">
             {videos.map((video, index) => (
               <button
                 key={video.id}
-                className="w-full flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-xl hover:border-[#007A3A] hover:shadow-sm transition-all group"
+                className="w-full flex items-center gap-4 p-4 card-interactive group"
               >
-                <div className="w-32 h-20 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <Play className="w-8 h-8 text-gray-400 group-hover:text-[#007A3A] transition-colors" />
+                <div className="w-32 h-20 bg-slate-100 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                  <Play className="w-8 h-8 text-slate-400 group-hover:text-primary-600 transition-colors" />
                 </div>
                 <div className="flex-1 text-left">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-medium text-gray-500">Video {index + 1}</span>
+                    <span className="text-xs font-medium text-slate-500">Video {index + 1}</span>
                     {watchedVideos.includes(video.id) && (
-                      <Check className="w-4 h-4 text-[#007A3A]" />
+                      <Check className="w-4 h-4 text-accent-500" />
                     )}
                   </div>
-                  <p className="font-medium text-gray-900 group-hover:text-[#007A3A] transition-colors">
+                  <p className="font-medium text-slate-900 group-hover:text-primary-600 transition-colors">
                     {video.title}
                   </p>
-                  <p className="text-sm text-gray-500">{video.duration}</p>
+                  <p className="text-sm text-slate-500">{video.duration}</p>
                 </div>
               </button>
             ))}

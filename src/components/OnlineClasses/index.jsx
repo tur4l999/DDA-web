@@ -10,7 +10,7 @@ import MobileRightPanel from './MobileRightPanel'
 import Toast from './Toast'
 
 export default function OnlineClasses({ onBack }) {
-  const [view, setView] = useState('list') // 'list' or 'calendar'
+  const [view, setView] = useState('list')
   const [searchQuery, setSearchQuery] = useState('')
   const [quickFilter, setQuickFilter] = useState('all')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -24,7 +24,6 @@ export default function OnlineClasses({ onBack }) {
   const [toast, setToast] = useState(null)
   const itemsPerPage = 9
 
-  // Auto-switch tab based on view mode
   const handleViewChange = (newView) => {
     setView(newView)
     if (newView === 'calendar') {
@@ -48,7 +47,6 @@ export default function OnlineClasses({ onBack }) {
     onlyBookmarked: false
   })
 
-  // Generate 1 year of lessons
   const [lessons] = useState(() => {
     const classesData = []
     const startDate = new Date(2025, 0, 1)
@@ -73,7 +71,6 @@ export default function OnlineClasses({ onBack }) {
           
           if (lessonDate < now) {
             status = 'completed'
-            // 80% completed lessons have replay
             if (Math.random() > 0.2) {
               replayUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
@@ -81,7 +78,6 @@ export default function OnlineClasses({ onBack }) {
             status = 'started'
           }
           
-          // 5% cancelled
           if (Math.random() < 0.05) {
             status = 'cancelled'
             replayUrl = null
@@ -110,11 +106,9 @@ export default function OnlineClasses({ onBack }) {
     return classesData.sort((a, b) => b.date - a.date)
   })
 
-  // Filtering logic
   const filteredLessons = useMemo(() => {
     let result = lessons
 
-    // Search
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       result = result.filter(l => 
@@ -124,7 +118,6 @@ export default function OnlineClasses({ onBack }) {
       )
     }
 
-    // Quick filters
     const now = new Date()
     if (quickFilter === 'week') {
       const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
@@ -147,7 +140,6 @@ export default function OnlineClasses({ onBack }) {
       result = result.filter(l => bookmarkedLessons.some(b => b.id === l.id))
     }
 
-    // Advanced filters
     if (filters.dateRange.start) {
       result = result.filter(l => l.date >= new Date(filters.dateRange.start))
     }
@@ -182,7 +174,6 @@ export default function OnlineClasses({ onBack }) {
     return result
   }, [lessons, searchQuery, quickFilter, filters, bookmarkedLessons])
 
-  // Get next upcoming lesson
   const nextLesson = useMemo(() => {
     const now = new Date()
     const upcoming = lessons
@@ -191,7 +182,6 @@ export default function OnlineClasses({ onBack }) {
     return upcoming[0]
   }, [lessons])
 
-  // Pagination
   const totalPages = Math.ceil(filteredLessons.length / itemsPerPage)
   const paginatedLessons = filteredLessons.slice(
     (currentPage - 1) * itemsPerPage,
@@ -247,32 +237,32 @@ export default function OnlineClasses({ onBack }) {
   }, [selectedDate, filteredLessons])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface-50">
       {/* Header */}
-      <div className="bg-white border-b-2 border-gray-200 sticky top-0 z-30 shadow-md">
+      <div className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-4">
               <button
                 onClick={onBack}
-                className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-xl flex items-center justify-center transition-colors"
               >
-                <ArrowLeft className="w-5 h-5 text-gray-700" />
+                <ArrowLeft className="w-5 h-5 text-slate-600" />
               </button>
               <div>
-                <h1 className="text-2xl font-black text-gray-900">Onlayn Dərslər</h1>
-                <p className="text-sm text-gray-600 font-semibold">{filteredLessons.length} dərs tapıldı</p>
+                <h1 className="text-xl lg:text-2xl font-bold text-slate-900">Onlayn Dərslər</h1>
+                <p className="text-sm text-slate-500 font-medium">{filteredLessons.length} dərs tapıldı</p>
               </div>
             </div>
 
             {/* View Toggle */}
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
+            <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1">
               <button
                 onClick={() => handleViewChange('list')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all flex items-center gap-2 ${
                   view === 'list'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white text-primary-600 shadow-soft'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <List className="w-4 h-4" />
@@ -280,10 +270,10 @@ export default function OnlineClasses({ onBack }) {
               </button>
               <button
                 onClick={() => handleViewChange('calendar')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all flex items-center gap-2 ${
                   view === 'calendar'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-white text-primary-600 shadow-soft'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <CalendarIcon className="w-4 h-4" />
@@ -295,7 +285,7 @@ export default function OnlineClasses({ onBack }) {
           {/* Search and Filters */}
           <div className="flex gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
               <input
                 type="text"
                 placeholder="Mövzu, müəllim və ya açar söz yazın..."
@@ -304,12 +294,12 @@ export default function OnlineClasses({ onBack }) {
                   setSearchQuery(e.target.value)
                   setCurrentPage(1)
                 }}
-                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-semibold"
+                className="input pl-12"
               />
             </div>
             <button
               onClick={() => setIsFilterOpen(true)}
-              className="px-6 py-3 bg-gray-100 hover:bg-gray-200 border-2 border-gray-200 text-gray-700 font-bold rounded-xl transition-all flex items-center space-x-2"
+              className="btn-secondary px-5"
             >
               <SlidersHorizontal className="w-5 h-5" />
               <span className="hidden sm:inline">Filtrlər</span>
@@ -321,7 +311,6 @@ export default function OnlineClasses({ onBack }) {
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
         {view === 'calendar' ? (
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
-            {/* Left Column: Calendar */}
             <div className="max-w-full overflow-hidden">
               <CalendarView
                 lessons={filteredLessons}
@@ -330,7 +319,6 @@ export default function OnlineClasses({ onBack }) {
               />
             </div>
 
-            {/* Right Panel - Smart Sidebar */}
             <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
               <RightPanel
                 activeTab={rightPanelTab}
@@ -348,116 +336,67 @@ export default function OnlineClasses({ onBack }) {
           <div>
             {/* Next Up Card */}
             {nextLesson && (
-              <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] rounded-2xl p-6 mb-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <p className="text-green-100 font-medium mb-2 text-sm">Növbəti dərs</p>
-                <h3 className="text-xl font-bold text-white mb-3">{nextLesson.title}</h3>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-green-50">
-                  <span className="font-medium">
-                    {(() => {
-                      const d = new Date(nextLesson.date)
-                      const day = String(d.getDate()).padStart(2, '0')
-                      const month = String(d.getMonth() + 1).padStart(2, '0')
-                      const year = d.getFullYear()
-                      const hours = String(d.getHours()).padStart(2, '0')
-                      const minutes = String(d.getMinutes()).padStart(2, '0')
-                      return `${day}.${month}.${year} ${hours}:${minutes}`
-                    })()}
-                  </span>
-                  <span>•</span>
-                  <span className="font-medium">{nextLesson.instructor}</span>
-                  <span>•</span>
-                  <span className="font-medium">{nextLesson.duration} dəq</span>
+              <div className="gradient-primary rounded-2xl p-6 mb-6 shadow-soft-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <p className="text-primary-100 font-medium mb-2 text-sm">Növbəti dərs</p>
+                    <h3 className="text-xl font-bold text-white mb-3">{nextLesson.title}</h3>
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-primary-100">
+                      <span className="font-medium">
+                        {(() => {
+                          const d = new Date(nextLesson.date)
+                          const day = String(d.getDate()).padStart(2, '0')
+                          const month = String(d.getMonth() + 1).padStart(2, '0')
+                          const year = d.getFullYear()
+                          const hours = String(d.getHours()).padStart(2, '0')
+                          const minutes = String(d.getMinutes()).padStart(2, '0')
+                          return `${day}.${month}.${year} ${hours}:${minutes}`
+                        })()}
+                      </span>
+                      <span className="text-primary-200">•</span>
+                      <span className="font-medium">{nextLesson.instructor}</span>
+                      <span className="text-primary-200">•</span>
+                      <span className="font-medium">{nextLesson.duration} dəq</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleJoin(nextLesson)}
+                    disabled={nextLesson.status !== 'started'}
+                    className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                      nextLesson.status === 'started'
+                        ? 'bg-white text-primary-700 hover:bg-primary-50 shadow-soft'
+                        : 'bg-white/20 text-white/60 cursor-not-allowed'
+                    }`}
+                  >
+                    {nextLesson.status === 'started' ? 'Dərsə qoşul' : 'Tezliklə'}
+                  </button>
                 </div>
               </div>
-              <button
-                onClick={() => handleJoin(nextLesson)}
-                disabled={nextLesson.status !== 'started'}
-                className={`px-6 py-3 rounded-xl font-semibold shadow-md transition-all ${
-                  nextLesson.status === 'started'
-                    ? 'bg-white text-[#007A3A] hover:bg-gray-50'
-                    : 'bg-white/30 text-white/50 cursor-not-allowed'
-                }`}
-              >
-                {nextLesson.status === 'started' ? 'Dərsə qoşul' : 'Tezliklə'}
-              </button>
-            </div>
-          </div>
             )}
 
             {/* Quick Filters */}
             <div className="flex flex-wrap gap-2 mb-6">
-              <button
-                onClick={() => { setQuickFilter('all'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'all'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Hamısı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('week'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'week'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Bu həftə
-              </button>
-              <button
-                onClick={() => { setQuickFilter('started'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'started'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Başladı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('waiting'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'waiting'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Gözləyir
-              </button>
-              <button
-                onClick={() => { setQuickFilter('completed'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'completed'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Tamamlandı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('replay'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'replay'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Təkrar videosu olanlar
-              </button>
-              <button
-                onClick={() => { setQuickFilter('bookmarked'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'bookmarked'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Saxlanılanlar
-              </button>
+              {[
+                { id: 'all', label: 'Hamısı' },
+                { id: 'week', label: 'Bu həftə' },
+                { id: 'started', label: 'Başladı' },
+                { id: 'waiting', label: 'Gözləyir' },
+                { id: 'completed', label: 'Tamamlandı' },
+                { id: 'replay', label: 'Təkrar videosu olanlar' },
+                { id: 'bookmarked', label: 'Saxlanılanlar' }
+              ].map(filter => (
+                <button
+                  key={filter.id}
+                  onClick={() => { setQuickFilter(filter.id); setCurrentPage(1) }}
+                  className={`px-4 py-2 rounded-xl font-medium text-sm transition-all ${
+                    quickFilter === filter.id
+                      ? 'bg-primary-600 text-white shadow-soft'
+                      : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
             </div>
 
             {/* Content */}
@@ -482,10 +421,8 @@ export default function OnlineClasses({ onBack }) {
                     <button
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                        currentPage === 1
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
+                      className={`btn-secondary px-5 py-2.5 text-sm ${
+                        currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                     >
                       ← Əvvəlki
@@ -508,10 +445,10 @@ export default function OnlineClasses({ onBack }) {
                           <button
                             key={pageNum}
                             onClick={() => setCurrentPage(pageNum)}
-                            className={`w-11 h-11 rounded-xl font-bold text-sm transition-all ${
+                            className={`w-10 h-10 rounded-xl font-medium text-sm transition-all ${
                               currentPage === pageNum
-                                ? 'bg-primary-600 text-white shadow-lg scale-110'
-                                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
+                                ? 'bg-primary-600 text-white shadow-soft'
+                                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
                             }`}
                           >
                             {pageNum}
@@ -523,10 +460,8 @@ export default function OnlineClasses({ onBack }) {
                     <button
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                        currentPage === totalPages
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
+                      className={`btn-secondary px-5 py-2.5 text-sm ${
+                        currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                     >
                       Sonrakı →
@@ -535,10 +470,10 @@ export default function OnlineClasses({ onBack }) {
                 )}
               </>
             ) : (
-              <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
-                <div className="text-6xl mb-4">🔍</div>
-                <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
-                <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
+              <div className="text-center py-16 card">
+                <div className="text-5xl mb-4">🔍</div>
+                <p className="text-lg font-semibold text-slate-900 mb-2">Heç bir dərs tapılmadı</p>
+                <p className="text-slate-500">Axtarış və ya filtr parametrlərini dəyişdirin</p>
               </div>
             )}
           </div>
@@ -570,7 +505,6 @@ export default function OnlineClasses({ onBack }) {
         onClose={() => setIsVideoOpen(false)}
       />
 
-      {/* Mobile Right Panel - Only for Calendar View */}
       {view === 'calendar' && (
         <MobileRightPanel
           activeTab={rightPanelTab}
@@ -584,7 +518,6 @@ export default function OnlineClasses({ onBack }) {
         />
       )}
 
-      {/* Toast Notification */}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </div>
   )

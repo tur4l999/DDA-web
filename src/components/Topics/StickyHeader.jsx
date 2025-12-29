@@ -1,26 +1,28 @@
-import { Menu } from 'lucide-react'
+import { Menu, ChevronRight } from 'lucide-react'
 
 export default function StickyHeader({ topic, onMenuToggle }) {
   return (
-    <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
-      <div className="px-4 lg:px-6 py-2.5">
-        <div className="flex items-center gap-4">
-          {/* Mobile menu button */}
+    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
+      <div className="px-4 lg:px-6 py-4">
+        <div className="flex items-center gap-3">
+          {/* Mobile menu toggle */}
           <button
             onClick={onMenuToggle}
-            className="lg:hidden w-9 h-9 flex items-center justify-center hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0"
+            className="lg:hidden p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
           >
-            <Menu className="w-5 h-5 text-gray-600" />
+            <Menu className="w-5 h-5" />
           </button>
-
-          {/* Topic title - full width */}
-          <div className="flex-1">
-            <h1 className="text-base lg:text-lg font-semibold text-gray-900">
-              {topic.code} · {topic.title}
-            </h1>
+          
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-slate-500 font-medium hidden sm:inline">Mövzular</span>
+            <ChevronRight className="w-4 h-4 text-slate-300 hidden sm:block" />
+            <span className="text-slate-900 font-semibold truncate">
+              {topic?.code}. {topic?.title}
+            </span>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   )
 }

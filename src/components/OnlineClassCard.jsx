@@ -40,26 +40,21 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
     }
   ]
 
-  // Filter: only "started" and "waiting" status, sorted by date
   const classes = allClasses
     .filter(cls => cls.status === 'started' || cls.status === 'waiting')
     .sort((a, b) => a.date - b.date)
     .slice(0, maxItems)
 
   const getLanguageLabel = (lang) => {
-    const flags = {
-      az: 'AZ',
-      ru: 'RU',
-      en: 'EN'
-    }
+    const flags = { az: 'AZ', ru: 'RU', en: 'EN' }
     return flags[lang] || lang.toUpperCase()
   }
 
   const getStatusColor = (status) => {
     switch(status) {
-      case 'started': return 'bg-primary-100 text-primary-700'
-      case 'waiting': return 'bg-blue-100 text-blue-700'
-      default: return 'bg-gray-100 text-gray-700'
+      case 'started': return 'bg-accent-50 text-accent-700'
+      case 'waiting': return 'bg-primary-50 text-primary-700'
+      default: return 'bg-slate-100 text-slate-600'
     }
   }
 
@@ -81,44 +76,52 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-100">
+    <div className="card">
+      {/* Header */}
+      <div className="px-6 py-4 border-b border-slate-100">
         <div className="flex items-center justify-between">
-          <h3 className="text-base font-semibold text-gray-900">Ən yaxın dərslər</h3>
+          <h3 className="text-base font-semibold text-slate-900">Ən yaxın dərslər</h3>
           {showViewAll && (
             <button 
               onClick={() => setCurrentPage && setCurrentPage('classes')}
-              className="text-[#007A3A] hover:text-[#005A2A] text-sm font-medium flex items-center space-x-1 transition-colors"
+              className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center gap-1 transition-colors group"
             >
               <span>Hamısı</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           )}
         </div>
       </div>
+
+      {/* Classes List */}
       <div className="p-4 space-y-3">
         {classes.map((cls) => (
-          <div key={cls.id} className="group bg-white border border-gray-200 hover:border-[#007A3A] rounded-xl p-4 hover:shadow-md transition-all">
-            {/* Header with title and status */}
+          <div 
+            key={cls.id} 
+            className="group bg-surface-50 hover:bg-white border border-transparent hover:border-slate-200 rounded-2xl p-4 transition-all duration-200 hover:shadow-soft"
+          >
+            {/* Header */}
             <div className="flex items-start justify-between gap-3 mb-3">
-              <h4 className="text-sm font-semibold text-gray-900 line-clamp-1 flex-1">{cls.title}</h4>
+              <h4 className="text-sm font-semibold text-slate-900 line-clamp-1 flex-1">
+                {cls.title}
+              </h4>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className={`${getStatusColor(cls.status)} px-2.5 py-1 rounded-lg text-xs font-semibold`}>
+                <span className={`${getStatusColor(cls.status)} px-2.5 py-1 rounded-lg text-xs font-medium`}>
                   {getStatusLabel(cls.status)}
                 </span>
-                <span className="bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg text-xs font-medium">
                   {getLanguageLabel(cls.language)}
                 </span>
               </div>
             </div>
 
-            {/* Date/Time/Duration info */}
-            <div className="flex items-center gap-4 text-xs text-gray-600 mb-3">
+            {/* Meta Info */}
+            <div className="flex items-center gap-4 text-xs text-slate-500 mb-3">
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
                 <span className="font-medium">{formatDate(cls.date)}</span>
               </div>
-              <span className="text-gray-300">•</span>
+              <span className="text-slate-300">•</span>
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 <span className="font-medium">{cls.duration} dəq</span>
@@ -126,14 +129,14 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
             </div>
 
             {/* Instructor */}
-            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+            <div className="flex items-center gap-2 text-xs text-slate-500 mb-4">
               <User className="w-3.5 h-3.5" />
               <span>{cls.instructor}</span>
             </div>
 
             {/* CTA */}
             {cls.status === 'started' && (
-              <button className="w-full bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2 shadow-sm">
+              <button className="w-full btn-primary py-2.5 text-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -143,7 +146,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
             )}
 
             {cls.status === 'waiting' && (
-              <button className="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-medium py-2.5 px-4 rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+              <button className="w-full btn-secondary py-2.5 text-sm">
                 <Bell className="w-4 h-4" />
                 <span>Xatırlat</span>
               </button>
@@ -151,11 +154,11 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
           </div>
         ))}
 
-        {/* Empty state */}
+        {/* Empty State */}
         {classes.length === 0 && (
-          <div className="text-center py-8">
-            <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-500">Yaxın zamanda dərs yoxdur</p>
+          <div className="text-center py-12">
+            <Calendar className="w-12 h-12 text-slate-200 mx-auto mb-3" />
+            <p className="text-sm text-slate-500">Yaxın zamanda dərs yoxdur</p>
           </div>
         )}
       </div>

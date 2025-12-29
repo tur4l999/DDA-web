@@ -1,103 +1,74 @@
-import { X, AlertCircle } from 'lucide-react'
+import { X } from 'lucide-react'
 
-const RoadSignModal = ({ sign, categoryName, isOpen, onClose }) => {
-  if (!isOpen) return null
+export default function RoadSignModal({ sign, isOpen, onClose }) {
+  if (!isOpen || !sign) return null
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <div className="relative bg-white rounded-2xl shadow-soft-xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-scale-in">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+        <div className="flex items-start justify-between px-6 py-5 border-b border-slate-100">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">
-              {sign.code} {sign.name}
-            </h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {categoryName}
-            </p>
+            <span className="text-sm font-medium text-primary-600 bg-primary-50 px-2.5 py-1 rounded-lg">
+              {sign.code}
+            </span>
+            <h2 className="text-lg font-bold text-slate-900 mt-2">{sign.name}</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="w-8 h-8 flex items-center justify-center hover:bg-slate-100 rounded-xl transition-colors flex-shrink-0"
           >
-            <X className="w-6 h-6 text-gray-500" />
+            <X className="w-5 h-5 text-slate-400" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-6">
-          {/* Image Section */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 flex items-center justify-center">
-            <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-8">
-              <img
-                src={sign.image || '/placeholder-sign.png'}
+        {/* Sign Image */}
+        <div className="p-8 bg-surface-50">
+          <div className="w-40 h-40 mx-auto bg-white rounded-2xl shadow-soft flex items-center justify-center overflow-hidden">
+            {sign.image ? (
+              <img 
+                src={sign.image} 
                 alt={sign.name}
-                className="w-full max-w-sm h-64 object-contain mx-auto"
-                onError={(e) => {
-                  e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="%23f3f4f6" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="16" fill="%239ca3af" text-anchor="middle" dominant-baseline="middle"%3ENişan%3C/text%3E%3C/svg%3E'
-                }}
+                className="w-full h-full object-contain p-4"
               />
-            </div>
+            ) : (
+              <div className="w-24 h-24 bg-slate-100 rounded-xl flex items-center justify-center">
+                <span className="text-slate-400 text-lg font-medium">{sign.code}</span>
+              </div>
+            )}
           </div>
+        </div>
 
-          {/* Details */}
-          <div className="space-y-4">
-            <div className="bg-primary-50 border border-primary-200 rounded-xl p-4">
-              <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-primary-600" />
-                Mənası
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                {sign.meaning}
-              </p>
+        {/* Description */}
+        <div className="p-6">
+          <h4 className="text-sm font-semibold text-slate-800 mb-2">Təsvir</h4>
+          <p className="text-sm text-slate-600 leading-relaxed">{sign.description}</p>
+          
+          {sign.additionalInfo && (
+            <div className="mt-4 p-4 bg-primary-50 rounded-xl">
+              <h5 className="text-sm font-semibold text-primary-800 mb-1">Əlavə məlumat</h5>
+              <p className="text-sm text-primary-700">{sign.additionalInfo}</p>
             </div>
+          )}
+        </div>
 
-            {sign.application && (
-              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Harada tətbiq olunur
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {sign.application}
-                </p>
-              </div>
-            )}
-
-            {sign.specialCases && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Xüsusi hallar
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {sign.specialCases}
-                </p>
-              </div>
-            )}
-
-            {sign.detailedDescription && (
-              <div className="bg-white border border-gray-200 rounded-xl p-4">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  Ətraflı məlumat
-                </h3>
-                <div className="text-gray-700 leading-relaxed space-y-2">
-                  {sign.detailedDescription.split('\n').map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
-                </div>
-              </div>
-            )}
-
-          </div>
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-slate-100">
+          <button
+            onClick={onClose}
+            className="w-full btn-secondary py-2.5"
+          >
+            Bağla
+          </button>
         </div>
       </div>
     </div>
   )
 }
-
-export default RoadSignModal

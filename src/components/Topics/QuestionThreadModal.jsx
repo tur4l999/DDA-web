@@ -1,189 +1,141 @@
-import { X, Send, Clock, CheckCircle2, MessageCircle } from 'lucide-react'
 import { useState } from 'react'
+import { X, Send, User, Clock, CheckCircle, MessageCircle } from 'lucide-react'
 
 export default function QuestionThreadModal({ isOpen, onClose, question, onReply }) {
-  const [replyMessage, setReplyMessage] = useState('')
+  const [reply, setReply] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleReply = async () => {
-    if (!replyMessage.trim() || isSubmitting) return
+  if (!isOpen || !question) return null
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!reply.trim()) return
 
     setIsSubmitting(true)
+    
+    await new Promise(resolve => setTimeout(resolve, 500))
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800))
-
-    onReply?.(question.id, {
+    onReply(question.id, {
       id: Date.now(),
-      author: 'user',
-      message: replyMessage.trim(),
-      createdAt: new Date().toISOString()
+      content: reply.trim(),
+      author: 'Tural Qarayev',
+      isTeacher: false,
+      createdAt: new Date()
     })
 
-    setReplyMessage('')
+    setReply('')
     setIsSubmitting(false)
   }
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60))
-
-    if (diffInHours < 1) return 'İndi'
-    if (diffInHours < 24) return `${diffInHours} saat əvvəl`
-    
-    return date.toLocaleDateString('az-AZ', { 
-      day: 'numeric',
-      month: 'short',
+  const formatDate = (date) => {
+    if (!date) return ''
+    const d = new Date(date)
+    return d.toLocaleDateString('az-AZ', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     })
   }
 
-  const getStatusConfig = (status) => {
-    const configs = {
-      waiting: {
-        label: 'Gözləyir',
-        icon: Clock,
-        className: 'bg-yellow-50 text-yellow-700 border-yellow-200'
-      },
-      answered: {
-        label: 'Cavablandı',
-        icon: CheckCircle2,
-        className: 'bg-green-50 text-green-700 border-green-200'
-      },
-      closed: {
-        label: 'Bağlandı',
-        icon: CheckCircle2,
-        className: 'bg-gray-100 text-gray-600 border-gray-200'
-      }
-    }
-    return configs[status] || configs.waiting
-  }
-
-  if (!isOpen || !question) return null
-
-  const statusConfig = getStatusConfig(question.status)
-  const StatusIcon = statusConfig.icon
-
   return (
-    <>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity"
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
-        <div 
-          className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-[680px] pointer-events-auto max-h-[90vh] sm:max-h-[85vh] flex flex-col"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="flex items-start justify-between px-6 py-5 border-b border-gray-200">
-            <div className="flex-1 pr-4">
-              <div className="flex items-center gap-2 mb-2">
-                <h2 className="text-lg font-semibold text-gray-900">Sual-cavab</h2>
-                <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium ${statusConfig.className}`}>
-                  <StatusIcon className="w-3.5 h-3.5" />
-                  <span>{statusConfig.label}</span>
-                </div>
-              </div>
-              <p className="text-sm text-gray-600">
-                Mövzu: <span className="font-medium text-gray-900">{question.topicCode} · {question.topicTitle}</span>
-              </p>
+      <div className="relative bg-white rounded-2xl shadow-soft-xl max-w-2xl w-full max-h-[80vh] flex flex-col animate-scale-in">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
+              <MessageCircle className="w-5 h-5 text-primary-600" />
             </div>
-            <button
-              onClick={onClose}
-              className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900">Sual müzakirəsi</h3>
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <Clock className="w-3 h-3" />
+                <span>{formatDate(question.createdAt)}</span>
+                {question.status === 'answered' && (
+                  <span className="flex items-center gap-1 text-accent-600">
+                    <CheckCircle className="w-3 h-3" />
+                    Cavablandı
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 flex items-center justify-center hover:bg-slate-100 rounded-xl transition-colors"
+          >
+            <X className="w-5 h-5 text-slate-400" />
+          </button>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin">
+          {/* Original Question */}
+          <div className="bg-primary-50 rounded-2xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <User className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-sm font-medium text-slate-900">Siz</span>
+            </div>
+            <p className="text-slate-700 leading-relaxed">{question.question}</p>
+          </div>
+
+          {/* Replies */}
+          {question.replies?.map(reply => (
+            <div
+              key={reply.id}
+              className={`rounded-2xl p-4 ${
+                reply.isTeacher ? 'bg-accent-50' : 'bg-slate-50'
+              }`}
             >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-          </div>
-
-          {/* Thread */}
-          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
-            {/* User Question */}
-            <div className="flex gap-3">
-              <div className="w-8 h-8 bg-[#007A3A] rounded-full flex items-center justify-center flex-shrink-0 text-white text-sm font-semibold">
-                T
-              </div>
-              <div className="flex-1">
-                <div className="bg-gray-50 border border-gray-200 rounded-2xl rounded-tl-sm p-4">
-                  <p className="text-sm text-gray-900 whitespace-pre-wrap">{question.message}</p>
-                  {question.file && (
-                    <div className="mt-3 pt-3 border-t border-gray-200">
-                      <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <MessageCircle className="w-4 h-4" />
-                        <span>Fayl: {question.file}</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <p className="text-xs text-gray-500 mt-1.5 ml-1">{formatDate(question.createdAt)}</p>
-              </div>
-            </div>
-
-            {/* Replies */}
-            {question.replies?.map((reply) => (
-              <div key={reply.id} className={`flex gap-3 ${reply.author === 'teacher' ? '' : 'pl-11'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold ${
-                  reply.author === 'teacher'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'bg-[#007A3A] text-white'
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  reply.isTeacher ? 'bg-accent-600' : 'bg-slate-400'
                 }`}>
-                  {reply.author === 'teacher' ? 'M' : 'T'}
+                  <User className="w-4 h-4 text-white" />
                 </div>
-                <div className="flex-1">
-                  <div className={`border rounded-2xl p-4 ${
-                    reply.author === 'teacher'
-                      ? 'bg-blue-50 border-blue-200 rounded-tl-sm'
-                      : 'bg-gray-50 border-gray-200 rounded-tl-sm'
-                  }`}>
-                    <p className="text-sm text-gray-900 whitespace-pre-wrap">{reply.message}</p>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1.5 ml-1">{formatDate(reply.createdAt)}</p>
-                </div>
+                <span className="text-sm font-medium text-slate-900">
+                  {reply.author}
+                  {reply.isTeacher && (
+                    <span className="ml-1 text-xs text-accent-600">(Müəllim)</span>
+                  )}
+                </span>
               </div>
-            ))}
-
-            {/* Empty replies state */}
-            {(!question.replies || question.replies.length === 0) && (
-              <div className="text-center py-8">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Clock className="w-6 h-6 text-gray-400" />
-                </div>
-                <p className="text-sm text-gray-600 font-medium">Müəllim cavabı gözlənilir</p>
-                <p className="text-xs text-gray-500 mt-1">Cavab verildikdə bildiriş alacaqsınız</p>
-              </div>
-            )}
-          </div>
-
-          {/* Reply Input */}
-          {question.status !== 'closed' && (
-            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={replyMessage}
-                  onChange={(e) => setReplyMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleReply()}
-                  placeholder="Cavab yazın…"
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A] focus:border-transparent text-sm"
-                />
-                <button
-                  onClick={handleReply}
-                  disabled={!replyMessage.trim() || isSubmitting}
-                  className="px-5 py-3 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#007A3A] flex items-center gap-2"
-                >
-                  <Send className="w-5 h-5" />
-                </button>
-              </div>
+              <p className="text-slate-700 leading-relaxed">{reply.content}</p>
             </div>
-          )}
+          ))}
+        </div>
+
+        {/* Reply Input */}
+        <div className="p-4 border-t border-slate-100 flex-shrink-0">
+          <form onSubmit={handleSubmit} className="flex gap-3">
+            <input
+              type="text"
+              value={reply}
+              onChange={(e) => setReply(e.target.value)}
+              placeholder="Cavab yazın..."
+              className="input py-2"
+            />
+            <button
+              type="submit"
+              disabled={!reply.trim() || isSubmitting}
+              className="btn-primary px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   )
 }
