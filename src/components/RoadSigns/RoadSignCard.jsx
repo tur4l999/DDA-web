@@ -1,110 +1,96 @@
 import { useState } from 'react'
 import { ZoomIn } from 'lucide-react'
 import RoadSignModal from './RoadSignModal'
+import Badge from '../ui/Badge'
+
+const categoryConfig = {
+  warning: { name: 'Xəbərdarlıq', variant: 'warning' },
+  priority: { name: 'Üstünlük', variant: 'info' },
+  prohibitory: { name: 'Qadağan', variant: 'error' },
+  mandatory: { name: 'Məcburi', variant: 'info' },
+  information: { name: 'İnformasiya', variant: 'success' },
+  service: { name: 'Xidmət', variant: 'primary' },
+  additional: { name: 'Əlavə', variant: 'neutral' }
+}
 
 const RoadSignCard = ({ sign }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isImageHovered, setIsImageHovered] = useState(false)
 
-  const categoryNames = {
-    warning: 'Xəbərdarlıq nişanları',
-    priority: 'Üstünlük nişanları',
-    prohibitory: 'Qadağan nişanları',
-    mandatory: 'Məcburi nişanlar',
-    information: 'İnformasiya nişanları',
-    service: 'Xidmət nişanları',
-    additional: 'Əlavə nişanlar'
-  }
+  const category = categoryConfig[sign.category] || { name: 'Digər', variant: 'neutral' }
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        {/* Content Section - Word Document Style */}
-        <div className="p-6 lg:p-8 space-y-6">
-          {/* Title & Category */}
-          <div className="border-b border-gray-200 pb-4">
-            <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">
-              {sign.code} {sign.name}
-            </h3>
-            <p className="text-sm text-gray-600">
-              Kateqoriya: {categoryNames[sign.category]}
-            </p>
+      <div className="bg-white rounded-2xl shadow-card overflow-hidden hover:shadow-card-hover transition-shadow duration-200">
+        <div className="p-5">
+          {/* Header */}
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex-1 min-w-0">
+              <Badge variant={category.variant} size="sm" className="mb-2">
+                {category.name}
+              </Badge>
+              <h3 className="font-semibold text-neutral-800 leading-snug">
+                <span className="text-primary-600">{sign.code}</span>{' '}
+                {sign.name}
+              </h3>
+            </div>
           </div>
 
-          {/* Image Section */}
-          <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 flex items-center justify-center">
+          {/* Content Layout - Image + Description */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Image */}
             <div 
-              className="relative cursor-pointer"
+              className="flex-shrink-0 cursor-pointer group"
               onClick={() => setIsModalOpen(true)}
               onMouseEnter={() => setIsImageHovered(true)}
               onMouseLeave={() => setIsImageHovered(false)}
             >
-              <div className={`bg-white rounded-xl shadow-md border-2 border-gray-200 p-6 transition-all duration-300 ${
-                isImageHovered ? 'border-primary-400 shadow-xl scale-105' : ''
+              <div className={`relative bg-neutral-50 rounded-xl p-3 border border-neutral-100 transition-all duration-200 ${
+                isImageHovered ? 'border-primary-200 shadow-md' : ''
               }`}>
                 <img
                   src={sign.image || '/placeholder-sign.png'}
                   alt={sign.name}
-                  className="w-full h-48 lg:h-56 object-contain"
+                  className="w-24 h-24 sm:w-28 sm:h-28 object-contain"
                   onError={(e) => {
-                    e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="%23f3f4f6" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" font-family="Arial" font-size="16" fill="%239ca3af" text-anchor="middle" dominant-baseline="middle"%3ENişan%3C/text%3E%3C/svg%3E'
+                    e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Crect fill="%23f1f5f9" width="100" height="100" rx="8"/%3E%3Ctext x="50%25" y="50%25" font-family="system-ui" font-size="12" fill="%2394a3b8" text-anchor="middle" dominant-baseline="middle"%3ENişan%3C/text%3E%3C/svg%3E'
                   }}
                 />
-              </div>
-              
-              {/* Zoom indicator */}
-              <div className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 transition-all duration-300 rounded-xl ${
-                isImageHovered ? 'bg-opacity-20' : ''
-              }`}>
-                {isImageHovered && (
-                  <div className="bg-white rounded-full p-3 shadow-lg">
-                    <ZoomIn className="w-6 h-6 text-primary-600" />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Description - Word Document Style */}
-          <div className="space-y-4 text-base text-gray-800 leading-relaxed">
-            <div className="space-y-2">
-              <h4 className="font-bold text-gray-900 text-lg">Mənası:</h4>
-              <p className="pl-4">{sign.meaning}</p>
-            </div>
-            
-            {sign.application && (
-              <div className="space-y-2">
-                <h4 className="font-bold text-gray-900 text-lg">Harada tətbiq olunur:</h4>
-                <p className="pl-4">{sign.application}</p>
-              </div>
-            )}
-            
-            {sign.specialCases && (
-              <div className="space-y-2">
-                <h4 className="font-bold text-gray-900 text-lg">Xüsusi hallar:</h4>
-                <p className="pl-4">{sign.specialCases}</p>
-              </div>
-            )}
-
-            {sign.detailedDescription && (
-              <div className="space-y-2">
-                <h4 className="font-bold text-gray-900 text-lg">Ətraflı məlumat:</h4>
-                <div className="pl-4 space-y-2">
-                  {sign.detailedDescription.split('\n').map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
+                
+                {/* Zoom icon on hover */}
+                <div className={`absolute inset-0 flex items-center justify-center bg-neutral-900/0 rounded-xl transition-all ${
+                  isImageHovered ? 'bg-neutral-900/10' : ''
+                }`}>
+                  {isImageHovered && (
+                    <div className="bg-white rounded-full p-2 shadow-md">
+                      <ZoomIn className="w-4 h-4 text-primary-600" />
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
 
+            {/* Description */}
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-neutral-600 leading-relaxed line-clamp-3">
+                {sign.meaning || sign.description}
+              </p>
+              
+              {sign.application && (
+                <p className="text-sm text-neutral-500 mt-2 line-clamp-2">
+                  <span className="font-medium text-neutral-700">Tətbiqi: </span>
+                  {sign.application}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Modal */}
       <RoadSignModal
         sign={sign}
-        categoryName={categoryNames[sign.category]}
+        categoryName={category.name}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

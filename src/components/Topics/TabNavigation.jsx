@@ -1,4 +1,4 @@
-import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle, Lock } from 'lucide-react'
+import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle, Lock, FileCheck } from 'lucide-react'
 
 const tabs = [
   { id: 'materials', label: 'Maddələr', icon: BookMarked, requiresPackage: false },
@@ -12,16 +12,17 @@ const tabs = [
 
 export default function TabNavigation({ activeTab, onTabChange, onExamClick, onContactClick, userPackage = 'basic', onPaywallOpen }) {
   return (
-    <div className="sticky top-[57px] z-20 bg-white border-b border-gray-200 shadow-sm">
-      <div className="px-4 lg:px-6 py-1.5">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-          {/* Regular tabs */}
-          <div className="flex gap-1 flex-1">
+    <div className="sticky top-[65px] z-10 bg-white border-b border-neutral-100">
+      <div className="px-4 lg:px-6">
+        <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 lg:mx-0 lg:px-0">
+          {/* Tab buttons */}
+          <div className="flex items-center gap-1 flex-1">
             {tabs.map(tab => {
               const Icon = tab.icon
               const isContactTab = tab.id === 'contact'
               const isLocked = tab.requiresPackage && userPackage === 'basic'
               const hasAccess = !isLocked || ['premium', 'standard'].includes(userPackage)
+              const isActive = activeTab === tab.id && hasAccess
               
               return (
                 <div key={tab.id} className="relative group">
@@ -35,24 +36,24 @@ export default function TabNavigation({ activeTab, onTabChange, onExamClick, onC
                         onTabChange(tab.id)
                       }
                     }}
-                    className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap transition-all rounded-lg ${
-                      activeTab === tab.id && hasAccess
-                        ? 'bg-[#007A3A]/10 text-[#007A3A]'
+                    className={`flex items-center gap-2 px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg transition-all ${
+                      isActive
+                        ? 'bg-primary-50 text-primary-700'
                         : isLocked
-                          ? 'text-gray-400 hover:bg-gray-50 cursor-not-allowed'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          ? 'text-neutral-400 hover:bg-neutral-50 cursor-not-allowed'
+                          : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-800'
                     }`}
                   >
                     <Icon className="w-4 h-4" strokeWidth={1.5} />
-                    <span>{tab.label}</span>
-                    {isLocked && <Lock className="w-3 h-3" />}
+                    <span className="hidden sm:inline">{tab.label}</span>
+                    {isLocked && <Lock className="w-3 h-3 text-neutral-400" />}
                   </button>
                   
-                  {/* Tooltip */}
+                  {/* Tooltip for locked tabs */}
                   {isLocked && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-neutral-800 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                       Paket tələb olunur
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-800" />
                     </div>
                   )}
                 </div>
@@ -60,15 +61,13 @@ export default function TabNavigation({ activeTab, onTabChange, onExamClick, onC
             })}
           </div>
 
-          {/* Primary CTA - İmtahan ver */}
+          {/* Primary CTA */}
           <button
             onClick={onExamClick}
-            className="flex items-center gap-2 px-4 py-2 bg-[#007A3A] hover:bg-[#005A2A] text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap shadow-sm ml-2"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span>İmtahan ver</span>
+            <FileCheck className="w-4 h-4" strokeWidth={1.5} />
+            <span className="hidden sm:inline">İmtahan ver</span>
           </button>
         </div>
       </div>

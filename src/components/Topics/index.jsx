@@ -12,7 +12,11 @@ import VideoModal from '../Penalties/VideoModal'
 import AskTeacherModal from './AskTeacherModal'
 import QuestionThreadModal from './QuestionThreadModal'
 import PaywallModal from './PaywallModal'
-import Toast from './Toast'
+import Toast from '../ui/Toast'
+import Progress from '../ui/Progress'
+import Button from '../ui/Button'
+import Badge from '../ui/Badge'
+import { ChevronLeft, ChevronRight, BookOpen, CheckCircle } from 'lucide-react'
 
 export default function TopicsPage({ onBack }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -26,7 +30,7 @@ export default function TopicsPage({ onBack }) {
   const [selectedQuestion, setSelectedQuestion] = useState(null)
   const [questions, setQuestions] = useState([])
   const [toast, setToast] = useState(null)
-  const [userPackage, setUserPackage] = useState('basic') // 'basic', 'standard', 'premium'
+  const [userPackage, setUserPackage] = useState('basic')
   const [currentTopic, setCurrentTopic] = useState({
     id: 1,
     code: 'M1',
@@ -50,10 +54,7 @@ export default function TopicsPage({ onBack }) {
   }
 
   const handleQuestionSubmit = (questionData) => {
-    // Add question to list (optimistic UI)
     setQuestions(prev => [questionData, ...prev])
-    
-    // Show toast
     showToast('Sualınız göndərildi', 'success')
   }
 
@@ -74,7 +75,6 @@ export default function TopicsPage({ onBack }) {
       return q
     }))
 
-    // Update selected question if it's open
     if (selectedQuestion?.id === questionId) {
       setSelectedQuestion(prev => ({
         ...prev,
@@ -86,7 +86,6 @@ export default function TopicsPage({ onBack }) {
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type })
-    setTimeout(() => setToast(null), 3000)
   }
 
   const topics = [
@@ -169,11 +168,6 @@ export default function TopicsPage({ onBack }) {
     }
   ]
 
-  const progress = {
-    completed: 4,
-    total: 24
-  }
-
   const renderContent = () => {
     switch (activeTab) {
       case 'materials':
@@ -194,8 +188,8 @@ export default function TopicsPage({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex relative">
-      {/* Sidebar with collapse */}
+    <div className="min-h-screen bg-neutral-50 flex relative">
+      {/* Sidebar with topics */}
       <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-80'} relative`}>
         <TopicSidebar
           isOpen={sidebarOpen}
@@ -207,31 +201,58 @@ export default function TopicsPage({ onBack }) {
         />
       </div>
 
-          {/* Collapse toggle button - Modern, compact design */}
-          <button
-            onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-            className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-200 rounded-r-md shadow-sm hover:shadow-md hover:bg-[#007A3A]/5 hover:border-[#007A3A] transition-all flex items-center justify-center group"
-            style={{ left: isPanelCollapsed ? '0' : '320px' }}
-            title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
-          >
-            <svg
-              className={`w-3 h-3 text-gray-500 group-hover:text-[#007A3A] transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+      {/* Collapse toggle button */}
+      <button
+        onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
+        className={`hidden lg:flex absolute top-1/2 -translate-y-1/2 z-40 w-6 h-14 bg-white border border-neutral-200 rounded-r-lg items-center justify-center hover:bg-neutral-50 transition-all group shadow-sm ${
+          isPanelCollapsed ? 'left-0' : 'left-[320px]'
+        }`}
+        title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
+      >
+        {isPanelCollapsed ? (
+          <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600" />
+        ) : (
+          <ChevronLeft className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600" />
+        )}
+      </button>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        <StickyHeader
-          topic={currentTopic}
-          onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
-        />
+        {/* Header with topic info */}
+        <header className="bg-white border-b border-neutral-100 sticky top-0 z-sticky">
+          <div className="px-4 lg:px-6 py-4">
+            <div className="flex items-center gap-4">
+              {/* Mobile menu toggle */}
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="lg:hidden p-2 -m-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors"
+              >
+                <BookOpen className="w-5 h-5" />
+              </button>
+              
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge variant="primary" size="sm">{currentTopic.code}</Badge>
+                  {currentTopic.completed && (
+                    <CheckCircle className="w-4 h-4 text-success-500" />
+                  )}
+                </div>
+                <h1 className="text-lg font-semibold text-neutral-800 truncate">
+                  {currentTopic.title}
+                </h1>
+              </div>
 
+              {/* Progress */}
+              <div className="hidden sm:flex items-center gap-3">
+                <div className="w-32">
+                  <Progress value={currentTopic.progress} size="md" showLabel />
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Tab Navigation */}
         <TabNavigation
           activeTab={activeTab}
           onTabChange={setActiveTab}
@@ -241,9 +262,26 @@ export default function TopicsPage({ onBack }) {
           onPaywallOpen={() => setIsPaywallModalOpen(true)}
         />
 
-        <main className={`flex-1 px-4 lg:px-6 py-8 transition-all duration-200 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
+        {/* Content */}
+        <main className={`flex-1 px-4 lg:px-6 py-6 lg:py-8 transition-all duration-200 ${
+          isPanelCollapsed ? 'max-w-4xl mx-auto w-full' : ''
+        }`}>
           {renderContent()}
         </main>
+
+        {/* Bottom Navigation - Mobile */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-100 px-4 py-3 safe-bottom z-sticky">
+          <div className="flex items-center gap-3">
+            <Button variant="outline" className="flex-1" size="md">
+              <ChevronLeft className="w-4 h-4" />
+              Əvvəlki
+            </Button>
+            <Button variant="primary" className="flex-1" size="md">
+              Növbəti
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Modals */}
@@ -273,7 +311,13 @@ export default function TopicsPage({ onBack }) {
       />
 
       {/* Toast */}
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          variant={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
     </div>
   )
 }
