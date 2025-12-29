@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import TopicSidebar from './TopicSidebar'
 import StickyHeader from './StickyHeader'
 import TabNavigation from './TabNavigation'
@@ -13,8 +14,11 @@ import AskTeacherModal from './AskTeacherModal'
 import QuestionThreadModal from './QuestionThreadModal'
 import PaywallModal from './PaywallModal'
 import Toast from './Toast'
+import TopicList from './TopicList'
+import { Button } from '../ui/Button'
 
 export default function TopicsPage({ onBack }) {
+  const [viewMode, setViewMode] = useState('list') // 'list' | 'detail'
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false)
   const [activeTab, setActiveTab] = useState('materials')
@@ -26,69 +30,10 @@ export default function TopicsPage({ onBack }) {
   const [selectedQuestion, setSelectedQuestion] = useState(null)
   const [questions, setQuestions] = useState([])
   const [toast, setToast] = useState(null)
-  const [userPackage, setUserPackage] = useState('basic') // 'basic', 'standard', 'premium'
-  const [currentTopic, setCurrentTopic] = useState({
-    id: 1,
-    code: 'M1',
-    title: 'Ümumi müddəalar',
-    category: 'Yol hərəkəti qaydaları',
-    completed: false,
-    progress: 45
-  })
+  const [userPackage, setUserPackage] = useState('basic')
+  const [currentTopic, setCurrentTopic] = useState(null)
 
-  const handleVideoClick = (penalty) => {
-    setSelectedPenalty(penalty)
-    setIsVideoModalOpen(true)
-  }
-
-  const handleExamClick = () => {
-    alert('İmtahana başlanır...')
-  }
-
-  const handleContactTeacher = () => {
-    setIsAskTeacherModalOpen(true)
-  }
-
-  const handleQuestionSubmit = (questionData) => {
-    // Add question to list (optimistic UI)
-    setQuestions(prev => [questionData, ...prev])
-    
-    // Show toast
-    showToast('Sualınız göndərildi', 'success')
-  }
-
-  const handleQuestionClick = (question) => {
-    setSelectedQuestion(question)
-    setIsQuestionThreadModalOpen(true)
-  }
-
-  const handleReply = (questionId, reply) => {
-    setQuestions(prev => prev.map(q => {
-      if (q.id === questionId) {
-        return {
-          ...q,
-          replies: [...(q.replies || []), reply],
-          status: 'answered'
-        }
-      }
-      return q
-    }))
-
-    // Update selected question if it's open
-    if (selectedQuestion?.id === questionId) {
-      setSelectedQuestion(prev => ({
-        ...prev,
-        replies: [...(prev.replies || []), reply],
-        status: 'answered'
-      }))
-    }
-  }
-
-  const showToast = (message, type = 'success') => {
-    setToast({ message, type })
-    setTimeout(() => setToast(null), 3000)
-  }
-
+  // Data
   const topics = [
     { id: 1, code: 'M1', title: 'Ümumi müddəalar', completed: false, progress: 45 },
     { 
@@ -169,34 +114,93 @@ export default function TopicsPage({ onBack }) {
     }
   ]
 
-  const progress = {
-    completed: 4,
-    total: 24
+  const handleVideoClick = (penalty) => {
+    setSelectedPenalty(penalty)
+    setIsVideoModalOpen(true)
+  }
+
+  const handleExamClick = () => {
+    alert('İmtahana başlanır...')
+  }
+
+  const handleContactTeacher = () => {
+    setIsAskTeacherModalOpen(true)
+  }
+
+  const handleQuestionSubmit = (questionData) => {
+    setQuestions(prev => [questionData, ...prev])
+    showToast('Sualınız göndərildi', 'success')
+  }
+
+  const handleQuestionClick = (question) => {
+    setSelectedQuestion(question)
+    setIsQuestionThreadModalOpen(true)
+  }
+
+  const handleReply = (questionId, reply) => {
+    setQuestions(prev => prev.map(q => {
+      if (q.id === questionId) {
+        return {
+          ...q,
+          replies: [...(q.replies || []), reply],
+          status: 'answered'
+        }
+      }
+      return q
+    }))
+
+    if (selectedQuestion?.id === questionId) {
+      setSelectedQuestion(prev => ({
+        ...prev,
+        replies: [...(prev.replies || []), reply],
+        status: 'answered'
+      }))
+    }
+  }
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 3000)
   }
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'materials':
-        return <ArticlesContent />
-      case 'text':
-        return <TextContent />
-      case '3dvideo':
-        return <ThreeDVideoContent />
-      case 'video':
-        return <VideoContent />
-      case 'questions':
-        return <QuestionsContent />
-      case 'penalties':
-        return <PenaltiesContent topicRelated={true} onVideoClick={handleVideoClick} />
-      default:
-        return null
+      case 'materials': return <ArticlesContent />
+      case 'text': return <TextContent />
+      case '3dvideo': return <ThreeDVideoContent />
+      case 'video': return <VideoContent />
+      case 'questions': return <QuestionsContent />
+      case 'penalties': return <PenaltiesContent topicRelated={true} onVideoClick={handleVideoClick} />
+      default: return null
     }
   }
 
+  // List View
+  if (viewMode === 'list' || !currentTopic) {
+     return (
+        <div className="pb-10">
+           <div className="mb-4">
+              <Button variant="ghost" onClick={onBack} size="sm" className="-ml-3 text-slate-500">
+                 <ArrowLeft className="w-4 h-4 mr-1" />
+                 Əsas səhifə
+              </Button>
+           </div>
+           <TopicList 
+              topics={topics} 
+              onSelectTopic={(topic) => {
+                 setCurrentTopic(topic)
+                 setViewMode('detail')
+              }} 
+           />
+        </div>
+     )
+  }
+
+  // Detail View
   return (
-    <div className="min-h-screen bg-gray-50 flex relative">
+    <div className="flex bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden h-[calc(100vh-140px)]">
       {/* Sidebar with collapse */}
-      <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-80'} relative`}>
+      <div className={`transition-all duration-200 ease-out border-r border-slate-200 ${isPanelCollapsed ? 'w-0' : 'w-80'} relative hidden lg:block`}>
         <TopicSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -207,30 +211,25 @@ export default function TopicsPage({ onBack }) {
         />
       </div>
 
-          {/* Collapse toggle button - Modern, compact design */}
-          <button
-            onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-            className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-200 rounded-r-md shadow-sm hover:shadow-md hover:bg-[#007A3A]/5 hover:border-[#007A3A] transition-all flex items-center justify-center group"
-            style={{ left: isPanelCollapsed ? '0' : '320px' }}
-            title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
-          >
-            <svg
-              className={`w-3 h-3 text-gray-500 group-hover:text-[#007A3A] transition-all ${isPanelCollapsed ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <StickyHeader
-          topic={currentTopic}
-          onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
-        />
+      <div className="flex-1 flex flex-col min-w-0 bg-white">
+        {/* Custom Header with Back Button */}
+        <div className="flex items-center justify-between p-4 border-b border-slate-100">
+           <div className="flex items-center gap-3">
+              <Button variant="ghost" size="sm" onClick={() => setViewMode('list')} className="lg:hidden">
+                 <ArrowLeft className="w-4 h-4" />
+              </Button>
+              <h2 className="text-lg font-bold text-slate-900 line-clamp-1">{currentTopic.code}. {currentTopic.title}</h2>
+           </div>
+           <Button 
+               variant="ghost" 
+               size="sm" 
+               className="hidden lg:flex"
+               onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
+           >
+              {isPanelCollapsed ? 'Menyunu göstər' : 'Tam ekran'}
+           </Button>
+        </div>
 
         <TabNavigation
           activeTab={activeTab}
@@ -241,7 +240,7 @@ export default function TopicsPage({ onBack }) {
           onPaywallOpen={() => setIsPaywallModalOpen(true)}
         />
 
-        <main className={`flex-1 px-4 lg:px-6 py-8 transition-all duration-200 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
+        <main className="flex-1 overflow-y-auto px-4 lg:px-6 py-8">
           {renderContent()}
         </main>
       </div>
@@ -272,7 +271,6 @@ export default function TopicsPage({ onBack }) {
         onClose={() => setIsPaywallModalOpen(false)}
       />
 
-      {/* Toast */}
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
   )

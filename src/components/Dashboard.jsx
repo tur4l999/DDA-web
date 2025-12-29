@@ -1,234 +1,152 @@
-import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar } from 'lucide-react'
-import OnlineClassCard from './OnlineClassCard'
-import ProfileCard from './ProfileCard'
-import OnlineClasses from './OnlineClasses'
-import TopicsPage from './Topics'
-import PenaltiesPage from './PenaltiesPage'
-import RoadSigns from './RoadSigns'
+import React from 'react';
+import { BookOpen, Monitor, Octagon, ArrowRight, PlayCircle, Trophy, Target } from 'lucide-react';
+import { Card } from './ui/Card';
+import { Button } from './ui/Button';
+import OnlineClassCard from './OnlineClassCard';
 
-export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
-  const [language, setLanguage] = useState('az')
-
-  if (currentPage === 'classes') {
-    return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
-  }
-
-  if (currentPage === 'topics') {
-    return <TopicsPage onBack={() => setCurrentPage('dashboard')} />
-  }
-
-  if (currentPage === 'penalties') {
-    return <PenaltiesPage onBack={() => setCurrentPage('dashboard')} />
-  }
-
-  if (currentPage === 'road-signs') {
-    return <RoadSigns />
-  }
-
+function ActionCard({ icon: Icon, title, desc, onClick, color, bg }) {
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <header className="bg-white border-b border-gray-200 px-4 lg:px-8 py-4 sticky top-0 z-10 shadow-sm">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={onMenuClick}
-              className="lg:hidden text-gray-600 hover:text-gray-900"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-            <h2 className="hidden lg:block text-sm text-gray-900 font-semibold">Test Academy</h2>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="hidden sm:flex items-center bg-gray-100 rounded-lg px-3 py-2">
-              <span className="text-sm text-gray-700 font-medium">44 gün</span>
-            </div>
-            <div className="hidden sm:flex items-center bg-gray-100 rounded-lg px-3 py-2 space-x-2">
-              <Globe className="w-4 h-4 text-gray-600" />
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="bg-transparent text-sm text-gray-700 font-medium focus:outline-none"
-              >
-                <option value="az">Azərbaycan</option>
-                <option value="ru">Русский</option>
-              </select>
-            </div>
-            <button className="text-gray-600 hover:text-gray-900 relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <button className="text-gray-600 hover:text-gray-900">
-              <Settings className="w-5 h-5" />
-            </button>
-          </div>
+    <Card hover onClick={onClick} className="p-6 flex flex-col items-start gap-4 h-full border-none shadow-sm hover:shadow-md transition-shadow">
+      <div className={`p-3.5 rounded-2xl ${bg} ${color}`}>
+        <Icon className="w-7 h-7" strokeWidth={1.5} />
+      </div>
+      <div>
+        <h3 className="font-bold text-lg text-slate-900 mb-1">{title}</h3>
+        <p className="text-sm text-slate-500 font-medium">{desc}</p>
+      </div>
+      <div className="mt-auto pt-4 flex items-center text-sm font-semibold text-slate-400 group-hover:text-primary-600 transition-colors">
+        Keçid et <ArrowRight className="w-4 h-4 ml-1" />
+      </div>
+    </Card>
+  )
+}
+
+export default function Dashboard({ setCurrentPage }) {
+  return (
+    <div className="space-y-8 pb-10">
+      {/* Welcome Section */}
+      <section className="flex flex-col md:flex-row gap-6 md:items-center justify-between">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Salam, Tural! 👋</h2>
+          <p className="text-slate-500 mt-2 font-medium">Gəlin, harda qaldığınızdan davam edək.</p>
         </div>
-      </header>
+      </section>
 
-      <main className="flex-1 overflow-y-auto bg-gray-50">
-        {/* Hero Section */}
-        <div className="gradient-bg relative px-4 lg:px-8 pt-8 pb-3 -mx-4 lg:-mx-8 overflow-visible min-h-[260px] lg:min-h-[220px]">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-[0.06]">
-            <svg className="w-full h-full" viewBox="0 0 1440 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <path d="M0 400C240 300 480 500 720 400C960 300 1200 500 1440 400V600H0V400Z" fill="white"/>
-              <circle cx="200" cy="100" r="60" fill="white" opacity="0.2"/>
-              <circle cx="1200" cy="150" r="80" fill="white" opacity="0.15"/>
-            </svg>
-          </div>
-
-          <div className="max-w-[1200px] mx-auto relative z-10 h-full flex flex-col justify-between">
-            {/* Top Zone: Greeting + Profile */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
-              {/* Greeting */}
-              <div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Salam, Tural Qarayev!
-                </h1>
-                <p className="text-white/90 text-sm lg:text-base">
-                  Hər gün 10 dəqiqə davam etsən, nəticəni tez görəcəksən.
-                </p>
-              </div>
-
-              {/* Profile Card - Absolute positioned for overlap, locked to right column */}
-              <div className="hidden lg:block absolute right-0 top-8 w-[400px] z-30">
-                <div className="relative -mb-28">
-                  <ProfileCard />
-                </div>
-              </div>
+      {/* Continue Learning Card */}
+      <section>
+        <Card className="p-0 overflow-hidden flex flex-col md:flex-row border-slate-200 shadow-sm">
+          <div className="p-6 md:p-8 flex flex-col justify-center flex-1 bg-gradient-to-br from-white to-slate-50">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary-600 mb-3">
+              <span className="flex h-2 w-2 rounded-full bg-primary-500 animate-pulse"></span>
+              Sonuncu dərs
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">Yol Hərəkəti Qaydaları: Dərs 4</h3>
+            <p className="text-slate-600 mb-8 text-sm md:text-base leading-relaxed max-w-lg">
+              Yol nişanlarının qruplaşdırılması və onların tətbiq sahələri haqqında ətraflı izahat.
+            </p>
+            
+            <div className="flex items-center gap-4 mb-8">
+               <div className="flex-1 max-w-xs h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="bg-primary-500 h-full rounded-full w-[65%]"></div>
+               </div>
+               <span className="text-sm font-bold text-slate-700">65%</span>
             </div>
 
-            {/* Bottom Zone: 4 Cards pushed to hero bottom */}
-            <div className="mt-auto pt-4">
-              <div className="lg:max-w-[calc(100%-424px)]">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
-                  <button
-                    onClick={() => setCurrentPage('topics')}
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <BookOpen className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">Təlim Mövzuları</h3>
-                  </button>
-
-                  <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <Video className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">3D Video</h3>
-                  </button>
-
-                  <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <HelpCircle className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">Suallar</h3>
-                  </button>
-
-                  <button
-                    className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                      <FileText className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 text-sm">Video Dərslər</h3>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Profile Card */}
-            <div className="lg:hidden mt-4">
-              <ProfileCard />
+            <div className="flex gap-3">
+              <Button onClick={() => setCurrentPage('topics')} className="shadow-lg shadow-primary-500/20">
+                Davam et
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
             </div>
           </div>
+          
+          {/* Decorative Right Side (Desktop) */}
+          <div className="hidden md:flex w-1/3 bg-slate-100 items-center justify-center relative overflow-hidden">
+             <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-primary-500/10"></div>
+             <PlayCircle className="w-20 h-20 text-primary-500/20 relative z-10" />
+          </div>
+        </Card>
+      </section>
+
+      {/* Primary Actions Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <ActionCard 
+          icon={BookOpen} 
+          title="Təlim Mövzuları" 
+          desc="Bütün dərslər və video materiallar" 
+          onClick={() => setCurrentPage('topics')}
+          color="text-blue-600"
+          bg="bg-blue-50"
+        />
+        <ActionCard 
+          icon={Monitor} 
+          title="İmtahan Simulyatoru" 
+          desc="Real imtahan mühitində yoxlayın" 
+          onClick={() => setCurrentPage('exam')}
+          color="text-purple-600"
+          bg="bg-purple-50"
+        />
+        <ActionCard 
+          icon={Octagon} 
+          title="Yol Nişanları" 
+          desc="Nişanlar və onların mənaları" 
+          onClick={() => setCurrentPage('road-signs')}
+          color="text-orange-600"
+          bg="bg-orange-50"
+        />
+      </section>
+
+      {/* Secondary Information Grid */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Online Classes */}
+        <div>
+           <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-slate-900 text-lg">Onlayn Dərslər</h3>
+              <Button variant="ghost" size="sm" onClick={() => setCurrentPage('classes')}>Hamısına bax</Button>
+           </div>
+           <OnlineClassCard showViewAll={false} setCurrentPage={setCurrentPage} />
         </div>
 
-        {/* Main Content - White Background */}
-        <div className="px-4 lg:px-8 pt-3 pb-6">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
-              {/* Left Column: Modules + Results - LOCKED BOUNDARY */}
-              <div className="space-y-6 max-w-full overflow-hidden">
-                {/* Other 4 Modules - 1 row */}
-                <div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-full">
-                    <button
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <BookMarked className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Maddələr</h3>
-                    </button>
+        {/* Quick Stats / Daily Goal */}
+        <div className="flex flex-col gap-6">
+           <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-slate-900 text-lg">Gündəlik Hədəf</h3>
+           </div>
+           
+           <Card className="p-6 flex-1 border-none shadow-sm">
+              <div className="flex items-center gap-4 mb-6">
+                 <div className="p-3 bg-yellow-50 text-yellow-600 rounded-xl">
+                    <Target className="w-6 h-6" />
+                 </div>
+                 <div>
+                    <h4 className="font-bold text-slate-900">Gündəlik Plan</h4>
+                    <p className="text-sm text-slate-500">20 sual cavablandırın</p>
+                 </div>
+                 <div className="ml-auto text-2xl font-bold text-slate-900">3/20</div>
+              </div>
+              <div className="w-full bg-slate-100 rounded-full h-3 mb-2">
+                  <div className="bg-yellow-500 h-3 rounded-full w-[15%] shadow-sm"></div>
+              </div>
+              <p className="text-xs text-slate-400 text-center font-medium">Bu gün daha 17 sual cavablandırmalısınız</p>
+           </Card>
 
-                    <button
-                      onClick={() => setCurrentPage('penalties')}
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Cərimələr</h3>
-                    </button>
-
-                    <button
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <BarChart3 className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Statistika</h3>
-                    </button>
-
-                    <button
-                      onClick={() => setCurrentPage('classes')}
-                      className="group bg-white hover:bg-white border border-gray-200 hover:border-white rounded-xl p-3 transition-all duration-200 text-left hover:shadow-xl hover:-translate-y-0.5 max-w-full overflow-hidden"
-                    >
-                      <div className="w-9 h-9 rounded-lg bg-[#007A3A]/10 group-hover:bg-[#007A3A] flex items-center justify-center transition-colors duration-200 mb-2">
-                        <Calendar className="w-4 h-4 text-[#007A3A] group-hover:text-white transition-colors duration-200" strokeWidth={1.5} />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Onlayn Dərslər</h3>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Simulator Results */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
-                  <div className="px-6 py-4 border-b border-gray-100">
-                    <h3 className="text-base font-semibold text-gray-900">Simulyator Nəticələri</h3>
-                  </div>
-                  <div className="p-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">03.12.2025 19:15</p>
-                        </div>
-                        <div className="flex flex-col items-end space-y-1">
-                          <p className="text-xs text-gray-500">30% (3/10)</p>
-                          <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div className="bg-[#007A3A] h-2 rounded-full" style={{ width: '30%' }}></div>
-                          </div>
-                        </div>
-                      </div>
+           <Card className="p-6 flex-1 border-none shadow-sm bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+              <div className="flex items-start justify-between">
+                 <div>
+                    <div className="flex items-center gap-2 mb-2 opacity-90">
+                       <Trophy className="w-5 h-5" />
+                       <span className="font-bold text-sm uppercase tracking-wide">Ümumi Nəticə</span>
                     </div>
-                  </div>
-                </div>
+                    <div className="text-4xl font-bold mb-1">85%</div>
+                    <p className="text-primary-100 text-sm">Keçən həftəyə nəzərən +5%</p>
+                 </div>
+                 <div className="w-16 h-16 rounded-full border-4 border-white/20 flex items-center justify-center font-bold text-xl backdrop-blur-sm">
+                    A
+                 </div>
               </div>
-
-              {/* Right Column: Online Classes - LOCKED BOUNDARY, clear space for profile overlap */}
-              <div className="lg:pt-32 max-w-full overflow-hidden">
-                <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
-              </div>
-            </div>
-          </div>
+           </Card>
         </div>
-      </main>
+      </section>
     </div>
   )
 }
