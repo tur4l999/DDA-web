@@ -191,7 +191,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cərimə axtar (maddə, açıqlama, məbləğ)..."
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A]/20 focus:border-[#007A3A] text-sm"
+            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm"
           />
         </div>
       </div>
@@ -202,7 +202,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
           onClick={() => setFilter('all')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
             filter === 'all'
-              ? 'bg-[#007A3A] text-white'
+              ? 'bg-primary-500 text-white'
               : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
           }`}
         >
@@ -212,7 +212,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
           onClick={() => setFilter('common')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
             filter === 'common'
-              ? 'bg-[#007A3A] text-white'
+              ? 'bg-primary-500 text-white'
               : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
           }`}
         >
@@ -222,7 +222,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
           onClick={() => setFilter('video')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
             filter === 'video'
-              ? 'bg-[#007A3A] text-white'
+              ? 'bg-primary-500 text-white'
               : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
           }`}
         >
@@ -232,7 +232,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
           onClick={() => setFilter('points')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
             filter === 'points'
-              ? 'bg-[#007A3A] text-white'
+              ? 'bg-primary-500 text-white'
               : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
           }`}
         >
@@ -248,7 +248,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
           return (
             <div
               key={penalty.id}
-              className="bg-white border border-gray-200 rounded-xl hover:shadow-lg hover:border-[#007A3A] transition-all"
+              className="bg-white border border-gray-200 rounded-xl hover:shadow-lg hover:border-primary-500 transition-all"
             >
               <div className="p-4">
                 <div className="flex items-start gap-4">
@@ -291,7 +291,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                     {penalty.fullDescription && (
                       <button
                         onClick={() => setExpandedPenalty(isExpanded ? null : penalty.id)}
-                        className="flex items-center gap-1.5 text-xs font-semibold text-[#007A3A] hover:text-[#005A2A] transition-colors mt-2"
+                        className="flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors mt-2"
                       >
                         {isExpanded ? (
                           <>
@@ -321,7 +321,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                   {penalty.hasVideo && (
                     <button
                       onClick={() => onVideoClick?.(penalty)}
-                      className="group w-36 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-[#007A3A] transition-all"
+                      className="group w-36 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
                     >
                       <div className="relative aspect-video bg-gray-200">
                         <img 
@@ -334,7 +334,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                         {/* Play overlay */}
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                           <div className="w-8 h-8 bg-white/95 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-md">
-                            <Play className="w-4 h-4 text-[#007A3A] ml-0.5" fill="currentColor" />
+                            <Play className="w-4 h-4 text-primary-600 ml-0.5" fill="currentColor" />
                           </div>
                         </div>
 

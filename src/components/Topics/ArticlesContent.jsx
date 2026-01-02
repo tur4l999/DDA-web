@@ -4,7 +4,7 @@ export default function ArticlesContent() {
       {/* A4-style document container */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         {/* Document header */}
-        <div className="bg-gradient-to-r from-[#007A3A]/5 to-[#007A3A]/10 border-b border-gray-200 px-8 py-6">
+        <div className="bg-gradient-to-r from-primary-500/5 to-primary-100 border-b border-gray-200 px-8 py-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
             Yol Hərəkəti Haqqında Qanun
           </h1>

@@ -2,7 +2,7 @@ import { Play, ChevronRight } from 'lucide-react'
 
 export default function PenaltyCard({ penalty, onVideoClick }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-md hover:border-[#007A3A] transition-all">
+    <div className="bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-md hover:border-primary-500 transition-all">
       <div className="flex items-start gap-3 mb-3">
         <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center flex-shrink-0">
           <penalty.icon className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
@@ -44,7 +44,7 @@ export default function PenaltyCard({ penalty, onVideoClick }) {
       )}
 
       {/* Details button */}
-      <button className="w-full mt-3 flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#007A3A] hover:bg-gray-50 rounded-lg transition-colors">
+      <button className="w-full mt-3 flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg transition-colors">
         <span>Ətraflı</span>
         <ChevronRight className="w-4 h-4" />
       </button>

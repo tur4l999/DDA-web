@@ -66,10 +66,10 @@ export default function ModularActionCards({ setCurrentPage }) {
         <button
           key={card.id}
           onClick={() => card.page && setCurrentPage(card.page)}
-          className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-[#007A3A] transition-all duration-200 text-left min-h-[140px] flex flex-col justify-between"
+          className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-primary-500 transition-all duration-200 text-left min-h-[140px] flex flex-col justify-between"
         >
-          <div className="w-12 h-12 rounded-xl bg-gray-50 group-hover:bg-[#007A3A]/10 flex items-center justify-center transition-colors duration-200 mb-4">
-            <card.icon className="w-6 h-6 text-gray-600 group-hover:text-[#007A3A] transition-colors duration-200" strokeWidth={1.5} />
+          <div className="w-12 h-12 rounded-xl bg-gray-50 group-hover:bg-primary-500/10 flex items-center justify-center transition-colors duration-200 mb-4">
+            <card.icon className="w-6 h-6 text-gray-600 group-hover:text-primary-600 transition-colors duration-200" strokeWidth={1.5} />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900 text-sm mb-1 leading-tight">{card.title}</h3>

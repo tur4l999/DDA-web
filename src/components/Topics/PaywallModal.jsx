@@ -40,7 +40,7 @@ export default function PaywallModal({ isOpen, onClose }) {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="sticky top-0 bg-gradient-to-r from-[#007A3A] to-[#005A2A] px-6 py-5 rounded-t-3xl flex items-center justify-between z-10">
+          <div className="sticky top-0 bg-gradient-to-r from-primary-500 to-primary-700 px-6 py-5 rounded-t-3xl flex items-center justify-between z-10">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                 <Lock className="w-6 h-6 text-white" />
@@ -66,13 +66,13 @@ export default function PaywallModal({ isOpen, onClose }) {
                   key={index}
                   className={`relative rounded-2xl border-2 p-6 transition-all hover:shadow-xl ${
                     pkg.popular
-                      ? 'border-[#007A3A] bg-gradient-to-br from-[#007A3A]/5 to-transparent'
-                      : 'border-gray-200 hover:border-[#007A3A]/30'
+                      ? 'border-primary-500 bg-gradient-to-br from-primary-500/5 to-transparent'
+                      : 'border-gray-200 hover:border-primary-500/30'
                   }`}
                 >
                   {pkg.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] text-white px-4 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+                      <div className="bg-gradient-to-r from-primary-500 to-primary-700 text-white px-4 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
                         <Sparkles className="w-3 h-3" />
                         Ən populyar
                       </div>
@@ -82,7 +82,7 @@ export default function PaywallModal({ isOpen, onClose }) {
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-black text-gray-900 mb-2">{pkg.name}</h3>
                     <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl font-black text-[#007A3A]">{pkg.price}</span>
+                      <span className="text-4xl font-black text-primary-600">{pkg.price}</span>
                       <span className="text-gray-500 font-medium">/ {pkg.period}</span>
                     </div>
                   </div>
@@ -90,8 +90,8 @@ export default function PaywallModal({ isOpen, onClose }) {
                   <ul className="space-y-3 mb-6">
                     {pkg.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <div className="w-5 h-5 rounded-full bg-[#007A3A]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-3 h-3 text-[#007A3A]" strokeWidth={3} />
+                        <div className="w-5 h-5 rounded-full bg-primary-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3 text-primary-600" strokeWidth={3} />
                         </div>
                         <span className="text-sm text-gray-700 font-medium">{feature}</span>
                       </li>
@@ -101,7 +101,7 @@ export default function PaywallModal({ isOpen, onClose }) {
                   <button
                     className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${
                       pkg.popular
-                        ? 'bg-gradient-to-r from-[#007A3A] to-[#005A2A] text-white hover:shadow-lg hover:scale-105'
+                        ? 'bg-gradient-to-r from-primary-500 to-primary-700 text-white hover:shadow-lg hover:scale-105'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >

@@ -35,13 +35,13 @@ export default function MobileRightPanel({
       {/* Collapsible Header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-[#007A3A] to-[#005A2A] text-white"
+        className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-primary-500 to-primary-700 text-white"
       >
         <div className="flex items-center gap-2">
           <Icon className="w-5 h-5" />
           <span className="font-semibold">{currentTabInfo.label}</span>
           {currentTabInfo.count > 0 && (
-            <span className="px-2 py-0.5 bg-white text-[#007A3A] text-xs rounded-full font-bold">
+            <span className="px-2 py-0.5 bg-white text-primary-600 text-xs rounded-full font-bold">
               {currentTabInfo.count}
             </span>
           )}
