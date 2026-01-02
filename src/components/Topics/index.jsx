@@ -196,7 +196,7 @@ export default function TopicsPage({ onBack }) {
   return (
     <div className="min-h-screen bg-gray-50 flex relative">
       {/* Sidebar with collapse */}
-      <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-80'} relative`}>
+      <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-72'} relative`}>
         <TopicSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -211,7 +211,7 @@ export default function TopicsPage({ onBack }) {
           <button
             onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
             className="absolute top-1/2 -translate-y-1/2 z-50 w-6 h-12 bg-white border border-gray-100 rounded-r-xl shadow-sm hover:shadow-md hover:bg-primary-50 hover:border-primary-100 transition-all flex items-center justify-center group"
-            style={{ left: isPanelCollapsed ? '0' : '320px' }}
+            style={{ left: isPanelCollapsed ? '0' : '288px' }}
             title={isPanelCollapsed ? 'Paneli aç' : 'Paneli gizlət'}
           >
             <svg

@@ -17,15 +17,15 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-lg active:scale-95 border-none ring-offset-2 focus:ring-2 ring-primary-500/50;
+    @apply bg-primary-500 hover:bg-primary-600 text-white text-sm font-semibold py-2.5 px-5 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 border-none ring-offset-2 focus:ring-2 ring-primary-500/50;
   }
   
   .card {
-    @apply bg-white rounded-3xl border border-gray-100 shadow-card hover:shadow-soft transition-all duration-300;
+    @apply bg-white rounded-2xl border border-gray-100 shadow-card hover:shadow-soft transition-all duration-300;
   }
   
   .input-field {
-    @apply w-full px-5 py-3.5 rounded-2xl border-none bg-white shadow-sm ring-1 ring-gray-100 focus:ring-2 focus:ring-primary-500/20 focus:bg-white transition-all text-gray-900 placeholder:text-gray-400;
+    @apply w-full px-4 py-2.5 rounded-xl border-none bg-white shadow-sm ring-1 ring-gray-100 focus:ring-2 focus:ring-primary-500/20 focus:bg-white transition-all text-gray-900 placeholder:text-gray-400 text-sm;
   }
 
   .glass-panel {
