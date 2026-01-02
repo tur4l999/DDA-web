@@ -73,7 +73,7 @@ export default function RightPanel({
             onClick={() => onTabChange('bookmarks')}
             className={`flex-1 px-4 py-3 text-sm font-medium transition-colors border-b-2 ${
               activeTab === 'bookmarks'
-                ? 'text-[#007A3A] border-[#007A3A]'
+                ? 'text-primary-600 border-primary-500'
                 : 'text-gray-600 border-transparent hover:text-gray-900'
             }`}
           >
@@ -81,7 +81,7 @@ export default function RightPanel({
               <Bookmark className="w-4 h-4" />
               <span>Saxlanılanlar</span>
               {bookmarkedLessons.length > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 bg-[#007A3A] text-white text-xs rounded-full">
+                <span className="ml-1 px-1.5 py-0.5 bg-primary-500 text-white text-xs rounded-full">
                   {bookmarkedLessons.length}
                 </span>
               )}
@@ -91,7 +91,7 @@ export default function RightPanel({
             onClick={() => onTabChange('selectedDay')}
             className={`flex-1 px-4 py-3 text-sm font-medium transition-colors border-b-2 ${
               activeTab === 'selectedDay'
-                ? 'text-[#007A3A] border-[#007A3A]'
+                ? 'text-primary-600 border-primary-500'
                 : 'text-gray-600 border-transparent hover:text-gray-900'
             }`}
           >
@@ -113,7 +113,7 @@ export default function RightPanel({
                 {bookmarkedLessons.map(lesson => (
                   <div
                     key={lesson.id}
-                    className="bg-gray-50 border border-gray-200 rounded-xl p-3 hover:border-[#007A3A] transition-all"
+                    className="bg-gray-50 border border-gray-200 rounded-xl p-3 hover:border-primary-500 transition-all"
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <h4 className="font-semibold text-sm text-gray-900 line-clamp-2 flex-1">
@@ -123,7 +123,7 @@ export default function RightPanel({
                         onClick={() => onRemoveBookmark(lesson.id)}
                         className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white transition-colors flex-shrink-0"
                       >
-                        <Bookmark className="w-4 h-4 text-[#007A3A] fill-[#007A3A]" />
+                        <Bookmark className="w-4 h-4 text-primary-600 fill="currentColor"" />
                       </button>
                     </div>
 
@@ -160,7 +160,7 @@ export default function RightPanel({
                           onClick={() => onJoinLesson(lesson)}
                           className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
                             lesson.status === 'started'
-                              ? 'bg-[#007A3A] hover:bg-[#005A2A] text-white'
+                              ? 'bg-primary-500 hover:bg-primary-600 text-white'
                               : 'bg-blue-600 hover:bg-blue-700 text-white'
                           }`}
                         >
@@ -201,7 +201,7 @@ export default function RightPanel({
                     {lessonsForDate.map(lesson => (
                       <div
                         key={lesson.id}
-                        className="bg-gray-50 border border-gray-200 rounded-xl p-3 hover:border-[#007A3A] transition-all cursor-pointer"
+                        className="bg-gray-50 border border-gray-200 rounded-xl p-3 hover:border-primary-500 transition-all cursor-pointer"
                         onClick={() => onViewDetails(lesson)}
                       >
                         <div className="flex items-center justify-between mb-2">
@@ -235,7 +235,7 @@ export default function RightPanel({
                     <p className="text-sm text-gray-600 font-medium mb-1">Bu gün üçün dərs yoxdur</p>
                     <button
                       onClick={() => onTabChange('bookmarks')}
-                      className="mt-3 text-sm text-[#007A3A] hover:text-[#005A2A] font-medium"
+                      className="mt-3 text-sm text-primary-600 hover:text-primary-700 font-medium"
                     >
                       Saxlanılanlara baxın →
                     </button>

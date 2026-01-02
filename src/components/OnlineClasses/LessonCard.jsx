@@ -141,7 +141,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         {lesson.status === 'started' && (
           <button
             onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
           >
             <Play className="w-4 h-4 fill-current" />
             <span>Dərsə qoşul</span>
@@ -151,7 +151,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         {lesson.status === 'waiting' && canJoin && (
           <button
             onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
           >
             <Play className="w-4 h-4 fill-current" />
             <span>Dərsə qoşul</span>
@@ -161,7 +161,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         {lesson.status === 'completed' && hasReplay && (
           <button
             onClick={() => onWatchReplay?.(lesson)}
-            className="flex-1 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
           >
             <Play className="w-4 h-4 fill-current" />
             <span>Təkrara bax</span>

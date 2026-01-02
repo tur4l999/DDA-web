@@ -56,7 +56,7 @@ export default function VideoContent() {
               type="checkbox"
               checked={watchedVideos.includes(videos[0].id)}
               onChange={() => toggleWatched(videos[0].id)}
-              className="w-4 h-4 text-[#007A3A] rounded focus:ring-[#007A3A]"
+              className="w-4 h-4 text-primary-600 rounded focus:ring-primary-500"
             />
             <span className="text-sm font-medium text-gray-700">Videonu izlədim</span>
           </label>
@@ -71,19 +71,19 @@ export default function VideoContent() {
             {videos.map((video, index) => (
               <button
                 key={video.id}
-                className="w-full flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-xl hover:border-[#007A3A] hover:shadow-sm transition-all group"
+                className="w-full flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-xl hover:border-primary-500 hover:shadow-sm transition-all group"
               >
                 <div className="w-32 h-20 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-                  <Play className="w-8 h-8 text-gray-400 group-hover:text-[#007A3A] transition-colors" />
+                  <Play className="w-8 h-8 text-gray-400 group-hover:text-primary-600 transition-colors" />
                 </div>
                 <div className="flex-1 text-left">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs font-medium text-gray-500">Video {index + 1}</span>
                     {watchedVideos.includes(video.id) && (
-                      <Check className="w-4 h-4 text-[#007A3A]" />
+                      <Check className="w-4 h-4 text-primary-600" />
                     )}
                   </div>
-                  <p className="font-medium text-gray-900 group-hover:text-[#007A3A] transition-colors">
+                  <p className="font-medium text-gray-900 group-hover:text-primary-600 transition-colors">
                     {video.title}
                   </p>
                   <p className="text-sm text-gray-500">{video.duration}</p>
