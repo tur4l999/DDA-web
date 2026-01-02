@@ -123,7 +123,7 @@ export default function RightPanel({
                         onClick={() => onRemoveBookmark(lesson.id)}
                         className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white transition-colors flex-shrink-0"
                       >
-                        <Bookmark className="w-4 h-4 text-primary-600 fill="currentColor"" />
+                        <Bookmark className="w-4 h-4 text-primary-600 fill-current" />
                       </button>
                     </div>
 
