@@ -24,7 +24,7 @@ export default {
           900: '#111827', // Headings
         },
         primary: {
-          // Soft Teal/Green (Oceanic)
+          // Soft Teal/Oceanic
           50: '#F0FDFA',
           100: '#CCFBF1',
           200: '#99F6E4',
@@ -43,8 +43,9 @@ export default {
         '3xl': '24px',
       },
       boxShadow: {
-        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-        'card': '0 1px 3px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.02)',
+        'soft': '0 10px 40px -10px rgba(0,0,0,0.05)',
+        'card': '0 2px 10px rgba(0,0,0,0.02), 0 10px 30px rgba(0,0,0,0.02)',
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
       }
     },
   },

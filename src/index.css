@@ -6,33 +6,37 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-800 antialiased;
+    @apply bg-gray-50 text-gray-800 antialiased selection:bg-primary-100 selection:text-primary-900;
     font-family: 'Inter', sans-serif;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply text-gray-900 tracking-tight;
+    @apply text-gray-900 tracking-tight font-semibold;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-2xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95;
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-lg active:scale-95 border-none ring-offset-2 focus:ring-2 ring-primary-500/50;
   }
   
   .card {
-    @apply bg-white rounded-2xl border border-gray-100/50 shadow-card hover:shadow-soft transition-all duration-300;
+    @apply bg-white rounded-3xl border border-gray-100 shadow-card hover:shadow-soft transition-all duration-300;
   }
   
   .input-field {
-    @apply w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition-all bg-gray-50/50 focus:bg-white;
+    @apply w-full px-5 py-3.5 rounded-2xl border-none bg-white shadow-sm ring-1 ring-gray-100 focus:ring-2 focus:ring-primary-500/20 focus:bg-white transition-all text-gray-900 placeholder:text-gray-400;
+  }
+
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-glass;
   }
 }
 
 /* Custom Scrollbar for cleaner look */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -40,9 +44,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-200 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-300;
+  @apply bg-gray-200 rounded-full hover:bg-gray-300 transition-colors;
 }

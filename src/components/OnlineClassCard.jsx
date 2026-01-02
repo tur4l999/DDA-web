@@ -64,13 +64,13 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
   }
 
   return (
-    <div className="bg-white rounded-3xl shadow-card border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-3xl shadow-sm border border-gray-100/50 overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100/50 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-gray-900">Ən yaxın dərslər</h3>
+          <h3 className="text-lg font-bold text-gray-900 tracking-tight">Ən yaxın dərslər</h3>
           {showViewAll && (
             <button 
               onClick={() => setCurrentPage && setCurrentPage('classes')}
-              className="text-primary-600 hover:text-primary-700 text-sm font-semibold flex items-center gap-1 transition-colors px-2 py-1 hover:bg-primary-50 rounded-lg"
+              className="text-primary-600 hover:text-primary-700 text-sm font-semibold flex items-center gap-1 transition-colors px-3 py-1.5 hover:bg-primary-50 rounded-xl"
             >
               <span>Hamısı</span>
               <ArrowRight className="w-4 h-4" />
@@ -78,52 +78,52 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
           )}
       </div>
 
-      <div className="p-2 space-y-2">
+      <div className="p-4 space-y-3">
         {classes.map((cls) => (
-          <div key={cls.id} className="group bg-white hover:bg-gray-50 rounded-2xl p-4 transition-all duration-200 border border-transparent hover:border-gray-100">
+          <div key={cls.id} className="group bg-gray-50/50 hover:bg-white hover:shadow-card rounded-2xl p-5 transition-all duration-300 border border-transparent hover:border-gray-100">
             {/* Top Row: Title & Status */}
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <h4 className="font-bold text-gray-900 line-clamp-1">{cls.title}</h4>
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <h4 className="font-bold text-gray-900 line-clamp-1 text-[15px]">{cls.title}</h4>
               <div className="flex items-center gap-2 flex-shrink-0">
                   {cls.status === 'started' ? (
                       <span className="flex h-2.5 w-2.5 relative">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
                       </span>
                   ) : null}
-                  <span className="text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-1 rounded-md uppercase">
+                  <span className="text-[10px] font-bold bg-gray-200/50 text-gray-500 px-2 py-1 rounded-lg uppercase tracking-wide">
                     {getLanguageLabel(cls.language)}
                   </span>
               </div>
             </div>
 
             {/* Info Row */}
-            <div className="flex items-center gap-4 text-xs text-gray-500 font-medium mb-3">
-              <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-4 text-xs text-gray-500 font-medium mb-4">
+              <div className="flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg border border-gray-100/50">
                 <Calendar className="w-3.5 h-3.5 text-gray-400" />
                 <span>{formatDate(cls.date)}</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg border border-gray-100/50">
                 <Clock className="w-3.5 h-3.5 text-gray-400" />
                 <span>{cls.duration} dəq</span>
               </div>
             </div>
 
             {/* Instructor & Action */}
-            <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-50 group-hover:border-gray-200/50">
-               <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+            <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100/50 group-hover:border-gray-100">
+               <div className="flex items-center gap-2.5 text-xs text-gray-500">
+                  <div className="w-7 h-7 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 shadow-sm">
                       <User className="w-3.5 h-3.5" />
                   </div>
                   <span className="font-medium">{cls.instructor}</span>
                </div>
                
                {cls.status === 'started' ? (
-                   <button className="bg-primary-500 hover:bg-primary-600 text-white text-xs font-semibold py-2 px-4 rounded-xl transition-all shadow-sm shadow-primary-500/20 hover:shadow-primary-500/40">
+                   <button className="bg-primary-500 hover:bg-primary-600 text-white text-xs font-semibold py-2 px-4 rounded-xl transition-all shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40 active:scale-95">
                        Qoşul
                    </button>
                ) : (
-                   <button className="text-gray-400 hover:text-primary-600 p-2 rounded-lg hover:bg-primary-50 transition-colors">
+                   <button className="text-gray-400 hover:text-primary-600 p-2 rounded-xl hover:bg-primary-50 transition-colors">
                        <Bell className="w-4 h-4" />
                    </button>
                )}
