@@ -108,7 +108,73 @@ export default function QuestionsContent({ topic }) {
   )
 
   return (
-    <div className="flex flex-col h-[calc(100vh-200px)] relative group">
+    <div className="flex flex-col h-[calc(100vh-140px)] relative group">
+
+      {/* Top Control Bar (Moved from bottom) */}
+      <div className="bg-white border-b border-gray-100 pb-4 mb-2 z-10">
+        <div className="max-w-3xl mx-auto flex flex-col gap-3">
+
+          {/* Timer and Controls */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg font-mono text-lg font-medium">
+              <Clock className="w-5 h-5" />
+              {formatTime(elapsedTime)}
+            </div>
+
+            {/* Explanation Toggle Button */}
+            {isAnswered && (
+               <button
+                 onClick={() => setShowExplanation(!showExplanation)}
+                 className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
+               >
+                 <BookOpen className="w-4 h-4" />
+                 {showExplanation ? 'İzahı gizlət' : 'İzaha bax'}
+               </button>
+            )}
+          </div>
+
+          {/* Navigation Buttons */}
+          <div
+            ref={scrollContainerRef}
+            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth"
+          >
+            {TOPIC_QUESTIONS.map((q, idx) => {
+              const status = userAnswers[q.id] !== undefined
+                ? (userAnswers[q.id] === q.correctAnswer ? 'correct' : 'incorrect')
+                : 'unanswered'
+
+              let btnClass = "w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-medium transition-all duration-200 border "
+
+              if (idx === currentQuestionIndex) {
+                btnClass += "ring-2 ring-primary-500 ring-offset-2 z-10 " // Active ring
+              }
+
+              if (status === 'correct') {
+                btnClass += "bg-green-100 border-green-200 text-green-700 hover:bg-green-200"
+              } else if (status === 'incorrect') {
+                btnClass += "bg-red-100 border-red-200 text-red-700 hover:bg-red-200"
+              } else {
+                if (idx === currentQuestionIndex) {
+                   btnClass += "bg-primary-600 border-primary-600 text-white shadow-md"
+                } else {
+                   btnClass += "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                }
+              }
+
+              return (
+                <button
+                  key={q.id}
+                  onClick={() => handleQuestionChange(idx)}
+                  className={btnClass}
+                >
+                  {idx + 1}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Navigation Arrows (Desktop/Tablet) */}
       <button
         onClick={() => handleQuestionChange(currentQuestionIndex - 1)}
@@ -130,12 +196,12 @@ export default function QuestionsContent({ topic }) {
 
       {/* Main Content Area - Scrollable & Swipeable */}
       <div
-        className="flex-1 overflow-y-auto pb-24 px-4"
+        className="flex-1 overflow-y-auto px-4 pb-8"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <div className="max-w-3xl mx-auto py-8">
+        <div className="max-w-3xl mx-auto">
           {/* Question Text */}
           <h2 className="text-xl md:text-2xl font-medium text-gray-900 mb-6 leading-relaxed text-center">
             {currentQuestion.text}
@@ -231,71 +297,6 @@ export default function QuestionsContent({ topic }) {
               )}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Bottom Control Bar */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] p-4 z-10">
-        <div className="max-w-6xl mx-auto flex flex-col gap-4">
-
-          {/* Timer and Controls */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg font-mono text-lg font-medium">
-              <Clock className="w-5 h-5" />
-              {formatTime(elapsedTime)}
-            </div>
-
-            {/* Explanation Toggle Button */}
-            {isAnswered && (
-               <button
-                 onClick={() => setShowExplanation(!showExplanation)}
-                 className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
-               >
-                 <BookOpen className="w-4 h-4" />
-                 {showExplanation ? 'İzahı gizlət' : 'İzaha bax'}
-               </button>
-            )}
-          </div>
-
-          {/* Navigation Buttons */}
-          <div
-            ref={scrollContainerRef}
-            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth"
-          >
-            {TOPIC_QUESTIONS.map((q, idx) => {
-              const status = userAnswers[q.id] !== undefined
-                ? (userAnswers[q.id] === q.correctAnswer ? 'correct' : 'incorrect')
-                : 'unanswered'
-
-              let btnClass = "w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-medium transition-all duration-200 border "
-
-              if (idx === currentQuestionIndex) {
-                btnClass += "ring-2 ring-primary-500 ring-offset-2 z-10 " // Active ring
-              }
-
-              if (status === 'correct') {
-                btnClass += "bg-green-100 border-green-200 text-green-700 hover:bg-green-200"
-              } else if (status === 'incorrect') {
-                btnClass += "bg-red-100 border-red-200 text-red-700 hover:bg-red-200"
-              } else {
-                if (idx === currentQuestionIndex) {
-                   btnClass += "bg-primary-600 border-primary-600 text-white shadow-md"
-                } else {
-                   btnClass += "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
-                }
-              }
-
-              return (
-                <button
-                  key={q.id}
-                  onClick={() => handleQuestionChange(idx)}
-                  className={btnClass}
-                >
-                  {idx + 1}
-                </button>
-              )
-            })}
-          </div>
         </div>
       </div>
 
