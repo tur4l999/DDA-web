@@ -98,22 +98,22 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
       <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
         <div className="max-w-[1600px] mx-auto space-y-8 pb-10">
           
-          {/* Welcome Section */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight mb-2">
-                Salam, Tural! 👋
-              </h1>
-              <p className="text-gray-500 text-base max-w-xl leading-relaxed">
-                Bu gün yol hərəkəti qaydalarını öyrənmək üçün əla gündür.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6 lg:gap-8 items-start">
             {/* Left Content Column */}
             <div className="space-y-8">
               
+              {/* Welcome Section */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                  <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight mb-2">
+                    Salam, Tural! 👋
+                  </h1>
+                  <p className="text-gray-500 text-base max-w-xl leading-relaxed">
+                    Bu gün yol hərəkəti qaydalarını öyrənmək üçün əla gündür.
+                  </p>
+                </div>
+              </div>
+
               {/* Combined Sections */}
               <section>
                 <div className="flex items-center justify-between mb-4">
@@ -136,25 +136,25 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     icon={HelpCircle} 
                     label="Suallar" 
                     onClick={() => {}}
-                    colorClass="bg-amber-50 text-amber-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={FileText} 
                     label="Video Dərslər" 
                     onClick={() => {}}
-                    colorClass="bg-emerald-50 text-emerald-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={BookMarked} 
                     label="Maddələr" 
                     onClick={() => {}}
-                    colorClass="bg-gray-100 text-gray-700"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={AlertTriangle} 
                     label="Cərimələr" 
                     onClick={() => setCurrentPage('penalties')}
-                    colorClass="bg-rose-50 text-rose-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={BarChart3} 
@@ -210,11 +210,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             </div>
 
             {/* Right Sidebar Column */}
-            <div className="space-y-6">
-               <div className="sticky top-28 space-y-6">
-                <ProfileCard />
-                <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
-               </div>
+            <div className="space-y-6 sticky top-6">
+              <ProfileCard />
+              <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
             </div>
 
           </div>
