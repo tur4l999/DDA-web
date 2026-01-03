@@ -104,10 +104,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             {/* Left Content Column */}
             <div className="space-y-8">
               
-              {/* Main Action Grid */}
+              {/* Combined Sections */}
               <section>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">Tədris materialları</h3>
+                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">Bölmələr</h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5">
                   <QuickAction 
@@ -134,15 +134,6 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     onClick={() => {}}
                     colorClass="bg-emerald-50 text-emerald-600"
                   />
-                </div>
-              </section>
-
-              {/* Secondary Actions */}
-              <section>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">Faydalı alətlər</h3>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5">
                   <QuickAction 
                     icon={BookMarked} 
                     label="Maddələr" 
