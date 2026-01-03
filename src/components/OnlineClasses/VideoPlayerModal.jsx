@@ -26,10 +26,10 @@ export default function VideoPlayerModal({ lesson, isOpen, onClose }) {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-4 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-primary-600 to-primary-600 px-6 py-4 flex items-center justify-between">
             <div className="flex-1">
               <h2 className="text-xl font-black text-white mb-1">{lesson.title}</h2>
-              <div className="flex items-center space-x-4 text-sm text-purple-100">
+              <div className="flex items-center space-x-4 text-sm text-primary-100">
                 <div className="flex items-center space-x-1">
                   <Calendar className="w-4 h-4" />
                   <span className="font-semibold">{formatDateTime(lesson.date)}</span>

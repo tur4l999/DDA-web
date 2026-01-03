@@ -176,7 +176,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
 
   const getFineColor = (amount) => {
     if (amount >= 150) return 'from-red-500 to-red-600'
-    if (amount >= 100) return 'from-orange-500 to-orange-600'
+    if (amount >= 100) return 'from-yellow-500 to-yellow-600'
     return 'from-yellow-500 to-yellow-600'
   }
 
@@ -258,7 +258,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                     <div className="flex items-center gap-1.5 flex-wrap mb-2">
                       {/* Related Article */}
                       {penalty.relatedArticles && penalty.relatedArticles.length > 0 && (
-                        <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded-md border border-blue-200">
+                        <span className="text-xs font-bold text-primary-700 bg-primary-50 px-2 py-1 rounded-md border border-primary-200">
                           {penalty.relatedArticles.join(', ')}
                         </span>
                       )}

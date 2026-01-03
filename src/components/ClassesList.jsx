@@ -79,7 +79,7 @@ export default function ClassesList() {
     switch(status) {
       case 'started': return { bg: 'bg-green-50', border: 'border-green-200', badge: 'bg-green-100 text-green-700' }
       case 'completed': return { bg: 'bg-gray-50', border: 'border-gray-200', badge: 'bg-gray-100 text-gray-700' }
-      default: return { bg: 'bg-blue-50', border: 'border-blue-200', badge: 'bg-blue-100 text-blue-700' }
+      default: return { bg: 'bg-primary-50', border: 'border-primary-200', badge: 'bg-primary-100 text-primary-700' }
     }
   }
 
@@ -202,7 +202,7 @@ export default function ClassesList() {
                             </button>
                           )}
                           {cls.status === 'waiting' && (
-                            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded text-xs transition-colors">
+                            <button className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-3 rounded text-xs transition-colors">
                               Xatırladat
                             </button>
                           )}

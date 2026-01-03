@@ -113,13 +113,13 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     icon={BookOpen} 
                     label="Mövzular" 
                     onClick={() => setCurrentPage('topics')}
-                    colorClass="bg-blue-50 text-blue-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={Video} 
                     label="3D Videolar" 
                     onClick={() => {}}
-                    colorClass="bg-purple-50 text-purple-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={HelpCircle} 
@@ -158,7 +158,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     icon={BarChart3} 
                     label="Statistika" 
                     onClick={() => {}}
-                    colorClass="bg-indigo-50 text-indigo-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={Calendar} 
@@ -182,7 +182,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   {/* Result Item */}
                   <div className="flex items-center justify-between p-4 bg-gray-50/50 rounded-xl hover:bg-white hover:shadow-sm transition-all duration-300 group cursor-pointer border border-transparent hover:border-gray-100">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform duration-300 shadow-sm">
+                      <div className="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center text-yellow-500 group-hover:scale-110 transition-transform duration-300 shadow-sm">
                         <Monitor className="w-5 h-5" strokeWidth={1.5} />
                       </div>
                       <div>
@@ -194,7 +194,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     <div className="text-right">
                       <span className="block text-xl font-bold text-gray-900 mb-1.5">30%</span>
                       <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-orange-500 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.4)]" style={{ width: '30%' }}></div>
+                        <div className="h-full bg-yellow-500 rounded-full shadow-[0_0_8px_rgba(249,115,22,0.4)]" style={{ width: '30%' }}></div>
                       </div>
                     </div>
                   </div>

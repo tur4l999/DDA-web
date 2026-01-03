@@ -5,7 +5,7 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
 
   const getStatusInfo = (status) => {
     const statusMap = {
-      waiting: { label: 'Gözləyir', className: 'bg-blue-500 text-white', icon: '⏰' },
+      waiting: { label: 'Gözləyir', className: 'bg-primary-500 text-white', icon: '⏰' },
       started: { label: 'Başladı', className: 'bg-green-500 text-white', icon: '🔴' },
       completed: { label: 'Tamamlandı', className: 'bg-gray-500 text-white', icon: '✓' },
       cancelled: { label: 'Ləğv edildi', className: 'bg-red-500 text-white', icon: '✕' }
@@ -73,24 +73,24 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
 
             {/* Metadata Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-5 border-2 border-blue-200">
+              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-5 border-2 border-primary-200">
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                     <Calendar className="w-5 h-5 text-white" />
                   </div>
                   <span className="font-bold text-gray-900">Tarix və Saat</span>
                 </div>
-                <p className="text-lg font-black text-blue-900">{formatDateTime(lesson.date)}</p>
+                <p className="text-lg font-black text-primary-900">{formatDateTime(lesson.date)}</p>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-5 border-2 border-purple-200">
+              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-5 border-2 border-primary-200">
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
                     <Clock className="w-5 h-5 text-white" />
                   </div>
                   <span className="font-bold text-gray-900">Müddət</span>
                 </div>
-                <p className="text-lg font-black text-purple-900">{lesson.duration} dəqiqə</p>
+                <p className="text-lg font-black text-primary-900">{lesson.duration} dəqiqə</p>
               </div>
 
               <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-5 border-2 border-green-200">
@@ -103,14 +103,14 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
                 <p className="text-lg font-black text-green-900">{lesson.instructor}</p>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-5 border-2 border-orange-200">
+              <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-5 border-2 border-yellow-200">
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center">
                     <Globe className="w-5 h-5 text-white" />
                   </div>
                   <span className="font-bold text-gray-900">Dərs dili</span>
                 </div>
-                <p className="text-lg font-black text-orange-900">{getLanguageLabel(lesson.language)}</p>
+                <p className="text-lg font-black text-yellow-900">{getLanguageLabel(lesson.language)}</p>
               </div>
             </div>
 
@@ -118,20 +118,20 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
             {lesson.status === 'completed' && (
               <div className="border-t-2 border-gray-200 pt-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <Video className="w-6 h-6 text-purple-600" />
+                  <Video className="w-6 h-6 text-primary-600" />
                   <h4 className="text-lg font-black text-gray-900">Təkrar Video</h4>
                 </div>
 
                 {hasReplay ? (
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-2xl p-5">
+                  <div className="bg-gradient-to-r from-primary-50 to-primary-50 border-2 border-primary-200 rounded-2xl p-5">
                     <div className="flex items-center space-x-2 mb-3">
                       <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="font-bold text-purple-900">Təkrar video mövcuddur</span>
+                      <span className="font-bold text-primary-900">Təkrar video mövcuddur</span>
                     </div>
-                    <p className="text-sm text-purple-700 mb-4">Bu dərsin təkrar videosunu istədiyiniz vaxt izləyə bilərsiniz.</p>
+                    <p className="text-sm text-primary-700 mb-4">Bu dərsin təkrar videosunu istədiyiniz vaxt izləyə bilərsiniz.</p>
                     <button
                       onClick={() => onWatchReplay?.(lesson)}
-                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-black py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                      className="w-full bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-black py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
                     >
                       <Play className="w-5 h-5 fill-current" />
                       <span>Təkrara bax</span>
