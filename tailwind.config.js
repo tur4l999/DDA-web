@@ -55,3 +55,4 @@ export default {
   },
   plugins: [],
 }
+// Brand colors updated
