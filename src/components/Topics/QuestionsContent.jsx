@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Clock, ZoomIn, ChevronLeft, ChevronRight, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
+import { Clock, ZoomIn, ChevronLeft, ChevronRight, CheckCircle, XCircle, HelpCircle, BookOpen } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
 export default function QuestionsContent({ topic }) {
@@ -7,6 +7,7 @@ export default function QuestionsContent({ topic }) {
   const [userAnswers, setUserAnswers] = useState({}) // { questionId: selectedOptionIndex }
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isZoomed, setIsZoomed] = useState(false)
+  const [showExplanation, setShowExplanation] = useState(false)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
   const scrollContainerRef = useRef(null)
@@ -18,6 +19,25 @@ export default function QuestionsContent({ topic }) {
     }, 1000)
     return () => clearInterval(timer)
   }, [])
+
+  // Scroll active pagination button into view
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const activeBtn = scrollContainerRef.current.children[currentQuestionIndex]
+      if (activeBtn) {
+        activeBtn.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        })
+      }
+    }
+  }, [currentQuestionIndex])
+
+  // Reset explanation when question changes
+  useEffect(() => {
+    setShowExplanation(false)
+  }, [currentQuestionIndex])
 
   // Format time as HH:MM:SS
   const formatTime = (seconds) => {
@@ -40,7 +60,6 @@ export default function QuestionsContent({ topic }) {
   const handleQuestionChange = (index) => {
     if (index >= 0 && index < TOPIC_QUESTIONS.length) {
       setCurrentQuestionIndex(index)
-      // Optional: scroll pagination into view
     }
   }
 
@@ -176,12 +195,13 @@ export default function QuestionsContent({ topic }) {
             })}
           </div>
 
-          {/* Feedback/Explanation (Only shown after answer) */}
+          {/* Feedback Section (Answer status + Explanation) */}
           {isAnswered && (
-            <div className={`mt-6 p-4 rounded-2xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300 ${
-              isCorrect ? 'bg-green-50 border border-green-100' : 'bg-red-50 border border-red-100'
+            <div className={`mt-6 rounded-2xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300 overflow-hidden border ${
+              isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'
             }`}>
-              <div className="flex gap-3">
+              {/* Status Header */}
+              <div className="p-4 flex gap-3">
                 {isCorrect ? (
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                 ) : (
@@ -198,6 +218,17 @@ export default function QuestionsContent({ topic }) {
                   </p>
                 </div>
               </div>
+
+              {/* Explanation (Shown when toggled) */}
+              {showExplanation && currentQuestion.explanation && (
+                <div className={`px-4 pb-4 pt-0 text-sm leading-relaxed ${
+                  isCorrect ? 'text-green-800' : 'text-red-800'
+                }`}>
+                  <div className={`h-px w-full my-3 ${isCorrect ? 'bg-green-200' : 'bg-red-200'}`} />
+                  <p className="font-medium mb-1 opacity-90">İzah:</p>
+                  {currentQuestion.explanation}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -214,15 +245,22 @@ export default function QuestionsContent({ topic }) {
               {formatTime(elapsedTime)}
             </div>
 
-            <button className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors">
-              İpucu
-            </button>
+            {/* Explanation Toggle Button */}
+            {isAnswered && (
+               <button
+                 onClick={() => setShowExplanation(!showExplanation)}
+                 className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
+               >
+                 <BookOpen className="w-4 h-4" />
+                 {showExplanation ? 'İzahı gizlət' : 'İzaha bax'}
+               </button>
+            )}
           </div>
 
           {/* Navigation Buttons */}
           <div
             ref={scrollContainerRef}
-            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0"
+            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth"
           >
             {TOPIC_QUESTIONS.map((q, idx) => {
               const status = userAnswers[q.id] !== undefined
