@@ -24,18 +24,22 @@ export default {
           900: '#111827', // Headings
         },
         primary: {
-          // Soft Teal/Green (Oceanic)
-          50: '#F0FDFA',
-          100: '#CCFBF1',
-          200: '#99F6E4',
-          300: '#5EEAD4',
-          400: '#2DD4BF',
-          500: '#14B8A6', // Main Primary
-          600: '#0D9488',
-          700: '#0F766E',
-          800: '#115E59',
-          900: '#134E4A',
+          // Brand Green (#009846) and Forest Green (#226F37)
+          50: '#E6F6EC',
+          100: '#CBEBD6',
+          200: '#94D6AD',
+          300: '#5EC185',
+          400: '#28AC5C',
+          500: '#009846', // Brand Green
+          600: '#00893F',
+          700: '#007A38',
+          800: '#226F37', // Darker shade from logo
+          900: '#1B592C',
         },
+        accent: {
+          red: '#E31E24',   // Brand Red
+          yellow: '#FECC00', // Brand Yellow
+        }
       },
       borderRadius: {
         'xl': '12px',
@@ -43,8 +47,9 @@ export default {
         '3xl': '24px',
       },
       boxShadow: {
-        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-        'card': '0 1px 3px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.02)',
+        'soft': '0 10px 40px -10px rgba(0,0,0,0.05)',
+        'card': '0 2px 10px rgba(0,0,0,0.02), 0 10px 30px rgba(0,0,0,0.02)',
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
       }
     },
   },

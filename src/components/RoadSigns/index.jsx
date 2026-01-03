@@ -32,8 +32,8 @@ const RoadSigns = () => {
       icon: ArrowUpCircle,
       description: 'Yolda hərəkət prioriteti müəyyən edir',
       count: roadSignsData.filter(s => s.category === 'priority').length,
-      color: 'bg-blue-50',
-      iconColor: 'text-blue-600'
+      color: 'bg-primary-50',
+      iconColor: 'text-primary-600'
     },
     {
       id: 'prohibitory',
@@ -50,8 +50,8 @@ const RoadSigns = () => {
       icon: Navigation,
       description: 'Müəyyən istiqamətə hərəkət tələb edir',
       count: roadSignsData.filter(s => s.category === 'mandatory').length,
-      color: 'bg-blue-50',
-      iconColor: 'text-blue-600'
+      color: 'bg-primary-50',
+      iconColor: 'text-primary-600'
     },
     {
       id: 'information',
@@ -68,8 +68,8 @@ const RoadSigns = () => {
       icon: Wrench,
       description: 'Yol xidmətləri haqqında məlumat',
       count: roadSignsData.filter(s => s.category === 'service').length,
-      color: 'bg-purple-50',
-      iconColor: 'text-purple-600'
+      color: 'bg-primary-50',
+      iconColor: 'text-primary-600'
     },
     {
       id: 'additional',

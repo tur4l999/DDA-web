@@ -8,7 +8,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
     const statusMap = {
       waiting: {
         label: 'Gözləyir',
-        className: 'bg-blue-500 text-white',
+        className: 'bg-primary-500 text-white',
         icon: '⏰'
       },
       started: {
@@ -122,9 +122,9 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
 
       {/* Replay indicator */}
       {hasReplay && (
-        <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-purple-600" />
-          <span className="text-sm font-bold text-purple-900">Təkrar video mövcuddur</span>
+        <div className="mb-4 p-3 bg-gradient-to-r from-primary-50 to-primary-50 border-2 border-primary-200 rounded-xl flex items-center space-x-2">
+          <Video className="w-4 h-4 text-primary-600" />
+          <span className="text-sm font-bold text-primary-900">Təkrar video mövcuddur</span>
         </div>
       )}
 

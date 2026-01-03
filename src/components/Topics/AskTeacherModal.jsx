@@ -309,14 +309,14 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
             {/* Error message */}
             {error && (
               <div className={`flex items-start gap-3 p-4 rounded-xl ${
-                isCompressing ? 'bg-blue-50 border border-blue-200' : 'bg-red-50 border border-red-200'
+                isCompressing ? 'bg-primary-50 border border-primary-200' : 'bg-red-50 border border-red-200'
               }`}>
                 {isCompressing ? (
-                  <Loader className="w-5 h-5 text-blue-600 animate-spin flex-shrink-0 mt-0.5" />
+                  <Loader className="w-5 h-5 text-primary-600 animate-spin flex-shrink-0 mt-0.5" />
                 ) : (
                   <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 )}
-                <p className={`text-sm font-medium ${isCompressing ? 'text-blue-800' : 'text-red-800'}`}>
+                <p className={`text-sm font-medium ${isCompressing ? 'text-primary-800' : 'text-red-800'}`}>
                   {error}
                 </p>
               </div>

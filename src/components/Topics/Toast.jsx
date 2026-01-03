@@ -24,9 +24,9 @@ export default function Toast({ message, type = 'success', onClose, duration = 3
     },
     info: {
       icon: Info,
-      bgClass: 'bg-blue-50 border-blue-200',
-      iconClass: 'text-blue-600',
-      textClass: 'text-blue-900'
+      bgClass: 'bg-primary-50 border-primary-200',
+      iconClass: 'text-primary-600',
+      textClass: 'text-primary-900'
     }
   }
 

@@ -25,7 +25,7 @@ export default function RightPanel({
   const getStatusColor = (status) => {
     switch(status) {
       case 'started': return 'bg-green-50 text-green-700 border-green-200'
-      case 'waiting': return 'bg-blue-50 text-blue-700 border-blue-200'
+      case 'waiting': return 'bg-primary-50 text-primary-700 border-primary-200'
       case 'completed': return 'bg-gray-100 text-gray-600 border-gray-200'
       case 'cancelled': return 'bg-red-50 text-red-700 border-red-200'
       default: return 'bg-gray-100 text-gray-600 border-gray-200'
@@ -161,7 +161,7 @@ export default function RightPanel({
                           className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
                             lesson.status === 'started'
                               ? 'bg-primary-500 hover:bg-primary-600 text-white'
-                              : 'bg-blue-600 hover:bg-blue-700 text-white'
+                              : 'bg-primary-600 hover:bg-primary-700 text-white'
                           }`}
                         >
                           {lesson.status === 'started' ? 'Dərsə qoşul' : 'Xatırlat'}
