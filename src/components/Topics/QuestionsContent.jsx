@@ -7,6 +7,8 @@ export default function QuestionsContent({ topic }) {
   const [userAnswers, setUserAnswers] = useState({}) // { questionId: selectedOptionIndex }
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isZoomed, setIsZoomed] = useState(false)
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
   const scrollContainerRef = useRef(null)
 
   // Timer effect
@@ -36,10 +38,35 @@ export default function QuestionsContent({ topic }) {
   }
 
   const handleQuestionChange = (index) => {
-    setCurrentQuestionIndex(index)
-    // Scroll selected button into view
-    if (scrollContainerRef.current) {
-      // Logic to scroll can be added here if needed, but native scroll into view usually works well or simple CSS scroll snap
+    if (index >= 0 && index < TOPIC_QUESTIONS.length) {
+      setCurrentQuestionIndex(index)
+      // Optional: scroll pagination into view
+    }
+  }
+
+  // Swipe handlers
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null) // Reset
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      handleQuestionChange(currentQuestionIndex + 1)
+    }
+    if (isRightSwipe) {
+      handleQuestionChange(currentQuestionIndex - 1)
     }
   }
 
@@ -62,9 +89,33 @@ export default function QuestionsContent({ topic }) {
   )
 
   return (
-    <div className="flex flex-col h-[calc(100vh-200px)] relative">
-      {/* Main Content Area - Scrollable */}
-      <div className="flex-1 overflow-y-auto pb-24 px-4">
+    <div className="flex flex-col h-[calc(100vh-200px)] relative group">
+      {/* Navigation Arrows (Desktop/Tablet) */}
+      <button
+        onClick={() => handleQuestionChange(currentQuestionIndex - 1)}
+        disabled={currentQuestionIndex === 0}
+        className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white border border-gray-200 shadow-md text-gray-500 hover:text-primary-600 hover:border-primary-200 transition-all disabled:opacity-0 disabled:pointer-events-none -ml-4 lg:-ml-12 xl:-ml-16 hidden md:flex`}
+        aria-label="Əvvəlki sual"
+      >
+        <ChevronLeft className="w-6 h-6" />
+      </button>
+
+      <button
+        onClick={() => handleQuestionChange(currentQuestionIndex + 1)}
+        disabled={currentQuestionIndex === TOPIC_QUESTIONS.length - 1}
+        className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white border border-gray-200 shadow-md text-gray-500 hover:text-primary-600 hover:border-primary-200 transition-all disabled:opacity-0 disabled:pointer-events-none -mr-4 lg:-mr-12 xl:-mr-16 hidden md:flex`}
+        aria-label="Növbəti sual"
+      >
+        <ChevronRight className="w-6 h-6" />
+      </button>
+
+      {/* Main Content Area - Scrollable & Swipeable */}
+      <div
+        className="flex-1 overflow-y-auto pb-24 px-4"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div className="max-w-3xl mx-auto py-8">
           {/* Question Text */}
           <h2 className="text-xl md:text-2xl font-medium text-gray-900 mb-6 leading-relaxed text-center">
