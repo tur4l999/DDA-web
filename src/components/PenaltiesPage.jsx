@@ -3,7 +3,7 @@ import PenaltiesContent from './Topics/PenaltiesContent'
 
 export default function PenaltiesPage({ onMenuClick }) {
   return (
-    <div className="flex-1 flex flex-col h-screen overflow-hidden">
+    <div className="flex-1 flex flex-col h-full overflow-hidden">
       {/* Header */}
       <div className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
         <div className="px-4 lg:px-6 py-4">

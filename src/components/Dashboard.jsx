@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, Monitor } from 'lucide-react'
+import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, Monitor, Wallet, Ticket } from 'lucide-react'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
@@ -58,6 +58,16 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             <div className="hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100">
               <span className="text-xs text-gray-500 font-medium mr-2">Qalan vaxt:</span>
               <span className="text-gray-900 font-bold text-xs">44 gün</span>
+            </div>
+
+            <div className="hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2">
+              <Wallet className="w-3.5 h-3.5 text-primary-600" />
+              <span className="text-gray-900 font-bold text-xs">50.00 ₼</span>
+            </div>
+
+            <div className="hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2">
+              <Ticket className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-gray-900 font-bold text-xs">5 bilet</span>
             </div>
             
             <div className="hidden sm:flex items-center bg-white rounded-xl px-3 py-2 gap-2 shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">

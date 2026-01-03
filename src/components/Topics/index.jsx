@@ -194,7 +194,7 @@ export default function TopicsPage({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex relative">
+    <div className="flex-1 h-screen overflow-y-auto bg-gray-50 flex relative">
       {/* Sidebar with collapse */}
       <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-72'} relative`}>
         <TopicSidebar
