@@ -83,8 +83,8 @@ export default function QuestionsContent() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-white border border-gray-200 rounded-xl p-4">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Target className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+              <Target className="w-5 h-5 text-primary-600" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
@@ -131,7 +131,7 @@ export default function QuestionsContent() {
       </div>
 
       {/* Progress */}
-      <div className="bg-gradient-to-br from-[#007A3A] to-[#005A2A] rounded-2xl p-6 mb-8 text-white">
+      <div className="bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl p-6 mb-8 text-white">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="text-lg font-bold mb-1">Ümumi nəticə</h3>
@@ -154,7 +154,7 @@ export default function QuestionsContent() {
       <div className="space-y-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900">Suallar</h3>
-          <button className="px-4 py-2 bg-[#007A3A] hover:bg-[#005A2A] text-white text-sm font-semibold rounded-lg transition-colors">
+          <button className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-semibold rounded-lg transition-colors">
             Yeni test başlat
           </button>
         </div>

@@ -8,7 +8,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('dashboard')
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden text-gray-800 font-sans antialiased">
       <Sidebar 
         isOpen={isSidebarOpen} 
         setIsOpen={setIsSidebarOpen}

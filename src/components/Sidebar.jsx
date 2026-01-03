@@ -19,90 +19,111 @@ const menuItems = [
 
 export default function Sidebar({ isOpen, setIsOpen, isCollapsed, setIsCollapsed, currentPage, setCurrentPage }) {
   const [hoveredItem, setHoveredItem] = useState(null)
+  
   return (
     <>
+      {/* Mobile Overlay */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden transition-opacity ${
+        className={`fixed inset-0 bg-gray-900/10 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsOpen(false)}
       />
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-30 bg-white border-r border-gray-200 transform transition-all duration-200 ease-out ${
+        className={`fixed lg:static inset-y-0 left-0 z-50 bg-gray-50 lg:bg-transparent transform transition-all duration-500 cubic-bezier(0.2, 0.8, 0.2, 1) ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } ${isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'} w-64`}
+        } ${isCollapsed ? 'lg:w-[88px]' : 'lg:w-[260px]'} w-[260px] flex flex-col h-full lg:h-screen lg:sticky lg:top-0`}
       >
-        <div className="flex flex-col h-full">
-          <div className={`flex items-center border-b border-gray-200 transition-all duration-200 ${isCollapsed ? 'justify-center p-4' : 'justify-between p-6'}`}>
-            <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-xl">DDA</span>
-              </div>
-              {!isCollapsed && (
-                <div className="overflow-hidden">
-                  <h1 className="text-lg font-bold text-gray-900 whitespace-nowrap">Digital Driving</h1>
-                  <p className="text-lg font-bold text-gray-900 whitespace-nowrap">Academy</p>
+        <div className="flex flex-col h-full lg:p-3">
+          <div className={`h-full flex flex-col bg-white lg:rounded-2xl shadow-lg shadow-gray-200/50 overflow-hidden transition-all duration-500`}>
+            
+            {/* Header / Logo */}
+            <div className={`flex items-center transition-all duration-300 ${isCollapsed ? 'justify-center p-5' : 'justify-between px-6 py-6'}`}>
+              <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+                <div className="w-9 h-9 bg-primary-500 rounded-xl flex items-center justify-center flex-shrink-0 text-white shadow-lg shadow-primary-500/20 transform hover:scale-105 transition-transform duration-300">
+                   <Car className="w-4.5 h-4.5 text-white" />
                 </div>
-              )}
-            </div>
-            {/* Mobile close button only */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="lg:hidden text-gray-500 hover:text-gray-700"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-
-          <nav className="flex-1 overflow-y-auto py-4 pb-16">
-            {menuItems.map((item, index) => (
-              <div key={index} className="relative">
-                <button
-                  onClick={() => item.page && setCurrentPage(item.page)}
-                  onMouseEnter={() => setHoveredItem(index)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                  className={`w-full flex items-center text-left transition-colors ${
-                    isCollapsed ? 'justify-center px-4 py-3' : 'space-x-3 px-6 py-4'
-                  } ${
-                    currentPage === item.page
-                      ? 'bg-primary-50 text-primary-700 border-r-4 border-primary-600'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  <item.icon className="w-5 h-5 flex-shrink-0" />
-                  {!isCollapsed && <span className="font-semibold text-lg">{item.label}</span>}
-                </button>
-                
-                {/* Tooltip for collapsed state */}
-                {isCollapsed && hoveredItem === index && (
-                  <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap shadow-lg z-50 pointer-events-none">
-                    {item.label}
-                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
+                {!isCollapsed && (
+                  <div className="flex flex-col">
+                    <h1 className="text-lg font-bold text-gray-900 tracking-tight leading-none">Digital</h1>
+                    <span className="text-[10px] font-semibold text-gray-400 tracking-wider uppercase mt-1">Academy</span>
                   </div>
                 )}
               </div>
-            ))}
-          </nav>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="lg:hidden p-2 text-gray-400 hover:text-gray-900 rounded-xl hover:bg-gray-50 transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-          {/* Collapse button at bottom - Desktop only */}
-          <div className="hidden lg:block border-t border-gray-200">
-            <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className={`w-full flex items-center justify-center p-4 hover:bg-[#007A3A]/5 text-gray-600 hover:text-[#007A3A] transition-all ${
-                isCollapsed ? 'px-4' : 'px-6'
-              }`}
-              title={isCollapsed ? 'Menyunu genişləndir' : 'Menyunu yığışdır'}
-            >
-              {isCollapsed ? (
-                <ChevronRight className="w-5 h-5" strokeWidth={2} />
-              ) : (
-                <div className="flex items-center gap-3 w-full">
-                  <ChevronLeft className="w-5 h-5" strokeWidth={2} />
-                  <span className="text-sm font-semibold">Menyunu gizlət</span>
-                </div>
-              )}
-            </button>
+            {/* Navigation */}
+            <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1 custom-scrollbar">
+              {menuItems.map((item, index) => {
+                 const isActive = currentPage === item.page;
+                 return (
+                  <div key={index} className="relative group">
+                    <button
+                      onClick={() => item.page && setCurrentPage(item.page)}
+                      onMouseEnter={() => setHoveredItem(index)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                      className={`w-full flex items-center transition-all duration-300 rounded-xl ${
+                        isCollapsed ? 'justify-center p-2.5' : 'px-4 py-3 gap-3'
+                      } ${
+                        isActive
+                          ? 'bg-primary-50 text-primary-700 font-semibold'
+                          : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                      }`}
+                    >
+                      <item.icon 
+                        className={`transition-colors duration-300 ${
+                          isActive ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-500'
+                        } ${isCollapsed ? 'w-5 h-5' : 'w-4.5 h-4.5'}`}
+                        strokeWidth={isActive ? 2.2 : 1.8}
+                      />
+                      
+                      {!isCollapsed && (
+                        <span className={`text-[14px] ${isActive ? 'translate-x-0.5' : ''} transition-transform`}>
+                          {item.label}
+                        </span>
+                      )}
+
+                      {!isCollapsed && isActive && (
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_12px_rgba(20,184,166,0.6)]" />
+                      )}
+                    </button>
+                    
+                    {/* Tooltip for collapsed state */}
+                    {isCollapsed && hoveredItem === index && (
+                      <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-gray-800 text-white px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap shadow-xl z-50 animate-in fade-in slide-in-from-left-2 duration-200">
+                        {item.label}
+                        <div className="absolute right-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-r-gray-800"></div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </nav>
+
+            {/* Collapse Toggle */}
+            <div className="p-3 mt-auto">
+              <button
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className={`w-full flex items-center justify-center p-2.5 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-300 group`}
+                title={isCollapsed ? 'Menyunu genişləndir' : 'Menyunu yığışdır'}
+              >
+                {isCollapsed ? (
+                  <ChevronRight className="w-4.5 h-4.5 group-hover:translate-x-0.5 transition-transform" />
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <ChevronLeft className="w-4.5 h-4.5 group-hover:-translate-x-0.5 transition-transform" />
+                    <span className="text-xs font-medium">Gizlət</span>
+                  </div>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </aside>

@@ -133,7 +133,7 @@ export default function PenaltiesPage({ onBack }) {
               placeholder="Pozuntu növünü axtar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A]/20 focus:border-[#007A3A] bg-gray-50"
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 bg-gray-50"
             />
           </div>
         </div>
@@ -226,7 +226,7 @@ export default function PenaltiesPage({ onBack }) {
                 </select>
               </div>
 
-              <button className="w-full py-2.5 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold rounded-xl transition-colors">
+              <button className="w-full py-2.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors">
                 Tətbiq et
               </button>
             </div>

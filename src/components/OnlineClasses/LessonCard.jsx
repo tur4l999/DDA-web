@@ -8,7 +8,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
     const statusMap = {
       waiting: {
         label: 'Gözləyir',
-        className: 'bg-blue-500 text-white',
+        className: 'bg-primary-500 text-white',
         icon: '⏰'
       },
       started: {
@@ -122,9 +122,9 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
 
       {/* Replay indicator */}
       {hasReplay && (
-        <div className="mb-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-purple-600" />
-          <span className="text-sm font-bold text-purple-900">Təkrar video mövcuddur</span>
+        <div className="mb-4 p-3 bg-gradient-to-r from-primary-50 to-primary-50 border-2 border-primary-200 rounded-xl flex items-center space-x-2">
+          <Video className="w-4 h-4 text-primary-600" />
+          <span className="text-sm font-bold text-primary-900">Təkrar video mövcuddur</span>
         </div>
       )}
 
@@ -141,7 +141,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         {lesson.status === 'started' && (
           <button
             onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
           >
             <Play className="w-4 h-4 fill-current" />
             <span>Dərsə qoşul</span>
@@ -151,7 +151,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         {lesson.status === 'waiting' && canJoin && (
           <button
             onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
           >
             <Play className="w-4 h-4 fill-current" />
             <span>Dərsə qoşul</span>
@@ -161,7 +161,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         {lesson.status === 'completed' && hasReplay && (
           <button
             onClick={() => onWatchReplay?.(lesson)}
-            className="flex-1 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
           >
             <Play className="w-4 h-4 fill-current" />
             <span>Təkrara bax</span>

@@ -146,7 +146,7 @@ export default function CalendarView({ lessons, onSelectLesson, onDateSelect }) 
                   {day.date.getDate()}
                 </span>
                 {hasReplay && (
-                  <Video className="w-3 h-3 text-purple-600" />
+                  <Video className="w-3 h-3 text-primary-600" />
                 )}
                 {hasLive && (
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
@@ -163,7 +163,7 @@ export default function CalendarView({ lessons, onSelectLesson, onDateSelect }) 
                           ? 'bg-green-100 text-green-800'
                           : lesson.status === 'completed'
                             ? 'bg-gray-100 text-gray-700'
-                            : 'bg-blue-100 text-blue-800'
+                            : 'bg-primary-100 text-primary-800'
                       }`}
                     >
                       {lesson.date.getHours()}:{String(lesson.date.getMinutes()).padStart(2, '0')} {lesson.title.substring(0, 10)}
@@ -189,7 +189,7 @@ export default function CalendarView({ lessons, onSelectLesson, onDateSelect }) 
             <span className="text-gray-700 font-semibold">Canlı dərs</span>
           </div>
           <div className="flex items-center space-x-2">
-            <Video className="w-4 h-4 text-purple-600" />
+            <Video className="w-4 h-4 text-primary-600" />
             <span className="text-gray-700 font-semibold">Təkrar mövcud</span>
           </div>
           <div className="flex items-center space-x-2">

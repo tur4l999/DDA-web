@@ -106,7 +106,7 @@ export default function QuestionThreadModal({ isOpen, onClose, question, onReply
           <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
             {/* User Question */}
             <div className="flex gap-3">
-              <div className="w-8 h-8 bg-[#007A3A] rounded-full flex items-center justify-center flex-shrink-0 text-white text-sm font-semibold">
+              <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-sm font-semibold">
                 T
               </div>
               <div className="flex-1">
@@ -130,15 +130,15 @@ export default function QuestionThreadModal({ isOpen, onClose, question, onReply
               <div key={reply.id} className={`flex gap-3 ${reply.author === 'teacher' ? '' : 'pl-11'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold ${
                   reply.author === 'teacher'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'bg-[#007A3A] text-white'
+                    ? 'bg-primary-100 text-primary-700'
+                    : 'bg-primary-500 text-white'
                 }`}>
                   {reply.author === 'teacher' ? 'M' : 'T'}
                 </div>
                 <div className="flex-1">
                   <div className={`border rounded-2xl p-4 ${
                     reply.author === 'teacher'
-                      ? 'bg-blue-50 border-blue-200 rounded-tl-sm'
+                      ? 'bg-primary-50 border-primary-200 rounded-tl-sm'
                       : 'bg-gray-50 border-gray-200 rounded-tl-sm'
                   }`}>
                     <p className="text-sm text-gray-900 whitespace-pre-wrap">{reply.message}</p>
@@ -170,12 +170,12 @@ export default function QuestionThreadModal({ isOpen, onClose, question, onReply
                   onChange={(e) => setReplyMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleReply()}
                   placeholder="Cavab yazın…"
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A] focus:border-transparent text-sm"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
                 />
                 <button
                   onClick={handleReply}
                   disabled={!replyMessage.trim() || isSubmitting}
-                  className="px-5 py-3 bg-[#007A3A] hover:bg-[#005A2A] text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#007A3A] flex items-center gap-2"
+                  className="px-5 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-500 flex items-center gap-2"
                 >
                   <Send className="w-5 h-5" />
                 </button>

@@ -200,7 +200,7 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="sticky top-0 bg-gradient-to-r from-[#007A3A] to-[#005A2A] px-6 py-5 rounded-t-3xl flex items-center justify-between z-10">
+          <div className="sticky top-0 bg-gradient-to-r from-primary-500 to-primary-700 px-6 py-5 rounded-t-3xl flex items-center justify-between z-10">
             <div>
               <h2 className="text-xl font-black text-white">Müəllimə sual ver</h2>
               <p className="text-sm text-white/80">Sualınızı yazın, tezliklə cavablandırılacaq</p>
@@ -233,7 +233,7 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
                 onChange={(e) => setMessage(e.target.value.slice(0, 500))}
                 placeholder="Sualınızı ətraflı yazın..."
                 rows={5}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A]/20 focus:border-[#007A3A] resize-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 resize-none"
               />
             </div>
 
@@ -246,7 +246,7 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
               {!imagePreview ? (
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-[#007A3A] hover:bg-[#007A3A]/5 transition-all cursor-pointer"
+                  className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary-500 hover:bg-primary-500/5 transition-all cursor-pointer"
                 >
                   <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                   <p className="text-sm font-medium text-gray-700 mb-1">
@@ -279,7 +279,7 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
                   {/* File info */}
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                     <div className="flex items-center gap-3">
-                      <ImageIcon className="w-5 h-5 text-[#007A3A]" />
+                      <ImageIcon className="w-5 h-5 text-primary-600" />
                       <div>
                         <p className="text-sm font-medium text-gray-900">{imageFile?.name}</p>
                         <p className="text-xs text-gray-500">{formatFileSize(imageFile?.size || 0)}</p>
@@ -309,14 +309,14 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
             {/* Error message */}
             {error && (
               <div className={`flex items-start gap-3 p-4 rounded-xl ${
-                isCompressing ? 'bg-blue-50 border border-blue-200' : 'bg-red-50 border border-red-200'
+                isCompressing ? 'bg-primary-50 border border-primary-200' : 'bg-red-50 border border-red-200'
               }`}>
                 {isCompressing ? (
-                  <Loader className="w-5 h-5 text-blue-600 animate-spin flex-shrink-0 mt-0.5" />
+                  <Loader className="w-5 h-5 text-primary-600 animate-spin flex-shrink-0 mt-0.5" />
                 ) : (
                   <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 )}
-                <p className={`text-sm font-medium ${isCompressing ? 'text-blue-800' : 'text-red-800'}`}>
+                <p className={`text-sm font-medium ${isCompressing ? 'text-primary-800' : 'text-red-800'}`}>
                   {error}
                 </p>
               </div>
@@ -331,7 +331,7 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                   <div 
-                    className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] h-full transition-all duration-300"
+                    className="bg-gradient-to-r from-primary-500 to-primary-700 h-full transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
                   />
                 </div>
@@ -351,7 +351,7 @@ export default function AskTeacherModal({ isOpen, onClose, currentTopic, onSubmi
               <button
                 type="submit"
                 disabled={isUploading || !message.trim() || isCompressing}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-[#007A3A] to-[#005A2A] text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-700 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isUploading ? 'Göndərilir...' : 'Göndər'}
               </button>

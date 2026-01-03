@@ -14,8 +14,8 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
   })
 
   const getTopicStatus = (topic) => {
-    if (topic.completed) return <Check className="w-4 h-4 text-[#007A3A]" />
-    return <Circle className="w-4 h-4 text-gray-300" />
+    if (topic.completed) return <Check className="w-3.5 h-3.5 text-primary-600" />
+    return <Circle className="w-3.5 h-3.5 text-gray-300" />
   }
 
   const toggleExpand = (topicId) => {
@@ -31,38 +31,38 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
       {/* Mobile overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-gray-900/10 backdrop-blur-sm z-40 lg:hidden"
           onClick={onClose}
         />
       )}
 
       {/* Sidebar */}
-      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-80 bg-white border-r border-gray-200 transform transition-all duration-200 ${
+      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-100/50 transform transition-all duration-300 ${
         isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       } ${isCollapsed ? 'lg:hidden' : ''}`}>
         <div className="h-full flex flex-col">
           {/* Search */}
-          <div className="p-4 border-b border-gray-100">
+          <div className="p-4 border-b border-gray-100/50">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
               <input
                 type="text"
                 placeholder="Mövzunu axtar..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007A3A]/20 focus:border-[#007A3A]"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-500 bg-gray-50/50 focus:bg-white transition-all shadow-sm"
               />
             </div>
 
             {/* Filters */}
-            <div className="flex gap-2 mt-3">
+            <div className="flex gap-1.5 mt-3 overflow-x-auto pb-1 no-scrollbar">
               {['all', 'completed', 'incomplete'].map(f => (
                 <button
                   key={f}
                   onClick={() => setFilter(f)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                  className={`px-2.5 py-1 text-[10px] font-semibold rounded-lg transition-all whitespace-nowrap ${
                     filter === f
-                      ? 'bg-[#007A3A] text-white'
+                      ? 'bg-primary-500 text-white shadow-sm'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -75,13 +75,13 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
           </div>
 
           {/* Topics list */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-0.5">
             {filteredTopics.map((topic) => {
               const hasSubTopics = topic.subTopics && topic.subTopics.length > 0
               const isExpanded = expandedTopics.includes(topic.id)
 
               return (
-                <div key={topic.id}>
+                <div key={topic.id} className="rounded-xl overflow-hidden">
                   <div className="flex items-start">
                     {/* Expand/Collapse button for topics with subtopics */}
                     {hasSubTopics && (
@@ -90,13 +90,13 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                           e.stopPropagation()
                           toggleExpand(topic.id)
                         }}
-                        className="w-7 h-7 flex items-center justify-center text-gray-600 hover:text-[#007A3A] hover:bg-[#007A3A]/10 rounded-md transition-colors flex-shrink-0"
+                        className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors flex-shrink-0 mt-1 ml-1"
                         title={isExpanded ? 'Bağla' : 'Aç'}
                       >
                         {isExpanded ? (
-                          <Minus className="w-3.5 h-3.5" strokeWidth={2.5} />
+                          <Minus className="w-3 h-3" strokeWidth={2} />
                         ) : (
-                          <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
+                          <Plus className="w-3 h-3" strokeWidth={2} />
                         )}
                       </button>
                     )}
@@ -107,31 +107,31 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                         onTopicSelect(topic)
                         if (window.innerWidth < 1024) onClose()
                       }}
-                      className={`flex-1 flex items-start gap-3 pr-4 py-3 text-left transition-colors border-r-4 ${
-                        !hasSubTopics ? 'pl-4' : 'pl-0'
+                      className={`flex-1 flex items-start gap-2.5 p-2.5 text-left transition-all rounded-lg ${
+                        !hasSubTopics ? 'pl-2.5' : 'pl-1'
                       } ${
                         currentTopic?.id === topic.id
-                          ? 'bg-[#007A3A]/5 border-[#007A3A]'
-                          : 'border-transparent hover:bg-gray-50'
+                          ? 'bg-primary-50 text-primary-700 font-medium'
+                          : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      <div className="mt-0.5">
+                      <div className="mt-0.5 flex-shrink-0">
                         {getTopicStatus(topic)}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-medium ${
-                          currentTopic?.id === topic.id ? 'text-[#007A3A]' : 'text-gray-900'
-                        }`}>
-                          {topic.code}. {topic.title}
+                        <p className="text-xs leading-relaxed font-medium">
+                          <span className="font-semibold text-gray-400 opacity-70 mr-1">{topic.code}.</span>
+                          {topic.title}
                         </p>
                         {topic.progress > 0 && (
                           <div className="mt-2">
-                            <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-                              <span>{topic.progress}%</span>
+                            <div className="flex items-center justify-between text-[9px] text-gray-400 mb-1">
+                              <span className="font-medium">Tərəqqi</span>
+                              <span className="font-bold text-gray-700">{topic.progress}%</span>
                             </div>
-                            <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+                            <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-[#007A3A] rounded-full transition-all"
+                                className="h-full bg-primary-500 rounded-full transition-all duration-500 shadow-[0_0_8px_rgba(20,184,166,0.3)]"
                                 style={{ width: `${topic.progress}%` }}
                               />
                             </div>
@@ -143,7 +143,7 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
 
                   {/* Sub-topics (collapsible) */}
                   {hasSubTopics && isExpanded && (
-                    <div className="bg-gray-50/50 border-r-4 border-transparent">
+                    <div className="ml-4 pl-3 border-l border-gray-100 my-0.5 space-y-0.5">
                       {topic.subTopics.map((subTopic) => (
                         <button
                           key={subTopic.id}
@@ -151,26 +151,25 @@ export default function TopicSidebar({ isOpen, onClose, currentTopic, topics, on
                             onTopicSelect({ ...topic, ...subTopic, parentCode: topic.code, parentTitle: topic.title })
                             if (window.innerWidth < 1024) onClose()
                           }}
-                          className={`w-full flex items-start gap-2 pl-12 pr-4 py-2.5 text-left transition-colors ${
+                          className={`w-full flex items-start gap-2 p-2 text-left transition-colors rounded-lg ${
                             currentTopic?.id === subTopic.id
-                              ? 'bg-[#007A3A]/10 text-[#007A3A]'
-                              : 'hover:bg-gray-100/80 text-gray-700'
+                              ? 'bg-primary-50 text-primary-700 font-medium'
+                              : 'hover:bg-gray-50 text-gray-600'
                           }`}
                         >
-                          <div className="mt-0.5">
+                          <div className="mt-0.5 flex-shrink-0">
                             {getTopicStatus(subTopic)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className={`text-xs font-medium ${
-                              currentTopic?.id === subTopic.id ? 'text-[#007A3A]' : 'text-gray-700'
-                            }`}>
-                              {subTopic.code}. {subTopic.title}
+                            <p className="text-[11px] leading-relaxed font-medium">
+                              <span className="text-gray-400 mr-1 font-semibold">{subTopic.code}</span>
+                              {subTopic.title}
                             </p>
                             {subTopic.progress > 0 && subTopic.progress < 100 && (
                               <div className="mt-1.5">
-                                <div className="h-0.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="h-0.5 bg-gray-100 rounded-full overflow-hidden">
                                   <div 
-                                    className="h-full bg-[#007A3A] rounded-full transition-all"
+                                    className="h-full bg-primary-500 rounded-full transition-all"
                                     style={{ width: `${subTopic.progress}%` }}
                                   />
                                 </div>

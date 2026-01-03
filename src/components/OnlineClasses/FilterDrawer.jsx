@@ -192,7 +192,7 @@ export default function FilterDrawer({ isOpen, onClose, filters, onFilterChange 
                   onClick={() => toggleArrayFilter('subjects', subject)}
                   className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition-all ${
                     localFilters.subjects.includes(subject)
-                      ? 'bg-violet-600 text-white shadow-md'
+                      ? 'bg-primary-600 text-white shadow-md'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >

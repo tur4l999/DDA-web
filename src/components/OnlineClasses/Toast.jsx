@@ -12,7 +12,7 @@ export default function Toast({ message, onClose }) {
 
   return (
     <div className="fixed bottom-20 xl:bottom-6 right-6 z-50 animate-slide-up">
-      <div className="bg-[#007A3A] text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 min-w-[280px]">
+      <div className="bg-primary-500 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 min-w-[280px]">
         <CheckCircle className="w-5 h-5 flex-shrink-0" />
         <span className="font-semibold flex-1">{message}</span>
         <button

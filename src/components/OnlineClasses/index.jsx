@@ -348,7 +348,7 @@ export default function OnlineClasses({ onBack }) {
           <div>
             {/* Next Up Card */}
             {nextLesson && (
-              <div className="bg-gradient-to-r from-[#007A3A] to-[#005A2A] rounded-2xl p-6 mb-6 shadow-lg">
+              <div className="bg-gradient-to-r from-primary-500 to-primary-700 rounded-2xl p-6 mb-6 shadow-lg">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <p className="text-green-100 font-medium mb-2 text-sm">Növbəti dərs</p>
@@ -376,7 +376,7 @@ export default function OnlineClasses({ onBack }) {
                 disabled={nextLesson.status !== 'started'}
                 className={`px-6 py-3 rounded-xl font-semibold shadow-md transition-all ${
                   nextLesson.status === 'started'
-                    ? 'bg-white text-[#007A3A] hover:bg-gray-50'
+                    ? 'bg-white text-primary-600 hover:bg-gray-50'
                     : 'bg-white/30 text-white/50 cursor-not-allowed'
                 }`}
               >
@@ -392,7 +392,7 @@ export default function OnlineClasses({ onBack }) {
                 onClick={() => { setQuickFilter('all'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'all'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    ? 'bg-primary-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
@@ -402,7 +402,7 @@ export default function OnlineClasses({ onBack }) {
                 onClick={() => { setQuickFilter('week'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'week'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    ? 'bg-primary-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
@@ -412,7 +412,7 @@ export default function OnlineClasses({ onBack }) {
                 onClick={() => { setQuickFilter('started'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'started'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    ? 'bg-primary-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
@@ -422,7 +422,7 @@ export default function OnlineClasses({ onBack }) {
                 onClick={() => { setQuickFilter('waiting'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'waiting'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    ? 'bg-primary-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
@@ -432,7 +432,7 @@ export default function OnlineClasses({ onBack }) {
                 onClick={() => { setQuickFilter('completed'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'completed'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    ? 'bg-primary-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
@@ -442,7 +442,7 @@ export default function OnlineClasses({ onBack }) {
                 onClick={() => { setQuickFilter('replay'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'replay'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    ? 'bg-primary-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
@@ -452,7 +452,7 @@ export default function OnlineClasses({ onBack }) {
                 onClick={() => { setQuickFilter('bookmarked'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'bookmarked'
-                    ? 'bg-[#007A3A] text-white shadow-sm'
+                    ? 'bg-primary-500 text-white shadow-sm'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
