@@ -1,10 +1,11 @@
-import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, Video } from 'lucide-react'
+import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, Video, HelpCircle, CheckCircle, XCircle } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
 export default function PenaltiesContent({ topicRelated = false, onVideoClick }) {
   const [filter, setFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedPenalty, setExpandedPenalty] = useState(null)
+  const [userAnswers, setUserAnswers] = useState({}) // Stores { questionId: selectedOptionIndex }
 
   // Real cərimələr - İXM əsasında - Enhanced Mock Data
   const penalties = [
@@ -33,6 +34,14 @@ I. Normal hərəkət zamanı nəqliyyat vasitələrinin sürücüləri vəziyyə
           duration: '3:45',
           thumbnail: 'https://images.unsplash.com/photo-1572565691454-067df76f498c?w=400'
         }
+      ],
+      relatedQuestions: [
+        {
+          id: 'q1',
+          text: 'Yol nişanlarının tələblərini pozmağa görə cərimə nə qədərdir?',
+          options: ['20 manat', '40 manat', '60 manat', '80 manat'],
+          correctAnswer: 1
+        }
       ]
     },
     {
@@ -54,6 +63,20 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
           duration: '1:50',
           thumbnail: 'https://images.unsplash.com/photo-1502489597346-dad15683d4c2?w=400'
         }
+      ],
+      relatedQuestions: [
+        {
+          id: 'q2',
+          text: 'Svetoforun qırmızı işığında keçən sürücü necə cəzalandırılır?',
+          options: ['60 manat + 3 bal', '80 manat', '100 manat + 3 bal', '150 manat + 4 bal'],
+          correctAnswer: 2
+        },
+        {
+          id: 'q3',
+          text: 'Nizamlayıcının "STOP" işarəsinə məhəl qoymamaq hansı maddə ilə tənzimlənir?',
+          options: ['327.1', '327.2', '327.4', '151.1'],
+          correctAnswer: 1
+        }
       ]
     },
     {
@@ -66,7 +89,15 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
       relatedArticles: ['Maddə 49'],
       fullDescription: 'Bu nişan yolun müəyyən hissəsinə nəqliyyat vasitələrinin girişini qadağan edir. Adətən birtərəfli hərəkət olan yolların əks tərəfində quraşdırılır.',
       isCommon: true,
-      videos: []
+      videos: [],
+      relatedQuestions: [
+        {
+          id: 'q4',
+          text: '"Kərpic" (Giriş qadağandır) nişanının tələbini pozmağın cəzası nədir?',
+          options: ['60 manat', '80 manat + 3 bal', '100 manat + 3 bal', '100 manat'],
+          correctAnswer: 2
+        }
+      ]
     },
     {
       id: 4,
@@ -91,6 +122,14 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
           duration: '2:10',
           thumbnail: 'https://images.unsplash.com/photo-1596520779836-39825b09455a?w=400'
         }
+      ],
+      relatedQuestions: [
+        {
+          id: 'q5',
+          text: 'Birtərəfli yolda əks istiqamətdə hərəkətə görə tətbiq edilən cərimə balı neçədir?',
+          options: ['3 bal', '4 bal', '5 bal', 'Bal tətbiq edilmir'],
+          correctAnswer: 1
+        }
       ]
     },
     {
@@ -110,7 +149,8 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
           duration: '3:00',
           thumbnail: 'https://images.unsplash.com/photo-1554672408-730436b60dde?w=400'
         }
-      ]
+      ],
+      relatedQuestions: []
     }
   ]
 
@@ -141,6 +181,11 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
     if (amount >= 150) return 'from-rose-500 to-rose-600 shadow-rose-200'
     if (amount >= 100) return 'from-orange-500 to-orange-600 shadow-orange-200'
     return 'from-amber-500 to-amber-600 shadow-amber-200'
+  }
+
+  const handleAnswerClick = (questionId, optionIndex) => {
+    if (userAnswers[questionId] !== undefined) return // Prevent changing answer
+    setUserAnswers(prev => ({ ...prev, [questionId]: optionIndex }))
   }
 
   const FilterButton = ({ id, label }) => (
@@ -257,7 +302,7 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
               {/* Expanded Content */}
               {isExpanded && (
                 <div className="border-t border-gray-100 bg-gray-50/50">
-                  <div className="p-5 sm:p-6 space-y-6">
+                  <div className="p-5 sm:p-6 space-y-8">
                     {/* Law Text */}
                     <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
                       <h4 className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-3">
@@ -310,6 +355,61 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                               </div>
                             </button>
                           ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Questions Section */}
+                    {penalty.relatedQuestions && penalty.relatedQuestions.length > 0 && (
+                      <div>
+                        <h4 className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-4">
+                          <HelpCircle className="w-4 h-4 text-primary-600" />
+                          Bu mövzu üzrə suallar ({penalty.relatedQuestions.length})
+                        </h4>
+                        <div className="grid gap-4">
+                          {penalty.relatedQuestions.map((question) => {
+                            const userAnswer = userAnswers[question.id]
+                            const isAnswered = userAnswer !== undefined
+                            const isCorrect = userAnswer === question.correctAnswer
+
+                            return (
+                              <div key={question.id} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                                <p className="text-sm font-bold text-gray-900 mb-4">
+                                  {question.text}
+                                </p>
+                                <div className="space-y-2">
+                                  {question.options.map((option, idx) => {
+                                    let optionStyle = 'bg-gray-50 text-gray-700 hover:bg-gray-100 border-transparent'
+                                    let icon = null
+
+                                    if (isAnswered) {
+                                      if (idx === question.correctAnswer) {
+                                        optionStyle = 'bg-green-50 text-green-700 border-green-200 font-medium'
+                                        icon = <CheckCircle className="w-4 h-4 text-green-600" />
+                                      } else if (idx === userAnswer) {
+                                        optionStyle = 'bg-red-50 text-red-700 border-red-200'
+                                        icon = <XCircle className="w-4 h-4 text-red-600" />
+                                      } else {
+                                        optionStyle = 'bg-gray-50 text-gray-400 opacity-50'
+                                      }
+                                    }
+
+                                    return (
+                                      <button
+                                        key={idx}
+                                        onClick={() => handleAnswerClick(question.id, idx)}
+                                        disabled={isAnswered}
+                                        className={`w-full text-left px-4 py-3 rounded-xl text-sm border transition-all flex items-center justify-between ${optionStyle}`}
+                                      >
+                                        <span>{option}</span>
+                                        {icon}
+                                      </button>
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                            )
+                          })}
                         </div>
                       </div>
                     )}
