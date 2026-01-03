@@ -11,19 +11,35 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
   const [language, setLanguage] = useState('az')
 
   if (currentPage === 'classes') {
-    return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
+    return (
+      <div className="flex-1 overflow-y-auto bg-gray-50">
+        <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
+      </div>
+    )
   }
 
   if (currentPage === 'topics') {
-    return <TopicsPage onBack={() => setCurrentPage('dashboard')} />
+    return (
+      <div className="flex-1 overflow-y-auto bg-gray-50">
+        <TopicsPage onBack={() => setCurrentPage('dashboard')} />
+      </div>
+    )
   }
 
   if (currentPage === 'penalties') {
-    return <PenaltiesPage onBack={() => setCurrentPage('dashboard')} />
+    return (
+      <div className="flex-1 h-full overflow-hidden">
+        <PenaltiesPage onBack={() => setCurrentPage('dashboard')} />
+      </div>
+    )
   }
 
   if (currentPage === 'road-signs') {
-    return <RoadSigns />
+    return (
+      <div className="flex-1 h-full overflow-hidden">
+        <RoadSigns />
+      </div>
+    )
   }
 
   return (
