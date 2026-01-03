@@ -8,7 +8,7 @@ const menuItems = [
   { icon: Octagon, label: 'Yol nişanları', page: 'road-signs' },
   { icon: AlertTriangle, label: 'Cərimələr', page: 'penalties' },
   { icon: FileText, label: 'İmtahan', page: null },
-  { icon: BarChart3, label: 'Nəticələrim', page: null },
+  { icon: BarChart3, label: 'Nəticələrim', page: 'results' },
   { icon: Car, label: 'Praktiki Təcrübə', page: null },
   { icon: HelpCircle, label: 'Sual-cavab', page: null },
   { icon: FileCheck, label: 'Appelyasiya', page: null },

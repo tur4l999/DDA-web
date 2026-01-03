@@ -106,9 +106,9 @@ const RoadSigns = () => {
   const selectedGroupData = groups.find(g => g.id === selectedGroup)
 
   return (
-    <div className="flex flex-col h-full bg-[#F5F7FA]">
+    <div className="flex flex-col flex-1 h-full overflow-hidden bg-[#F5F7FA]">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4">
+      <div className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
         <div className="max-w-[1400px] mx-auto">
           <div>
             <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Yol nişanları</h1>

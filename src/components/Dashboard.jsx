@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, Monitor } from 'lucide-react'
+import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, Monitor, Wallet, Ticket } from 'lucide-react'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
 import TopicsPage from './Topics'
 import PenaltiesPage from './PenaltiesPage'
 import RoadSigns from './RoadSigns'
+import UserStatistics from './UserStatistics'
+import ResultsPage from './ResultsPage'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
+  const [selectedResultId, setSelectedResultId] = useState(null)
 
   if (currentPage === 'classes') {
     return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
@@ -25,6 +28,15 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
   if (currentPage === 'road-signs') {
     return <RoadSigns />
   }
+
+  if (currentPage === 'results') {
+    return <ResultsPage resultId={selectedResultId} onBack={() => { setCurrentPage('dashboard'); setSelectedResultId(null); }} />
+  }
+
+  const handleExamClick = (examId) => {
+    setSelectedResultId(examId);
+    setCurrentPage('results');
+  };
 
   const QuickAction = ({ icon: Icon, label, onClick, colorClass = "text-primary-600 bg-primary-50" }) => (
     <button
@@ -58,6 +70,16 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               <span className="text-xs text-gray-500 font-medium mr-2">Qalan vaxt:</span>
               <span className="text-gray-900 font-bold text-xs">44 gün</span>
             </div>
+
+            <div className="hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2">
+              <Wallet className="w-3.5 h-3.5 text-primary-600" />
+              <span className="text-gray-900 font-bold text-xs">50.00 ₼</span>
+            </div>
+
+            <div className="hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2">
+              <Ticket className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-gray-900 font-bold text-xs">5 bilet</span>
+            </div>
             
             <div className="hidden sm:flex items-center bg-white rounded-xl px-3 py-2 gap-2 shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
               <Globe className="w-3.5 h-3.5 text-gray-500" />
@@ -87,26 +109,26 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
       <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
         <div className="max-w-[1600px] mx-auto space-y-8 pb-10">
           
-          {/* Welcome Section */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight mb-2">
-                Salam, Tural! 👋
-              </h1>
-              <p className="text-gray-500 text-base max-w-xl leading-relaxed">
-                Bu gün yol hərəkəti qaydalarını öyrənmək üçün əla gündür.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6 lg:gap-8 items-start">
             {/* Left Content Column */}
             <div className="space-y-8">
               
-              {/* Main Action Grid */}
+              {/* Welcome Section */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                  <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight mb-2">
+                    Salam, Tural! 👋
+                  </h1>
+                  <p className="text-gray-500 text-base max-w-xl leading-relaxed">
+                    Bu gün yol hərəkəti qaydalarını öyrənmək üçün əla gündür.
+                  </p>
+                </div>
+              </div>
+
+              {/* Combined Sections */}
               <section>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">Tədris materialları</h3>
+                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">Bölmələr</h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5">
                   <QuickAction 
@@ -125,34 +147,25 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     icon={HelpCircle} 
                     label="Suallar" 
                     onClick={() => {}}
-                    colorClass="bg-amber-50 text-amber-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={FileText} 
                     label="Video Dərslər" 
                     onClick={() => {}}
-                    colorClass="bg-emerald-50 text-emerald-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
-                </div>
-              </section>
-
-              {/* Secondary Actions */}
-              <section>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900 tracking-tight">Faydalı alətlər</h3>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-5">
                   <QuickAction 
                     icon={BookMarked} 
                     label="Maddələr" 
                     onClick={() => {}}
-                    colorClass="bg-gray-100 text-gray-700"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={AlertTriangle} 
                     label="Cərimələr" 
                     onClick={() => setCurrentPage('penalties')}
-                    colorClass="bg-rose-50 text-rose-600"
+                    colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={BarChart3} 
@@ -167,6 +180,11 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     colorClass="bg-primary-50 text-primary-600"
                   />
                 </div>
+              </section>
+
+              {/* User Statistics Section */}
+              <section>
+                <UserStatistics onExamClick={handleExamClick} />
               </section>
 
               {/* Recent Activity / Simulator Results */}
@@ -203,11 +221,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             </div>
 
             {/* Right Sidebar Column */}
-            <div className="space-y-6">
-               <div className="sticky top-28 space-y-6">
-                <ProfileCard />
-                <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
-               </div>
+            <div className="space-y-6 sticky top-6">
+              <ProfileCard />
+              <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
             </div>
 
           </div>

@@ -66,7 +66,7 @@ export default function OnlineClassCard({ maxItems = 2, showViewAll = false, set
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden">
       <div className="px-5 py-4 border-b border-gray-100/50 flex items-center justify-between">
-          <h3 className="text-base font-bold text-gray-900 tracking-tight">Ən yaxın dərslər</h3>
+          <h3 className="text-base font-bold text-gray-900 tracking-tight">Onlayn dərslər</h3>
           {showViewAll && (
             <button 
               onClick={() => setCurrentPage && setCurrentPage('classes')}
