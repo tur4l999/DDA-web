@@ -218,6 +218,10 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                         İXM {penalty.article}
                       </span>
 
+                      <div className={`inline-flex items-center bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm whitespace-nowrap`}>
+                        {penalty.fine} {penalty.points && ` + ${penalty.points}`}
+                      </div>
+
                       {penalty.relatedArticles?.map((art, idx) => (
                          <span key={idx} className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 border border-gray-200">
                            {art}
@@ -236,10 +240,6 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                       <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-primary-700 transition-colors">
                         {penalty.title}
                       </h3>
-
-                      <div className={`flex-shrink-0 bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md whitespace-nowrap`}>
-                        {penalty.fine} {penalty.points && ` + ${penalty.points}`}
-                      </div>
                     </div>
                   </div>
 
