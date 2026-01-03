@@ -1,242 +1,217 @@
-import { Target, TrendingUp, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Clock, ZoomIn, ChevronLeft, ChevronRight, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
+import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
-export default function QuestionsContent() {
-  const stats = {
-    total: 24,
-    correct: 18,
-    incorrect: 4,
-    unanswered: 2
+export default function QuestionsContent({ topic }) {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [userAnswers, setUserAnswers] = useState({}) // { questionId: selectedOptionIndex }
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [isZoomed, setIsZoomed] = useState(false)
+  const scrollContainerRef = useRef(null)
+
+  // Timer effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setElapsedTime(prev => prev + 1)
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Format time as HH:MM:SS
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor((seconds % 3600) / 60)
+    const s = seconds % 60
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
   }
 
-  const sampleQuestions = [
-    {
-      id: 1,
-      text: 'Sürücü hərəkət zamanı əsas yola çıxarkən hansı qaydaya əməl etməlidir?',
-      options: ['Sol tərəfə işarə verir', 'Yavaşlayır və yol verir', 'Sürəti artırır', 'Siqnal verir'],
-      correctAnswer: 1,
-      userAnswer: 1,
-      difficulty: 'medium'
-    },
-    {
-      id: 2,
-      text: 'Yol nişanı "Dayanmaq qadağandır" hansı rəngdədir?',
-      options: ['Qırmızı', 'Sarı', 'Mavi', 'Yaşıl'],
-      correctAnswer: 0,
-      userAnswer: null,
-      difficulty: 'easy'
-    },
-    {
-      id: 3,
-      text: 'Şəhər daxilində icazə verilən maksimum sürət nə qədərdir?',
-      options: ['40 km/s', '50 km/s', '60 km/s', '70 km/s'],
-      correctAnswer: 2,
-      userAnswer: 1,
-      difficulty: 'easy'
-    },
-    {
-      id: 4,
-      text: 'Döngədə hərəkət edərkən hansı sürücü üstünlük hüququna malikdir?',
-      options: ['Döngəyə daxil olan', 'Döngədə olan', 'Sağdan gələn', 'Soldan gələn'],
-      correctAnswer: 1,
-      userAnswer: null,
-      difficulty: 'hard'
-    },
-    {
-      id: 5,
-      text: 'Təhlükəli yük daşıyan avtomobillər hansı nişanla işarələnməlidir?',
-      options: ['Qırmızı üçbucaq', 'Narıncı romb', 'Sarı kvadrat', 'Mavi dairə'],
-      correctAnswer: 1,
-      userAnswer: 1,
-      difficulty: 'medium'
-    },
-    {
-      id: 6,
-      text: 'Piyada keçidi qarşısında sürücü nə etməlidir?',
-      options: ['Sürəti artırır', 'Siqnal verir', 'Yavaşlayır və hazır olur', 'Davam edir'],
-      correctAnswer: 2,
-      userAnswer: 3,
-      difficulty: 'easy'
-    }
-  ]
+  const handleAnswerSelect = (optionIndex) => {
+    // Only allow answering once
+    if (userAnswers[currentQuestion.id] !== undefined) return
 
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty) {
-      case 'easy': return 'bg-green-100 text-green-700'
-      case 'medium': return 'bg-yellow-100 text-yellow-700'
-      case 'hard': return 'bg-red-100 text-red-700'
-      default: return 'bg-gray-100 text-gray-700'
+    setUserAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: optionIndex
+    }))
+  }
+
+  const handleQuestionChange = (index) => {
+    setCurrentQuestionIndex(index)
+    // Scroll selected button into view
+    if (scrollContainerRef.current) {
+      // Logic to scroll can be added here if needed, but native scroll into view usually works well or simple CSS scroll snap
     }
   }
 
-  const getDifficultyLabel = (difficulty) => {
-    switch (difficulty) {
-      case 'easy': return 'Asan'
-      case 'medium': return 'Orta'
-      case 'hard': return 'Çətin'
-      default: return difficulty
-    }
-  }
+  const currentQuestion = TOPIC_QUESTIONS[currentQuestionIndex]
+  const isAnswered = userAnswers[currentQuestion.id] !== undefined
+  const isCorrect = isAnswered && userAnswers[currentQuestion.id] === currentQuestion.correctAnswer
+
+  // Image zoom modal
+  const ImageModal = () => (
+    <div
+      className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+      onClick={() => setIsZoomed(false)}
+    >
+      <img
+        src={currentQuestion.image}
+        alt="Question"
+        className="max-w-full max-h-full object-contain rounded-lg"
+      />
+    </div>
+  )
 
   return (
-    <div className="max-w-[860px] mx-auto">
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-              <Target className="w-5 h-5 text-primary-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-              <p className="text-xs text-gray-600">Ümumi</p>
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col h-[calc(100vh-200px)] relative">
+      {/* Main Content Area - Scrollable */}
+      <div className="flex-1 overflow-y-auto pb-24 px-4">
+        <div className="max-w-3xl mx-auto py-8">
+          {/* Question Text */}
+          <h2 className="text-xl md:text-2xl font-medium text-gray-900 mb-6 leading-relaxed text-center">
+            {currentQuestion.text}
+          </h2>
 
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.correct}</p>
-              <p className="text-xs text-gray-600">Düzgün</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-              <XCircle className="w-5 h-5 text-red-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.incorrect}</p>
-              <p className="text-xs text-gray-600">Səhv</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-              <HelpCircle className="w-5 h-5 text-gray-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{stats.unanswered}</p>
-              <p className="text-xs text-gray-600">Cavabsız</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Progress */}
-      <div className="bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl p-6 mb-8 text-white">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="text-lg font-bold mb-1">Ümumi nəticə</h3>
-            <p className="text-sm text-white/80">Bu mövzu üzrə irəliləyişiniz</p>
-          </div>
-          <div className="text-right">
-            <p className="text-3xl font-black">{Math.round((stats.correct / stats.total) * 100)}%</p>
-            <p className="text-xs text-white/80">Düzgün cavab</p>
-          </div>
-        </div>
-        <div className="w-full bg-white/20 rounded-full h-2">
-          <div 
-            className="bg-white rounded-full h-2 transition-all"
-            style={{ width: `${(stats.correct / stats.total) * 100}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Questions List */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Suallar</h3>
-          <button className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-semibold rounded-lg transition-colors">
-            Yeni test başlat
-          </button>
-        </div>
-
-        {sampleQuestions.map((question, index) => {
-          const isCorrect = question.userAnswer === question.correctAnswer
-          const isAnswered = question.userAnswer !== null
-
-          return (
-            <div 
-              key={question.id}
-              className={`bg-white border-2 rounded-xl p-5 transition-all hover:shadow-md ${
-                isAnswered
-                  ? isCorrect 
-                    ? 'border-green-200 bg-green-50/30' 
-                    : 'border-red-200 bg-red-50/30'
-                  : 'border-gray-200'
-              }`}
-            >
-              <div className="flex items-start gap-4 mb-4">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-sm ${
-                  isAnswered
-                    ? isCorrect
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-red-100 text-red-700'
-                    : 'bg-gray-100 text-gray-700'
-                }`}>
-                  {index + 1}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <p className="text-sm font-semibold text-gray-900 leading-relaxed">
-                      {question.text}
-                    </p>
-                    <span className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap ${getDifficultyColor(question.difficulty)}`}>
-                      {getDifficultyLabel(question.difficulty)}
-                    </span>
-                  </div>
-
-                  <div className="space-y-2">
-                    {question.options.map((option, optIndex) => (
-                      <div 
-                        key={optIndex}
-                        className={`px-3 py-2 rounded-lg text-sm transition-all ${
-                          isAnswered
-                            ? optIndex === question.correctAnswer
-                              ? 'bg-green-100 border-2 border-green-500 text-green-900 font-semibold'
-                              : optIndex === question.userAnswer && !isCorrect
-                                ? 'bg-red-100 border-2 border-red-500 text-red-900'
-                                : 'bg-gray-50 text-gray-600'
-                            : 'bg-gray-50 hover:bg-gray-100 text-gray-700 cursor-pointer'
-                        }`}
-                      >
-                        <span className="font-medium mr-2">{String.fromCharCode(65 + optIndex)}.</span>
-                        {option}
-                        {isAnswered && optIndex === question.correctAnswer && (
-                          <CheckCircle className="w-4 h-4 text-green-600 inline-block ml-2" />
-                        )}
-                        {isAnswered && optIndex === question.userAnswer && !isCorrect && (
-                          <XCircle className="w-4 h-4 text-red-600 inline-block ml-2" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {isAnswered && (
-                    <div className={`mt-3 p-3 rounded-lg ${
-                      isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
-                    }`}>
-                      <p className={`text-xs font-semibold ${
-                        isCorrect ? 'text-green-800' : 'text-red-800'
-                      }`}>
-                        {isCorrect ? '✓ Düzgün cavab!' : '✗ Səhv cavab'}
-                      </p>
-                    </div>
-                  )}
+          {/* Question Image (if exists) */}
+          {currentQuestion.image && (
+            <div className="mb-8 flex justify-center">
+              <div
+                className="relative group cursor-zoom-in max-w-2xl w-full"
+                onClick={() => setIsZoomed(true)}
+              >
+                <img
+                  src={currentQuestion.image}
+                  alt="Question"
+                  className="w-full h-auto max-h-[300px] object-contain rounded-2xl border border-gray-200 shadow-sm transition-transform hover:scale-[1.01]"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
                 </div>
               </div>
             </div>
-          )
-        })}
+          )}
+
+          {/* Options */}
+          <div className="space-y-3 max-w-2xl mx-auto">
+            {currentQuestion.options.map((option, index) => {
+              const isSelected = userAnswers[currentQuestion.id] === index
+              const isThisCorrect = index === currentQuestion.correctAnswer
+
+              let buttonStyle = "bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700"
+              let icon = null
+
+              if (isAnswered) {
+                if (isThisCorrect) {
+                  buttonStyle = "bg-green-50 border-green-500 text-green-700 font-medium ring-1 ring-green-500"
+                  icon = <CheckCircle className="w-5 h-5 text-green-600" />
+                } else if (isSelected) {
+                  buttonStyle = "bg-red-50 border-red-500 text-red-700 font-medium ring-1 ring-red-500"
+                  icon = <XCircle className="w-5 h-5 text-red-600" />
+                } else {
+                  buttonStyle = "bg-gray-50 border-gray-200 text-gray-400 opacity-60"
+                }
+              }
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleAnswerSelect(index)}
+                  disabled={isAnswered}
+                  className={`w-full p-4 text-left border rounded-2xl transition-all duration-200 flex items-center justify-between group ${buttonStyle} ${!isAnswered && 'shadow-sm hover:shadow-md'}`}
+                >
+                  <span className="text-base">{option}</span>
+                  {icon}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Feedback/Explanation (Only shown after answer) */}
+          {isAnswered && (
+            <div className={`mt-6 p-4 rounded-2xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300 ${
+              isCorrect ? 'bg-green-50 border border-green-100' : 'bg-red-50 border border-red-100'
+            }`}>
+              <div className="flex gap-3">
+                {isCorrect ? (
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                ) : (
+                  <HelpCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                )}
+                <div>
+                  <p className={`font-semibold mb-1 ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
+                    {isCorrect ? 'Düzgün cavab!' : 'Səhv cavab'}
+                  </p>
+                  <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                    {isCorrect
+                      ? 'Əla! Qaydaları yaxşı bilirsiniz.'
+                      : 'Diqqətli olun. Düzgün cavab yaşıl rənglə işarələnib.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Bottom Control Bar */}
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] p-4 z-10">
+        <div className="max-w-6xl mx-auto flex flex-col gap-4">
+
+          {/* Timer and Controls */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg font-mono text-lg font-medium">
+              <Clock className="w-5 h-5" />
+              {formatTime(elapsedTime)}
+            </div>
+
+            <button className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors">
+              İpucu
+            </button>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div
+            ref={scrollContainerRef}
+            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0"
+          >
+            {TOPIC_QUESTIONS.map((q, idx) => {
+              const status = userAnswers[q.id] !== undefined
+                ? (userAnswers[q.id] === q.correctAnswer ? 'correct' : 'incorrect')
+                : 'unanswered'
+
+              let btnClass = "w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-medium transition-all duration-200 border "
+
+              if (idx === currentQuestionIndex) {
+                btnClass += "ring-2 ring-primary-500 ring-offset-2 z-10 " // Active ring
+              }
+
+              if (status === 'correct') {
+                btnClass += "bg-green-100 border-green-200 text-green-700 hover:bg-green-200"
+              } else if (status === 'incorrect') {
+                btnClass += "bg-red-100 border-red-200 text-red-700 hover:bg-red-200"
+              } else {
+                if (idx === currentQuestionIndex) {
+                   btnClass += "bg-primary-600 border-primary-600 text-white shadow-md"
+                } else {
+                   btnClass += "bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                }
+              }
+
+              return (
+                <button
+                  key={q.id}
+                  onClick={() => handleQuestionChange(idx)}
+                  className={btnClass}
+                >
+                  {idx + 1}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Image Zoom Portal */}
+      {isZoomed && currentQuestion.image && <ImageModal />}
     </div>
   )
 }
