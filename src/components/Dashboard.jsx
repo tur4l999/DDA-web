@@ -6,6 +6,7 @@ import OnlineClasses from './OnlineClasses'
 import TopicsPage from './Topics'
 import PenaltiesPage from './PenaltiesPage'
 import RoadSigns from './RoadSigns'
+import UserStatistics from './UserStatistics'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -167,6 +168,11 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     colorClass="bg-primary-50 text-primary-600"
                   />
                 </div>
+              </section>
+
+              {/* User Statistics Section */}
+              <section>
+                <UserStatistics />
               </section>
 
               {/* Recent Activity / Simulator Results */}
