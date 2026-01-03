@@ -25,7 +25,8 @@ export const TOPIC_QUESTIONS = [
     correctAnswer: 1,
     difficulty: 'easy',
     image: 'https://placehold.co/600x400/png?text=Sual+2',
-    explanation: '3.27 "Dayanmaq qadağandır" nişanı qoyulduğu yerdən sonrakı ilk yolayrıcına qədər, yolayrıcı olmadıqda isə yaşayış məntəqəsinin sonuna qədər qüvvədədir.'
+    video: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4',
+    explanation: '3.27 "Dayanmaq qadağandır" nişanı qoyulduğu yerdən sonrakı ilk yolayrıcına qədər, yolayrıcı olmadıqda isə yaşayış məntəqəsinin sonuna qədər qüvvədədir. Video izahda ətraflı baxın.'
   },
   {
     id: 3,

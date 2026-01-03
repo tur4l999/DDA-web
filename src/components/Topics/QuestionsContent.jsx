@@ -110,8 +110,8 @@ export default function QuestionsContent({ topic }) {
   return (
     <div className="flex flex-col h-[calc(100vh-140px)] relative group">
 
-      {/* Top Control Bar (Moved from bottom) */}
-      <div className="bg-white border-b border-gray-100 pb-4 mb-2 z-10">
+      {/* Top Control Bar */}
+      <div className="bg-white border-b border-gray-100 pb-2 mb-2 z-10">
         <div className="max-w-3xl mx-auto flex flex-col gap-3">
 
           {/* Timer and Controls */}
@@ -121,7 +121,7 @@ export default function QuestionsContent({ topic }) {
               {formatTime(elapsedTime)}
             </div>
 
-            {/* Explanation Toggle Button */}
+            {/* Explanation Toggle Button (Right Aligned) */}
             {isAnswered && (
                <button
                  onClick={() => setShowExplanation(!showExplanation)}
@@ -131,12 +131,17 @@ export default function QuestionsContent({ topic }) {
                  {showExplanation ? 'İzahı gizlət' : 'İzaha bax'}
                </button>
             )}
+
+            {/* Placeholder to maintain Timer-left layout if button not present?
+                Actually justify-between handles it: Timer left, Button right.
+                If button missing, Timer is left. Correct.
+            */}
           </div>
 
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons - Added padding for ring visibility */}
           <div
             ref={scrollContainerRef}
-            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth"
+            className="flex items-center gap-2 overflow-x-auto p-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth"
           >
             {TOPIC_QUESTIONS.map((q, idx) => {
               const status = userAnswers[q.id] !== undefined
@@ -146,7 +151,8 @@ export default function QuestionsContent({ topic }) {
               let btnClass = "w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-medium transition-all duration-200 border "
 
               if (idx === currentQuestionIndex) {
-                btnClass += "ring-2 ring-primary-500 ring-offset-2 z-10 " // Active ring
+                // Focus ring needs space, container now has p-2 to allow it
+                btnClass += "ring-2 ring-primary-500 ring-offset-2 z-10 "
               }
 
               if (status === 'correct') {
@@ -207,24 +213,38 @@ export default function QuestionsContent({ topic }) {
             {currentQuestion.text}
           </h2>
 
-          {/* Question Image (if exists) */}
-          {currentQuestion.image && (
-            <div className="mb-8 flex justify-center">
-              <div
-                className="relative group cursor-zoom-in max-w-2xl w-full"
-                onClick={() => setIsZoomed(true)}
-              >
-                <img
-                  src={currentQuestion.image}
-                  alt="Question"
-                  className="w-full h-auto max-h-[300px] object-contain rounded-2xl border border-gray-200 shadow-sm transition-transform hover:scale-[1.01]"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Video or Image Section */}
+          <div className="mb-8 flex justify-center">
+             {/* If explanation is active AND there is a video, show video. Else show image if exists. */}
+             {showExplanation && currentQuestion.video ? (
+               <div className="w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+                  <video
+                    controls
+                    autoPlay
+                    className="w-full h-full object-cover"
+                    src={currentQuestion.video}
+                  >
+                    Video dəstəklənmir.
+                  </video>
+               </div>
+             ) : (
+                currentQuestion.image && (
+                  <div
+                    className="relative group cursor-zoom-in max-w-2xl w-full"
+                    onClick={() => setIsZoomed(true)}
+                  >
+                    <img
+                      src={currentQuestion.image}
+                      alt="Question"
+                      className="w-full h-auto max-h-[300px] object-contain rounded-2xl border border-gray-200 shadow-sm transition-transform hover:scale-[1.01]"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
+                    </div>
+                  </div>
+                )
+             )}
+          </div>
 
           {/* Options */}
           <div className="space-y-3 max-w-2xl mx-auto">
