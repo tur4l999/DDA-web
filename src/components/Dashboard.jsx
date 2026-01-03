@@ -6,6 +6,7 @@ import OnlineClasses from './OnlineClasses'
 import TopicsPage from './Topics'
 import PenaltiesPage from './PenaltiesPage'
 import RoadSigns from './RoadSigns'
+import UserStats from './UserStats'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -198,27 +199,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   </div>
                 </div>
 
-                {/* Simulator Results */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
-                  <div className="px-6 py-4 border-b border-gray-100">
-                    <h3 className="text-base font-semibold text-gray-900">Simulyator Nəticələri</h3>
-                  </div>
-                  <div className="p-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                        <div>
-                          <p className="text-sm font-semibold text-gray-900">03.12.2025 19:15</p>
-                        </div>
-                        <div className="flex flex-col items-end space-y-1">
-                          <p className="text-xs text-gray-500">30% (3/10)</p>
-                          <div className="w-24 bg-gray-200 rounded-full h-2">
-                            <div className="bg-[#007A3A] h-2 rounded-full" style={{ width: '30%' }}></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {/* User Stats & Indicators */}
+                <UserStats />
               </div>
 
               {/* Right Column: Online Classes - LOCKED BOUNDARY, clear space for profile overlap */}
