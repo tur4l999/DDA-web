@@ -121,24 +121,17 @@ export default function QuestionsContent({ topic }) {
               {formatTime(elapsedTime)}
             </div>
 
-            {/* Explanation Toggle Button (Right Aligned) */}
-            {isAnswered && (
-               <button
-                 onClick={() => setShowExplanation(!showExplanation)}
-                 className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
-               >
-                 <BookOpen className="w-4 h-4" />
-                 {showExplanation ? 'İzahı gizlət' : 'İzaha bax'}
-               </button>
-            )}
-
-            {/* Placeholder to maintain Timer-left layout if button not present?
-                Actually justify-between handles it: Timer left, Button right.
-                If button missing, Timer is left. Correct.
-            */}
+            {/* Explanation Toggle Button (Always visible) */}
+             <button
+               onClick={() => setShowExplanation(!showExplanation)}
+               className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
+             >
+               <BookOpen className="w-4 h-4" />
+               {showExplanation ? 'İzahı gizlət' : 'İzaha bax'}
+             </button>
           </div>
 
-          {/* Navigation Buttons - Added padding for ring visibility */}
+          {/* Navigation Buttons */}
           <div
             ref={scrollContainerRef}
             className="flex items-center gap-2 overflow-x-auto p-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth"
@@ -151,7 +144,6 @@ export default function QuestionsContent({ topic }) {
               let btnClass = "w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-sm font-medium transition-all duration-200 border "
 
               if (idx === currentQuestionIndex) {
-                // Focus ring needs space, container now has p-2 to allow it
                 btnClass += "ring-2 ring-primary-500 ring-offset-2 z-10 "
               }
 
@@ -215,7 +207,6 @@ export default function QuestionsContent({ topic }) {
 
           {/* Video or Image Section */}
           <div className="mb-8 flex justify-center">
-             {/* If explanation is active AND there is a video, show video. Else show image if exists. */}
              {showExplanation && currentQuestion.video ? (
                <div className="w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-200">
                   <video
@@ -281,12 +272,11 @@ export default function QuestionsContent({ topic }) {
             })}
           </div>
 
-          {/* Feedback Section (Answer status + Explanation) */}
+          {/* Feedback Section - Answer Status */}
           {isAnswered && (
             <div className={`mt-6 rounded-2xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300 overflow-hidden border ${
               isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'
             }`}>
-              {/* Status Header */}
               <div className="p-4 flex gap-3">
                 {isCorrect ? (
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -304,19 +294,38 @@ export default function QuestionsContent({ topic }) {
                   </p>
                 </div>
               </div>
-
-              {/* Explanation (Shown when toggled) */}
-              {showExplanation && currentQuestion.explanation && (
-                <div className={`px-4 pb-4 pt-0 text-sm leading-relaxed ${
-                  isCorrect ? 'text-green-800' : 'text-red-800'
-                }`}>
-                  <div className={`h-px w-full my-3 ${isCorrect ? 'bg-green-200' : 'bg-red-200'}`} />
-                  <p className="font-medium mb-1 opacity-90">İzah:</p>
-                  {currentQuestion.explanation}
-                </div>
-              )}
             </div>
           )}
+
+          {/* Separate Explanation Section - Visible whenever toggled */}
+          {showExplanation && currentQuestion.explanation && (
+            <div className={`mt-4 rounded-2xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300 border p-4 ${
+              isAnswered
+                ? (isCorrect ? 'bg-green-50/50 border-green-100' : 'bg-red-50/50 border-red-100')
+                : 'bg-primary-50/50 border-primary-100'
+            }`}>
+              <div className="flex gap-2 mb-2">
+                <BookOpen className={`w-4 h-4 mt-0.5 ${
+                  isAnswered
+                    ? (isCorrect ? 'text-green-600' : 'text-red-600')
+                    : 'text-primary-600'
+                }`} />
+                <span className={`font-semibold text-sm ${
+                   isAnswered
+                    ? (isCorrect ? 'text-green-800' : 'text-red-800')
+                    : 'text-primary-800'
+                }`}>İzah</span>
+              </div>
+              <p className={`text-sm leading-relaxed ${
+                 isAnswered
+                    ? (isCorrect ? 'text-green-800' : 'text-red-800')
+                    : 'text-gray-700'
+              }`}>
+                {currentQuestion.explanation}
+              </p>
+            </div>
+          )}
+
         </div>
       </div>
 
