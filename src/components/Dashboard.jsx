@@ -7,9 +7,11 @@ import TopicsPage from './Topics'
 import PenaltiesPage from './PenaltiesPage'
 import RoadSigns from './RoadSigns'
 import UserStatistics from './UserStatistics'
+import ResultsPage from './ResultsPage'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
+  const [selectedResultId, setSelectedResultId] = useState(null)
 
   if (currentPage === 'classes') {
     return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
@@ -26,6 +28,15 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
   if (currentPage === 'road-signs') {
     return <RoadSigns />
   }
+
+  if (currentPage === 'results') {
+    return <ResultsPage resultId={selectedResultId} onBack={() => { setCurrentPage('dashboard'); setSelectedResultId(null); }} />
+  }
+
+  const handleExamClick = (examId) => {
+    setSelectedResultId(examId);
+    setCurrentPage('results');
+  };
 
   const QuickAction = ({ icon: Icon, label, onClick, colorClass = "text-primary-600 bg-primary-50" }) => (
     <button
@@ -173,7 +184,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
               {/* User Statistics Section */}
               <section>
-                <UserStatistics />
+                <UserStatistics onExamClick={handleExamClick} />
               </section>
 
               {/* Recent Activity / Simulator Results */}

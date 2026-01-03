@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   PieChart, Pie, Cell, AreaChart, Area
 } from 'recharts';
-import { Activity, BookOpen, Target, Award, Clock, TrendingUp, X, CheckCircle, XCircle } from 'lucide-react';
+import { Activity, BookOpen, Target, Award, Clock, TrendingUp } from 'lucide-react';
 
-export default function UserStatistics() {
-  const [selectedExam, setSelectedExam] = useState(null);
-
+export default function UserStatistics({ onExamClick }) {
   // Mock Data
   const weeklyActivityData = [
     { name: 'B.e', suallar: 45, dersler: 2 },
@@ -26,22 +24,13 @@ export default function UserStatistics() {
   ];
 
   const examProgressData = [
-    { name: '01.12 • 14:00', bal: 65 },
-    { name: '03.12 • 09:30', bal: 72 },
-    { name: '05.12 • 16:45', bal: 68 },
-    { name: '07.12 • 11:20', bal: 85 },
-    { name: '09.12 • 15:10', bal: 82 },
-    { name: '11.12 • 10:00', bal: 94 },
+    { id: 6, name: '01.12 • 14:00', bal: 65 },
+    { id: 5, name: '03.12 • 09:30', bal: 72 },
+    { id: 4, name: '05.12 • 16:45', bal: 68 },
+    { id: 3, name: '07.12 • 11:20', bal: 85 },
+    { id: 2, name: '09.12 • 15:10', bal: 82 },
+    { id: 1, name: '11.12 • 10:00', bal: 94 },
   ];
-
-  // Mock Exam Questions for Modal
-  const mockExamQuestions = Array(10).fill(null).map((_, i) => ({
-    id: i + 1,
-    text: `Yol hərəkəti qaydaları sual #${i + 1}`,
-    isCorrect: Math.random() > 0.3,
-    userAnswer: 'B',
-    correctAnswer: 'B'
-  }));
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -60,11 +49,11 @@ export default function UserStatistics() {
   };
 
   const handleExamClick = (data) => {
-    if (data && data.activePayload) {
-      setSelectedExam({
-        date: data.activePayload[0].payload.name,
-        score: data.activePayload[0].payload.bal
-      });
+    if (onExamClick && data && data.activePayload) {
+      const examId = data.activePayload[0].payload.id;
+      if (examId) {
+        onExamClick(examId);
+      }
     }
   };
 
@@ -219,53 +208,6 @@ export default function UserStatistics() {
         </div>
 
       </div>
-
-      {/* Exam Details Modal */}
-      {selectedExam && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">İmtahan Nəticələri</h3>
-                <p className="text-xs text-gray-500">{selectedExam.date} • Nəticə: {selectedExam.score}%</p>
-              </div>
-              <button
-                onClick={() => setSelectedExam(null)}
-                className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-500"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
-              <div className="space-y-3">
-                {mockExamQuestions.map((q) => (
-                  <div key={q.id} className={`flex items-start gap-3 p-3 rounded-xl border ${q.isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`}>
-                    <div className={`mt-0.5 ${q.isCorrect ? 'text-green-600' : 'text-red-500'}`}>
-                      {q.isCorrect ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{q.text}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Sizin cavab: <span className="font-bold">{q.userAnswer}</span> • Düzgün cavab: <span className="font-bold">{q.correctAnswer}</span>
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-4 border-t border-gray-100 bg-gray-50">
-              <button
-                onClick={() => setSelectedExam(null)}
-                className="w-full py-2.5 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
-              >
-                Bağla
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
