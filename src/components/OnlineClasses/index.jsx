@@ -247,9 +247,9 @@ export default function OnlineClasses({ onBack }) {
   }, [selectedDate, filteredLessons])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-full flex flex-col bg-gray-50 overflow-hidden">
       {/* Header */}
-      <div className="bg-white border-b-2 border-gray-200 sticky top-0 z-30 shadow-md">
+      <div className="bg-white border-b-2 border-gray-200 z-30 shadow-md flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-4">
@@ -318,33 +318,34 @@ export default function OnlineClasses({ onBack }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {view === 'calendar' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
-            {/* Left Column: Calendar */}
-            <div className="max-w-full overflow-hidden">
-              <CalendarView
-                lessons={filteredLessons}
-                onSelectLesson={handleViewDetails}
-                onDateSelect={handleDateSelectFromCalendar}
-              />
-            </div>
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+          {view === 'calendar' ? (
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
+              {/* Left Column: Calendar */}
+              <div className="max-w-full overflow-hidden">
+                <CalendarView
+                  lessons={filteredLessons}
+                  onSelectLesson={handleViewDetails}
+                  onDateSelect={handleDateSelectFromCalendar}
+                />
+              </div>
 
-            {/* Right Panel - Smart Sidebar */}
-            <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
-              <RightPanel
-                activeTab={rightPanelTab}
-                onTabChange={setRightPanelTab}
-                bookmarkedLessons={bookmarkedLessons}
-                onRemoveBookmark={handleRemoveBookmark}
-                selectedDate={selectedDate}
-                lessonsForDate={lessonsForSelectedDate}
-                onJoinLesson={handleJoin}
-                onViewDetails={handleViewDetails}
-              />
+              {/* Right Panel - Smart Sidebar */}
+              <div className="hidden lg:block h-full max-w-full overflow-hidden">
+                <RightPanel
+                  activeTab={rightPanelTab}
+                  onTabChange={setRightPanelTab}
+                  bookmarkedLessons={bookmarkedLessons}
+                  onRemoveBookmark={handleRemoveBookmark}
+                  selectedDate={selectedDate}
+                  lessonsForDate={lessonsForSelectedDate}
+                  onJoinLesson={handleJoin}
+                  onViewDetails={handleViewDetails}
+                />
+              </div>
             </div>
-          </div>
-        ) : (
+          ) : (
           <div>
             {/* Next Up Card */}
             {nextLesson && (
@@ -539,10 +540,11 @@ export default function OnlineClasses({ onBack }) {
                 <div className="text-6xl mb-4">🔍</div>
                 <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
                 <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
-              </div>
-            )}
-          </div>
-        )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Modals */}

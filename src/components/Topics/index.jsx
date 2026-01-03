@@ -194,9 +194,9 @@ export default function TopicsPage({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex relative">
+    <div className="h-full bg-gray-50 flex relative overflow-hidden">
       {/* Sidebar with collapse */}
-      <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-72'} relative`}>
+      <div className={`transition-all duration-200 ease-out ${isPanelCollapsed ? 'w-0' : 'w-72'} relative h-full overflow-y-auto custom-scrollbar`}>
         <TopicSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -226,7 +226,7 @@ export default function TopicsPage({ onBack }) {
           </button>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         <StickyHeader
           topic={currentTopic}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
@@ -241,8 +241,10 @@ export default function TopicsPage({ onBack }) {
           onPaywallOpen={() => setIsPaywallModalOpen(true)}
         />
 
-        <main className={`flex-1 px-4 lg:px-6 py-8 transition-all duration-200 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
-          {renderContent()}
+        <main className="flex-1 overflow-y-auto custom-scrollbar">
+          <div className={`px-4 lg:px-6 py-8 transition-all duration-200 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto w-full' : ''}`}>
+            {renderContent()}
+          </div>
         </main>
       </div>
 
