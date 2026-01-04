@@ -7,3 +7,5 @@
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+10:45:48 AM [vite] (client) hmr update /src/components/OnlineClasses/index.jsx, /src/index.css
+10:46:12 AM [vite] (client) page reload src/components/OnlineClasses/VideoPlayerModal.jsx
