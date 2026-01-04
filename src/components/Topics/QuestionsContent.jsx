@@ -93,6 +93,11 @@ export default function QuestionsContent({ topic }) {
   const isAnswered = userAnswers[currentQuestion.id] !== undefined
   const isCorrect = isAnswered && userAnswers[currentQuestion.id] === currentQuestion.correctAnswer
 
+  // Determine if there is media to show
+  const hasVideo = showExplanation && currentQuestion.video
+  const hasImage = !!currentQuestion.image
+  const hasMedia = hasVideo || hasImage
+
   // Image zoom modal
   const ImageModal = () => (
     <div
@@ -112,10 +117,10 @@ export default function QuestionsContent({ topic }) {
 
       {/* Top Control Bar */}
       <div className="bg-white border-b border-gray-100 pb-2 mb-2 z-10">
-        <div className="max-w-3xl mx-auto flex flex-col gap-3">
+        <div className="max-w-6xl mx-auto flex flex-col gap-3">
 
           {/* Timer and Controls */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between px-4 md:px-0">
             <div className="flex items-center gap-2 text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg font-mono text-lg font-medium">
               <Clock className="w-5 h-5" />
               {formatTime(elapsedTime)}
@@ -199,132 +204,160 @@ export default function QuestionsContent({ topic }) {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <div className="max-w-3xl mx-auto">
-          {/* Question Text */}
-          <h2 className="text-xl md:text-2xl font-medium text-gray-900 mb-6 leading-relaxed text-center">
-            {currentQuestion.text}
-          </h2>
+        {/* Layout Container: 2 columns on desktop, 1 on mobile */}
+        <div className={`mx-auto ${hasMedia ? 'max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-start' : 'max-w-3xl'}`}>
 
-          {/* Video or Image Section */}
-          <div className="mb-8 flex justify-center">
-             {showExplanation && currentQuestion.video ? (
-               <div className="w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-200">
-                  <video
-                    controls
-                    autoPlay
-                    className="w-full h-full object-cover"
-                    src={currentQuestion.video}
-                  >
-                    Video dəstəklənmir.
-                  </video>
+          {/* Media Column (Image/Video) - Visual Right on Desktop (Order Last via flex/grid?)
+              Wait, standard grid fills Left then Right.
+              If we want Image on Right:
+              DOM Order: Text, Image.
+              Mobile: Text, Image. (Text on top)
+              But usually on mobile Image on Top is preferred?
+              User said "Sualın şəkili sağda" (Desktop specific).
+              Let's use Flex with order manipulation for max control.
+              Desktop: Row. Text Left, Image Right.
+              Mobile: Col. Image Top? Or Text Top?
+              Common practice: Image Top.
+              So: DOM order -> Image, Text.
+              Desktop: flex-row-reverse. (Image becomes Right, Text becomes Left).
+              Mobile: flex-col. (Image Top, Text Bottom).
+
+              Let's switch to Flex for this control.
+          */}
+
+          <div className={`flex flex-col lg:flex-row-reverse gap-8 items-start w-full ${!hasMedia && 'lg:flex-col'}`}>
+
+             {/* Media Container */}
+             {hasMedia && (
+               <div className="w-full lg:w-1/2">
+                 {hasVideo ? (
+                   <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-lg border border-gray-200 sticky top-0">
+                      <video
+                        controls
+                        autoPlay
+                        className="w-full h-full object-cover"
+                        src={currentQuestion.video}
+                      >
+                        Video dəstəklənmir.
+                      </video>
+                   </div>
+                 ) : (
+                    currentQuestion.image && (
+                      <div
+                        className="relative group cursor-zoom-in w-full sticky top-0"
+                        onClick={() => setIsZoomed(true)}
+                      >
+                        <img
+                          src={currentQuestion.image}
+                          alt="Question"
+                          className="w-full h-auto object-contain rounded-2xl border border-gray-200 shadow-sm transition-transform hover:scale-[1.01]"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100">
+                          <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
+                        </div>
+                      </div>
+                    )
+                 )}
                </div>
-             ) : (
-                currentQuestion.image && (
-                  <div
-                    className="relative group cursor-zoom-in max-w-2xl w-full"
-                    onClick={() => setIsZoomed(true)}
-                  >
-                    <img
-                      src={currentQuestion.image}
-                      alt="Question"
-                      className="w-full h-auto max-h-[300px] object-contain rounded-2xl border border-gray-200 shadow-sm transition-transform hover:scale-[1.01]"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
+             )}
+
+             {/* Text & Options Container */}
+             <div className={`w-full ${hasMedia ? 'lg:w-1/2' : 'w-full'}`}>
+                {/* Question Text */}
+                <h2 className={`text-xl md:text-2xl font-medium text-gray-900 mb-6 leading-relaxed ${!hasMedia && 'text-center'}`}>
+                  {currentQuestion.text}
+                </h2>
+
+                {/* Options */}
+                <div className="space-y-3 w-full">
+                  {currentQuestion.options.map((option, index) => {
+                    const isSelected = userAnswers[currentQuestion.id] === index
+                    const isThisCorrect = index === currentQuestion.correctAnswer
+
+                    let buttonStyle = "bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700"
+                    let icon = null
+
+                    if (isAnswered) {
+                      if (isThisCorrect) {
+                        buttonStyle = "bg-green-50 border-green-500 text-green-700 font-medium ring-1 ring-green-500"
+                        icon = <CheckCircle className="w-5 h-5 text-green-600" />
+                      } else if (isSelected) {
+                        buttonStyle = "bg-red-50 border-red-500 text-red-700 font-medium ring-1 ring-red-500"
+                        icon = <XCircle className="w-5 h-5 text-red-600" />
+                      } else {
+                        buttonStyle = "bg-gray-50 border-gray-200 text-gray-400 opacity-60"
+                      }
+                    }
+
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => handleAnswerSelect(index)}
+                        disabled={isAnswered}
+                        className={`w-full p-4 text-left border rounded-2xl transition-all duration-200 flex items-center justify-between group ${buttonStyle} ${!isAnswered && 'shadow-sm hover:shadow-md'}`}
+                      >
+                        <span className="text-base">{option}</span>
+                        {icon}
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {/* Feedback Section - Answer Status */}
+                {isAnswered && (
+                  <div className={`mt-6 rounded-2xl w-full animate-in fade-in slide-in-from-bottom-2 duration-300 overflow-hidden border ${
+                    isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'
+                  }`}>
+                    <div className="p-4 flex gap-3">
+                      {isCorrect ? (
+                        <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      ) : (
+                        <HelpCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      )}
+                      <div>
+                        <p className={`font-semibold mb-1 ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
+                          {isCorrect ? 'Düzgün cavab!' : 'Səhv cavab'}
+                        </p>
+                        <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                          {isCorrect
+                            ? 'Əla! Qaydaları yaxşı bilirsiniz.'
+                            : 'Diqqətli olun. Düzgün cavab yaşıl rənglə işarələnib.'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                )
-             )}
-          </div>
-
-          {/* Options */}
-          <div className="space-y-3 max-w-2xl mx-auto">
-            {currentQuestion.options.map((option, index) => {
-              const isSelected = userAnswers[currentQuestion.id] === index
-              const isThisCorrect = index === currentQuestion.correctAnswer
-
-              let buttonStyle = "bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700"
-              let icon = null
-
-              if (isAnswered) {
-                if (isThisCorrect) {
-                  buttonStyle = "bg-green-50 border-green-500 text-green-700 font-medium ring-1 ring-green-500"
-                  icon = <CheckCircle className="w-5 h-5 text-green-600" />
-                } else if (isSelected) {
-                  buttonStyle = "bg-red-50 border-red-500 text-red-700 font-medium ring-1 ring-red-500"
-                  icon = <XCircle className="w-5 h-5 text-red-600" />
-                } else {
-                  buttonStyle = "bg-gray-50 border-gray-200 text-gray-400 opacity-60"
-                }
-              }
-
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleAnswerSelect(index)}
-                  disabled={isAnswered}
-                  className={`w-full p-4 text-left border rounded-2xl transition-all duration-200 flex items-center justify-between group ${buttonStyle} ${!isAnswered && 'shadow-sm hover:shadow-md'}`}
-                >
-                  <span className="text-base">{option}</span>
-                  {icon}
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Feedback Section - Answer Status */}
-          {isAnswered && (
-            <div className={`mt-6 rounded-2xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300 overflow-hidden border ${
-              isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'
-            }`}>
-              <div className="p-4 flex gap-3">
-                {isCorrect ? (
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                ) : (
-                  <HelpCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 )}
-                <div>
-                  <p className={`font-semibold mb-1 ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
-                    {isCorrect ? 'Düzgün cavab!' : 'Səhv cavab'}
-                  </p>
-                  <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
-                    {isCorrect
-                      ? 'Əla! Qaydaları yaxşı bilirsiniz.'
-                      : 'Diqqətli olun. Düzgün cavab yaşıl rənglə işarələnib.'}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
 
-          {/* Separate Explanation Section - Visible whenever toggled */}
-          {showExplanation && currentQuestion.explanation && (
-            <div className={`mt-4 rounded-2xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-2 duration-300 border p-4 ${
-              isAnswered
-                ? (isCorrect ? 'bg-green-50/50 border-green-100' : 'bg-red-50/50 border-red-100')
-                : 'bg-primary-50/50 border-primary-100'
-            }`}>
-              <div className="flex gap-2 mb-2">
-                <BookOpen className={`w-4 h-4 mt-0.5 ${
-                  isAnswered
-                    ? (isCorrect ? 'text-green-600' : 'text-red-600')
-                    : 'text-primary-600'
-                }`} />
-                <span className={`font-semibold text-sm ${
-                   isAnswered
-                    ? (isCorrect ? 'text-green-800' : 'text-red-800')
-                    : 'text-primary-800'
-                }`}>İzah</span>
-              </div>
-              <p className={`text-sm leading-relaxed ${
-                 isAnswered
-                    ? (isCorrect ? 'text-green-800' : 'text-red-800')
-                    : 'text-gray-700'
-              }`}>
-                {currentQuestion.explanation}
-              </p>
-            </div>
-          )}
+                {/* Explanation Section */}
+                {showExplanation && currentQuestion.explanation && (
+                  <div className={`mt-4 rounded-2xl w-full animate-in fade-in slide-in-from-bottom-2 duration-300 border p-4 ${
+                    isAnswered
+                      ? (isCorrect ? 'bg-green-50/50 border-green-100' : 'bg-red-50/50 border-red-100')
+                      : 'bg-primary-50/50 border-primary-100'
+                  }`}>
+                    <div className="flex gap-2 mb-2">
+                      <BookOpen className={`w-4 h-4 mt-0.5 ${
+                        isAnswered
+                          ? (isCorrect ? 'text-green-600' : 'text-red-600')
+                          : 'text-primary-600'
+                      }`} />
+                      <span className={`font-semibold text-sm ${
+                         isAnswered
+                          ? (isCorrect ? 'text-green-800' : 'text-red-800')
+                          : 'text-primary-800'
+                      }`}>İzah</span>
+                    </div>
+                    <p className={`text-sm leading-relaxed ${
+                       isAnswered
+                          ? (isCorrect ? 'text-green-800' : 'text-red-800')
+                          : 'text-gray-700'
+                    }`}>
+                      {currentQuestion.explanation}
+                    </p>
+                  </div>
+                )}
+             </div>
+          </div>
 
         </div>
       </div>
