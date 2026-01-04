@@ -51,6 +51,9 @@ export default function QuestionsContent({ topic }) {
   useEffect(() => {
     if (showExplanation && hasVideo) {
       setActiveMediaType('video')
+    } else if (!showExplanation) {
+      // Revert to image if explanation is closed (strictly enforcing video is for explanation)
+      setActiveMediaType('image')
     }
   }, [showExplanation, hasVideo])
 
@@ -125,14 +128,17 @@ export default function QuestionsContent({ topic }) {
 
                 if (isAnswered) {
                   if (isThisCorrect) {
+                    // Correct answer is always Green
                     containerClass = "p-3 rounded-xl bg-green-50 border-green-500/20 cursor-default flex items-start gap-4"
                     radioBorder = "border-green-500"
                     radioBg = "bg-green-500"
                   } else if (isSelected) {
+                    // Selected wrong answer is Red
                     containerClass = "p-3 rounded-xl bg-red-50 border-red-500/20 cursor-default flex items-start gap-4"
                     radioBorder = "border-red-500"
                     radioBg = "bg-red-500"
                   } else {
+                    // Unselected wrong answers dimmed
                     containerClass = "p-3 rounded-xl opacity-50 cursor-default flex items-start gap-4"
                   }
                 }
@@ -186,8 +192,8 @@ export default function QuestionsContent({ topic }) {
           <div className="w-full lg:w-1/2 pt-8 lg:sticky lg:top-4">
              {hasMedia && (
                 <div className="relative group w-full mb-6">
-                  {/* Media Container */}
-                  <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-sm border border-gray-200 bg-black/5">
+                  {/* Media Container - Increased size to aspect-[4/3] */}
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-200 bg-black/5">
 
                     {activeMediaType === 'video' && hasVideo ? (
                       <video
@@ -215,8 +221,8 @@ export default function QuestionsContent({ topic }) {
                       </div>
                     )}
 
-                    {/* Switcher Arrows (Overlay) */}
-                    {hasVideo && hasImage && (
+                    {/* Switcher Arrows (Overlay) - ONLY visible if Explanation is active */}
+                    {hasVideo && hasImage && showExplanation && (
                        <>
                          <button
                            onClick={toggleMediaType}
@@ -262,7 +268,7 @@ export default function QuestionsContent({ topic }) {
       </div>
 
       {/* Bottom Control Bar */}
-      <div className="sticky -bottom-8 -mx-4 lg:-mx-6 bg-white border-t border-gray-200 px-4 lg:px-6 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-40 flex flex-col gap-3">
+      <div className="sticky -bottom-8 -mx-4 lg:-mx-6 bg-white border-t border-gray-200 px-4 lg:px-6 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-40 flex flex-col gap-4">
 
         {/* Progress Bar */}
         <div className="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
@@ -280,10 +286,10 @@ export default function QuestionsContent({ topic }) {
             {formatTime(elapsedTime)}
           </div>
 
-          {/* Pagination Strip */}
+          {/* Pagination Strip - Increased Container Size/Padding */}
           <div
             ref={scrollContainerRef}
-            className="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide px-2 mx-2"
+            className="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide px-2 mx-2 py-2"
           >
             {TOPIC_QUESTIONS.map((q, idx) => {
               const status = userAnswers[q.id] !== undefined
