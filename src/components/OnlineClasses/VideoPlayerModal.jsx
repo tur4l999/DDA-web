@@ -1,98 +1,113 @@
-import { Send, X, ShieldCheck } from 'lucide-react'
+import { X, Calendar, User, Globe, Clock } from 'lucide-react'
 
 export default function VideoPlayerModal({ lesson, isOpen, onClose }) {
-  if (!isOpen) return null
+  if (!isOpen || !lesson) return null
+
+  const getLanguageLabel = (lang) => {
+    const langMap = { az: 'AZ', ru: 'RU', en: 'EN' }
+    return langMap[lang] || lang.toUpperCase()
+  }
+
+  const formatDateTime = (date) => {
+    const d = new Date(date)
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+    return `${day}.${month}.${year} ${hours}:${minutes}`
+  }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Main Glass Card */}
-      <div className="relative max-w-5xl w-full bg-white/90 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] p-8 md:p-12 border border-white overflow-hidden animate-in fade-in zoom-in-95 duration-300">
-
-        {/* Background Decorative Blobs */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-100/50 rounded-full blur-3xl opacity-50 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-primary-100/50 rounded-full blur-3xl opacity-50 pointer-events-none" />
-
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 p-2 rounded-full bg-white/50 hover:bg-white text-gray-500 hover:text-gray-900 transition-all z-20"
+    <>
+      <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={onClose}>
+        <div
+          className="bg-gray-900 rounded-2xl max-w-6xl w-full max-h-[95vh] overflow-hidden shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
         >
-          <X className="w-6 h-6" />
-        </button>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-
-          {/* Left Content */}
-          <div className="space-y-8">
-            {/* Icon */}
-            <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 mb-6 shadow-sm">
-              <Send className="w-8 h-8 -ml-1 mt-1" />
-            </div>
-
-            {/* Typography */}
-            <div className="space-y-4">
-              <h1 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight">
-                Video Dərslər <br />
-                <span className="text-blue-500">Artıq Telegramda!</span>
-              </h1>
-              <p className="text-lg text-gray-500 leading-relaxed max-w-lg">
-                Daha sürətli, keyfiyyətli və yenilənmiş dərslər üçün Telegram kanalımıza qoşulun.
-                {lesson && <span className="block mt-2 font-medium text-gray-700">Mövzu: {lesson.title}</span>}
-              </p>
-            </div>
-
-            {/* Trust Badges */}
-            <div className="flex flex-wrap gap-4 text-sm font-medium text-gray-600">
-              <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg border border-white/50">
-                <ShieldCheck className="w-4 h-4 text-green-500" />
-                <span>Rəsmi Kanal</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg border border-white/50">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                <span>Canlı Yayım</span>
+          {/* Header */}
+          <div className="bg-gradient-to-r from-primary-600 to-primary-600 px-6 py-4 flex items-center justify-between">
+            <div className="flex-1">
+              <h2 className="text-xl font-black text-white mb-1">{lesson.title}</h2>
+              <div className="flex items-center space-x-4 text-sm text-primary-100">
+                <div className="flex items-center space-x-1">
+                  <Calendar className="w-4 h-4" />
+                  <span className="font-semibold">{formatDateTime(lesson.date)}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <User className="w-4 h-4" />
+                  <span className="font-semibold">{lesson.instructor}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Globe className="w-4 h-4" />
+                  <span className="font-semibold">{getLanguageLabel(lesson.language)}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Clock className="w-4 h-4" />
+                  <span className="font-semibold">{lesson.duration} dəq</span>
+                </div>
               </div>
             </div>
-
-            {/* CTA Button */}
-            <div className="pt-4">
-              <a
-                href="https://t.me/avtoimtahan"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl font-bold text-lg shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-1 transition-all duration-300"
-              >
-                <Send className="w-5 h-5 -ml-1 mt-0.5 group-hover:rotate-12 transition-transform" />
-                <span>Kanalı İzlə</span>
-              </a>
-            </div>
+            <button
+              onClick={onClose}
+              className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors ml-4"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
           </div>
 
-          {/* Right Content - Visual/QR */}
-          <div className="hidden lg:flex flex-col items-center justify-center relative">
-            <div className="bg-white p-4 rounded-3xl shadow-xl border border-gray-100 rotate-2 hover:rotate-0 transition-transform duration-500">
-              <img
-                src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://t.me/avtoimtahan&color=1d4ed8&bgcolor=ffffff"
-                alt="Telegram Channel QR Code"
-                className="w-64 h-64 rounded-xl"
-              />
-              <div className="mt-4 text-center">
-                <p className="font-bold text-gray-900">avtoimtahan</p>
-                <p className="text-sm text-gray-500">Kameranızla skan edin</p>
+          {/* Video Player */}
+          <div className="relative bg-black aspect-video">
+            {lesson.replayUrl ? (
+              // Əgər video URL-i varsa
+              lesson.replayUrl.includes('youtube.com') || lesson.replayUrl.includes('youtu.be') ? (
+                <iframe
+                  src={lesson.replayUrl}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={lesson.title}
+                />
+              ) : (
+                <video
+                  src={lesson.replayUrl}
+                  controls
+                  className="w-full h-full"
+                  autoPlay
+                >
+                  Brauzeriniz video formatını dəstəkləmir.
+                </video>
+              )
+            ) : (
+              // Video yoxdursa
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-10 h-10 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-400 font-bold text-lg">Video yüklənir...</p>
+                </div>
               </div>
-            </div>
-
-            {/* Decorative Elements */}
-            <div className="absolute -z-10 w-72 h-72 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 rounded-full blur-3xl" />
+            )}
           </div>
 
+          {/* Metadata Footer */}
+          <div className="bg-gray-800 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm font-semibold mb-1">Mövzu</p>
+                <p className="text-white font-bold">{lesson.subject}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-gray-400 text-sm font-semibold mb-1">Status</p>
+                <p className="text-green-400 font-bold">Təkrar video</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
