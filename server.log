@@ -10,3 +10,6 @@ Port 5173 is in use, trying another one...
   ➜  Network: use --host to expose
 10:37:42 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
 11:24:50 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+2:54:14 PM [vite] (client) hmr update /src/components/Topics/TabNavigation.jsx, /src/index.css
+2:55:06 PM [vite] (client) hmr update /src/components/Topics/PenaltiesContent.jsx, /src/index.css
+2:55:46 PM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css

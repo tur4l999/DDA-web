@@ -7,7 +7,7 @@ const tabs = [
   { id: 'video', label: 'Video dərs', icon: BookOpen, requiresPackage: true },
   { id: 'questions', label: 'Suallar', icon: HelpCircle, requiresPackage: false },
   { id: 'contact', label: 'Müəllimlə əlaqə', icon: MessageCircle, requiresPackage: false },
-  { id: 'penalties', label: 'Cərimələr', icon: AlertTriangle, requiresPackage: false }
+  { id: 'penalties', label: 'Mövzu üzrə Cərimələr', icon: AlertTriangle, requiresPackage: false }
 ]
 
 export default function TabNavigation({ activeTab, onTabChange, onExamClick, onContactClick, userPackage = 'basic', onPaywallOpen }) {

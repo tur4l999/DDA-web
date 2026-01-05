@@ -52,7 +52,6 @@ export default function QuestionsContent({ topic }) {
     if (showExplanation && hasVideo) {
       setActiveMediaType('video')
     } else if (!showExplanation) {
-      // Revert to image if explanation is closed (strictly enforcing video is for explanation)
       setActiveMediaType('image')
     }
   }, [showExplanation, hasVideo])
@@ -84,14 +83,39 @@ export default function QuestionsContent({ topic }) {
 
   const ImageModal = () => (
     <div
-      className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+      className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out overflow-y-auto"
       onClick={() => setIsZoomed(false)}
     >
-      <img
-        src={currentQuestion.image}
-        alt="Question"
-        className="max-w-full max-h-full object-contain rounded-lg"
-      />
+       <div className="bg-white rounded-2xl max-w-5xl w-full p-6 flex flex-col md:flex-row gap-8" onClick={e => e.stopPropagation()}>
+         {/* Image in Modal */}
+         <div className="flex-1">
+             <img
+              src={currentQuestion.image}
+              alt="Question"
+              className="w-full h-auto object-contain rounded-lg"
+            />
+         </div>
+         {/* Text in Modal */}
+         <div className="w-full md:w-1/3 flex flex-col gap-4">
+            <div>
+               <h1 className="text-lg font-bold text-gray-500 mb-1">Sual {currentQuestionIndex + 1}</h1>
+               <h2 className="text-xl font-bold text-gray-900 leading-relaxed">{currentQuestion.text}</h2>
+            </div>
+            <div className="flex flex-col gap-2">
+                {currentQuestion.options.map((option, index) => (
+                  <div key={index} className="p-3 bg-gray-50 rounded-lg border border-gray-100 text-gray-700">
+                     {option}
+                  </div>
+                ))}
+            </div>
+            <button
+              onClick={() => setIsZoomed(false)}
+              className="mt-auto bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg font-medium transition-colors"
+            >
+              Bağla
+            </button>
+         </div>
+       </div>
     </div>
   )
 
@@ -128,17 +152,14 @@ export default function QuestionsContent({ topic }) {
 
                 if (isAnswered) {
                   if (isThisCorrect) {
-                    // Correct answer is always Green
                     containerClass = "p-3 rounded-xl bg-green-50 border-green-500/20 cursor-default flex items-start gap-4"
                     radioBorder = "border-green-500"
                     radioBg = "bg-green-500"
                   } else if (isSelected) {
-                    // Selected wrong answer is Red
                     containerClass = "p-3 rounded-xl bg-red-50 border-red-500/20 cursor-default flex items-start gap-4"
                     radioBorder = "border-red-500"
                     radioBg = "bg-red-500"
                   } else {
-                    // Unselected wrong answers dimmed
                     containerClass = "p-3 rounded-xl opacity-50 cursor-default flex items-start gap-4"
                   }
                 }
@@ -188,11 +209,11 @@ export default function QuestionsContent({ topic }) {
             </div>
           </div>
 
-          {/* Right Column: Media & Explanation Content */}
-          <div className="w-full lg:w-1/2 pt-8 lg:sticky lg:top-4">
+          {/* Right Column: Media */}
+          <div className="w-full lg:w-1/2 pt-8">
              {hasMedia && (
                 <div className="relative group w-full mb-6">
-                  {/* Media Container - Increased size to aspect-[4/3] */}
+                  {/* Media Container */}
                   <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm border border-gray-200 bg-black/5">
 
                     {activeMediaType === 'video' && hasVideo ? (
@@ -221,7 +242,7 @@ export default function QuestionsContent({ topic }) {
                       </div>
                     )}
 
-                    {/* Switcher Arrows (Overlay) - ONLY visible if Explanation is active */}
+                    {/* Switcher Arrows */}
                     {hasVideo && hasImage && showExplanation && (
                        <>
                          <button
@@ -239,7 +260,6 @@ export default function QuestionsContent({ topic }) {
                            <ChevronRight className="w-6 h-6" />
                          </button>
 
-                         {/* Indicator Badge */}
                          <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-medium flex items-center gap-1.5 pointer-events-none">
                             {activeMediaType === 'video' ? <PlayCircle className="w-3.5 h-3.5" /> : <ImageIcon className="w-3.5 h-3.5" />}
                             <span>{activeMediaType === 'video' ? 'Video izah' : 'Sual şəkli'}</span>
@@ -249,22 +269,28 @@ export default function QuestionsContent({ topic }) {
                   </div>
                 </div>
              )}
-
-             {/* Explanation Text (Moved to Right Column) */}
-             {showExplanation && currentQuestion.explanation && (
-                <div className="p-5 bg-green-50 rounded-xl border border-green-100 text-green-900 animate-in fade-in slide-in-from-top-4 duration-300">
-                   <div className="flex gap-2 items-start mb-2">
-                     <BookOpen className="w-5 h-5 text-green-700 mt-0.5" />
-                     <h3 className="font-bold text-green-800">İzah</h3>
-                   </div>
-                   <p className="leading-relaxed text-green-800/90 text-sm lg:text-base">
-                     {currentQuestion.explanation}
-                   </p>
-                </div>
-             )}
           </div>
-
         </div>
+
+        {/* Explanation Section - Full Width Below Columns */}
+        {showExplanation && currentQuestion.explanation && (
+           <div className="max-w-[1400px] mx-auto mt-6 animate-in fade-in slide-in-from-top-4 duration-300">
+              <div className="p-6 bg-green-50 rounded-2xl border border-green-100 text-green-900 shadow-sm">
+                 <div className="flex gap-3 items-start mb-3">
+                   <div className="p-2 bg-green-100 rounded-lg">
+                      <BookOpen className="w-6 h-6 text-green-700" />
+                   </div>
+                   <div>
+                      <h3 className="font-bold text-lg text-green-800">İzah</h3>
+                      <p className="leading-relaxed text-green-800/90 text-base mt-1">
+                        {currentQuestion.explanation}
+                      </p>
+                   </div>
+                 </div>
+              </div>
+           </div>
+        )}
+
       </div>
 
       {/* Bottom Control Bar */}
@@ -286,7 +312,7 @@ export default function QuestionsContent({ topic }) {
             {formatTime(elapsedTime)}
           </div>
 
-          {/* Pagination Strip - Increased Container Size/Padding */}
+          {/* Pagination Strip */}
           <div
             ref={scrollContainerRef}
             className="flex-1 flex items-center gap-2 overflow-x-auto scrollbar-hide px-2 mx-2 py-2"

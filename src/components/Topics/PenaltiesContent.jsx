@@ -1,4 +1,4 @@
-import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp } from 'lucide-react'
+import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
 export default function PenaltiesContent({ topicRelated = false, onVideoClick }) {
@@ -182,9 +182,9 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
 
   return (
     <div className="max-w-[1200px] mx-auto">
-      {/* Search */}
-      <div className="mb-6">
-        <div className="relative">
+      {/* Search & Header Action */}
+      <div className="mb-6 flex gap-4">
+        <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
@@ -194,6 +194,14 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
             className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm"
           />
         </div>
+
+        {/* New Button: See all penalties */}
+        <button
+          className="flex-shrink-0 bg-white border border-gray-200 hover:border-primary-500 text-gray-700 hover:text-primary-600 px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
+        >
+           <span>Bütün cərimələrə bax</span>
+           <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Filters */}
