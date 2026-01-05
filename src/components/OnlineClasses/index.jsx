@@ -1,18 +1,17 @@
 import { useState, useMemo } from 'react'
-import { Search, ChevronLeft, ChevronRight, Calendar, User, BookOpen, Send } from 'lucide-react'
+import { ChevronLeft, Calendar, Send, X } from 'lucide-react'
 import LessonCard from './LessonCard'
 import LessonDetailsModal from './LessonDetailsModal'
 import Toast from './Toast'
 
 export default function OnlineClasses({ onBack }) {
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedInstructor, setSelectedInstructor] = useState('all')
   const [selectedLesson, setSelectedLesson] = useState(null)
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+  const [showTelegramAlert, setShowTelegramAlert] = useState(true)
   const [toast, setToast] = useState(null)
 
-  // Mock Data Generator (Keep robust data)
+  // Mock Data Generator
   const [lessons] = useState(() => {
     const classesData = []
     const today = new Date()
@@ -29,17 +28,17 @@ export default function OnlineClasses({ onBack }) {
     for (let day = 0; day < 14; day++) {
       const currentDate = new Date(startDate)
       currentDate.setDate(currentDate.getDate() + day)
-      const lessonsCount = 3 + Math.floor(Math.random() * 3)
+      const lessonsCount = 2 + Math.floor(Math.random() * 4) // 2-5 lessons
 
       for (let i = 0; i < lessonsCount; i++) {
-        const hour = 10 + (i * 3)
+        const hour = 10 + (i * 2)
         const lessonDate = new Date(currentDate)
         lessonDate.setHours(hour, 0, 0, 0)
         
         const now = new Date()
         let status = 'waiting'
         if (lessonDate < now) status = 'completed'
-        else if (lessonDate.getTime() - now.getTime() < 60 * 60 * 1000) status = 'waiting' // simplified
+        else if (lessonDate.getTime() - now.getTime() < 60 * 60 * 1000) status = 'waiting'
 
         // Simulating live
         const diff = (now - lessonDate) / 1000 / 60
@@ -50,14 +49,14 @@ export default function OnlineClasses({ onBack }) {
 
         classesData.push({
           id: `${day}-${i}`,
-          title: `${subject} - Dərs ${i + 1}`,
+          title: `${subject}`,
           instructor: instructor.name,
           date: lessonDate,
           duration: 60,
           status: status,
           subject: subject,
           language: languages[Math.floor(Math.random() * languages.length)],
-          description: `${subject} mövzusu üzrə tam izah.`,
+          description: `${subject} mövzusu üzrə tam izah və sual-cavab sessiyası.`,
           bookmarked: false
         })
       }
@@ -69,7 +68,7 @@ export default function OnlineClasses({ onBack }) {
   const weekDates = useMemo(() => {
     const dates = []
     const start = new Date(selectedDate)
-    start.setDate(start.getDate() - 2) // Show previous 2 days and next 4
+    start.setDate(start.getDate() - 3)
     for(let i=0; i<7; i++) {
         const d = new Date(start)
         d.setDate(d.getDate() + i)
@@ -82,44 +81,60 @@ export default function OnlineClasses({ onBack }) {
   const filteredLessons = useMemo(() => {
     return lessons.filter(l => {
         if (l.date.toDateString() !== selectedDate.toDateString()) return false
-        if (selectedInstructor !== 'all' && l.instructor !== selectedInstructor) return false
-        if (searchQuery && !l.title.toLowerCase().includes(searchQuery.toLowerCase())) return false
         return true
     })
-  }, [lessons, selectedDate, selectedInstructor, searchQuery])
-
-  const instructors = useMemo(() => [...new Set(lessons.map(l => l.instructor))], [lessons])
+  }, [lessons, selectedDate])
 
   return (
-    <div className="flex flex-col h-full bg-white">
-      {/* Top Header & Navigation */}
-      <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-4">
-          {/* Title Row */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors">
-                <ChevronLeft className="w-6 h-6 text-gray-900" />
-              </button>
-              <div>
-                 <h1 className="text-3xl font-black text-gray-900 tracking-tight">Cədvəl</h1>
-              </div>
+    <div className="flex flex-col h-full bg-gray-50/50">
+
+      {/* 1. Header & Navigation Area */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-30">
+
+        {/* Top Alert (Dismissible) */}
+        {showTelegramAlert && (
+          <div className="bg-blue-600 text-white px-4 py-2 flex items-center justify-center gap-3 text-sm font-medium relative transition-all">
+             <div className="flex items-center gap-2">
+                <Send className="w-4 h-4" />
+                <span>Videolar və təkrar dərslər Telegram kanalımızda!</span>
+                <a href="https://t.me/avtoimtahan" target="_blank" className="underline font-bold hover:text-blue-100">Abunə ol</a>
+             </div>
+             <button onClick={() => setShowTelegramAlert(false)} className="absolute right-4 p-1 hover:bg-white/10 rounded-full">
+                <X className="w-4 h-4" />
+             </button>
+          </div>
+        )}
+
+        <div className="max-w-4xl mx-auto w-full">
+            {/* Toolbar */}
+            <div className="flex items-center justify-between px-4 py-4">
+               <div className="flex items-center gap-3">
+                  <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 rounded-full text-gray-600">
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <h1 className="text-2xl font-bold text-gray-900">Dərs Cədvəli</h1>
+               </div>
+
+               <div className="flex items-center gap-2">
+                 <button
+                   onClick={() => setSelectedDate(new Date())}
+                   className="hidden md:block px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                 >
+                   Bu gün
+                 </button>
+                 <a
+                   href="https://t.me/avtoimtahan"
+                   target="_blank"
+                   className="px-4 py-2 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center gap-2"
+                 >
+                   <Send className="w-4 h-4" />
+                   <span className="hidden sm:inline">Telegram</span>
+                 </a>
+               </div>
             </div>
 
-            {/* Simple Date Toggle (Today) */}
-            <button
-              onClick={() => setSelectedDate(new Date())}
-              className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full text-sm font-bold transition-colors"
-            >
-              Bu gün
-            </button>
-          </div>
-
-          {/* Date Navigation & Filters Row */}
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
-
-            {/* Date Strip */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+            {/* Date Scroller (iOS Style) */}
+            <div className="flex items-center justify-between px-4 pb-4 overflow-x-auto no-scrollbar gap-2">
                {weekDates.map(date => {
                  const isSelected = date.toDateString() === selectedDate.toDateString()
                  const isToday = date.toDateString() === new Date().toDateString()
@@ -129,124 +144,89 @@ export default function OnlineClasses({ onBack }) {
                      key={date.toISOString()}
                      onClick={() => setSelectedDate(date)}
                      className={`
-                       flex flex-col items-center justify-center w-14 h-16 rounded-2xl transition-all flex-shrink-0 border-2
+                       flex flex-col items-center justify-center min-w-[3.5rem] h-16 rounded-xl transition-all relative
                        ${isSelected
-                          ? 'bg-gray-900 border-gray-900 text-white shadow-xl scale-110 z-10'
-                          : 'bg-white border-transparent text-gray-400 hover:bg-gray-50'
+                          ? 'bg-gray-900 text-white shadow-lg scale-105 z-10'
+                          : 'bg-transparent text-gray-500 hover:bg-gray-100'
                        }
-                       ${isToday && !isSelected ? 'border-gray-200 text-gray-900' : ''}
                      `}
                    >
-                     <span className="text-[10px] uppercase font-bold tracking-wider mb-0.5">
+                     {isToday && !isSelected && (
+                        <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                     )}
+                     <span className="text-[10px] font-bold uppercase tracking-wide opacity-80">
                         {date.toLocaleDateString('az-AZ', { weekday: 'short' })}
                      </span>
-                     <span className="text-xl font-black">
+                     <span className={`text-lg font-bold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
                        {date.getDate()}
                      </span>
                    </button>
                  )
                })}
             </div>
-
-            {/* Controls */}
-            <div className="flex items-center gap-3">
-               <div className="relative group">
-                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
-                 <input
-                   type="text"
-                   placeholder="Axtar..."
-                   value={searchQuery}
-                   onChange={(e) => setSearchQuery(e.target.value)}
-                   className="pl-10 pr-4 py-3 bg-gray-50 border-none rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500/20 w-full md:w-48 transition-all"
-                 />
-               </div>
-
-               <div className="relative">
-                 <select
-                   value={selectedInstructor}
-                   onChange={(e) => setSelectedInstructor(e.target.value)}
-                   className="appearance-none pl-4 pr-10 py-3 bg-gray-50 border-none rounded-2xl text-sm font-bold text-gray-900 focus:ring-2 focus:ring-blue-500/20 cursor-pointer transition-all"
-                 >
-                   <option value="all">Bütün Müəllimlər</option>
-                   {instructors.map(i => <option key={i} value={i}>{i}</option>)}
-                 </select>
-                 <User className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-               </div>
-            </div>
-
-          </div>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* 2. Main Content (Scrollable) */}
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-8 space-y-8">
+         <div className="max-w-4xl mx-auto w-full px-4 py-8 space-y-6">
 
-          {/* Telegram Banner */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2rem] p-8 md:p-10 text-white shadow-xl shadow-blue-900/10 relative overflow-hidden">
-             <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                <div className="max-w-xl">
-                   <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-blue-50 mb-4 border border-white/10">
-                      <Send className="w-3 h-3" />
-                      <span>Rəsmi Kanal</span>
-                   </div>
-                   <h2 className="text-2xl md:text-3xl font-black mb-3">Dərsləri qaçırmayın!</h2>
-                   <p className="text-blue-100 font-medium leading-relaxed">
-                      Canlı yayımlar bitdikdən dərhal sonra video izahlar və təkrar dərslər yalnız Telegram kanalımızda paylaşılır.
-                   </p>
-                </div>
-                <a
-                   href="https://t.me/avtoimtahan"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="whitespace-nowrap bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:bg-blue-50 hover:scale-105 transition-all shadow-lg"
-                >
-                   Kanala Qoşul
-                </a>
-             </div>
-
-             {/* Decor */}
-             <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
-             <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
-          </div>
-
-          {/* Schedule List */}
-          <div>
-            <div className="flex items-center justify-between mb-6 px-2">
-               <h3 className="text-xl font-bold text-gray-900">
-                 {selectedDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', weekday: 'long' })}
-               </h3>
-               <span className="text-gray-400 font-medium text-sm">{filteredLessons.length} dərs</span>
+            {/* Context Header */}
+            <div className="flex items-center justify-between">
+               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-gray-400" />
+                  {selectedDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long' })}
+               </h2>
+               {filteredLessons.length > 0 && (
+                   <span className="text-sm font-medium text-gray-500 bg-white px-3 py-1 rounded-full border border-gray-200 shadow-sm">
+                      {filteredLessons.length} dərs
+                   </span>
+               )}
             </div>
 
+            {/* Lesson List */}
             {filteredLessons.length > 0 ? (
-               <div className="space-y-4">
+               <div className="relative border-l-2 border-gray-200 ml-3 md:ml-4 space-y-8 pb-10">
                  {filteredLessons.map((lesson, idx) => (
-                   <LessonCard
-                     key={lesson.id}
-                     lesson={lesson}
-                     onJoin={() => {
-                        if (lesson.status === 'started') window.open('https://t.me/avtoimtahan', '_blank')
-                     }}
-                     onViewDetails={() => {
-                       setSelectedLesson(lesson)
-                       setIsDetailsOpen(true)
-                     }}
-                   />
+                   <div key={lesson.id} className="relative pl-6 md:pl-8">
+                      {/* Timeline Dot */}
+                      <div className={`
+                         absolute -left-[9px] top-6 w-4 h-4 rounded-full border-4 border-white shadow-sm
+                         ${lesson.status === 'started' ? 'bg-red-500 ring-4 ring-red-100' :
+                           lesson.status === 'completed' ? 'bg-gray-400' : 'bg-blue-500'}
+                      `}></div>
+
+                      <LessonCard
+                        lesson={lesson}
+                        onJoin={() => {
+                            if (lesson.status === 'started') window.open('https://t.me/avtoimtahan', '_blank')
+                        }}
+                        onViewDetails={() => {
+                          setSelectedLesson(lesson)
+                          setIsDetailsOpen(true)
+                        }}
+                      />
+                   </div>
                  ))}
                </div>
             ) : (
-               <div className="text-center py-20 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200">
-                  <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm text-gray-300">
-                     <Calendar className="w-8 h-8" />
+               <div className="flex flex-col items-center justify-center py-20 text-center">
+                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
+                     <Calendar className="w-10 h-10" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">Planlaşdırılmış dərs yoxdur</h3>
-                  <p className="text-gray-500">Bu tarix üçün cədvəl boşdur.</p>
+                  <h3 className="text-lg font-bold text-gray-900">Dərs yoxdur</h3>
+                  <p className="text-gray-500 max-w-xs mx-auto">Bu tarix üçün planlaşdırılmış dərs tapılmadı. Başqa günləri yoxlayın.</p>
                </div>
             )}
-          </div>
 
-        </div>
+            {/* Bottom Note */}
+            <div className="text-center pt-8 border-t border-gray-100">
+               <p className="text-sm text-gray-400">
+                  Bütün video dərslər və materiallar <a href="https://t.me/avtoimtahan" target="_blank" className="text-blue-600 hover:underline">Telegram kanalımızda</a> arxivlənir.
+               </p>
+            </div>
+
+         </div>
       </div>
 
       <LessonDetailsModal
