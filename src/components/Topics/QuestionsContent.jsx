@@ -86,35 +86,83 @@ export default function QuestionsContent({ topic }) {
       className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out overflow-y-auto"
       onClick={() => setIsZoomed(false)}
     >
-       <div className="bg-white rounded-2xl max-w-5xl w-full p-6 flex flex-col md:flex-row gap-8" onClick={e => e.stopPropagation()}>
-         {/* Image in Modal */}
-         <div className="flex-1">
+       <div className="bg-white rounded-2xl max-w-2xl w-full p-6 flex flex-col gap-6 my-auto relative" onClick={e => e.stopPropagation()}>
+
+         {/* 1. Image (Top) */}
+         <div className="w-full bg-gray-50 rounded-xl overflow-hidden border border-gray-100 relative group">
              <img
               src={currentQuestion.image}
               alt="Question"
-              className="w-full h-auto object-contain rounded-lg"
+              className="w-full h-auto object-contain max-h-[50vh]"
             />
          </div>
-         {/* Text in Modal */}
-         <div className="w-full md:w-1/3 flex flex-col gap-4">
-            <div>
-               <h1 className="text-lg font-bold text-gray-500 mb-1">Sual {currentQuestionIndex + 1}</h1>
-               <h2 className="text-xl font-bold text-gray-900 leading-relaxed">{currentQuestion.text}</h2>
+
+         {/* 2. Question Text (Middle) */}
+         <div>
+            <div className="flex items-center justify-between mb-2">
+               <h1 className="text-lg font-bold text-gray-500">Sual {currentQuestionIndex + 1}</h1>
+               <button
+                 onClick={() => setIsZoomed(false)}
+                 className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+               >
+                 <XCircle className="w-6 h-6" />
+               </button>
             </div>
-            <div className="flex flex-col gap-2">
-                {currentQuestion.options.map((option, index) => (
-                  <div key={index} className="p-3 bg-gray-50 rounded-lg border border-gray-100 text-gray-700">
-                     {option}
+            <h2 className="text-xl font-bold text-gray-900 leading-relaxed">{currentQuestion.text}</h2>
+         </div>
+
+         {/* 3. Options (Bottom) - with logic */}
+         <div className="flex flex-col gap-3">
+            {currentQuestion.options.map((option, index) => {
+                const isSelected = userAnswers[currentQuestion.id] === index
+                const isThisCorrect = index === currentQuestion.correctAnswer
+
+                // Determine styling (reusing main view logic)
+                let containerClass = "p-3 rounded-xl transition-all duration-200 border-2 border-transparent hover:bg-gray-50 cursor-pointer flex items-start gap-4 group"
+                let radioBorder = "border-gray-300 group-hover:border-gray-400"
+                let radioBg = "bg-transparent"
+
+                if (isAnswered) {
+                  if (isThisCorrect) {
+                    containerClass = "p-3 rounded-xl bg-green-50 border-green-500/20 cursor-default flex items-start gap-4"
+                    radioBorder = "border-green-500"
+                    radioBg = "bg-green-500"
+                  } else if (isSelected) {
+                    containerClass = "p-3 rounded-xl bg-red-50 border-red-500/20 cursor-default flex items-start gap-4"
+                    radioBorder = "border-red-500"
+                    radioBg = "bg-red-500"
+                  } else {
+                    containerClass = "p-3 rounded-xl opacity-50 cursor-default flex items-start gap-4"
+                  }
+                }
+
+                return (
+                  <div
+                    key={index}
+                    onClick={() => handleAnswerSelect(index)}
+                    className={containerClass}
+                  >
+                    <div className={`mt-1 w-5 h-5 rounded-full border-[2px] flex items-center justify-center flex-shrink-0 transition-colors ${radioBorder} ${radioBg}`}>
+                      {(isAnswered && (isThisCorrect || isSelected)) && (
+                        <div className="w-2 h-2 rounded-full bg-white" />
+                      )}
+                    </div>
+
+                    <span className={`text-lg ${isAnswered && isThisCorrect ? 'font-medium text-green-900' : 'text-gray-700'}`}>
+                      {option}
+                    </span>
                   </div>
-                ))}
-            </div>
-            <button
+                )
+            })}
+         </div>
+
+         {/* Close Button at bottom */}
+          <button
               onClick={() => setIsZoomed(false)}
-              className="mt-auto bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg font-medium transition-colors"
+              className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-medium transition-colors"
             >
               Bağla
-            </button>
-         </div>
+          </button>
        </div>
     </div>
   )
