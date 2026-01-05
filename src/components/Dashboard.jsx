@@ -8,6 +8,7 @@ import PenaltiesPage from './PenaltiesPage'
 import RoadSigns from './RoadSigns'
 import UserStatistics from './UserStatistics'
 import ResultsPage from './ResultsPage'
+import ExamPage from './Exam/ExamPage'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -31,6 +32,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'results') {
     return <ResultsPage resultId={selectedResultId} onBack={() => { setCurrentPage('dashboard'); setSelectedResultId(null); }} />
+  }
+
+  if (currentPage === 'exam') {
+    return <ExamPage onBack={() => setCurrentPage('dashboard')} onStartExam={(params) => console.log('Start Exam:', params)} />
   }
 
   const handleExamClick = (examId) => {
@@ -145,8 +150,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                   />
                   <QuickAction 
                     icon={HelpCircle} 
-                    label="Suallar" 
-                    onClick={() => {}}
+                    label="İmtahan"
+                    onClick={() => setCurrentPage('exam')}
                     colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
