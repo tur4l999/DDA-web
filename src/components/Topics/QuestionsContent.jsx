@@ -124,13 +124,13 @@ export default function QuestionsContent({ topic }) {
 
                 if (isAnswered) {
                   if (isThisCorrect) {
-                    containerClass = "p-3 rounded-xl bg-green-50 border-green-500/20 cursor-default flex items-start gap-4"
-                    radioBorder = "border-green-500"
-                    radioBg = "bg-green-500"
+                    containerClass = "p-3 rounded-xl bg-green-100 border-green-500 cursor-default flex items-start gap-4"
+                    radioBorder = "border-green-600"
+                    radioBg = "bg-green-600"
                   } else if (isSelected) {
-                    containerClass = "p-3 rounded-xl bg-red-50 border-red-500/20 cursor-default flex items-start gap-4"
-                    radioBorder = "border-red-500"
-                    radioBg = "bg-red-500"
+                    containerClass = "p-3 rounded-xl bg-red-100 border-red-500 cursor-default flex items-start gap-4"
+                    radioBorder = "border-red-600"
+                    radioBg = "bg-red-600"
                   } else {
                     containerClass = "p-3 rounded-xl opacity-50 cursor-default flex items-start gap-4"
                   }
@@ -200,13 +200,13 @@ export default function QuestionsContent({ topic }) {
 
                 if (isAnswered) {
                   if (isThisCorrect) {
-                    containerClass = "p-3 rounded-xl bg-green-50 border-green-500/20 cursor-default flex items-start gap-4"
-                    radioBorder = "border-green-500"
-                    radioBg = "bg-green-500"
+                    containerClass = "p-3 rounded-xl bg-green-100 border-green-500 cursor-default flex items-start gap-4"
+                    radioBorder = "border-green-600"
+                    radioBg = "bg-green-600"
                   } else if (isSelected) {
-                    containerClass = "p-3 rounded-xl bg-red-50 border-red-500/20 cursor-default flex items-start gap-4"
-                    radioBorder = "border-red-500"
-                    radioBg = "bg-red-500"
+                    containerClass = "p-3 rounded-xl bg-red-100 border-red-500 cursor-default flex items-start gap-4"
+                    radioBorder = "border-red-600"
+                    radioBg = "bg-red-600"
                   } else {
                     containerClass = "p-3 rounded-xl opacity-50 cursor-default flex items-start gap-4"
                   }
@@ -237,8 +237,8 @@ export default function QuestionsContent({ topic }) {
             <div className="flex flex-col gap-4">
                {/* Feedback Message */}
                {isAnswered && (
-                  <div className={`flex items-center gap-3 p-4 rounded-xl border ${isCorrect ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
-                    {isCorrect ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
+                  <div className={`flex items-center gap-3 p-4 rounded-xl border ${isCorrect ? 'bg-green-100 border-green-500 text-green-900' : 'bg-red-100 border-red-500 text-red-900'}`}>
+                    {isCorrect ? <CheckCircle className="w-6 h-6 text-green-700" /> : <XCircle className="w-6 h-6 text-red-700" />}
                     <div>
                       <p className="font-bold">{isCorrect ? 'Düzgün cavab!' : 'Səhv cavab'}</p>
                     </div>

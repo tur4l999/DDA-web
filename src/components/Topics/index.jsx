@@ -227,19 +227,23 @@ export default function TopicsPage({ onBack }) {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        <StickyHeader
-          topic={currentTopic}
-          onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
-        />
+        <div className="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-100">
+          <StickyHeader
+            topic={currentTopic}
+            topics={topics}
+            onTopicSelect={setCurrentTopic}
+            onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
+          />
 
-        <TabNavigation
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          onExamClick={handleExamClick}
-          onContactClick={handleContactTeacher}
-          userPackage={userPackage}
-          onPaywallOpen={() => setIsPaywallModalOpen(true)}
-        />
+          <TabNavigation
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            onExamClick={handleExamClick}
+            onContactClick={handleContactTeacher}
+            userPackage={userPackage}
+            onPaywallOpen={() => setIsPaywallModalOpen(true)}
+          />
+        </div>
 
         <main className={`flex-1 px-4 lg:px-6 py-8 transition-all duration-200 ${isPanelCollapsed ? 'max-w-[1200px] mx-auto' : ''}`}>
           {renderContent()}
