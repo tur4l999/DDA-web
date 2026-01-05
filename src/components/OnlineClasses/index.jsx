@@ -1,590 +1,355 @@
 import { useState, useMemo } from 'react'
-import { Search, Filter, List, Calendar as CalendarIcon, ArrowLeft, SlidersHorizontal, Bookmark } from 'lucide-react'
-import FilterDrawer from './FilterDrawer'
+import { Search, ChevronLeft, ChevronRight, Filter, CalendarDays, BookOpen, GraduationCap, X } from 'lucide-react'
 import LessonCard from './LessonCard'
 import LessonDetailsModal from './LessonDetailsModal'
-import VideoPlayerModal from './VideoPlayerModal'
-import CalendarView from './CalendarView'
-import RightPanel from './RightPanel'
-import MobileRightPanel from './MobileRightPanel'
+import TelegramPromo from './TelegramPromo'
 import Toast from './Toast'
 
 export default function OnlineClasses({ onBack }) {
-  const [view, setView] = useState('list') // 'list' or 'calendar'
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const [searchQuery, setSearchQuery] = useState('')
-  const [quickFilter, setQuickFilter] = useState('all')
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [selectedInstructor, setSelectedInstructor] = useState('all')
+  const [selectedSubject, setSelectedSubject] = useState('all')
   const [selectedLesson, setSelectedLesson] = useState(null)
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
-  const [isVideoOpen, setIsVideoOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [bookmarkedLessons, setBookmarkedLessons] = useState([])
-  const [rightPanelTab, setRightPanelTab] = useState('bookmarks')
-  const [selectedDate, setSelectedDate] = useState(new Date())
   const [toast, setToast] = useState(null)
-  const itemsPerPage = 9
 
-  // Auto-switch tab based on view mode
-  const handleViewChange = (newView) => {
-    setView(newView)
-    if (newView === 'calendar') {
-      setRightPanelTab('selectedDay')
-      setSelectedDate(new Date())
-    } else {
-      setRightPanelTab('bookmarks')
-    }
-  }
-
-  const [filters, setFilters] = useState({
-    dateRange: { start: '', end: '' },
-    weekdays: [],
-    timeRange: { start: '', end: '' },
-    statuses: [],
-    subjects: [],
-    languages: [],
-    instructor: '',
-    onlyJoinable: false,
-    onlyWithReplay: false,
-    onlyBookmarked: false
-  })
-
-  // Generate 1 year of lessons
+  // Mock Data Generator
   const [lessons] = useState(() => {
     const classesData = []
-    const startDate = new Date(2025, 0, 1)
-    const subjects = ['Yol nişanları', 'Trafik işarələri', 'Sürücülük texnikası', 'Təhlükəsizlik', 'Qanun maddələri', 'Praktik məsləhətlər', 'Sual-Cavab']
-    const instructors = ['Ə.Talibov', 'R.Əliyev', 'V.Hüseynov', 'N.Quliyev', 'M.İsmayılov', 'G.Məmmədov', 'A.Həsənov', 'B.Zeynalova']
-    const languages = ['az', 'ru', 'en']
+    // Start from today to ensure we see relevant data
+    const today = new Date()
+    const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7) // 1 week back
 
-    for (let day = 0; day < 365; day++) {
+    const subjects = [
+      'Yol Nişanları',
+      'Hərəkət Qaydaları',
+      'Cərimələr və Qanun',
+      'Sürücülük Psixologiyası',
+      'Texniki Quruluş',
+      'İlk Yardım'
+    ]
+
+    const instructors = [
+      { id: 't1', name: 'Əli Talibov', avatar: 'AT' },
+      { id: 't2', name: 'Rəşad Əliyev', avatar: 'RƏ' },
+      { id: 't3', name: 'Vüsal Hüseynov', avatar: 'VH' },
+      { id: 't4', name: 'Nurlan Quliyev', avatar: 'NQ' }
+    ]
+
+    const languages = ['az', 'ru']
+
+    // Generate for 30 days
+    for (let day = 0; day < 30; day++) {
       const currentDate = new Date(startDate)
       currentDate.setDate(currentDate.getDate() + day)
 
-      if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
-        const lessonsPerDay = Math.floor(Math.random() * 2) + 2
+      // Skip Sundays maybe? No, let's keep it busy.
+
+      // Multiple lessons per day (3-6 lessons)
+      const lessonsCount = 3 + Math.floor(Math.random() * 4)
+
+      for (let i = 0; i < lessonsCount; i++) {
+        // Random time between 09:00 and 20:00
+        const hour = 9 + Math.floor(Math.random() * 12)
+        const lessonDate = new Date(currentDate)
+        lessonDate.setHours(hour, 0, 0, 0)
         
-        for (let i = 0; i < lessonsPerDay; i++) {
-          const hour = 9 + (i * 4) + Math.floor(Math.random() * 2)
-          const lessonDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), hour, 0)
-
-          const now = new Date()
-          let status = 'waiting'
-          let replayUrl = null
-
-          if (lessonDate < now) {
-            status = 'completed'
-            // 80% completed lessons have replay
-            if (Math.random() > 0.2) {
-              replayUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
-            }
-          } else if (Math.abs(lessonDate - now) < 2 * 60 * 60 * 1000) {
-            status = 'started'
-          }
-
-          // 5% cancelled
-          if (Math.random() < 0.05) {
-            status = 'cancelled'
-            replayUrl = null
-          }
-
-          const subject = subjects[classesData.length % subjects.length]
-
-          classesData.push({
-            id: classesData.length + 1,
-            title: subject,
-            instructor: instructors[classesData.length % instructors.length],
-            date: lessonDate,
-            duration: 45 + Math.floor(Math.random() * 4) * 15,
-            status: status,
-            subject: subject,
-            language: languages[classesData.length % languages.length],
-            replayUrl: replayUrl,
-            description: `${subject} mövzusu üzrə ətraflı dərs. Nəzəri və praktiki məlumatlar.`,
-            bookmarked: Math.random() > 0.9,
-            cancelReason: status === 'cancelled' ? 'Texniki səbəblər üzündən ləğv edildi' : null
-          })
+        // Determine status based on real time
+        const now = new Date()
+        let status = 'waiting'
+        if (lessonDate < now) {
+          status = 'completed'
+        } else if (lessonDate.getTime() - now.getTime() < 60 * 60 * 1000 && lessonDate > now) {
+           // Starts within hour or is current (simplified logic)
+           status = 'waiting'
         }
+
+        // Simulate a "Live" class if it's within the current hour (rough approx for demo)
+        const diffMinutes = (now - lessonDate) / 1000 / 60
+        if (diffMinutes >= 0 && diffMinutes <= 60) {
+            status = 'started'
+        }
+
+        const instructor = instructors[Math.floor(Math.random() * instructors.length)]
+        const subject = subjects[Math.floor(Math.random() * subjects.length)]
+
+        classesData.push({
+          id: `${day}-${i}`,
+          title: `${subject} - Dərs ${Math.floor(Math.random() * 10) + 1}`,
+          instructor: instructor.name,
+          instructorId: instructor.id,
+          date: lessonDate,
+          duration: 45 + (Math.random() > 0.5 ? 15 : 0),
+          status: status,
+          subject: subject,
+          language: languages[Math.floor(Math.random() * languages.length)],
+          description: `${subject} mövzusu üzrə ətraflı izah. Sual-cavab sessiyası daxildir.`,
+          bookmarked: false
+        })
       }
     }
 
-    return classesData.sort((a, b) => b.date - a.date)
+    return classesData.sort((a, b) => a.date - b.date)
   })
 
-  // Filtering logic
+  // Date Navigation
+  const weekDays = useMemo(() => {
+    const days = []
+    // Center around selected date or just show current week?
+    // Let's show a sliding window of 7 days starting from selectedDate - 2 days (to see some past)
+    // Or better: Standard calendar strip logic.
+    // Let's just show 7 days starting from selectedDate for simplicity in navigation
+    const start = new Date(selectedDate)
+    // Adjust to start of week? Or just 5 days around?
+    // Let's do: 3 days before, 3 days after
+    start.setDate(start.getDate() - 3)
+
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(start)
+        d.setDate(d.getDate() + i)
+        days.push(d)
+    }
+    return days
+  }, [selectedDate])
+
+  const handlePrevDay = () => {
+    const prev = new Date(selectedDate)
+    prev.setDate(prev.getDate() - 1)
+    setSelectedDate(prev)
+  }
+
+  const handleNextDay = () => {
+    const next = new Date(selectedDate)
+    next.setDate(next.getDate() + 1)
+    setSelectedDate(next)
+  }
+
+  // Filtering
   const filteredLessons = useMemo(() => {
-    let result = lessons
+    return lessons.filter(lesson => {
+      // Date Match
+      const isSameDate = lesson.date.toDateString() === selectedDate.toDateString()
+      if (!isSameDate) return false
 
-    // Search
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(l =>
-        l.title.toLowerCase().includes(query) ||
-        l.subject.toLowerCase().includes(query) ||
-        l.instructor.toLowerCase().includes(query)
-      )
-    }
+      // Instructor Match
+      if (selectedInstructor !== 'all' && lesson.instructor !== selectedInstructor) return false
 
-    // Quick filters
-    const now = new Date()
-    if (quickFilter === 'week') {
-      const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
-      result = result.filter(l => l.date >= now && l.date <= weekFromNow)
-    } else if (quickFilter === 'month') {
-      const monthFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
-      result = result.filter(l => l.date >= now && l.date <= monthFromNow)
-    } else if (quickFilter === 'next7') {
-      const next7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
-      result = result.filter(l => l.date >= now && l.date <= next7Days)
-    } else if (quickFilter === 'waiting') {
-      result = result.filter(l => l.status === 'waiting')
-    } else if (quickFilter === 'started') {
-      result = result.filter(l => l.status === 'started')
-    } else if (quickFilter === 'completed') {
-      result = result.filter(l => l.status === 'completed')
-    } else if (quickFilter === 'replay') {
-      result = result.filter(l => l.status === 'completed' && l.replayUrl)
-    } else if (quickFilter === 'bookmarked') {
-      result = result.filter(l => bookmarkedLessons.some(b => b.id === l.id))
-    }
+      // Subject Match
+      if (selectedSubject !== 'all' && lesson.subject !== selectedSubject) return false
 
-    // Advanced filters
-    if (filters.dateRange.start) {
-      result = result.filter(l => l.date >= new Date(filters.dateRange.start))
-    }
-    if (filters.dateRange.end) {
-      result = result.filter(l => l.date <= new Date(filters.dateRange.end))
-    }
-    if (filters.weekdays.length > 0) {
-      result = result.filter(l => filters.weekdays.includes(l.date.getDay()))
-    }
-    if (filters.statuses.length > 0) {
-      result = result.filter(l => filters.statuses.includes(l.status))
-    }
-    if (filters.subjects.length > 0) {
-      result = result.filter(l => filters.subjects.includes(l.subject))
-    }
-    if (filters.languages.length > 0) {
-      result = result.filter(l => filters.languages.includes(l.language))
-    }
-    if (filters.instructor) {
-      result = result.filter(l => l.instructor === filters.instructor)
-    }
-    if (filters.onlyJoinable) {
-      result = result.filter(l => l.status === 'started' || (l.status === 'waiting' && Math.abs(l.date - now) < 10 * 60 * 1000))
-    }
-    if (filters.onlyWithReplay) {
-      result = result.filter(l => l.replayUrl)
-    }
-    if (filters.onlyBookmarked) {
-      result = result.filter(l => l.bookmarked)
-    }
-
-    return result
-  }, [lessons, searchQuery, quickFilter, filters, bookmarkedLessons])
-
-  // Get next upcoming lesson
-  const nextLesson = useMemo(() => {
-    const now = new Date()
-    const upcoming = lessons
-      .filter(l => l.date > now && (l.status === 'waiting' || l.status === 'started'))
-      .sort((a, b) => a.date - b.date)
-    return upcoming[0]
-  }, [lessons])
-
-  // Pagination
-  const totalPages = Math.ceil(filteredLessons.length / itemsPerPage)
-  const paginatedLessons = filteredLessons.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  )
-
-  const handleJoin = (lesson) => {
-    alert(`Dərsə qoşulunur: ${lesson.title}`)
-  }
-
-  const handleViewDetails = (lesson) => {
-    setSelectedLesson(lesson)
-    setIsDetailsOpen(true)
-  }
-
-  const handleWatchReplay = (lesson) => {
-    setSelectedLesson(lesson)
-    setIsVideoOpen(true)
-  }
-
-  const handleToggleBookmark = (lessonId, bookmarked) => {
-    const lesson = lessons.find(l => l.id === lessonId)
-    if (!lesson) return
-
-    setBookmarkedLessons(prev => {
-      const isBookmarked = prev.some(l => l.id === lessonId)
-      if (isBookmarked) {
-        setToast('Saxlanılanlardan silindi')
-        return prev.filter(l => l.id !== lessonId)
-      } else {
-        setRightPanelTab('bookmarks')
-        setToast('Saxlanılanlara əlavə edildi')
-        return [lesson, ...prev]
+      // Search
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase()
+        return (
+          lesson.title.toLowerCase().includes(q) ||
+          lesson.instructor.toLowerCase().includes(q) ||
+          lesson.subject.toLowerCase().includes(q)
+        )
       }
-    })
+
+      return true
+    }).sort((a, b) => a.date - b.date) // Time sort
+  }, [lessons, selectedDate, selectedInstructor, selectedSubject, searchQuery])
+
+  const instructors = useMemo(() => [...new Set(lessons.map(l => l.instructor))], [lessons])
+  const subjects = useMemo(() => [...new Set(lessons.map(l => l.subject))], [lessons])
+
+  // Handlers
+  const handleJoin = (lesson) => {
+    if (lesson.status === 'started') {
+       window.open('https://t.me/avtoimtahan', '_blank')
+    }
   }
 
-  const handleRemoveBookmark = (lessonId) => {
-    setBookmarkedLessons(prev => prev.filter(l => l.id !== lessonId))
+  const handleToggleBookmark = (id) => {
+    setToast('Dərs yadda saxlanıldı (Demo)')
+    setTimeout(() => setToast(null), 2000)
   }
-
-  const handleDateSelectFromCalendar = (date) => {
-    setSelectedDate(date)
-    setRightPanelTab('selectedDay')
-  }
-
-  const lessonsForSelectedDate = useMemo(() => {
-    if (!selectedDate) return []
-    return filteredLessons.filter(lesson => {
-      const lessonDate = new Date(lesson.date)
-      return lessonDate.toDateString() === selectedDate.toDateString()
-    })
-  }, [selectedDate, filteredLessons])
 
   return (
-    <div className="flex-1 h-screen overflow-y-auto bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b-2 border-gray-200 sticky top-0 z-30 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={onBack}
-                className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 text-gray-700" />
+    <div className="flex flex-col h-full bg-gray-50/50">
+      {/* Top Navigation Bar */}
+      <div className="bg-white border-b border-gray-200 px-4 py-4 sticky top-0 z-30 shadow-sm">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-4">
+              <button onClick={onBack} className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
+                <ChevronLeft className="w-6 h-6 text-gray-600" />
               </button>
               <div>
-                <h1 className="text-2xl font-black text-gray-900">Onlayn Dərslər</h1>
-                <p className="text-sm text-gray-600 font-semibold">{filteredLessons.length} dərs tapıldı</p>
+                <h1 className="text-2xl font-black text-gray-900 tracking-tight">Dərs Cədvəli</h1>
+                <p className="text-sm text-gray-500 font-medium">Bu günə olan dərsləri izləyin</p>
               </div>
             </div>
 
-            {/* View Toggle */}
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
-              <button
-                onClick={() => handleViewChange('list')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
-                  view === 'list'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+            {/* Filters */}
+            <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+              <div className="relative flex-1 lg:flex-none lg:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Axtarış..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 bg-gray-100 border-transparent focus:bg-white border-2 focus:border-primary-500 rounded-xl text-sm font-semibold transition-all outline-none"
+                />
+              </div>
+
+              <select
+                value={selectedInstructor}
+                onChange={(e) => setSelectedInstructor(e.target.value)}
+                className="px-4 py-2.5 bg-white border-2 border-gray-200 rounded-xl text-sm font-bold text-gray-700 outline-none focus:border-primary-500 transition-all cursor-pointer"
               >
-                <List className="w-4 h-4" />
-                <span className="hidden sm:inline">Siyahı</span>
-              </button>
-              <button
-                onClick={() => handleViewChange('calendar')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
-                  view === 'calendar'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                <option value="all">Bütün Müəllimlər</option>
+                {instructors.map(i => <option key={i} value={i}>{i}</option>)}
+              </select>
+
+               <select
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                className="hidden sm:block px-4 py-2.5 bg-white border-2 border-gray-200 rounded-xl text-sm font-bold text-gray-700 outline-none focus:border-primary-500 transition-all cursor-pointer"
               >
-                <CalendarIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">Təqvim</span>
-              </button>
+                <option value="all">Bütün Fənlər</option>
+                {subjects.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
             </div>
           </div>
 
-          {/* Search and Filters */}
-          <div className="flex gap-3">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Mövzu, müəllim və ya açar söz yazın..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value)
-                  setCurrentPage(1)
-                }}
-                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-semibold"
-              />
-            </div>
-            <button
-              onClick={() => setIsFilterOpen(true)}
-              className="px-6 py-3 bg-gray-100 hover:bg-gray-200 border-2 border-gray-200 text-gray-700 font-bold rounded-xl transition-all flex items-center space-x-2"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-              <span className="hidden sm:inline">Filtrlər</span>
-            </button>
+          {/* Date Strip */}
+          <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-2 border border-gray-100">
+             <button onClick={handlePrevDay} className="p-2 hover:bg-white hover:shadow-md rounded-xl transition-all">
+               <ChevronLeft className="w-5 h-5 text-gray-600" />
+             </button>
+
+             <div className="flex-1 flex justify-center gap-2 overflow-x-auto no-scrollbar px-2">
+               {weekDays.map(date => {
+                 const isSelected = date.toDateString() === selectedDate.toDateString()
+                 const isToday = date.toDateString() === new Date().toDateString()
+
+                 return (
+                   <button
+                     key={date.toISOString()}
+                     onClick={() => setSelectedDate(date)}
+                     className={`
+                       flex flex-col items-center justify-center min-w-[60px] h-16 rounded-xl transition-all relative overflow-hidden
+                       ${isSelected ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/30 scale-105' : 'hover:bg-white hover:shadow-sm text-gray-500'}
+                       ${isToday && !isSelected ? 'bg-white border-2 border-primary-100 text-primary-600' : ''}
+                     `}
+                   >
+                     <span className="text-[10px] uppercase font-bold tracking-wider opacity-80">
+                        {date.toLocaleDateString('az-AZ', { weekday: 'short' })}
+                     </span>
+                     <span className={`text-xl font-black ${isSelected ? 'text-white' : 'text-gray-900'}`}>
+                       {date.getDate()}
+                     </span>
+                     {isToday && (
+                       <div className={`absolute bottom-1 w-1 h-1 rounded-full ${isSelected ? 'bg-white' : 'bg-primary-500'}`} />
+                     )}
+                   </button>
+                 )
+               })}
+             </div>
+
+             <button onClick={handleNextDay} className="p-2 hover:bg-white hover:shadow-md rounded-xl transition-all">
+               <ChevronRight className="w-5 h-5 text-gray-600" />
+             </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {view === 'calendar' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
-            {/* Left Column: Calendar */}
-            <div className="max-w-full overflow-hidden">
-              <CalendarView
-                lessons={filteredLessons}
-                onSelectLesson={handleViewDetails}
-                onDateSelect={handleDateSelectFromCalendar}
-              />
-            </div>
+      {/* Main Content Area */}
+      <div className="flex-1 overflow-y-auto p-4 lg:p-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
 
-            {/* Right Panel - Smart Sidebar */}
-            <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
-              <RightPanel
-                activeTab={rightPanelTab}
-                onTabChange={setRightPanelTab}
-                bookmarkedLessons={bookmarkedLessons}
-                onRemoveBookmark={handleRemoveBookmark}
-                selectedDate={selectedDate}
-                lessonsForDate={lessonsForSelectedDate}
-                onJoinLesson={handleJoin}
-                onViewDetails={handleViewDetails}
-              />
-            </div>
-          </div>
-        ) : (
+          {/* Left: Schedule Feed */}
           <div>
-            {/* Next Up Card */}
-            {nextLesson && (
-              <div className="bg-gradient-to-r from-primary-500 to-primary-700 rounded-2xl p-6 mb-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <p className="text-green-100 font-medium mb-2 text-sm">Növbəti dərs</p>
-                <h3 className="text-xl font-bold text-white mb-3">{nextLesson.title}</h3>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-green-50">
-                  <span className="font-medium">
-                    {(() => {
-                      const d = new Date(nextLesson.date)
-                      const day = String(d.getDate()).padStart(2, '0')
-                      const month = String(d.getMonth() + 1).padStart(2, '0')
-                      const year = d.getFullYear()
-                      const hours = String(d.getHours()).padStart(2, '0')
-                      const minutes = String(d.getMinutes()).padStart(2, '0')
-                      return `${day}.${month}.${year} ${hours}:${minutes}`
-                    })()}
-                  </span>
-                  <span>•</span>
-                  <span className="font-medium">{nextLesson.instructor}</span>
-                  <span>•</span>
-                  <span className="font-medium">{nextLesson.duration} dəq</span>
-                </div>
-              </div>
-              <button
-                onClick={() => handleJoin(nextLesson)}
-                disabled={nextLesson.status !== 'started'}
-                className={`px-6 py-3 rounded-xl font-semibold shadow-md transition-all ${
-                  nextLesson.status === 'started'
-                    ? 'bg-white text-primary-600 hover:bg-gray-50'
-                    : 'bg-white/30 text-white/50 cursor-not-allowed'
-                }`}
-              >
-                {nextLesson.status === 'started' ? 'Dərsə qoşul' : 'Tezliklə'}
-              </button>
-            </div>
+             <div className="flex items-center justify-between mb-6">
+               <h2 className="text-xl font-bold text-gray-900">
+                 {selectedDate.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long' })}
+               </h2>
+               <span className="px-3 py-1 bg-gray-200 rounded-full text-xs font-bold text-gray-600">
+                 {filteredLessons.length} Dərs
+               </span>
+             </div>
+
+             {filteredLessons.length > 0 ? (
+               <div className="space-y-4">
+                 {filteredLessons.map((lesson, idx) => (
+                   <div key={lesson.id} className="animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${idx * 100}ms` }}>
+                     <LessonCard
+                       lesson={lesson}
+                       onJoin={handleJoin}
+                       onViewDetails={() => {
+                         setSelectedLesson(lesson)
+                         setIsDetailsOpen(true)
+                       }}
+                       onToggleBookmark={handleToggleBookmark}
+                     />
+                   </div>
+                 ))}
+               </div>
+             ) : (
+               <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
+                 <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                   <CalendarDays className="w-10 h-10 text-gray-300" />
+                 </div>
+                 <h3 className="text-lg font-bold text-gray-900">Dərs tapılmadı</h3>
+                 <p className="text-gray-500 text-sm max-w-xs text-center mt-2">
+                   Bu tarix üçün planlaşdırılmış dərs yoxdur və ya axtarış nəticə vermədi.
+                 </p>
+                 <button
+                   onClick={() => setSelectedDate(new Date())}
+                   className="mt-6 px-6 py-2 bg-primary-50 text-primary-600 font-bold rounded-xl text-sm hover:bg-primary-100 transition-colors"
+                 >
+                   Bu günə qayıt
+                 </button>
+               </div>
+             )}
           </div>
-            )}
 
-            {/* Quick Filters */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              <button
-                onClick={() => { setQuickFilter('all'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'all'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Hamısı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('week'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'week'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Bu həftə
-              </button>
-              <button
-                onClick={() => { setQuickFilter('started'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'started'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Başladı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('waiting'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'waiting'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Gözləyir
-              </button>
-              <button
-                onClick={() => { setQuickFilter('completed'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'completed'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Tamamlandı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('replay'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'replay'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Təkrar videosu olanlar
-              </button>
-              <button
-                onClick={() => { setQuickFilter('bookmarked'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'bookmarked'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Saxlanılanlar
-              </button>
-            </div>
+          {/* Right: Sidebar Info */}
+          <div className="space-y-6">
+            <TelegramPromo />
 
-            {/* Content */}
-            {paginatedLessons.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
-                  {paginatedLessons.map(lesson => (
-                    <LessonCard
-                      key={lesson.id}
-                      lesson={lesson}
-                      onJoin={handleJoin}
-                      onViewDetails={handleViewDetails}
-                      onWatchReplay={handleWatchReplay}
-                      onToggleBookmark={handleToggleBookmark}
-                    />
-                  ))}
+            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-orange-100 rounded-lg text-orange-600">
+                  <GraduationCap className="w-5 h-5" />
                 </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2">
-                    <button
-                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                      disabled={currentPage === 1}
-                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                        currentPage === 1
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      ← Əvvəlki
-                    </button>
-
-                    <div className="flex items-center gap-1">
-                      {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                        let pageNum
-                        if (totalPages <= 5) {
-                          pageNum = i + 1
-                        } else if (currentPage <= 3) {
-                          pageNum = i + 1
-                        } else if (currentPage >= totalPages - 2) {
-                          pageNum = totalPages - 4 + i
-                        } else {
-                          pageNum = currentPage - 2 + i
-                        }
-
-                        return (
-                          <button
-                            key={pageNum}
-                            onClick={() => setCurrentPage(pageNum)}
-                            className={`w-11 h-11 rounded-xl font-bold text-sm transition-all ${
-                              currentPage === pageNum
-                                ? 'bg-primary-600 text-white shadow-lg scale-110'
-                                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
-                            }`}
-                          >
-                            {pageNum}
-                          </button>
-                        )
-                      })}
+                <h3 className="font-bold text-gray-900">Müəllimlərimiz</h3>
+              </div>
+              <div className="space-y-4">
+                {['Əli Talibov', 'Rəşad Əliyev', 'Vüsal Hüseynov'].map(name => (
+                  <div key={name} className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
+                      {name.split(' ').map(n => n[0]).join('')}
                     </div>
-
-                    <button
-                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                      disabled={currentPage === totalPages}
-                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                        currentPage === totalPages
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      Sonrakı →
-                    </button>
+                    <span className="text-sm font-medium text-gray-700">{name}</span>
                   </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
-                <div className="text-6xl mb-4">🔍</div>
-                <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
-                <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
+                ))}
               </div>
-            )}
-          </div>
-        )}
-      </div>
+            </div>
 
-      {/* Modals */}
-      <FilterDrawer
-        isOpen={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        filters={filters}
-        onFilterChange={(newFilters) => {
-          setFilters(newFilters)
-          setCurrentPage(1)
-        }}
-      />
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
+              <h3 className="font-bold text-green-800 mb-2">Canlı Dərslər Haqqında</h3>
+              <p className="text-xs text-green-700 leading-relaxed">
+                Canlı dərslər Zoom üzərindən keçirilir. Dərs başladığı zaman "Canlıya Qoşul" düyməsi aktiv olacaq.
+                Qaçırdığınız dərslərin təkrarını Telegram kanalımızdan izləyə bilərsiniz.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
 
       <LessonDetailsModal
         lesson={selectedLesson}
         isOpen={isDetailsOpen}
         onClose={() => setIsDetailsOpen(false)}
         onJoin={handleJoin}
-        onWatchReplay={handleWatchReplay}
       />
 
-      <VideoPlayerModal
-        lesson={selectedLesson}
-        isOpen={isVideoOpen}
-        onClose={() => setIsVideoOpen(false)}
-      />
-
-      {/* Mobile Right Panel - Only for Calendar View */}
-      {view === 'calendar' && (
-        <MobileRightPanel
-          activeTab={rightPanelTab}
-          onTabChange={setRightPanelTab}
-          bookmarkedLessons={bookmarkedLessons}
-          onRemoveBookmark={handleRemoveBookmark}
-          selectedDate={selectedDate}
-          lessonsForDate={lessonsForSelectedDate}
-          onJoinLesson={handleJoin}
-          onViewDetails={handleViewDetails}
-        />
-      )}
-
-      {/* Toast Notification */}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </div>
   )
