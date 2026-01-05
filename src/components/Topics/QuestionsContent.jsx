@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon } from 'lucide-react'
+import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
 export default function QuestionsContent({ topic }) {
@@ -100,7 +100,7 @@ export default function QuestionsContent({ topic }) {
          {/* 2. Question Text (Middle) */}
          <div>
             <div className="flex items-center justify-between mb-2">
-               <h1 className="text-lg font-bold text-gray-500">Sual {currentQuestionIndex + 1}</h1>
+               <h1 className="text-lg font-bold text-gray-500">{currentQuestionIndex + 1}</h1>
                <button
                  onClick={() => setIsZoomed(false)}
                  className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
@@ -142,11 +142,21 @@ export default function QuestionsContent({ topic }) {
                     onClick={() => handleAnswerSelect(index)}
                     className={containerClass}
                   >
-                    <div className={`mt-1 w-5 h-5 rounded-full border-[2px] flex items-center justify-center flex-shrink-0 transition-colors ${radioBorder} ${radioBg}`}>
-                      {(isAnswered && (isThisCorrect || isSelected)) && (
-                        <div className="w-2 h-2 rounded-full bg-white" />
-                      )}
-                    </div>
+                    {isAnswered && (isThisCorrect || (isSelected && !isThisCorrect)) ? (
+                      <div className="mt-1 w-6 h-6 flex items-center justify-center flex-shrink-0">
+                        {isThisCorrect ? (
+                          <Check className="w-6 h-6 text-green-600" />
+                        ) : (
+                          <X className="w-6 h-6 text-red-600" />
+                        )}
+                      </div>
+                    ) : (
+                      <div className={`mt-1 w-5 h-5 rounded-full border-[2px] flex items-center justify-center flex-shrink-0 transition-colors ${radioBorder} ${radioBg}`}>
+                        {(isAnswered && (isThisCorrect || isSelected)) && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
+                      </div>
+                    )}
 
                     <span className={`text-lg ${isAnswered && isThisCorrect ? 'font-medium text-green-900' : 'text-gray-700'}`}>
                       {option}
@@ -175,12 +185,12 @@ export default function QuestionsContent({ topic }) {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start max-w-[1400px] mx-auto">
 
           {/* Left Column: Text & Options */}
-          <div className="w-full lg:w-1/2 max-w-3xl">
+          <div className="w-full lg:w-1/2 max-w-3xl order-2 lg:order-1">
 
             {/* Question Number & Text */}
             <div className="mb-6">
               <h1 className="text-xl font-bold text-gray-500 mb-2">
-                Sual {currentQuestionIndex + 1}
+                {currentQuestionIndex + 1}
               </h1>
               <h2 className="text-xl font-bold text-gray-900 leading-relaxed">
                 {currentQuestion.text}
@@ -218,12 +228,22 @@ export default function QuestionsContent({ topic }) {
                     onClick={() => handleAnswerSelect(index)}
                     className={containerClass}
                   >
-                    {/* Custom Radio Button */}
-                    <div className={`mt-1 w-5 h-5 rounded-full border-[2px] flex items-center justify-center flex-shrink-0 transition-colors ${radioBorder} ${radioBg}`}>
-                      {(isAnswered && (isThisCorrect || isSelected)) && (
-                        <div className="w-2 h-2 rounded-full bg-white" />
-                      )}
-                    </div>
+                    {/* Icon or Radio Button */}
+                    {isAnswered && (isThisCorrect || (isSelected && !isThisCorrect)) ? (
+                      <div className="mt-1 w-6 h-6 flex items-center justify-center flex-shrink-0">
+                        {isThisCorrect ? (
+                          <Check className="w-6 h-6 text-green-600" />
+                        ) : (
+                          <X className="w-6 h-6 text-red-600" />
+                        )}
+                      </div>
+                    ) : (
+                      <div className={`mt-1 w-5 h-5 rounded-full border-[2px] flex items-center justify-center flex-shrink-0 transition-colors ${radioBorder} ${radioBg}`}>
+                        {(isAnswered && (isThisCorrect || isSelected)) && (
+                          <div className="w-2 h-2 rounded-full bg-white" />
+                        )}
+                      </div>
+                    )}
 
                     <span className={`text-lg ${isAnswered && isThisCorrect ? 'font-medium text-green-900' : 'text-gray-700'}`}>
                       {option}
@@ -258,7 +278,7 @@ export default function QuestionsContent({ topic }) {
           </div>
 
           {/* Right Column: Media */}
-          <div className="w-full lg:w-1/2 pt-8">
+          <div className="w-full lg:w-1/2 pt-8 order-1 lg:order-2">
              {hasMedia && (
                 <div className="relative group w-full mb-6">
                   {/* Media Container */}

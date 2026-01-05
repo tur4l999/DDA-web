@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TopicSidebar from './TopicSidebar'
 import StickyHeader from './StickyHeader'
 import TabNavigation from './TabNavigation'
@@ -35,6 +35,13 @@ export default function TopicsPage({ onBack }) {
     completed: false,
     progress: 45
   })
+
+  // Auto-collapse sidebar when entering Questions tab
+  useEffect(() => {
+    if (activeTab === 'questions') {
+      setIsPanelCollapsed(true)
+    }
+  }, [activeTab])
 
   const handleVideoClick = (penalty) => {
     setSelectedPenalty(penalty)
