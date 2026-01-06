@@ -14,11 +14,15 @@ export default function FinalExamView({ onExamClick }) {
           <div className="relative z-10 flex flex-col h-full justify-between gap-8">
             <div className="flex justify-between items-start">
               <div>
-                <div className="inline-flex items-center gap-2 bg-yellow-400/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-yellow-400/30">
-                  <Crown className="w-3.5 h-3.5" />
-                  Premium
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                    <div className="inline-flex items-center gap-2 bg-yellow-400/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-yellow-400/30">
+                    <Crown className="w-3.5 h-3.5" />
+                    Premium
+                    </div>
+                    <span className="text-xs font-medium text-gray-400">Əsl imtahan təcrübəsi</span>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">İmtahan Simulyatoru</h3>
+
+                <h3 className="text-2xl font-bold mb-2 text-white">İmtahan Simulyatoru</h3>
                 <p className="text-gray-300 text-sm leading-relaxed max-w-sm">
                   DYP imtahanındakı kimi real vaxt rejimi və sual ardıcıllığı.
                   Özünüzü real imtahanda hiss edin.
@@ -43,7 +47,11 @@ export default function FinalExamView({ onExamClick }) {
                 onClick={() => onExamClick('simulator')}
                 className="bg-white text-gray-900 px-6 py-3 rounded-xl font-bold text-sm hover:bg-yellow-400 transition-colors shadow-lg flex items-center gap-2"
               >
-                Başla (1 ₼) <Play className="w-4 h-4 fill-current" />
+                Başla
+                <span className="flex items-center gap-1.5 ml-1">
+                   (<span className="line-through text-gray-400 text-xs">5 ₼</span> 2 ₼)
+                </span>
+                <Play className="w-4 h-4 fill-current ml-1" />
               </button>
             </div>
           </div>

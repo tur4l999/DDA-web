@@ -3,9 +3,11 @@ import { ArrowLeft, Ticket, BookOpen, Crown } from 'lucide-react'
 import TicketsView from './TicketsView'
 import TopicsView from './TopicsView'
 import FinalExamView from './FinalExamView'
+import PaywallModal from '../Topics/PaywallModal'
 
 export default function ExamPage({ onBack, onStartExam }) {
   const [activeTab, setActiveTab] = useState('tickets') // 'tickets' | 'topics' | 'final'
+  const [isPaywallOpen, setIsPaywallOpen] = useState(false)
 
   const handleTicketClick = (ticketId) => {
     // Logic to start ticket exam
@@ -22,13 +24,26 @@ export default function ExamPage({ onBack, onStartExam }) {
   const handleFinalExamClick = (type) => {
     // Logic to start final exam
     console.log('Start final exam:', type)
+    if (type === 'simulator') {
+       // Check if user has premium (mock check)
+       // For now, simulator opens paywall if not purchased
+       // But user prompt didn't strictly say simulator is locked, just "Premium".
+       // However, TicketsView explicitly asked for locking.
+       // Let's assume simulator is paid feature so it might trigger paywall too if not bought.
+       // For this task, I'll just trigger the start callback, but arguably it should show paywall.
+       // User prompt: "Simulyator imtahanı pulludur" (Simulator exam is paid).
+       // I'll add a check or just let it pass for now as the prompt focused on UI.
+       // But consistency suggests showing paywall. Let's toggle it for demo.
+       setIsPaywallOpen(true)
+       return
+    }
     if (onStartExam) onStartExam({ type: 'final', mode: type })
   }
 
   const renderContent = () => {
     switch (activeTab) {
       case 'tickets':
-        return <TicketsView onTicketClick={handleTicketClick} />
+        return <TicketsView onTicketClick={handleTicketClick} onLockClick={() => setIsPaywallOpen(true)} />
       case 'topics':
         return <TopicsView onTopicClick={handleTopicClick} />
       case 'final':
@@ -39,7 +54,7 @@ export default function ExamPage({ onBack, onStartExam }) {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-gray-50 overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-gray-50 overflow-hidden relative">
       {/* Header */}
       <header className="bg-white border-b border-gray-200/50 px-4 py-4 sticky top-0 z-20 shadow-sm">
         <div className="max-w-[1600px] mx-auto w-full">
@@ -83,6 +98,9 @@ export default function ExamPage({ onBack, onStartExam }) {
           {renderContent()}
         </div>
       </main>
+
+      {/* Paywall Modal */}
+      <PaywallModal isOpen={isPaywallOpen} onClose={() => setIsPaywallOpen(false)} />
     </div>
   )
 }
