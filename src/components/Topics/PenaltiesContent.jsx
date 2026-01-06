@@ -1,4 +1,5 @@
 import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react'
+import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, Video } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
 export default function PenaltiesContent({ topicRelated = false, onVideoClick }) {
@@ -6,18 +7,15 @@ export default function PenaltiesContent({ topicRelated = false, onVideoClick })
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedPenalty, setExpandedPenalty] = useState(null)
 
-  // Real cərimələr - İXM əsasında
+  // Real cərimələr - İXM əsasında - Enhanced Mock Data
   const penalties = [
     {
       id: 1,
       article: '327.1',
       title: 'Yol nişanlarının və ya yolların hərəkət hissəsinin işarələrinin tələblərinə riayət edilməməsi',
-      fine: 'qırx manat',
+      fine: '40 ₼',
       fineAmount: 40,
       points: null,
-      hasVideo: true,
-      videoDuration: '2:15',
-      videoThumbnail: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=400',
       relatedArticles: ['Maddə 49'],
       fullDescription: `Maddə 49. Nəqliyyat vasitələrinin yolun hərəkət hissəsində yerləşməsi
 
@@ -27,128 +25,99 @@ II. Hər istiqamətdə azı iki hərəkət zolağı olan ikitərəfli hərəkət
 
 III. Üç hərəkət zolağı olan ikitərəfli hərəkət yollarında nəqliyyat vasitələri yolun hərəkət hissəsinin mərkəzində yerləşən və hər iki istiqamət üçün sol kənar hesab olunan orta zolağa keçməməlidirlər. Orta zolağa keçməyə yalnız ötmə, yandan keçmə və sola, yaxud geriyə dönmə üçün icazə verilir.`,
       isCommon: true
+I. Normal hərəkət zamanı nəqliyyat vasitələrinin sürücüləri vəziyyətdən asılı olaraq, yolun hərəkət hissəsinin sağ kənarı ilə hərəkət etməlidirlər. Yaşayış məntəqələrindən kənarda, habelə yaşayış məntəqələrində 5.1 və ya 5.3 nişanları ilə işarələnmiş yolun hərəkət hissəsində hərəkət istiqamətində sağ zolaq boş olduğu halda sol zolaqlarla hərəkət etmək qadağandır.`,
+      isCommon: true,
+      videos: [
+        {
+          id: 'v1',
+          title: 'Yol nişanlarının tələbləri',
+          duration: '2:15',
+          thumbnail: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=400'
+        },
+        {
+          id: 'v2',
+          title: 'Nişanlanma xətləri',
+          duration: '3:45',
+          thumbnail: 'https://images.unsplash.com/photo-1572565691454-067df76f498c?w=400'
+        }
+      ]
     },
     {
       id: 2,
       article: '327.2',
       title: 'Svetoforun və ya nizamlayıcının qadağanedici işarəsi verilərkən hərəkətin davam etdirilməsi',
-      fine: 'yüz manat',
+      fine: '100 ₼',
       fineAmount: 100,
       points: '3 bal',
-      hasVideo: true,
-      videoDuration: '1:50',
-      videoThumbnail: 'https://images.unsplash.com/photo-1502489597346-dad15683d4c2?w=400',
       relatedArticles: ['Maddə 48'],
-      fullDescription: `Maddə 48. Nəqliyyat vasitələrinin üstün hərəkət rejimi ilə hərəkəti və bununla əlaqədar digər sürücülərin vəzifələri
+      fullDescription: `Maddə 48. Nəqliyyat vasitələrinin üstün hərəkət rejimi ilə hərəkəti və bununla əlaqədar digər sürücülərin vəzifələri.
 
-I. Üstündə "polis", "təcili tibbi yardım", "yanğınsöndürən" yazılar olan, habelə Azərbaycan Respublikasının müvafiq icra hakimiyyəti orqanının müəyyən etdiyi digər nəqliyyat vasitələri xüsusi tapşırığı yerinə yetirərkən üstün hərəkət rejiminə malikdirlər. Bu şəraitdə onların sürücüləri xüsusi işıq və səs siqnallarını qoşmalıdırlar.
-
-II. Yuxarıda nəzərdə tutulmuş nəqliyyat vasitələrindən biri yaxınlaşdıqda, hərəkətdə iştirak edən digər nəqliyyat vasitələrinin sürücüləri sağa dönmə işıq göstəricisini yandırmalı, üstün hərəkət rejimi ilə gedən nəqliyyat vasitələri üçün zolağı boşaltmalı və ya yol qırağına mümkün qədər yaxın hərəkət etməli, zərurət olduqda isə nəqliyyat vasitəsini dayandırmalıdırlar.`,
-      isCommon: true
+Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestində hərəkəti davam etdirmək ciddi qayda pozuntusudur və qəza şəraiti yaradır.`,
+      isCommon: true,
+      videos: [
+        {
+          id: 'v3',
+          title: 'Svetofor qaydaları',
+          duration: '1:50',
+          thumbnail: 'https://images.unsplash.com/photo-1502489597346-dad15683d4c2?w=400'
+        }
+      ]
     },
     {
       id: 3,
       article: '327.2',
       title: '3.1 "Giriş qadağandır" yol nişanının tələbinin pozulması',
-      fine: 'yüz manat',
+      fine: '100 ₼',
       fineAmount: 100,
       points: '3 bal',
-      hasVideo: true,
-      videoDuration: '2:20',
-      videoThumbnail: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400',
       relatedArticles: ['Maddə 49'],
-      fullDescription: 'Yol nişanlarına əməl edilməməsi ilə bağlı pozuntular.',
-      isCommon: true
+      fullDescription: 'Bu nişan yolun müəyyən hissəsinə nəqliyyat vasitələrinin girişini qadağan edir. Adətən birtərəfli hərəkət olan yolların əks tərəfində quraşdırılır.',
+      isCommon: true,
+      videos: []
     },
     {
       id: 4,
-      article: '327.2',
-      title: 'Əks istiqamətli hərəkət zolağına çıxmaqla ötmə və ya manevr etmə qaydalarının pozulması',
-      fine: 'yüz manat',
-      fineAmount: 100,
-      points: '3 bal',
-      hasVideo: true,
-      videoDuration: '2:35',
-      videoThumbnail: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=400',
-      relatedArticles: ['Maddə 49', 'Maddə 50'],
-      fullDescription: `Maddə 50. Hərəkət sürəti və nəqliyyat vasitələri arasında ara məsafəsi
-
-I. Sürücü hərəkətin intensivliyini, nəqliyyat vasitəsinin, yükün xüsusiyyətlərini və vəziyyətini, yol və meteoroloji şərati, xüsusən hərəkət istiqamətində görmə şəraitini nəzərə almaqla, nəqliyyat vasitəsini müəyyən olunmuş sürət məhdudiyyətindən çox olmayan sürətlə sürməlidir.
-
-II. Nəqliyyat vasitələri yaşayış məntəqələri daxilində — saatda 60 kilometrdən çox olmayan sürətlə (səlahiyyətli orqanlar yolun müəyyən sahələrində daha yuxarı hədd müəyyən edə bilərlər, lakin bu hədd saatda 90 kilometrdən çox ola bilməz), yaşayış zonalarında və həyət ərazilərində isə saatda 20 kilometrdən çox olmayan sürətlə hərəkət etməlidirlər.`,
-      isCommon: true
+      article: '327.4',
+      title: 'Birtərəfli hərəkət yollarında əks istiqamətdə hərəkət etməyə görə',
+      fine: '150 ₼',
+      fineAmount: 150,
+      points: '4 bal',
+      relatedArticles: ['Maddə 49'],
+      fullDescription: 'Birtərəfli hərəkət yollarında müəyyən edilmiş hərəkət istiqamətinin əksinə hərəkət etməyə, habelə 1.1, 1.3 və 1.11 üfüqi nişanlanma xətlərinin tələblərini pozmaqla nəqliyyat vasitəsini tam olaraq əks istiqamətli nəqliyyat axınının hərəkət zolağına keçirərək nəqliyyat axınına əks istiqamətdə hərəkət etməyə görə.',
+      isCommon: true,
+      videos: [
+        {
+          id: 'v4',
+          title: 'Birtərəfli yol qaydaları',
+          duration: '4:20',
+          thumbnail: 'https://images.unsplash.com/photo-1512941675424-1c7b94c55e86?w=400'
+        },
+        {
+          id: 'v5',
+          title: 'Qəza şəraiti nümunələri',
+          duration: '2:10',
+          thumbnail: 'https://images.unsplash.com/photo-1596520779836-39825b09455a?w=400'
+        }
+      ]
     },
     {
       id: 5,
-      article: '327.3',
-      title: 'Dəmiryol keçidlərinin keçilmə qaydalarının pozulması',
-      fine: 'yüz manat',
-      fineAmount: 100,
-      points: '4 bal',
-      hasVideo: true,
-      videoDuration: '2:10',
-      videoThumbnail: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=400',
-      relatedArticles: ['Maddə 48'],
-      fullDescription: 'Dəmiryol keçidlərində təhlükəsizlik qaydalarına riayət edilməməsi.',
-      isCommon: true
-    },
-    {
-      id: 6,
-      article: '327.3',
-      title: 'Nəqliyyat vasitəsini saxlamaq tələbinin yerinə yetirilməməsi',
-      fine: 'yüz manat',
-      fineAmount: 100,
-      points: '4 bal',
-      hasVideo: false,
-      relatedArticles: ['Maddə 48'],
-      fullDescription: 'Azərbaycan Respublikasının müvafiq icra hakimiyyəti orqanı əməkdaşının nəqliyyat vasitəsini saxlamaq tələbinin yerinə yetirilməməsi.',
-      isCommon: false
-    },
-    {
-      id: 7,
-      article: '327.4',
-      title: 'Birtərəfli hərəkət yollarında əks istiqamətdə hərəkət etməyə görə',
-      fine: 'yüz əlli manat',
-      fineAmount: 150,
-      points: '4 bal',
-      hasVideo: true,
-      videoDuration: '1:55',
-      videoThumbnail: 'https://images.unsplash.com/photo-1512941675424-1c7b94c55e86?w=400',
-      relatedArticles: ['Maddə 49'],
-      fullDescription: 'Birtərəfli hərəkət yollarında müəyyən edilmiş hərəkət istiqamətinin əksinə hərəkət etməyə, habelə 1.1, 1.3 və 1.11 üfüqi nişanlanma xətlərinin tələblərini pozmaqla nəqliyyat vasitəsini tam olaraq əks istiqamətli nəqliyyat axınının hərəkət zolağına keçirərək nəqliyyat axınına əks istiqamətdə hərəkət etməyə görə.',
-      isCommon: true
-    },
-    {
-      id: 8,
-      article: '327.5',
-      title: 'Avtomagistrallarda texniki sürəti 50 km/saatdan az olan nəqliyyat vasitələrinin hərəkət etməsinə görə',
-      fine: 'yüz manat',
-      fineAmount: 100,
-      points: '4 bal',
-      hasVideo: true,
-      videoDuration: '2:00',
-      videoThumbnail: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=400',
-      relatedArticles: ['Maddə 50'],
-      fullDescription: `Maddə 50. Hərəkət sürəti və nəqliyyat vasitələri arasında ara məsafəsi
-
-III. Sürücü sürətdən və hərəkət şəraitindən asılı olaraq elə ara məsafəsi seçməlidir ki, eyni zolaqda özündən qabaqda gedən nəqliyyat vasitəsi sürəti kəskin azaltdıqda və ya gözlənilmədən dayandıqda, onunla toqquşmanın qarşısını almaq mümkün olsun.
-
-V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gələn sürətlə hərəkət edə bilərlər. Göstərilən nəqliyyat vasitələrinin sürücüləri yol-nəqliyyat hadisələrinin qarşısını almaq üçün hər cür tədbir görməlidirlər.`,
-      isCommon: false
-    },
-    {
-      id: 9,
-      article: '327.6',
-      title: 'Yol hərəkəti qaydalarını pozan nəqliyyat vasitəsi sürücüsünün yol nəqliyyat hadisəsi yerindən yayınmasına görə',
-      fine: 'yüz manat',
-      fineAmount: 100,
-      points: '4 bal',
-      hasVideo: true,
-      videoDuration: '2:25',
-      videoThumbnail: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=400',
-      relatedArticles: ['Maddə 48'],
-      fullDescription: 'Yol-nəqliyyat hadisəsi baş verəndə hadisə yerini tərk etməyə görə.',
-      isCommon: false
+      article: '338.1',
+      title: 'Piyadalara yol verilməməsi',
+      fine: '50 ₼',
+      fineAmount: 50,
+      points: null,
+      relatedArticles: ['Maddə 54'],
+      fullDescription: 'Piyada keçidlərində və ya yol ayrıclarında piyadalara yol verilməməsi.',
+      isCommon: true,
+      videos: [
+         {
+          id: 'v6',
+          title: 'Piyada keçidi qaydaları',
+          duration: '3:00',
+          thumbnail: 'https://images.unsplash.com/photo-1554672408-730436b60dde?w=400'
+        }
+      ]
     }
   ]
 
@@ -156,7 +125,7 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
     return penalties.filter(p => {
       // Filter by category
       if (filter === 'common' && !p.isCommon) return false
-      if (filter === 'video' && !p.hasVideo) return false
+      if (filter === 'video' && (!p.videos || p.videos.length === 0)) return false
       if (filter === 'points' && !p.points) return false
       
       // Filter by search query
@@ -166,7 +135,8 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
           p.title.toLowerCase().includes(query) ||
           p.article.toLowerCase().includes(query) ||
           p.fine.toLowerCase().includes(query) ||
-          (p.points && p.points.toLowerCase().includes(query))
+          (p.points && p.points.toLowerCase().includes(query)) ||
+          (p.fullDescription && p.fullDescription.toLowerCase().includes(query))
         )
       }
       
@@ -175,10 +145,23 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
   }, [penalties, filter, searchQuery])
 
   const getFineColor = (amount) => {
-    if (amount >= 150) return 'from-red-500 to-red-600'
-    if (amount >= 100) return 'from-yellow-500 to-yellow-600'
-    return 'from-yellow-500 to-yellow-600'
+    if (amount >= 150) return 'from-rose-500 to-rose-600 shadow-rose-200'
+    if (amount >= 100) return 'from-orange-500 to-orange-600 shadow-orange-200'
+    return 'from-amber-500 to-amber-600 shadow-amber-200'
   }
+
+  const FilterButton = ({ id, label }) => (
+    <button
+      onClick={() => setFilter(id)}
+      className={`px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
+        filter === id
+          ? 'bg-primary-600 text-white shadow-lg shadow-primary-200 transform -translate-y-0.5'
+          : 'bg-white text-gray-600 border border-gray-100 hover:bg-gray-50 hover:border-gray-200'
+      }`}
+    >
+      {label}
+    </button>
+  )
 
   return (
     <div className="max-w-[1200px] mx-auto">
@@ -186,12 +169,17 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
       <div className="mb-6 flex gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+    <div className="max-w-[1200px] mx-auto pb-12">
+      {/* Search Section */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+        <div className="relative mb-6">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cərimə axtar (maddə, açıqlama, məbləğ)..."
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm"
+            placeholder="Axtarış (məsələn: svetofor, 327.1, 100 manat)..."
+            className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent focus:bg-white focus:border-primary-500 rounded-2xl transition-all duration-300 outline-none text-gray-900 font-medium placeholder:text-gray-400"
           />
         </div>
 
@@ -202,77 +190,50 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
            <span>Bütün cərimələrə bax</span>
            <ArrowRight className="w-4 h-4" />
         </button>
+        <div className="flex flex-wrap gap-3">
+          <FilterButton id="all" label="Bütün cərimələr" />
+          <FilterButton id="common" label="Tez-tez rast gəlinən" />
+          <FilterButton id="video" label="Video izahlı" />
+          <FilterButton id="points" label="Ballı cərimələr" />
+        </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        <button
-          onClick={() => setFilter('all')}
-          className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-            filter === 'all'
-              ? 'bg-primary-500 text-white'
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-          }`}
-        >
-          Hamısı
-        </button>
-        <button
-          onClick={() => setFilter('common')}
-          className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-            filter === 'common'
-              ? 'bg-primary-500 text-white'
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-          }`}
-        >
-          Ən çox rast gəlinən
-        </button>
-        <button
-          onClick={() => setFilter('video')}
-          className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-            filter === 'video'
-              ? 'bg-primary-500 text-white'
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-          }`}
-        >
-          Video olanlar
-        </button>
-        <button
-          onClick={() => setFilter('points')}
-          className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-            filter === 'points'
-              ? 'bg-primary-500 text-white'
-              : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-          }`}
-        >
-          Ballı cərimələr
-        </button>
+      {/* Results Count */}
+      <div className="mb-4 px-2 flex items-center justify-between">
+        <span className="text-sm font-medium text-gray-500">
+          {filteredPenalties.length} nəticə tapıldı
+        </span>
       </div>
 
-      {/* Penalties list - Compact cards with embedded small videos */}
-      <div className="space-y-3">
+      {/* Penalties List */}
+      <div className="space-y-4">
         {filteredPenalties.map(penalty => {
           const isExpanded = expandedPenalty === penalty.id
           
           return (
             <div
               key={penalty.id}
-              className="bg-white border border-gray-200 rounded-xl hover:shadow-lg hover:border-primary-500 transition-all"
+              className={`group bg-white border border-gray-100 rounded-2xl transition-all duration-300 overflow-hidden ${
+                isExpanded ? 'shadow-xl ring-2 ring-primary-500/10' : 'shadow-sm hover:shadow-md hover:-translate-y-0.5'
+              }`}
             >
-              <div className="p-4">
+              {/* Card Header/Summary */}
+              <div
+                className="p-5 cursor-pointer"
+                onClick={() => setExpandedPenalty(isExpanded ? null : penalty.id)}
+              >
                 <div className="flex items-start gap-4">
-                  {/* Left side: Info */}
+                  {/* Icon/Badge Section */}
+                  <div className="hidden sm:flex flex-col items-center gap-2">
+                    <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-gray-600 font-bold border border-gray-100 shadow-sm">
+                      <Scale className="w-6 h-6" />
+                    </div>
+                  </div>
+
                   <div className="flex-1 min-w-0">
-                    {/* All badges in one row */}
-                    <div className="flex items-center gap-1.5 flex-wrap mb-2">
-                      {/* Related Article */}
-                      {penalty.relatedArticles && penalty.relatedArticles.length > 0 && (
-                        <span className="text-xs font-bold text-primary-700 bg-primary-50 px-2 py-1 rounded-md border border-primary-200">
-                          {penalty.relatedArticles.join(', ')}
-                        </span>
-                      )}
-                      
-                      {/* İXM */}
-                      <span className="text-xs font-bold text-white bg-gradient-to-r from-gray-700 to-gray-800 px-2 py-1 rounded-md shadow-sm">
+                    {/* Tags Row */}
+                    <div className="flex items-center flex-wrap gap-2 mb-3">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-gray-900 text-white shadow-sm">
                         İXM {penalty.article}
                       </span>
 
@@ -286,81 +247,125 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                           </>
                         )}
                       </div>
+                      <div className={`inline-flex items-center bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm whitespace-nowrap`}>
+                        {penalty.fine} {penalty.points && ` + ${penalty.points}`}
+                      </div>
+
+                      {penalty.relatedArticles?.map((art, idx) => (
+                         <span key={idx} className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 border border-gray-200">
+                           {art}
+                         </span>
+                      ))}
+
+                      {penalty.videos && penalty.videos.length > 0 && (
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 gap-1.5">
+                          <Video className="w-3 h-3" />
+                          {penalty.videos.length} Video
+                        </span>
+                      )}
                     </div>
 
-                    {/* Title */}
-                    <h3 className="text-sm font-bold text-gray-900 leading-tight mb-2">{penalty.title}</h3>
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-primary-700 transition-colors">
+                        {penalty.title}
+                      </h3>
+                    </div>
+                  </div>
 
-                    {/* Expand/Collapse button for full description */}
-                    {penalty.fullDescription && (
-                      <button
-                        onClick={() => setExpandedPenalty(isExpanded ? null : penalty.id)}
-                        className="flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors mt-2"
-                      >
-                        {isExpanded ? (
-                          <>
-                            <ChevronUp className="w-3.5 h-3.5" />
-                            Açıqlamanı gizlət
-                          </>
-                        ) : (
-                          <>
-                            <ChevronDown className="w-3.5 h-3.5" />
-                            Ətraflı açıqlama
-                          </>
-                        )}
-                      </button>
+                  {/* Toggle Icon */}
+                  <div className="mt-1">
+                    {isExpanded ? (
+                      <ChevronUp className="w-5 h-5 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-400" />
                     )}
+                  </div>
+                </div>
+              </div>
 
-                    {/* Expanded description */}
-                    {isExpanded && penalty.fullDescription && (
-                      <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                        <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">
-                          {penalty.fullDescription}
-                        </p>
+              {/* Expanded Content */}
+              {isExpanded && (
+                <div className="border-t border-gray-100 bg-gray-50/50">
+                  <div className="p-5 sm:p-6 space-y-6">
+                    {/* Law Text */}
+                    <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+                      <h4 className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-3">
+                        <Info className="w-4 h-4 text-primary-600" />
+                        Qanunvericilik
+                      </h4>
+                      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                        {penalty.fullDescription}
+                      </p>
+                    </div>
+
+                    {/* Videos Section */}
+                    {penalty.videos && penalty.videos.length > 0 && (
+                      <div>
+                        <h4 className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-4">
+                          <Play className="w-4 h-4 text-primary-600" />
+                          Video İzahlar ({penalty.videos.length})
+                        </h4>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {penalty.videos.map((video) => (
+                            <button
+                              key={video.id}
+                              onClick={() => onVideoClick?.(video)}
+                              className="group/video relative block bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md hover:border-primary-200 transition-all text-left"
+                            >
+                              <div className="relative aspect-video bg-gray-900">
+                                <img
+                                  src={video.thumbnail}
+                                  alt={video.title}
+                                  className="w-full h-full object-cover opacity-90 group-hover/video:opacity-100 transition-opacity"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover/video:scale-110 transition-transform">
+                                    <Play className="w-4 h-4 text-primary-600 ml-0.5" fill="currentColor" />
+                                  </div>
+                                </div>
+                                <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/70 text-white text-[10px] font-bold rounded">
+                                  {video.duration}
+                                </div>
+                              </div>
+                              <div className="p-3">
+                                <h5 className="text-sm font-semibold text-gray-900 line-clamp-1 group-hover/video:text-primary-700">
+                                  {video.title}
+                                </h5>
+                                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  Baxış üçün toxunun
+                                </p>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
-
-                  {/* Right side: Video only */}
-                  {penalty.hasVideo && (
-                    <button
-                      onClick={() => onVideoClick?.(penalty)}
-                      className="group w-36 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
-                    >
-                      <div className="relative aspect-video bg-gray-200">
-                        <img 
-                          src={penalty.videoThumbnail} 
-                          alt={penalty.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                          loading="lazy"
-                        />
-                        
-                        {/* Play overlay */}
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                          <div className="w-8 h-8 bg-white/95 group-hover:bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-all shadow-md">
-                            <Play className="w-4 h-4 text-primary-600 ml-0.5" fill="currentColor" />
-                          </div>
-                        </div>
-
-                        {/* Duration badge */}
-                        <div className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
-                          {penalty.videoDuration}
-                        </div>
-                      </div>
-                    </button>
-                  )}
                 </div>
-              </div>
+              )}
             </div>
           )
         })}
       </div>
 
-      {/* Empty state */}
+      {/* Empty State */}
       {filteredPenalties.length === 0 && (
-        <div className="text-center py-12 bg-gray-50 border border-gray-200 rounded-xl">
-          <p className="text-gray-600 font-medium mb-1">Heç bir nəticə tapılmadı</p>
-          <p className="text-sm text-gray-500">Başqa filtr seçin</p>
+        <div className="flex flex-col items-center justify-center py-16 bg-white border border-dashed border-gray-300 rounded-2xl text-center">
+          <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+            <Search className="w-8 h-8 text-gray-400" />
+          </div>
+          <h3 className="text-lg font-bold text-gray-900 mb-1">Nəticə tapılmadı</h3>
+          <p className="text-gray-500 max-w-xs mx-auto">
+            Axtarış sorğusunu dəyişdirin və ya filtrləri təmizləyin.
+          </p>
+          <button
+            onClick={() => {setSearchQuery(''); setFilter('all')}}
+            className="mt-4 text-primary-600 font-semibold text-sm hover:underline"
+          >
+            Filtrləri təmizlə
+          </button>
         </div>
       )}
     </div>
