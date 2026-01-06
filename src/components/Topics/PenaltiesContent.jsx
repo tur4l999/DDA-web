@@ -21,7 +21,7 @@ export default function PenaltiesContent({ topicRelated = false, onVideoClick })
       relatedArticles: ['Maddə 49'],
       fullDescription: `Maddə 49. Nəqliyyat vasitələrinin yolun hərəkət hissəsində yerləşməsi
 
-I. Normal hərəkət zamanı nəqliyyat vasitələrinin sürücüləri vəziyyətdən asılı olaraq, yolun hərəkət hissəsinin sağ kənarı ilə hərəkət etməlidirlər. Yaşayış məntəqələrindən kənarda, habelə yaşayış məntəqələrində 5.1 və ya 5.3 nişanları ilə işarələnmiş yolun hərəkət hissəsində hərəkət istiqamətində sağ zolaq boş olduğu halda sol zolaqlarla hərəkət etmək qadağandır.
+I. Normal hərəkət zamanı nəqliyyat vasitələrinin sürücüləri vəziyyətən asılı olaraq, yolun hərəkət hissəsinin sağ kənarı ilə hərəkət etməlidirlər. Yaşayış məntəqələrindən kənarda, habelə yaşayış məntəqələrində 5.1 və ya 5.3 nişanları ilə işarələnmiş yolun hərəkət hissəsində hərəkət istiqamətində sağ zolaq boş olduğu halda sol zolaqlarla hərəkət etmək qadağandır.
 
 II. Hər istiqamətdə azı iki hərəkət zolağı olan ikitərəfli hərəkət yollarında qarşıdan hərəkət üçün nəzərdə tutulmuş tərəfə keçmək qadağandır.
 
@@ -276,20 +276,16 @@ V. Üstün hərəkət rejimli nəqliyyat vasitələri zərurətdən irəli gəl�
                         İXM {penalty.article}
                       </span>
 
-                      {/* Fine amount */}
-                      <div className={`bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-2 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm`}>
-                        {penalty.fine}
+                      {/* Fine + Points Combined Badge */}
+                      <div className={`bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-2.5 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5`}>
+                        <span>{penalty.fine}</span>
+                        {penalty.points && (
+                          <>
+                            <span className="opacity-80">+</span>
+                            <span>{penalty.points}</span>
+                          </>
+                        )}
                       </div>
-
-                      {/* Points */}
-                      {penalty.points && (
-                        <>
-                          <span className="text-gray-400 font-bold text-sm">+</span>
-                          <span className="text-xs font-bold text-red-700 bg-red-50 px-2 py-1 rounded-md border border-red-200">
-                            {penalty.points}
-                          </span>
-                        </>
-                      )}
                     </div>
 
                     {/* Title */}
