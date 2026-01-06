@@ -49,15 +49,25 @@ export default function FinalExamView({ onExamClick }) {
                 </span>
               </div>
 
-              <div className="flex flex-col items-end gap-1">
-                 {/* Price outside button */}
-                 <span className="text-gray-400 text-sm font-bold line-through decoration-red-500 decoration-2 opacity-70">
-                   5 ₼
-                 </span>
+              <div className="flex flex-col items-end gap-2">
+                 {/* Price Block */}
+                 <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-xl shadow-inner">
+                    <div className="flex flex-col items-end leading-none">
+                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Endirim</span>
+                      <span className="text-gray-400 text-sm font-bold line-through decoration-red-500 decoration-2 opacity-60">
+                        5 ₼
+                      </span>
+                    </div>
+                    <div className="h-8 w-[1px] bg-white/10 mx-1"></div>
+                    <span className="text-yellow-400 text-2xl font-black drop-shadow-sm">
+                      2 ₼
+                    </span>
+                 </div>
+
                  <button
-                  className="bg-white text-gray-900 px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-yellow-400 transition-colors shadow-lg flex items-center gap-2"
+                  className="w-full bg-white text-gray-900 px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-yellow-400 transition-colors shadow-lg flex items-center justify-center gap-2"
                  >
-                  Başla (2 ₼) <Play className="w-4 h-4 fill-current ml-1" />
+                  Başla <Play className="w-4 h-4 fill-current ml-1" />
                  </button>
               </div>
             </div>
