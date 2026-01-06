@@ -124,13 +124,13 @@ export default function QuestionsContent({ topic }) {
 
                 if (isAnswered) {
                   if (isThisCorrect) {
-                    containerClass = "p-3 rounded-xl bg-green-100 border-green-500 cursor-default flex items-start gap-4"
-                    radioBorder = "border-green-600"
-                    radioBg = "bg-green-600"
+                    containerClass = "p-3 rounded-xl bg-green-600 border-green-600 text-white cursor-default flex items-start gap-4 shadow-md scale-[1.01]"
+                    radioBorder = "border-white"
+                    radioBg = "bg-white"
                   } else if (isSelected) {
-                    containerClass = "p-3 rounded-xl bg-red-100 border-red-500 cursor-default flex items-start gap-4"
-                    radioBorder = "border-red-600"
-                    radioBg = "bg-red-600"
+                    containerClass = "p-3 rounded-xl bg-red-600 border-red-600 text-white cursor-default flex items-start gap-4 shadow-md"
+                    radioBorder = "border-white"
+                    radioBg = "bg-white"
                   } else {
                     containerClass = "p-3 rounded-xl opacity-50 cursor-default flex items-start gap-4"
                   }
@@ -145,9 +145,9 @@ export default function QuestionsContent({ topic }) {
                     {isAnswered && (isThisCorrect || (isSelected && !isThisCorrect)) ? (
                       <div className="mt-1 w-6 h-6 flex items-center justify-center flex-shrink-0">
                         {isThisCorrect ? (
-                          <Check className="w-6 h-6 text-green-600" />
+                          <Check className="w-6 h-6 text-white" />
                         ) : (
-                          <X className="w-6 h-6 text-red-600" />
+                          <X className="w-6 h-6 text-white" />
                         )}
                       </div>
                     ) : (
@@ -158,7 +158,7 @@ export default function QuestionsContent({ topic }) {
                       </div>
                     )}
 
-                    <span className={`text-lg ${isAnswered && isThisCorrect ? 'font-medium text-green-900' : 'text-gray-700'}`}>
+                    <span className={`text-lg font-medium ${isAnswered && (isThisCorrect || isSelected) ? 'text-white' : 'text-gray-700'}`}>
                       {option}
                     </span>
                   </div>
@@ -210,13 +210,13 @@ export default function QuestionsContent({ topic }) {
 
                 if (isAnswered) {
                   if (isThisCorrect) {
-                    containerClass = "p-3 rounded-xl bg-green-100 border-green-500 cursor-default flex items-start gap-4"
-                    radioBorder = "border-green-600"
-                    radioBg = "bg-green-600"
+                    containerClass = "p-3 rounded-xl bg-green-600 border-green-600 text-white cursor-default flex items-start gap-4 shadow-md scale-[1.01]"
+                    radioBorder = "border-white"
+                    radioBg = "bg-white"
                   } else if (isSelected) {
-                    containerClass = "p-3 rounded-xl bg-red-100 border-red-500 cursor-default flex items-start gap-4"
-                    radioBorder = "border-red-600"
-                    radioBg = "bg-red-600"
+                    containerClass = "p-3 rounded-xl bg-red-600 border-red-600 text-white cursor-default flex items-start gap-4 shadow-md"
+                    radioBorder = "border-white"
+                    radioBg = "bg-white"
                   } else {
                     containerClass = "p-3 rounded-xl opacity-50 cursor-default flex items-start gap-4"
                   }
@@ -232,9 +232,9 @@ export default function QuestionsContent({ topic }) {
                     {isAnswered && (isThisCorrect || (isSelected && !isThisCorrect)) ? (
                       <div className="mt-1 w-6 h-6 flex items-center justify-center flex-shrink-0">
                         {isThisCorrect ? (
-                          <Check className="w-6 h-6 text-green-600" />
+                          <Check className="w-6 h-6 text-white" />
                         ) : (
-                          <X className="w-6 h-6 text-red-600" />
+                          <X className="w-6 h-6 text-white" />
                         )}
                       </div>
                     ) : (
@@ -245,7 +245,7 @@ export default function QuestionsContent({ topic }) {
                       </div>
                     )}
 
-                    <span className={`text-lg ${isAnswered && isThisCorrect ? 'font-medium text-green-900' : 'text-gray-700'}`}>
+                    <span className={`text-lg font-medium ${isAnswered && (isThisCorrect || isSelected) ? 'text-white' : 'text-gray-700'}`}>
                       {option}
                     </span>
                   </div>
@@ -375,8 +375,7 @@ export default function QuestionsContent({ topic }) {
         <div className="flex items-center justify-between gap-4">
 
           {/* Timer */}
-          <div className="flex items-center gap-2 text-gray-700 font-mono font-medium bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 whitespace-nowrap">
-            <Clock className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center gap-2 text-gray-900 text-xl font-bold tracking-wide tabular-nums whitespace-nowrap">
             {formatTime(elapsedTime)}
           </div>
 
