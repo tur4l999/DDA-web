@@ -74,35 +74,79 @@ export default function TopicsView({ onTopicClick }) {
     },
   ]
 
+  // Flatten logic: Insert subtopics after their parent
+  const renderList = []
+  topics.forEach(topic => {
+    // Add main topic
+    renderList.push({ ...topic, type: 'main' })
+
+    // Add subtopics if any
+    if (topic.subTopics && topic.subTopics.length > 0) {
+      topic.subTopics.forEach(sub => {
+        // Construct a subtopic object that looks like a topic
+        renderList.push({
+          id: sub.id, // e.g. "3.1"
+          code: sub.id, // Use ID as code (e.g. "3.1")
+          title: sub.title,
+          count: null, // Subtopics might not have explicit count in this mock
+          progress: sub.completed ? 100 : 0,
+          type: 'sub'
+        })
+      })
+    }
+  })
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-      {topics.map((topic) => (
+      {renderList.map((item) => (
         <div
-          key={topic.id}
-          onClick={() => onTopicClick(topic.id)}
-          className="flex flex-col bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-card hover:border-primary-100 transition-all duration-300 group cursor-pointer overflow-hidden"
+          key={item.id}
+          onClick={() => onTopicClick(item.id)}
+          className={`flex flex-col bg-white border rounded-2xl shadow-sm transition-all duration-300 group cursor-pointer overflow-hidden ${
+             item.type === 'sub'
+               ? 'border-l-4 border-l-primary-400 border-gray-100 hover:shadow-md hover:border-gray-200'
+               : 'border-gray-100 hover:shadow-card hover:border-primary-100'
+          }`}
         >
           {/* Main Card Content */}
           <div className="flex items-center gap-4 p-4 pb-3">
-            <div className="w-12 h-12 rounded-xl bg-gray-50 text-gray-600 flex flex-col items-center justify-center font-bold text-sm shrink-0 group-hover:bg-primary-50 group-hover:text-primary-600 transition-colors">
-              <span>{topic.code}</span>
+            <div className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center font-bold text-sm shrink-0 transition-colors ${
+               item.type === 'sub'
+                ? 'bg-primary-50 text-primary-600'
+                : 'bg-gray-50 text-gray-600 group-hover:bg-primary-50 group-hover:text-primary-600'
+            }`}>
+              <span>{item.code}</span>
             </div>
 
             <div className="flex-1 min-w-0">
-              <h4 className="font-semibold text-gray-900 text-sm truncate pr-2 group-hover:text-primary-700 transition-colors">
-                {topic.title}
+              <h4 className={`font-semibold text-sm truncate pr-2 transition-colors ${
+                 item.type === 'sub' ? 'text-gray-800' : 'text-gray-900 group-hover:text-primary-700'
+              }`}>
+                {item.title}
               </h4>
               <div className="flex items-center gap-3 mt-1">
-                <span className="text-xs text-gray-500 font-medium">{topic.count} sual</span>
-                <span className="text-[10px] text-gray-400">•</span>
-                <span className={`text-xs font-semibold ${topic.progress > 0 ? 'text-green-600' : 'text-gray-400'}`}>
-                  {topic.progress}% tamamlanıb
+                {item.count !== null && (
+                  <>
+                     <span className="text-xs text-gray-500 font-medium">{item.count} sual</span>
+                     <span className="text-[10px] text-gray-400">•</span>
+                  </>
+                )}
+                <span className={`text-xs font-semibold ${item.progress > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+                  {item.progress}% tamamlanıb
                 </span>
               </div>
             </div>
 
-            <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-primary-600 group-hover:text-white transition-all shrink-0">
-              <ChevronRight className="w-4 h-4" />
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ${
+               item.type === 'sub'
+                ? 'bg-white text-primary-400 border border-primary-100'
+                : 'bg-gray-50 text-gray-400 group-hover:bg-primary-600 group-hover:text-white'
+            }`}>
+              {item.type === 'sub' && item.progress === 100 ? (
+                 <CheckCircle2 className="w-4 h-4 text-green-500" />
+              ) : (
+                 <ChevronRight className="w-4 h-4" />
+              )}
             </div>
           </div>
 
@@ -111,32 +155,12 @@ export default function TopicsView({ onTopicClick }) {
              <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
-                    topic.progress === 100 ? 'bg-green-500' : 'bg-primary-500'
+                    item.progress === 100 ? 'bg-green-500' : 'bg-primary-500'
                   }`}
-                  style={{ width: `${topic.progress}%` }}
+                  style={{ width: `${item.progress}%` }}
                 ></div>
               </div>
           </div>
-
-          {/* Subtopics */}
-          {topic.subTopics && topic.subTopics.length > 0 && (
-            <div className="px-4 pb-4 pt-1 border-t border-gray-50 bg-gray-50/30">
-              <div className="space-y-2 mt-2">
-                {topic.subTopics.map((sub) => (
-                  <div key={sub.id} className="flex items-center gap-2.5">
-                    {sub.completed ? (
-                      <CheckCircle2 className="w-3.5 h-3.5 text-green-500 shrink-0" />
-                    ) : (
-                      <Circle className="w-3.5 h-3.5 text-gray-300 shrink-0" />
-                    )}
-                    <span className={`text-xs ${sub.completed ? 'text-gray-700 font-medium' : 'text-gray-500'}`}>
-                      {sub.title}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       ))}
     </div>
