@@ -1,0 +1,31 @@
+
+> dda-web@0.0.0 dev
+> vite
+
+Port 5173 is in use, trying another one...
+
+  VITE v6.4.1  ready in 748 ms
+
+  ➜  Local:   http://localhost:5174/
+  ➜  Network: use --host to expose
+10:37:42 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+11:24:50 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+2:54:14 PM [vite] (client) hmr update /src/components/Topics/TabNavigation.jsx, /src/index.css
+2:55:06 PM [vite] (client) hmr update /src/components/Topics/PenaltiesContent.jsx, /src/index.css
+2:55:46 PM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+3:12:36 PM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+7:35:40 PM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+7:35:53 PM [vite] (client) hmr update /src/components/Topics/StickyHeader.jsx, /src/index.css
+7:36:07 PM [vite] (client) hmr update /src/components/Topics/TabNavigation.jsx, /src/index.css
+7:36:14 PM [vite] (client) hmr update /src/components/Topics/index.jsx, /src/index.css
+7:56:06 PM [vite] (client) hmr update /src/components/Topics/index.jsx, /src/index.css
+7:56:32 PM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+8:02:01 PM [vite] (client) hmr update /src/components/Topics/index.jsx, /src/index.css
+11:04:15 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+11:04:48 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+11:04:54 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+11:33:07 AM [vite] (client) hmr update /src/components/Topics/PenaltiesContent.jsx, /src/index.css
+11:57:06 AM [vite] (client) hmr update /src/components/Topics/StickyHeader.jsx, /src/index.css
+11:57:19 AM [vite] (client) hmr update /src/components/Topics/TabNavigation.jsx, /src/index.css
+11:57:55 AM [vite] (client) hmr update /src/components/Topics/index.jsx, /src/index.css
+11:58:39 AM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
