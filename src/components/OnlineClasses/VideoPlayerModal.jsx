@@ -21,7 +21,7 @@ export default function VideoPlayerModal({ lesson, isOpen, onClose }) {
   return (
     <>
       <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={onClose}>
-        <div 
+        <div
           className="bg-gray-900 rounded-2xl max-w-6xl w-full max-h-[95vh] overflow-hidden shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >

@@ -1,181 +1,104 @@
-import { Calendar, Clock, User, Globe, Bookmark, Play, Video, Info } from 'lucide-react'
-import { useState } from 'react'
+import { Clock, User, Info, Send, PlayCircle, Lock } from 'lucide-react'
 
-export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchReplay, onToggleBookmark }) {
-  const [isBookmarked, setIsBookmarked] = useState(lesson.bookmarked || false)
-
-  const getStatusInfo = (status) => {
-    const statusMap = {
-      waiting: {
-        label: 'Gözləyir',
-        className: 'bg-primary-500 text-white',
-        icon: '⏰'
-      },
-      started: {
-        label: 'Başladı',
-        className: 'bg-green-500 text-white',
-        icon: '🔴'
-      },
-      completed: {
-        label: 'Tamamlandı',
-        className: 'bg-gray-500 text-white',
-        icon: '✓'
-      },
-      cancelled: {
-        label: 'Ləğv edildi',
-        className: 'bg-red-500 text-white',
-        icon: '✕'
-      }
-    }
-    return statusMap[status] || statusMap.waiting
-  }
-
-  const getLanguageLabel = (lang) => {
-    const langMap = { az: 'AZ', ru: 'RU', en: 'EN' }
-    return langMap[lang] || lang.toUpperCase()
-  }
-
-  const formatDate = (date) => {
-    const d = new Date(date)
-    const day = String(d.getDate()).padStart(2, '0')
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const year = d.getFullYear()
-    return `${day}.${month}.${year}`
-  }
+export default function LessonCard({ lesson, onJoin, onViewDetails }) {
 
   const formatTime = (date) => {
     const d = new Date(date)
-    const hours = String(d.getHours()).padStart(2, '0')
-    const minutes = String(d.getMinutes()).padStart(2, '0')
-    return `${hours}:${minutes}`
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
   }
 
-  const statusInfo = getStatusInfo(lesson.status)
-  const canJoin = lesson.status === 'started' || (lesson.status === 'waiting' && Math.abs(lesson.date - new Date()) < 10 * 60 * 1000)
-  const hasReplay = lesson.status === 'completed' && lesson.replayUrl
-
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked)
-    onToggleBookmark?.(lesson.id, !isBookmarked)
-  }
+  const isStarted = lesson.status === 'started'
+  const isCompleted = lesson.status === 'completed'
+  const isWaiting = lesson.status === 'waiting'
 
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-100 p-5 hover:shadow-xl transition-all duration-300 hover:border-primary-200 group">
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <div className="flex items-center space-x-2 mb-2">
-            <Calendar className="w-4 h-4 text-gray-500" />
-            <span className="text-sm font-bold text-gray-900">{formatDate(lesson.date)}</span>
-            <span className="text-sm font-bold text-primary-600">{formatTime(lesson.date)}</span>
-          </div>
-          <h3 className="text-lg font-black text-gray-900 group-hover:text-primary-600 transition-colors mb-1">
-            {lesson.title}
-          </h3>
-          <p className="text-sm text-gray-600 font-medium">{lesson.subject}</p>
-        </div>
-        
-        <div className="flex flex-col items-end space-y-2">
-          <div className={`px-3 py-1.5 rounded-full text-xs font-bold ${statusInfo.className} flex items-center space-x-1 shadow-md`}>
-            <span>{statusInfo.icon}</span>
-            <span>{statusInfo.label}</span>
-          </div>
-          <button
-            onClick={handleBookmark}
-            className={`p-2 rounded-lg transition-all ${
-              isBookmarked 
-                ? 'bg-yellow-100 text-yellow-600' 
-                : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
-            }`}
-          >
-            <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
-          </button>
-        </div>
-      </div>
+    <div className={`
+      group bg-white rounded-2xl p-5 border transition-all duration-200 relative overflow-hidden
+      ${isStarted
+         ? 'border-red-100 shadow-lg shadow-red-500/5 ring-1 ring-red-50'
+         : 'border-gray-200 hover:border-blue-300 hover:shadow-md'
+      }
+    `}>
+      {/* Status Bar (Left Accent) */}
+      <div className={`absolute left-0 top-0 bottom-0 w-1.5
+         ${isStarted ? 'bg-red-500' : isCompleted ? 'bg-gray-200' : 'bg-blue-500'}
+      `}></div>
 
-      {/* Metadata */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Globe className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Dil</p>
-            <p className="text-sm font-bold text-gray-900">{getLanguageLabel(lesson.language)}</p>
-          </div>
-        </div>
+      <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between pl-3">
 
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Clock className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Müddət</p>
-            <p className="text-sm font-bold text-gray-900">{lesson.duration} dəq</p>
-          </div>
-        </div>
+         {/* Left: Time & Info */}
+         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
 
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3 col-span-2">
-          <User className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Müəllim</p>
-            <p className="text-sm font-bold text-gray-900">{lesson.instructor}</p>
-          </div>
-        </div>
-      </div>
+            {/* Time Box */}
+            <div className="flex flex-row sm:flex-col items-center justify-between sm:justify-center bg-gray-50 rounded-xl px-4 sm:px-0 py-2 sm:py-0 w-full sm:w-16 sm:h-16 flex-shrink-0 border border-gray-100">
+               <span className="text-lg font-black text-gray-900">{formatTime(lesson.date)}</span>
+               <span className="text-[10px] font-bold text-gray-400 uppercase hidden sm:block">GMT+4</span>
+            </div>
 
-      {/* Replay indicator */}
-      {hasReplay && (
-        <div className="mb-4 p-3 bg-gradient-to-r from-primary-50 to-primary-50 border-2 border-primary-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-primary-600" />
-          <span className="text-sm font-bold text-primary-900">Təkrar video mövcuddur</span>
-        </div>
-      )}
+            {/* Texts */}
+            <div className="flex-1">
+               <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 className="font-bold text-gray-900 text-lg leading-tight group-hover:text-blue-600 transition-colors">
+                     {lesson.title}
+                  </h3>
+                  {isStarted && (
+                     <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-600 animate-pulse whitespace-nowrap">
+                        CANLI
+                     </span>
+                  )}
+               </div>
 
-      {lesson.status === 'completed' && !hasReplay && (
-        <div className="mb-4 p-3 bg-gray-50 border-2 border-gray-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-gray-400" />
-          <span className="text-sm font-semibold text-gray-600">Təkrar video hələ yüklənməyib</span>
-        </div>
-      )}
+               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                  <span className="font-medium text-gray-700 flex items-center gap-1 whitespace-nowrap">
+                     <User className="w-3.5 h-3.5 text-gray-400" />
+                     {lesson.instructor}
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
+                  <span className="flex items-center gap-1 whitespace-nowrap">
+                     <Clock className="w-3.5 h-3.5 text-gray-400" />
+                     {lesson.duration} dəq
+                  </span>
+               </div>
+            </div>
+         </div>
 
-      {/* Actions */}
-      <div className="flex gap-2">
-        {/* Primary action based on status */}
-        {lesson.status === 'started' && (
-          <button
-            onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Dərsə qoşul</span>
-          </button>
-        )}
+         {/* Right: Actions */}
+         <div className="flex items-center gap-2 w-full md:w-auto mt-2 md:mt-0">
 
-        {lesson.status === 'waiting' && canJoin && (
-          <button
-            onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Dərsə qoşul</span>
-          </button>
-        )}
+            {isStarted ? (
+               <button
+                  onClick={onJoin}
+                  className="flex-1 md:flex-none bg-red-600 hover:bg-red-700 text-white px-6 py-3 md:py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2"
+               >
+                  <PlayCircle className="w-4 h-4" />
+                  Qoşul
+               </button>
+            ) : isCompleted ? (
+               <a
+                  href="https://t.me/avtoimtahan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 md:flex-none border border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-600 hover:text-blue-600 px-4 py-3 md:py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 group/btn"
+               >
+                  <span>Təkrar izlə</span>
+                  <Send className="w-3.5 h-3.5 text-gray-400 group-hover/btn:text-blue-500" />
+               </a>
+            ) : (
+               <div className="flex-1 md:flex-none bg-gray-50 text-gray-400 px-4 py-3 md:py-2.5 rounded-xl font-semibold text-sm border border-gray-100 flex items-center justify-center gap-2 cursor-not-allowed">
+                  <Lock className="w-3.5 h-3.5" />
+                  Gözlənilir
+               </div>
+            )}
 
-        {lesson.status === 'completed' && hasReplay && (
-          <button
-            onClick={() => onWatchReplay?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Təkrara bax</span>
-          </button>
-        )}
+            <button
+               onClick={onViewDetails}
+               className="p-3 md:p-2.5 rounded-xl text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-colors border border-transparent hover:border-gray-200"
+               title="Ətraflı"
+            >
+               <Info className="w-5 h-5" />
+            </button>
+         </div>
 
-        {/* Secondary action - Details */}
-        <button
-          onClick={() => onViewDetails?.(lesson)}
-          className="px-4 py-3 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
-        >
-          <Info className="w-4 h-4" />
-          <span className="hidden sm:inline">Detallara bax</span>
-        </button>
       </div>
     </div>
   )
