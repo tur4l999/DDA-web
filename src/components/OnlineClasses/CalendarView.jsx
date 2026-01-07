@@ -1,202 +1,135 @@
-import { ChevronLeft, ChevronRight, Video } from 'lucide-react'
-import { useState } from 'react'
+import { ChevronLeft, ChevronRight, Clock, Video } from 'lucide-react'
+import { useState, useMemo } from 'react'
 
 export default function CalendarView({ lessons, onSelectLesson, onDateSelect }) {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedDay, setSelectedDay] = useState(null)
 
-  const getMonthStart = (date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1)
-  }
+  const startDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+  const endDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
 
-  const getMonthEnd = (date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0)
-  }
-
-  const getCalendarDays = () => {
-    const start = getMonthStart(currentDate)
-    const end = getMonthEnd(currentDate)
+  const daysInMonth = useMemo(() => {
     const days = []
+    const d = new Date(startDay)
+    // Pad start (0 is Sunday, 1 is Monday... we want Monday start)
+    // JS getDay(): 0 = Sun, 1 = Mon... 6 = Sat
+    // We want Mon = 0, Sun = 6
+    let startDayOfWeek = startDay.getDay()
+    if (startDayOfWeek === 0) startDayOfWeek = 7
 
-    // Əvvəlki aydan günlər
-    const startDay = start.getDay() || 7 // Bazar günü 7 olaraq
-    for (let i = startDay - 1; i > 0; i--) {
-      const day = new Date(start)
-      day.setDate(day.getDate() - i)
-      days.push({ date: day, isCurrentMonth: false })
+    // Add empty slots for days before the 1st
+    for (let i = 1; i < startDayOfWeek; i++) {
+      days.push(null)
     }
 
-    // Cari ayın günləri
-    for (let i = 1; i <= end.getDate(); i++) {
-      const day = new Date(currentDate.getFullYear(), currentDate.getMonth(), i)
-      days.push({ date: day, isCurrentMonth: true })
+    // Add actual days
+    const tempDate = new Date(startDay)
+    while (tempDate <= endDay) {
+      days.push(new Date(tempDate))
+      tempDate.setDate(tempDate.getDate() + 1)
     }
-
-    // Növbəti aydan günlər (7-nin qatı etmək üçün)
-    const remainingDays = 7 - (days.length % 7)
-    if (remainingDays < 7) {
-      for (let i = 1; i <= remainingDays; i++) {
-        const day = new Date(end)
-        day.setDate(day.getDate() + i)
-        days.push({ date: day, isCurrentMonth: false })
-      }
-    }
-
     return days
+  }, [currentDate])
+
+  const getDayLessons = (date) => {
+    if (!date) return []
+    return lessons.filter(l =>
+      l.date.getDate() === date.getDate() &&
+      l.date.getMonth() === date.getMonth() &&
+      l.date.getFullYear() === date.getFullYear()
+    )
   }
 
-  const getLessonsForDay = (date) => {
-    return lessons.filter(lesson => {
-      const lessonDate = new Date(lesson.date)
-      return lessonDate.toDateString() === date.toDateString()
-    })
+  const handlePrevMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
   }
 
-  const goToPreviousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
   }
 
-  const goToNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))
-  }
-
-  const goToToday = () => {
-    setCurrentDate(new Date())
-  }
-
-  const monthName = currentDate.toLocaleString('az-AZ', { month: 'long', year: 'numeric' })
-  const weekDays = ['B.e', 'Ç.a', 'Ç', 'C.a', 'C', 'Ş', 'B']
-  const calendarDays = getCalendarDays()
-  const today = new Date().toDateString()
+  const today = new Date()
 
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-100 shadow-lg overflow-hidden">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-4">
-        <div className="flex items-center justify-between">
+    <div className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden h-full flex flex-col">
+      <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+        <h2 className="text-xl font-bold text-gray-900 capitalize">
+          {currentDate.toLocaleDateString('az-AZ', { month: 'long', year: 'numeric' })}
+        </h2>
+        <div className="flex gap-2">
           <button
-            onClick={goToPreviousMonth}
-            className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors"
+            onClick={handlePrevMonth}
+            className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors"
           >
-            <ChevronLeft className="w-5 h-5 text-white" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
-
-          <div className="text-center">
-            <h3 className="text-xl font-black text-white capitalize">{monthName}</h3>
-            <button
-              onClick={goToToday}
-              className="text-sm text-primary-100 hover:text-white font-semibold transition-colors"
-            >
-              Bu günə qayıt
-            </button>
-          </div>
-
           <button
-            onClick={goToNextMonth}
-            className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors"
+            onClick={handleNextMonth}
+            className="p-2 hover:bg-gray-100 rounded-lg text-gray-600 transition-colors"
           >
-            <ChevronRight className="w-5 h-5 text-white" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      {/* Week days header */}
-      <div className="grid grid-cols-7 border-b-2 border-gray-200 bg-gray-50">
-        {weekDays.map(day => (
-          <div key={day} className="py-3 text-center">
-            <span className="text-xs font-black text-gray-600">{day}</span>
+      <div className="grid grid-cols-7 border-b border-gray-100">
+        {['B.e', 'Ç.a', 'Ç', 'C.a', 'C', 'Ş', 'B'].map(day => (
+          <div key={day} className="py-3 text-center text-sm font-semibold text-gray-500 bg-gray-50/50">
+            {day}
           </div>
         ))}
       </div>
 
-      {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-px bg-gray-200">
-        {calendarDays.map((day, index) => {
-          const dayLessons = getLessonsForDay(day.date)
-          const isToday = day.date.toDateString() === today
-          const hasLessons = dayLessons.length > 0
-          const hasReplay = dayLessons.some(l => l.status === 'completed' && l.replayUrl)
-          const hasLive = dayLessons.some(l => l.status === 'started')
+      <div className="grid grid-cols-7 auto-rows-fr flex-1 bg-gray-50/30 overflow-y-auto">
+        {daysInMonth.map((date, idx) => {
+          if (!date) return <div key={idx} className="bg-gray-50/50 border-b border-r border-gray-100" />
 
-          const isSelected = selectedDay?.toDateString() === day.date.toDateString()
+          const dayLessons = getDayLessons(date)
+          const isToday = date.getDate() === today.getDate() &&
+                         date.getMonth() === today.getMonth() &&
+                         date.getFullYear() === today.getFullYear()
 
           return (
             <div
-              key={index}
-              className={`bg-white min-h-[100px] p-2 transition-all ${
-                day.isCurrentMonth ? 'hover:bg-gray-50 cursor-pointer' : 'bg-gray-50 opacity-50'
-              } ${isToday ? 'ring-2 ring-primary-500 ring-inset' : ''} ${
-                isSelected ? 'bg-primary-50 ring-2 ring-primary-400' : ''
-              }`}
-              onClick={() => {
-                if (day.isCurrentMonth) {
-                  setSelectedDay(day.date)
-                  onDateSelect?.(day.date)
-                }
-              }}
+              key={idx}
+              onClick={() => onDateSelect(date)}
+              className={`min-h-[100px] border-b border-r border-gray-100 p-2 transition-all relative group ${
+                'hover:bg-white cursor-pointer'
+              } ${isToday ? 'bg-primary-50/30' : ''}`}
             >
-              <div className="flex items-center justify-between mb-1">
-                <span className={`text-sm font-bold ${
-                  isToday 
-                    ? 'w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs'
-                    : day.isCurrentMonth 
-                      ? 'text-gray-900' 
-                      : 'text-gray-400'
-                }`}>
-                  {day.date.getDate()}
-                </span>
-                {hasReplay && (
-                  <Video className="w-3 h-3 text-primary-600" />
-                )}
-                {hasLive && (
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+              <span className={`text-sm font-medium w-7 h-7 flex items-center justify-center rounded-full mb-1 ${
+                isToday ? 'bg-primary-600 text-white' : 'text-gray-700'
+              }`}>
+                {date.getDate()}
+              </span>
+
+              <div className="space-y-1">
+                {dayLessons.slice(0, 3).map(lesson => (
+                  <div
+                    key={lesson.id}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onSelectLesson(lesson)
+                    }}
+                    className={`text-[10px] px-1.5 py-1 rounded-md truncate border cursor-pointer transition-transform hover:scale-105 ${
+                      lesson.status === 'started'
+                        ? 'bg-green-100 text-green-700 border-green-200 font-bold'
+                        : lesson.status === 'waiting'
+                        ? 'bg-blue-50 text-blue-700 border-blue-100'
+                        : 'bg-gray-100 text-gray-600 border-gray-200'
+                    }`}
+                  >
+                    {lesson.status === 'started' && '🔴 '}{lesson.title}
+                  </div>
+                ))}
+                {dayLessons.length > 3 && (
+                  <div className="text-[10px] text-gray-400 font-medium pl-1">
+                    + {dayLessons.length - 3} daha
+                  </div>
                 )}
               </div>
-
-              {hasLessons && (
-                <div className="space-y-1">
-                  {dayLessons.slice(0, 2).map((lesson, idx) => (
-                    <div
-                      key={idx}
-                      className={`text-xs p-1.5 rounded-lg font-semibold truncate ${
-                        lesson.status === 'started' 
-                          ? 'bg-green-100 text-green-800'
-                          : lesson.status === 'completed'
-                            ? 'bg-gray-100 text-gray-700'
-                            : 'bg-primary-100 text-primary-800'
-                      }`}
-                    >
-                      {lesson.date.getHours()}:{String(lesson.date.getMinutes()).padStart(2, '0')} {lesson.title.substring(0, 10)}
-                    </div>
-                  ))}
-                  {dayLessons.length > 2 && (
-                    <div className="text-xs text-gray-500 font-bold text-center">
-                      +{dayLessons.length - 2} daha
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           )
         })}
-      </div>
-
-      {/* Legend */}
-      <div className="border-t-2 border-gray-200 px-6 py-4 bg-gray-50">
-        <div className="flex flex-wrap items-center gap-4 text-sm">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-gray-700 font-semibold">Canlı dərs</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Video className="w-4 h-4 text-primary-600" />
-            <span className="text-gray-700 font-semibold">Təkrar mövcud</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-primary-600 rounded-full"></div>
-            <span className="text-gray-700 font-semibold">Bu gün</span>
-          </div>
-        </div>
       </div>
     </div>
   )

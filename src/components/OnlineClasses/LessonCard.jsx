@@ -1,181 +1,107 @@
-import { Calendar, Clock, User, Globe, Bookmark, Play, Video, Info } from 'lucide-react'
-import { useState } from 'react'
+import { Video, Clock, Bookmark, RotateCcw, CheckCircle2, User, Calendar as CalendarIcon, Play } from 'lucide-react'
 
 export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchReplay, onToggleBookmark }) {
-  const [isBookmarked, setIsBookmarked] = useState(lesson.bookmarked || false)
-
-  const getStatusInfo = (status) => {
-    const statusMap = {
-      waiting: {
-        label: 'Gözləyir',
-        className: 'bg-primary-500 text-white',
-        icon: '⏰'
-      },
-      started: {
-        label: 'Başladı',
-        className: 'bg-green-500 text-white',
-        icon: '🔴'
-      },
-      completed: {
-        label: 'Tamamlandı',
-        className: 'bg-gray-500 text-white',
-        icon: '✓'
-      },
-      cancelled: {
-        label: 'Ləğv edildi',
-        className: 'bg-red-500 text-white',
-        icon: '✕'
-      }
-    }
-    return statusMap[status] || statusMap.waiting
-  }
-
-  const getLanguageLabel = (lang) => {
-    const langMap = { az: 'AZ', ru: 'RU', en: 'EN' }
-    return langMap[lang] || lang.toUpperCase()
-  }
-
-  const formatDate = (date) => {
-    const d = new Date(date)
-    const day = String(d.getDate()).padStart(2, '0')
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const year = d.getFullYear()
-    return `${day}.${month}.${year}`
-  }
-
-  const formatTime = (date) => {
-    const d = new Date(date)
-    const hours = String(d.getHours()).padStart(2, '0')
-    const minutes = String(d.getMinutes()).padStart(2, '0')
-    return `${hours}:${minutes}`
-  }
-
-  const statusInfo = getStatusInfo(lesson.status)
-  const canJoin = lesson.status === 'started' || (lesson.status === 'waiting' && Math.abs(lesson.date - new Date()) < 10 * 60 * 1000)
-  const hasReplay = lesson.status === 'completed' && lesson.replayUrl
-
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked)
-    onToggleBookmark?.(lesson.id, !isBookmarked)
-  }
+  const isStarted = lesson.status === 'started'
+  const isWaiting = lesson.status === 'waiting'
+  const isCompleted = lesson.status === 'completed'
+  const hasReplay = isCompleted && lesson.replayUrl
 
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-100 p-5 hover:shadow-xl transition-all duration-300 hover:border-primary-200 group">
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <div className="flex items-center space-x-2 mb-2">
-            <Calendar className="w-4 h-4 text-gray-500" />
-            <span className="text-sm font-bold text-gray-900">{formatDate(lesson.date)}</span>
-            <span className="text-sm font-bold text-primary-600">{formatTime(lesson.date)}</span>
+    <div className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-card transition-all duration-300 overflow-hidden flex flex-col h-full relative">
+      {/* Top Banner with Code and Language */}
+      <div className="h-2 bg-gray-100 group-hover:bg-primary-500 transition-colors duration-300" />
+
+      <div className="p-5 flex-1 flex flex-col">
+        {/* Header Row */}
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex gap-2">
+            <span className="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-lg text-xs font-bold tracking-wide border border-gray-200">
+              #{String(lesson.id).padStart(4, '0')}
+            </span>
+            <span className={`px-2.5 py-1 rounded-lg text-xs font-bold tracking-wide border uppercase ${
+              lesson.language === 'az'
+                ? 'bg-blue-50 text-blue-600 border-blue-100'
+                : 'bg-red-50 text-red-600 border-red-100'
+            }`}>
+              {lesson.language}
+            </span>
           </div>
-          <h3 className="text-lg font-black text-gray-900 group-hover:text-primary-600 transition-colors mb-1">
-            {lesson.title}
-          </h3>
-          <p className="text-sm text-gray-600 font-medium">{lesson.subject}</p>
-        </div>
-        
-        <div className="flex flex-col items-end space-y-2">
-          <div className={`px-3 py-1.5 rounded-full text-xs font-bold ${statusInfo.className} flex items-center space-x-1 shadow-md`}>
-            <span>{statusInfo.icon}</span>
-            <span>{statusInfo.label}</span>
-          </div>
+
           <button
-            onClick={handleBookmark}
-            className={`p-2 rounded-lg transition-all ${
-              isBookmarked 
-                ? 'bg-yellow-100 text-yellow-600' 
-                : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleBookmark(lesson.id)
+            }}
+            className={`p-1.5 rounded-lg transition-colors ${
+              lesson.bookmarked
+                ? 'text-yellow-500 bg-yellow-50 hover:bg-yellow-100'
+                : 'text-gray-300 hover:bg-gray-50 hover:text-gray-500'
             }`}
           >
-            <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+            <Bookmark className="w-5 h-5" fill={lesson.bookmarked ? "currentColor" : "none"} />
           </button>
         </div>
-      </div>
 
-      {/* Metadata */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Globe className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Dil</p>
-            <p className="text-sm font-bold text-gray-900">{getLanguageLabel(lesson.language)}</p>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Clock className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Müddət</p>
-            <p className="text-sm font-bold text-gray-900">{lesson.duration} dəq</p>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3 col-span-2">
-          <User className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Müəllim</p>
-            <p className="text-sm font-bold text-gray-900">{lesson.instructor}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Replay indicator */}
-      {hasReplay && (
-        <div className="mb-4 p-3 bg-gradient-to-r from-primary-50 to-primary-50 border-2 border-primary-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-primary-600" />
-          <span className="text-sm font-bold text-primary-900">Təkrar video mövcuddur</span>
-        </div>
-      )}
-
-      {lesson.status === 'completed' && !hasReplay && (
-        <div className="mb-4 p-3 bg-gray-50 border-2 border-gray-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-gray-400" />
-          <span className="text-sm font-semibold text-gray-600">Təkrar video hələ yüklənməyib</span>
-        </div>
-      )}
-
-      {/* Actions */}
-      <div className="flex gap-2">
-        {/* Primary action based on status */}
-        {lesson.status === 'started' && (
-          <button
-            onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Dərsə qoşul</span>
-          </button>
-        )}
-
-        {lesson.status === 'waiting' && canJoin && (
-          <button
-            onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Dərsə qoşul</span>
-          </button>
-        )}
-
-        {lesson.status === 'completed' && hasReplay && (
-          <button
-            onClick={() => onWatchReplay?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Təkrara bax</span>
-          </button>
-        )}
-
-        {/* Secondary action - Details */}
-        <button
-          onClick={() => onViewDetails?.(lesson)}
-          className="px-4 py-3 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
+        {/* Title & Info */}
+        <h3
+          className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 leading-tight group-hover:text-primary-700 transition-colors cursor-pointer"
+          onClick={() => onViewDetails(lesson)}
         >
-          <Info className="w-4 h-4" />
-          <span className="hidden sm:inline">Detallara bax</span>
-        </button>
+          {lesson.title}
+        </h3>
+
+        <div className="space-y-2 mb-6">
+          <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
+            <User className="w-4 h-4 text-gray-400" />
+            <span>{lesson.instructor}</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
+            <CalendarIcon className="w-4 h-4 text-gray-400" />
+            <span>
+              {new Date(lesson.date).toLocaleDateString('az-AZ', { day: 'numeric', month: 'short' })}
+              <span className="mx-1">•</span>
+              {new Date(lesson.date).toLocaleTimeString('az-AZ', { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </div>
+        </div>
+
+        {/* Action Button - Pushed to bottom */}
+        <div className="mt-auto pt-4 border-t border-gray-50">
+          {isStarted ? (
+            <button
+              onClick={() => onJoin(lesson)}
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg shadow-green-200 flex items-center justify-center gap-2 animate-pulse"
+            >
+              <Video className="w-4 h-4" />
+              Qoşul
+            </button>
+          ) : isWaiting ? (
+            <div className="flex gap-2">
+              <button
+                onClick={() => onViewDetails(lesson)}
+                className="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 py-3 rounded-xl font-bold transition-all border border-gray-200 flex items-center justify-center gap-2"
+              >
+                Ətraflı
+              </button>
+            </div>
+          ) : hasReplay ? (
+            <button
+              disabled
+              className="w-full bg-gray-50 text-gray-400 py-3 rounded-xl font-bold transition-all border border-gray-100 flex items-center justify-center gap-2 cursor-not-allowed select-none"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Təkrarı telegramda izlə
+            </button>
+          ) : (
+            <button
+              disabled
+              className="w-full bg-gray-50 text-gray-400 py-3 rounded-xl font-bold border border-gray-100 flex items-center justify-center gap-2 cursor-not-allowed"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              Bitib
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )
