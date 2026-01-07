@@ -1,73 +1,40 @@
-import { Bookmark, Calendar, X, ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronUp, X } from 'lucide-react'
 import { useState } from 'react'
 import RightPanel from './RightPanel'
 
-export default function MobileRightPanel({
-  activeTab,
-  onTabChange,
-  bookmarkedLessons,
-  onRemoveBookmark,
-  selectedDate,
-  lessonsForDate,
-  onJoinLesson,
-  onViewDetails
-}) {
-  const [isExpanded, setIsExpanded] = useState(false)
+export default function MobileRightPanel(props) {
+  const [isOpen, setIsOpen] = useState(false)
 
-  const tabInfo = {
-    bookmarks: {
-      icon: Bookmark,
-      label: 'Saxlanılanlar',
-      count: bookmarkedLessons.length
-    },
-    selectedDay: {
-      icon: Calendar,
-      label: 'Seçilmiş gün',
-      count: lessonsForDate?.length || 0
-    }
+  if (!isOpen) {
+    return (
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-xl z-40 flex items-center gap-2 font-bold animate-bounce-subtle lg:hidden"
+      >
+        <ChevronUp className="w-5 h-5" />
+        {props.activeTab === 'selectedDay' ? 'Günün cədvəli' : 'Saxlanılanlar'}
+      </button>
+    )
   }
 
-  const currentTabInfo = tabInfo[activeTab]
-  const Icon = currentTabInfo.icon
-
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t-2 border-gray-200 shadow-2xl">
-      {/* Collapsible Header */}
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-primary-500 to-primary-700 text-white"
-      >
-        <div className="flex items-center gap-2">
-          <Icon className="w-5 h-5" />
-          <span className="font-semibold">{currentTabInfo.label}</span>
-          {currentTabInfo.count > 0 && (
-            <span className="px-2 py-0.5 bg-white text-primary-600 text-xs rounded-full font-bold">
-              {currentTabInfo.count}
-            </span>
-          )}
+    <div className="fixed inset-0 z-50 flex flex-col justify-end bg-black/50 backdrop-blur-sm lg:hidden animate-fade-in">
+      <div className="bg-white rounded-t-3xl h-[80vh] shadow-2xl animate-slide-up flex flex-col relative overflow-hidden">
+        <div className="flex justify-center pt-3 pb-1" onClick={() => setIsOpen(false)}>
+          <div className="w-12 h-1.5 bg-gray-300 rounded-full cursor-pointer" />
         </div>
-        {isExpanded ? (
-          <ChevronDown className="w-5 h-5" />
-        ) : (
-          <ChevronUp className="w-5 h-5" />
-        )}
-      </button>
 
-      {/* Expandable Content */}
-      {isExpanded && (
-        <div className="max-h-[70vh] overflow-hidden">
-          <RightPanel
-            activeTab={activeTab}
-            onTabChange={onTabChange}
-            bookmarkedLessons={bookmarkedLessons}
-            onRemoveBookmark={onRemoveBookmark}
-            selectedDate={selectedDate}
-            lessonsForDate={lessonsForDate}
-            onJoinLesson={onJoinLesson}
-            onViewDetails={onViewDetails}
-          />
+        <button
+          onClick={() => setIsOpen(false)}
+          className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full text-gray-500 hover:text-gray-900"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        <div className="flex-1 overflow-hidden p-4">
+          <RightPanel {...props} />
         </div>
-      )}
+      </div>
     </div>
   )
 }
