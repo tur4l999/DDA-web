@@ -1,0 +1,12 @@
+
+> dda-web@0.0.0 dev
+> vite
+
+Port 5173 is in use, trying another one...
+
+  VITE v6.4.1  ready in 466 ms
+
+  ➜  Local:   http://localhost:5174/
+  ➜  Network: use --host to expose
+1:28:50 PM [vite] (client) ✨ new dependencies optimized: react-dom/client, lucide-react, recharts
+1:28:50 PM [vite] (client) ✨ optimized dependencies changed. reloading

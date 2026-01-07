@@ -1,5 +1,4 @@
-import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react'
-import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, Video } from 'lucide-react'
+import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, Video, ArrowRight } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
 export default function PenaltiesContent({ topicRelated = false, onVideoClick }) {
@@ -24,8 +23,6 @@ I. Normal hərəkət zamanı nəqliyyat vasitələrinin sürücüləri vəziyyə
 II. Hər istiqamətdə azı iki hərəkət zolağı olan ikitərəfli hərəkət yollarında qarşıdan hərəkət üçün nəzərdə tutulmuş tərəfə keçmək qadağandır.
 
 III. Üç hərəkət zolağı olan ikitərəfli hərəkət yollarında nəqliyyat vasitələri yolun hərəkət hissəsinin mərkəzində yerləşən və hər iki istiqamət üçün sol kənar hesab olunan orta zolağa keçməməlidirlər. Orta zolağa keçməyə yalnız ötmə, yandan keçmə və sola, yaxud geriyə dönmə üçün icazə verilir.`,
-      isCommon: true
-I. Normal hərəkət zamanı nəqliyyat vasitələrinin sürücüləri vəziyyətdən asılı olaraq, yolun hərəkət hissəsinin sağ kənarı ilə hərəkət etməlidirlər. Yaşayış məntəqələrindən kənarda, habelə yaşayış məntəqələrində 5.1 və ya 5.3 nişanları ilə işarələnmiş yolun hərəkət hissəsində hərəkət istiqamətində sağ zolaq boş olduğu halda sol zolaqlarla hərəkət etmək qadağandır.`,
       isCommon: true,
       videos: [
         {
@@ -164,11 +161,6 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
   )
 
   return (
-    <div className="max-w-[1200px] mx-auto">
-      {/* Search & Header Action */}
-      <div className="mb-6 flex gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
     <div className="max-w-[1200px] mx-auto pb-12">
       {/* Search Section */}
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
@@ -183,18 +175,21 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
           />
         </div>
 
-        {/* New Button: See all penalties */}
-        <button
-          className="flex-shrink-0 bg-white border border-gray-200 hover:border-primary-500 text-gray-700 hover:text-primary-600 px-5 py-3 rounded-xl font-semibold text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
-        >
-           <span>Bütün cərimələrə bax</span>
-           <ArrowRight className="w-4 h-4" />
-        </button>
-        <div className="flex flex-wrap gap-3">
-          <FilterButton id="all" label="Bütün cərimələr" />
-          <FilterButton id="common" label="Tez-tez rast gəlinən" />
-          <FilterButton id="video" label="Video izahlı" />
-          <FilterButton id="points" label="Ballı cərimələr" />
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+           <div className="flex flex-wrap gap-3">
+             <FilterButton id="all" label="Bütün cərimələr" />
+             <FilterButton id="common" label="Tez-tez rast gəlinən" />
+             <FilterButton id="video" label="Video izahlı" />
+             <FilterButton id="points" label="Ballı cərimələr" />
+           </div>
+
+           {/* New Button: See all penalties */}
+           <button
+             className="flex-shrink-0 bg-white border border-gray-200 hover:border-primary-500 text-gray-700 hover:text-primary-600 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
+           >
+              <span>Bütün cərimələrə bax</span>
+              <ArrowRight className="w-4 h-4" />
+           </button>
         </div>
       </div>
 
@@ -246,9 +241,6 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                             <span>{penalty.points}</span>
                           </>
                         )}
-                      </div>
-                      <div className={`inline-flex items-center bg-gradient-to-br ${getFineColor(penalty.fineAmount)} text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm whitespace-nowrap`}>
-                        {penalty.fine} {penalty.points && ` + ${penalty.points}`}
                       </div>
 
                       {penalty.relatedArticles?.map((art, idx) => (
