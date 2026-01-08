@@ -60,7 +60,26 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
   }
 
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-100 p-5 hover:shadow-xl transition-all duration-300 hover:border-primary-200 group">
+    <div className="bg-white rounded-2xl border-2 border-gray-100 p-5 hover:shadow-xl transition-all duration-300 hover:border-primary-200 group relative overflow-hidden">
+      {/* Top Bar with Code and Language */}
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
+         <div className="flex items-center gap-2">
+             <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs font-mono font-bold tracking-wider">
+               {lesson.code || '####'}
+             </span>
+             <span className={`px-2 py-1 rounded-lg text-xs font-bold ${
+               lesson.language === 'az' ? 'bg-blue-50 text-blue-600' :
+               lesson.language === 'ru' ? 'bg-red-50 text-red-600' : 'bg-gray-50 text-gray-600'
+             }`}>
+               {getLanguageLabel(lesson.language)}
+             </span>
+         </div>
+         <div className={`px-3 py-1 rounded-full text-xs font-bold ${statusInfo.className} flex items-center space-x-1`}>
+            <span>{statusInfo.icon}</span>
+            <span>{statusInfo.label}</span>
+         </div>
+      </div>
+
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
@@ -76,10 +95,6 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         </div>
         
         <div className="flex flex-col items-end space-y-2">
-          <div className={`px-3 py-1.5 rounded-full text-xs font-bold ${statusInfo.className} flex items-center space-x-1 shadow-md`}>
-            <span>{statusInfo.icon}</span>
-            <span>{statusInfo.label}</span>
-          </div>
           <button
             onClick={handleBookmark}
             className={`p-2 rounded-lg transition-all ${
@@ -96,10 +111,10 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
       {/* Metadata */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Globe className="w-4 h-4 text-primary-600 flex-shrink-0" />
+          <Clock className="w-4 h-4 text-primary-600 flex-shrink-0" />
           <div>
-            <p className="text-xs text-gray-500 font-semibold">Dil</p>
-            <p className="text-sm font-bold text-gray-900">{getLanguageLabel(lesson.language)}</p>
+            <p className="text-xs text-gray-500 font-semibold">Müddət</p>
+            <p className="text-sm font-bold text-gray-900">{lesson.duration} dəq</p>
           </div>
         </div>
 
@@ -158,13 +173,13 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
           </button>
         )}
 
-        {lesson.status === 'completed' && hasReplay && (
+        {lesson.status === 'completed' && (
           <button
-            onClick={() => onWatchReplay?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            disabled={true}
+            className="flex-1 bg-gray-100 text-gray-400 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center space-x-2 cursor-not-allowed opacity-70"
           >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Təkrara bax</span>
+            <Video className="w-4 h-4 opacity-50" />
+            <span>Təkrarı telegramda izlə</span>
           </button>
         )}
 

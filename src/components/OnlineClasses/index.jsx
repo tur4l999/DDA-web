@@ -293,7 +293,24 @@ export default function OnlineClasses({ onBack }) {
           </div>
 
           {/* Search and Filters */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap sm:flex-nowrap">
+            {/* Date Picker for List View */}
+             <div className="relative">
+              <input
+                 type="date"
+                 className="h-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-semibold text-gray-700 cursor-pointer"
+                 onChange={(e) => {
+                   if (e.target.value) {
+                     setFilters(prev => ({ ...prev, dateRange: { start: e.target.value, end: e.target.value } }))
+                     setQuickFilter('custom')
+                   } else {
+                     setFilters(prev => ({ ...prev, dateRange: { start: '', end: '' } }))
+                     setQuickFilter('all')
+                   }
+                   setCurrentPage(1)
+                 }}
+              />
+            </div>
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
