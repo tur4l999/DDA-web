@@ -1,4 +1,4 @@
-import { Calendar, Clock, User, Globe, Bookmark, Play, Video, Info } from 'lucide-react'
+import { Play, Video, Info, User, Clock, Bookmark } from 'lucide-react'
 import { useState } from 'react'
 
 export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBookmark }) {
@@ -8,22 +8,22 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
     const statusMap = {
       waiting: {
         label: 'Gözləyir',
-        className: 'bg-primary-500 text-white',
+        className: 'bg-primary-50 text-primary-700 border-primary-100',
         icon: '⏰'
       },
       started: {
         label: 'Başladı',
-        className: 'bg-green-500 text-white',
+        className: 'bg-green-50 text-green-700 border-green-100 animate-pulse',
         icon: '🔴'
       },
       completed: {
         label: 'Tamamlandı',
-        className: 'bg-gray-500 text-white',
+        className: 'bg-gray-50 text-gray-600 border-gray-100',
         icon: '✓'
       },
       cancelled: {
         label: 'Ləğv edildi',
-        className: 'bg-red-500 text-white',
+        className: 'bg-red-50 text-red-600 border-red-100',
         icon: '✕'
       }
     }
@@ -35,16 +35,16 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
     return langMap[lang] || lang.toUpperCase()
   }
 
-  const formatDate = (date) => {
-    const d = new Date(date)
-    const day = String(d.getDate()).padStart(2, '0')
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const year = d.getFullYear()
-    return `${day}.${month}.${year}`
-  }
-
   const formatTime = (date) => {
     const d = new Date(date)
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+    return `${hours}:${minutes}`
+  }
+
+  const getEndTime = (date, duration) => {
+    const d = new Date(date)
+    d.setMinutes(d.getMinutes() + duration)
     const hours = String(d.getHours()).padStart(2, '0')
     const minutes = String(d.getMinutes()).padStart(2, '0')
     return `${hours}:${minutes}`
@@ -53,132 +53,102 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
   const statusInfo = getStatusInfo(lesson.status)
   const canJoin = lesson.status === 'started' || (lesson.status === 'waiting' && Math.abs(lesson.date - new Date()) < 10 * 60 * 1000)
 
-  const handleBookmark = () => {
+  const handleBookmark = (e) => {
+    e.stopPropagation()
     setIsBookmarked(!isBookmarked)
     onToggleBookmark?.(lesson.id, !isBookmarked)
   }
 
   return (
-    <div className="bg-white rounded-2xl border-2 border-gray-100 p-5 hover:shadow-xl transition-all duration-300 hover:border-primary-200 group relative overflow-hidden">
-      {/* Top Bar with Code and Language */}
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
-         <div className="flex items-center gap-2">
-             <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs font-mono font-bold tracking-wider">
+    <div className="bg-white rounded-2xl border-2 border-gray-100 p-4 hover:border-primary-200 transition-all duration-300 hover:shadow-lg group flex flex-col sm:flex-row gap-4 items-start sm:items-center relative overflow-hidden">
+
+      {/* Left: Time & Duration */}
+      <div className="flex flex-row sm:flex-col items-center sm:items-start gap-3 sm:gap-1 min-w-[100px] border-b sm:border-b-0 sm:border-r border-gray-100 pb-3 sm:pb-0 sm:pr-4 w-full sm:w-auto">
+         <div className="text-xl font-black text-gray-900 tracking-tight">
+            {formatTime(lesson.date)}
+         </div>
+         <div className="text-sm font-semibold text-gray-400 flex items-center gap-1">
+            <span className="hidden sm:inline">-</span>
+            <span>{getEndTime(lesson.date, lesson.duration)}</span>
+         </div>
+         <div className="ml-auto sm:ml-0 px-2 py-0.5 rounded-md bg-gray-50 text-gray-500 text-xs font-bold flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {lesson.duration} dəq
+         </div>
+      </div>
+
+      {/* Middle: Content */}
+      <div className="flex-1 w-full min-w-0">
+         <div className="flex flex-wrap items-center gap-2 mb-2">
+             <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md text-xs font-mono font-bold tracking-wider border border-gray-200">
                {lesson.code || '####'}
              </span>
-             <span className={`px-2 py-1 rounded-lg text-xs font-bold ${
-               lesson.language === 'az' ? 'bg-blue-50 text-blue-600' :
-               lesson.language === 'ru' ? 'bg-red-50 text-red-600' : 'bg-gray-50 text-gray-600'
+             <span className={`px-2 py-0.5 rounded-md text-xs font-bold border ${
+               lesson.language === 'az' ? 'bg-blue-50 text-blue-600 border-blue-100' :
+               lesson.language === 'ru' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-gray-50 text-gray-600 border-gray-200'
              }`}>
                {getLanguageLabel(lesson.language)}
              </span>
+             <div className={`px-2 py-0.5 rounded-full text-xs font-bold border flex items-center gap-1 ${statusInfo.className}`}>
+                <span>{statusInfo.icon}</span>
+                <span>{statusInfo.label}</span>
+             </div>
          </div>
-         <div className={`px-3 py-1 rounded-full text-xs font-bold ${statusInfo.className} flex items-center space-x-1`}>
-            <span>{statusInfo.icon}</span>
-            <span>{statusInfo.label}</span>
+
+         <h3 className="text-lg font-black text-gray-900 truncate pr-8 mb-1 group-hover:text-primary-600 transition-colors cursor-pointer" onClick={() => onViewDetails?.(lesson)}>
+            {lesson.title}
+         </h3>
+
+         <div className="flex items-center gap-3 text-sm text-gray-500 font-medium">
+            <div className="flex items-center gap-1">
+                <User className="w-3.5 h-3.5" />
+                {lesson.instructor}
+            </div>
+            <span className="hidden sm:inline text-gray-300">•</span>
+            <span className="truncate">{lesson.subject}</span>
          </div>
       </div>
 
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <div className="flex items-center space-x-2 mb-2">
-            <Calendar className="w-4 h-4 text-gray-500" />
-            <span className="text-sm font-bold text-gray-900">{formatDate(lesson.date)}</span>
-            <span className="text-sm font-bold text-primary-600">{formatTime(lesson.date)}</span>
-          </div>
-          <h3 className="text-lg font-black text-gray-900 group-hover:text-primary-600 transition-colors mb-1">
-            {lesson.title}
-          </h3>
-          <p className="text-sm text-gray-600 font-medium">{lesson.subject}</p>
-        </div>
-        
-        <div className="flex flex-col items-end space-y-2">
-          <button
+      {/* Right: Actions */}
+      <div className="flex items-center justify-end w-full sm:w-auto gap-2 mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100">
+         <button
             onClick={handleBookmark}
-            className={`p-2 rounded-lg transition-all ${
+            className={`p-2.5 rounded-xl transition-all ${
               isBookmarked 
-                ? 'bg-yellow-100 text-yellow-600' 
-                : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                ? 'bg-yellow-50 text-yellow-500'
+                : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
             }`}
           >
-            <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+            <Bookmark className={`w-5 h-5 ${isBookmarked ? 'fill-current' : ''}`} />
           </button>
-        </div>
-      </div>
 
-      {/* Metadata */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Clock className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Müddət</p>
-            <p className="text-sm font-bold text-gray-900">{lesson.duration} dəq</p>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Globe className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Dil</p>
-            <p className="text-sm font-bold text-gray-900">{getLanguageLabel(lesson.language)}</p>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3 col-span-2">
-          <User className="w-4 h-4 text-primary-600 flex-shrink-0" />
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">Müəllim</p>
-            <p className="text-sm font-bold text-gray-900">{lesson.instructor}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="flex gap-2">
-        {/* Primary action based on status */}
-        {lesson.status === 'started' && (
+        {(lesson.status === 'started' || (lesson.status === 'waiting' && canJoin)) ? (
           <button
             onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
+            className="flex-1 sm:flex-none bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-5 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2 min-w-[140px]"
           >
             <Play className="w-4 h-4 fill-current" />
-            <span>Dərsə qoşul</span>
+            <span>Qoşul</span>
           </button>
-        )}
-
-        {lesson.status === 'waiting' && canJoin && (
-          <button
-            onClick={() => onJoin?.(lesson)}
-            className="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Dərsə qoşul</span>
-          </button>
-        )}
-
-        {/* Completed State - Disabled Telegram Button */}
-        {lesson.status === 'completed' && (
-          <button
+        ) : lesson.status === 'completed' ? (
+           <button
             disabled
-            className="flex-1 bg-gray-50 text-gray-400 font-semibold py-3 px-4 rounded-xl border-2 border-gray-100 cursor-not-allowed flex items-center justify-center space-x-2"
+            className="flex-1 sm:flex-none bg-gray-50 text-gray-400 font-semibold py-2.5 px-4 rounded-xl border border-gray-200 cursor-not-allowed flex items-center justify-center space-x-2 min-w-[200px]"
           >
             <Video className="w-4 h-4" />
-            <span>Təkrarı telegramda izlə</span>
+            <span className="whitespace-nowrap">Təkrarı telegramda izlə</span>
+          </button>
+        ) : (
+          <button
+            onClick={() => onViewDetails?.(lesson)}
+            className="flex-1 sm:flex-none py-2.5 px-5 border-2 border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 min-w-[140px]"
+          >
+            <Info className="w-4 h-4" />
+            <span>Detallar</span>
           </button>
         )}
-
-        {/* Secondary action - Details */}
-        <button
-          onClick={() => onViewDetails?.(lesson)}
-          className={`px-4 py-3 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 ${
-             lesson.status === 'cancelled' ? 'w-full' : ''
-          }`}
-        >
-          <Info className="w-4 h-4" />
-          <span className="hidden sm:inline">Detallara bax</span>
-        </button>
       </div>
+
     </div>
   )
 }
