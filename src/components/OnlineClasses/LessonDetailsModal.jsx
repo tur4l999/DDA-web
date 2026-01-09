@@ -5,10 +5,10 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
 
   const getStatusInfo = (status) => {
     const statusMap = {
-      waiting: { label: 'Gözləyir', className: 'bg-primary-500 text-white', icon: '⏰' },
-      started: { label: 'Başladı', className: 'bg-green-500 text-white', icon: '🔴' },
-      completed: { label: 'Tamamlandı', className: 'bg-gray-500 text-white', icon: '✓' },
-      cancelled: { label: 'Ləğv edildi', className: 'bg-red-500 text-white', icon: '✕' }
+      waiting: { label: 'Gözləyir', className: 'bg-primary-50 text-primary-700 border-primary-100', icon: '⏰' },
+      started: { label: 'Başladı', className: 'bg-green-50 text-green-700 border-green-100', icon: '🔴' },
+      completed: { label: 'Tamamlandı', className: 'bg-gray-50 text-gray-700 border-gray-200', icon: '✓' },
+      cancelled: { label: 'Ləğv edildi', className: 'bg-red-50 text-red-700 border-red-100', icon: '✕' }
     }
     return statusMap[status] || statusMap.waiting
   }
@@ -20,169 +20,127 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
 
   const formatDateTime = (date) => {
     const d = new Date(date)
-    const day = String(d.getDate()).padStart(2, '0')
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const year = d.getFullYear()
-    const hours = String(d.getHours()).padStart(2, '0')
-    const minutes = String(d.getMinutes()).padStart(2, '0')
-    return `${day}.${month}.${year} ${hours}:${minutes}`
+    return d.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
   }
 
   const statusInfo = getStatusInfo(lesson.status)
   const canJoin = lesson.status === 'started' || (lesson.status === 'waiting' && Math.abs(lesson.date - new Date()) < 10 * 60 * 1000)
-  const hasReplay = lesson.status === 'completed' && lesson.replayUrl
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-all" onClick={onClose}>
         <div 
-          className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+          className="bg-white rounded-[32px] max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scale-in"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header */}
-          <div className="sticky top-0 bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-5 rounded-t-3xl flex items-center justify-between z-10">
-            <h2 className="text-xl font-black text-white">Dərs Detalları</h2>
+          {/* Minimal Header */}
+          <div className="sticky top-0 bg-white/80 backdrop-blur-md px-8 py-6 border-b border-gray-100 flex items-center justify-between z-10">
+            <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Dərs məlumatları</span>
             <button
               onClick={onClose}
-              className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-xl flex items-center justify-center transition-colors"
+              className="w-10 h-10 bg-gray-50 hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors"
             >
-              <X className="w-5 h-5 text-white" />
+              <X className="w-5 h-5 text-gray-500" />
             </button>
           </div>
 
-          <div className="p-6 space-y-6">
-            {/* Title and Status */}
-            <div>
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="text-2xl font-black text-gray-900 flex-1">{lesson.title}</h3>
-                <div className={`px-4 py-2 rounded-xl text-sm font-bold ${statusInfo.className} flex items-center space-x-1.5 shadow-md whitespace-nowrap ml-3`}>
-                  <span>{statusInfo.icon}</span>
-                  <span>{statusInfo.label}</span>
+          <div className="px-8 py-8 space-y-8">
+            {/* Title and Badge */}
+            <div className="space-y-4">
+               <div className="flex flex-wrap items-center gap-3">
+                  <div className={`px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 ${statusInfo.className}`}>
+                    <span>{statusInfo.icon}</span>
+                    <span>{statusInfo.label}</span>
+                  </div>
+                  <div className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 border border-gray-200 font-mono">
+                    {lesson.code}
+                  </div>
+               </div>
+               <h3 className="text-3xl font-black text-gray-900 leading-tight">{lesson.title}</h3>
+               <p className="text-xl text-gray-500 font-medium">{lesson.subject}</p>
+            </div>
+
+            {/* Info Grid */}
+            <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                    <div className="flex items-center gap-2 text-gray-400 mb-1">
+                        <Calendar className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider">Tarix</span>
+                    </div>
+                    <p className="text-gray-900 font-bold">{formatDateTime(lesson.date)}</p>
                 </div>
-              </div>
-              <p className="text-lg text-gray-600 font-semibold">{lesson.subject}</p>
+                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                    <div className="flex items-center gap-2 text-gray-400 mb-1">
+                        <Clock className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider">Müddət</span>
+                    </div>
+                    <p className="text-gray-900 font-bold">{lesson.duration} dəqiqə</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                    <div className="flex items-center gap-2 text-gray-400 mb-1">
+                        <User className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider">Müəllim</span>
+                    </div>
+                    <p className="text-gray-900 font-bold">{lesson.instructor}</p>
+                </div>
+                 <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                    <div className="flex items-center gap-2 text-gray-400 mb-1">
+                        <Globe className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-wider">Dil</span>
+                    </div>
+                    <p className="text-gray-900 font-bold">{getLanguageLabel(lesson.language)}</p>
+                </div>
             </div>
 
             {/* Description */}
             {lesson.description && (
-              <div className="bg-gray-50 rounded-2xl p-5 border-2 border-gray-100">
-                <h4 className="font-bold text-gray-900 mb-2">Dərs haqqında</h4>
-                <p className="text-gray-700 leading-relaxed">{lesson.description}</p>
+              <div className="space-y-2">
+                <h4 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Haqqında</h4>
+                <p className="text-gray-600 leading-relaxed text-lg">{lesson.description}</p>
               </div>
             )}
 
-            {/* Metadata Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-5 border-2 border-primary-200">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
-                    <Calendar className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="font-bold text-gray-900">Tarix və Saat</span>
-                </div>
-                <p className="text-lg font-black text-primary-900">{formatDateTime(lesson.date)}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-5 border-2 border-primary-200">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="font-bold text-gray-900">Müddət</span>
-                </div>
-                <p className="text-lg font-black text-primary-900">{lesson.duration} dəqiqə</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-5 border-2 border-green-200">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center">
-                    <User className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="font-bold text-gray-900">Müəllim</span>
-                </div>
-                <p className="text-lg font-black text-green-900">{lesson.instructor}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-5 border-2 border-yellow-200">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center">
-                    <Globe className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="font-bold text-gray-900">Dərs dili</span>
-                </div>
-                <p className="text-lg font-black text-yellow-900">{getLanguageLabel(lesson.language)}</p>
-              </div>
-            </div>
-
-            {/* Replay Section */}
-            {lesson.status === 'completed' && (
-              <div className="border-t-2 border-gray-200 pt-6">
-                <div className="flex items-center space-x-3 mb-4">
-                  <Video className="w-6 h-6 text-primary-600" />
-                  <h4 className="text-lg font-black text-gray-900">Təkrar Video</h4>
-                </div>
-
-                {hasReplay ? (
-                  <div className="bg-gradient-to-r from-primary-50 to-primary-50 border-2 border-primary-200 rounded-2xl p-5">
-                    <div className="flex items-center space-x-2 mb-3">
-                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="font-bold text-primary-900">Təkrar video mövcuddur</span>
-                    </div>
-                    <p className="text-sm text-primary-700 mb-4">Bu dərsin təkrar videosunu istədiyiniz vaxt izləyə bilərsiniz.</p>
-                    <button
-                      onClick={() => onWatchReplay?.(lesson)}
-                      className="w-full bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 text-white font-black py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
-                    >
-                      <Play className="w-5 h-5 fill-current" />
-                      <span>Təkrara bax</span>
-                    </button>
-                  </div>
-                ) : (
-                  <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-5">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <AlertCircle className="w-5 h-5 text-gray-400" />
-                      <span className="font-bold text-gray-700">Təkrar video hələ yüklənməyib</span>
-                    </div>
-                    <p className="text-sm text-gray-600">Dərsin təkrar videosu tezliklə əlavə ediləcək.</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Cancelled reason */}
+            {/* Cancel Reason */}
             {lesson.status === 'cancelled' && lesson.cancelReason && (
-              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-5">
-                <div className="flex items-center space-x-2 mb-2">
-                  <AlertCircle className="w-5 h-5 text-red-600" />
-                  <span className="font-bold text-red-900">Ləğv səbəbi</span>
-                </div>
-                <p className="text-red-800">{lesson.cancelReason}</p>
+              <div className="bg-red-50 border border-red-100 rounded-2xl p-4 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                  <div>
+                      <h4 className="font-bold text-red-900">Ləğv səbəbi</h4>
+                      <p className="text-red-700 text-sm mt-1">{lesson.cancelReason}</p>
+                  </div>
               </div>
             )}
           </div>
 
           {/* Footer Actions */}
-          <div className="sticky bottom-0 bg-gray-50 px-6 py-4 rounded-b-3xl border-t-2 border-gray-200">
-            <div className="flex gap-3">
-              {canJoin && (
-                <button
-                  onClick={() => {
-                    onJoin?.(lesson)
-                    onClose()
-                  }}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-black py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
-                >
-                  <Play className="w-5 h-5 fill-current" />
-                  <span>Dərsə qoşul</span>
-                </button>
-              )}
-              <button
-                onClick={onClose}
-                className="flex-1 bg-white border-2 border-gray-300 text-gray-700 font-bold py-3.5 px-6 rounded-xl hover:bg-gray-50 transition-all"
-              >
-                Bağla
-              </button>
-            </div>
+          <div className="p-8 pt-0 flex gap-3">
+             {lesson.status === 'completed' ? (
+                 <button
+                    disabled
+                    className="w-full bg-gray-50 text-gray-400 font-bold py-4 px-6 rounded-2xl border-2 border-gray-100 cursor-not-allowed flex items-center justify-center gap-2 hover:bg-gray-50"
+                  >
+                    <Video className="w-5 h-5" />
+                    <span>Təkrarı telegramda izlə</span>
+                  </button>
+             ) : (
+                canJoin ? (
+                     <button
+                        onClick={() => { onJoin?.(lesson); onClose() }}
+                        className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-2xl transition-all shadow-xl shadow-primary-200 flex items-center justify-center gap-2"
+                      >
+                        <Play className="w-5 h-5 fill-current" />
+                        <span>Dərsə qoşul</span>
+                      </button>
+                ) : (
+                    <button
+                        disabled
+                        className="w-full bg-gray-100 text-gray-400 font-bold py-4 px-6 rounded-2xl cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        <Play className="w-5 h-5 fill-current" />
+                        <span>Qoşulmaq mümkün deyil</span>
+                      </button>
+                )
+             )}
           </div>
         </div>
       </div>

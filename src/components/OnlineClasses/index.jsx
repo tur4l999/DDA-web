@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react'
-import { Search, Filter, ArrowLeft, SlidersHorizontal } from 'lucide-react'
+import { Search, Filter, ArrowLeft, SlidersHorizontal, Calendar as CalendarIcon } from 'lucide-react'
 import FilterDrawer from './FilterDrawer'
 import LessonCard from './LessonCard'
 import LessonDetailsModal from './LessonDetailsModal'
 import VideoPlayerModal from './VideoPlayerModal'
 import Toast from './Toast'
+import SimpleCalendar from './SimpleCalendar'
 
 export default function OnlineClasses({ onBack }) {
   const [searchQuery, setSearchQuery] = useState('')
@@ -14,10 +15,7 @@ export default function OnlineClasses({ onBack }) {
   const [isVideoOpen, setIsVideoOpen] = useState(false)
   const [bookmarkedLessons, setBookmarkedLessons] = useState([])
   const [toast, setToast] = useState(null)
-
-  // No pagination in timeline view usually, infinite scroll is better,
-  // but for simplicity we will render all filtered items grouped by date.
-  // We can limit initial render if performance is an issue, but for < 1000 items it's fine.
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
   const [filters, setFilters] = useState({
     dateRange: { start: '', end: '' },
@@ -105,16 +103,14 @@ export default function OnlineClasses({ onBack }) {
     // Advanced filters
     const now = new Date()
     if (filters.dateRange.start) {
-      result = result.filter(l => l.date >= new Date(filters.dateRange.start))
+      const startDate = new Date(filters.dateRange.start)
+      startDate.setHours(0, 0, 0, 0)
+      result = result.filter(l => l.date >= startDate)
     }
     if (filters.dateRange.end) {
-      result = result.filter(l => l.date <= new Date(filters.dateRange.end))
-    }
-    if (filters.weekdays.length > 0) {
-      result = result.filter(l => filters.weekdays.includes(l.date.getDay()))
-    }
-    if (filters.statuses.length > 0) {
-      result = result.filter(l => filters.statuses.includes(l.status))
+      const endDate = new Date(filters.dateRange.end)
+      endDate.setHours(23, 59, 59, 999)
+      result = result.filter(l => l.date <= endDate)
     }
     if (filters.subjects.length > 0) {
       result = result.filter(l => filters.subjects.includes(l.subject))
@@ -124,9 +120,6 @@ export default function OnlineClasses({ onBack }) {
     }
     if (filters.instructor) {
       result = result.filter(l => l.instructor === filters.instructor)
-    }
-    if (filters.onlyJoinable) {
-      result = result.filter(l => l.status === 'started' || (l.status === 'waiting' && Math.abs(l.date - now) < 10 * 60 * 1000))
     }
     if (filters.onlyBookmarked) {
       result = result.filter(l => l.bookmarked)
@@ -186,10 +179,13 @@ export default function OnlineClasses({ onBack }) {
 
   const formatDateHeader = (date) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-    // Az locale assumption based on memory, fallback to manual mapping if needed.
-    // Since environment locale might not be Az, let's do a simple mapping or just use toLocaleDateString if we trust browser.
-    // For consistency with design system, manual mapping is often safer or ensuring 'az-AZ' locale.
     return date.toLocaleDateString('az-AZ', options)
+  }
+
+  const formatDateButton = (dateStr) => {
+      if(!dateStr) return 'Tarix seç'
+      const date = new Date(dateStr)
+      return date.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })
   }
 
   return (
@@ -214,19 +210,36 @@ export default function OnlineClasses({ onBack }) {
 
           {/* Search and Filters */}
           <div className="flex gap-3 flex-wrap sm:flex-nowrap items-center">
-             {/* Date Picker */}
+             {/* Custom Date Picker */}
              <div className="relative">
-              <input
-                 type="date"
-                 className="h-12 px-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-semibold text-gray-700 cursor-pointer bg-gray-50 hover:bg-white transition-colors"
-                 onChange={(e) => {
-                   if (e.target.value) {
-                     setFilters(prev => ({ ...prev, dateRange: { start: e.target.value, end: e.target.value } }))
-                   } else {
-                     setFilters(prev => ({ ...prev, dateRange: { start: '', end: '' } }))
-                   }
-                 }}
-              />
+              <button
+                 onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                 className={`h-12 px-4 border-2 rounded-xl focus:outline-none font-semibold flex items-center gap-2 transition-all min-w-[180px]
+                   ${isCalendarOpen || filters.dateRange.start ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-white'}
+                 `}
+              >
+                  <CalendarIcon className="w-5 h-5" />
+                  <span>{formatDateButton(filters.dateRange.start)}</span>
+              </button>
+
+              {isCalendarOpen && (
+                  <>
+                      <div className="fixed inset-0 z-40" onClick={() => setIsCalendarOpen(false)}></div>
+                      <div className="absolute top-14 left-0 z-50">
+                          <SimpleCalendar
+                              selectedDate={filters.dateRange.start}
+                              onChange={(date) => {
+                                  if (date) {
+                                      setFilters(prev => ({ ...prev, dateRange: { start: date, end: date } }))
+                                  } else {
+                                      setFilters(prev => ({ ...prev, dateRange: { start: '', end: '' } }))
+                                  }
+                              }}
+                              onClose={() => setIsCalendarOpen(false)}
+                          />
+                      </div>
+                  </>
+              )}
             </div>
 
             <div className="relative flex-1">
