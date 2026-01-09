@@ -143,45 +143,21 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                     colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
-                    icon={Video} 
-                    label="3D Videolar" 
-                    onClick={() => {}}
+                    icon={Calendar}
+                    label="Onlayn Dərslər"
+                    onClick={() => setCurrentPage('classes')}
                     colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={HelpCircle} 
-                    label="İmtahan"
+                    label="İmtahanlar"
                     onClick={() => setCurrentPage('exam')}
-                    colorClass="bg-primary-50 text-primary-600"
-                  />
-                  <QuickAction 
-                    icon={FileText} 
-                    label="Video Dərslər" 
-                    onClick={() => {}}
-                    colorClass="bg-primary-50 text-primary-600"
-                  />
-                  <QuickAction 
-                    icon={BookMarked} 
-                    label="Maddələr" 
-                    onClick={() => {}}
                     colorClass="bg-primary-50 text-primary-600"
                   />
                   <QuickAction 
                     icon={AlertTriangle} 
                     label="Cərimələr" 
                     onClick={() => setCurrentPage('penalties')}
-                    colorClass="bg-primary-50 text-primary-600"
-                  />
-                  <QuickAction 
-                    icon={BarChart3} 
-                    label="Statistika" 
-                    onClick={() => {}}
-                    colorClass="bg-primary-50 text-primary-600"
-                  />
-                  <QuickAction 
-                    icon={Calendar} 
-                    label="Onlayn Dərslər" 
-                    onClick={() => setCurrentPage('classes')}
                     colorClass="bg-primary-50 text-primary-600"
                   />
                 </div>

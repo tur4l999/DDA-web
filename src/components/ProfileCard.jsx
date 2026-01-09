@@ -1,4 +1,4 @@
-import { Award, MapPin, ChevronRight, Trophy } from 'lucide-react'
+import { Award, School, ChevronRight, Trophy } from 'lucide-react'
 
 export default function ProfileCard() {
   return (
@@ -26,20 +26,8 @@ export default function ProfileCard() {
         <div className="mb-5">
             <h3 className="text-lg font-bold text-gray-900 tracking-tight">Tural Qarayev</h3>
             <div className="flex items-center gap-1.5 text-gray-500 text-xs font-medium mt-1">
-                <MapPin className="w-3.5 h-3.5 text-gray-400" />
-                <span>Test Academy</span>
-            </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-3 mb-5">
-            <div className="bg-gray-50/80 rounded-xl p-3 border border-gray-100/50 hover:bg-white hover:shadow-sm transition-all group/stat">
-                <div className="text-xl font-bold text-gray-900 group-hover/stat:text-primary-600 transition-colors">4</div>
-                <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mt-1">Tamamlanıb</div>
-            </div>
-            <div className="bg-gray-50/80 rounded-xl p-3 border border-gray-100/50 hover:bg-white hover:shadow-sm transition-all group/stat">
-                <div className="text-xl font-bold text-gray-400 group-hover/stat:text-gray-600 transition-colors">20</div>
-                <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mt-1">Qalır</div>
+                <School className="w-3.5 h-3.5 text-gray-400" />
+                <span>Digital Driving Academy</span>
             </div>
         </div>
 
