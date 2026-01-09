@@ -1,7 +1,7 @@
 import { Calendar, Clock, User, Globe, Bookmark, Play, Video, Info } from 'lucide-react'
 import { useState } from 'react'
 
-export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchReplay, onToggleBookmark }) {
+export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBookmark }) {
   const [isBookmarked, setIsBookmarked] = useState(lesson.bookmarked || false)
 
   const getStatusInfo = (status) => {
@@ -52,7 +52,6 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
 
   const statusInfo = getStatusInfo(lesson.status)
   const canJoin = lesson.status === 'started' || (lesson.status === 'waiting' && Math.abs(lesson.date - new Date()) < 10 * 60 * 1000)
-  const hasReplay = lesson.status === 'completed' && lesson.replayUrl
 
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked)
@@ -119,10 +118,10 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         </div>
 
         <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3">
-          <Clock className="w-4 h-4 text-primary-600 flex-shrink-0" />
+          <Globe className="w-4 h-4 text-primary-600 flex-shrink-0" />
           <div>
-            <p className="text-xs text-gray-500 font-semibold">Müddət</p>
-            <p className="text-sm font-bold text-gray-900">{lesson.duration} dəq</p>
+            <p className="text-xs text-gray-500 font-semibold">Dil</p>
+            <p className="text-sm font-bold text-gray-900">{getLanguageLabel(lesson.language)}</p>
           </div>
         </div>
 
@@ -134,21 +133,6 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
           </div>
         </div>
       </div>
-
-      {/* Replay indicator */}
-      {hasReplay && (
-        <div className="mb-4 p-3 bg-gradient-to-r from-primary-50 to-primary-50 border-2 border-primary-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-primary-600" />
-          <span className="text-sm font-bold text-primary-900">Təkrar video mövcuddur</span>
-        </div>
-      )}
-
-      {lesson.status === 'completed' && !hasReplay && (
-        <div className="mb-4 p-3 bg-gray-50 border-2 border-gray-200 rounded-xl flex items-center space-x-2">
-          <Video className="w-4 h-4 text-gray-400" />
-          <span className="text-sm font-semibold text-gray-600">Təkrar video hələ yüklənməyib</span>
-        </div>
-      )}
 
       {/* Actions */}
       <div className="flex gap-2">
@@ -173,12 +157,13 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
           </button>
         )}
 
+        {/* Completed State - Disabled Telegram Button */}
         {lesson.status === 'completed' && (
           <button
-            disabled={true}
-            className="flex-1 bg-gray-100 text-gray-400 font-semibold py-3 px-4 rounded-xl transition-all flex items-center justify-center space-x-2 cursor-not-allowed opacity-70"
+            disabled
+            className="flex-1 bg-gray-50 text-gray-400 font-semibold py-3 px-4 rounded-xl border-2 border-gray-100 cursor-not-allowed flex items-center justify-center space-x-2"
           >
-            <Video className="w-4 h-4 opacity-50" />
+            <Video className="w-4 h-4" />
             <span>Təkrarı telegramda izlə</span>
           </button>
         )}
@@ -186,7 +171,9 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onWatchRepla
         {/* Secondary action - Details */}
         <button
           onClick={() => onViewDetails?.(lesson)}
-          className="px-4 py-3 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
+          className={`px-4 py-3 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 ${
+             lesson.status === 'cancelled' ? 'w-full' : ''
+          }`}
         >
           <Info className="w-4 h-4" />
           <span className="hidden sm:inline">Detallara bax</span>

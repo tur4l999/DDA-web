@@ -4,13 +4,9 @@ import FilterDrawer from './FilterDrawer'
 import LessonCard from './LessonCard'
 import LessonDetailsModal from './LessonDetailsModal'
 import VideoPlayerModal from './VideoPlayerModal'
-import CalendarView from './CalendarView'
-import RightPanel from './RightPanel'
-import MobileRightPanel from './MobileRightPanel'
 import Toast from './Toast'
 
 export default function OnlineClasses({ onBack }) {
-  const [view, setView] = useState('list') // 'list' or 'calendar'
   const [searchQuery, setSearchQuery] = useState('')
   const [quickFilter, setQuickFilter] = useState('all')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -19,21 +15,8 @@ export default function OnlineClasses({ onBack }) {
   const [isVideoOpen, setIsVideoOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [bookmarkedLessons, setBookmarkedLessons] = useState([])
-  const [rightPanelTab, setRightPanelTab] = useState('bookmarks')
-  const [selectedDate, setSelectedDate] = useState(new Date())
   const [toast, setToast] = useState(null)
   const itemsPerPage = 9
-
-  // Auto-switch tab based on view mode
-  const handleViewChange = (newView) => {
-    setView(newView)
-    if (newView === 'calendar') {
-      setRightPanelTab('selectedDay')
-      setSelectedDate(new Date())
-    } else {
-      setRightPanelTab('bookmarks')
-    }
-  }
 
   const [filters, setFilters] = useState({
     dateRange: { start: '', end: '' },
@@ -44,7 +27,6 @@ export default function OnlineClasses({ onBack }) {
     languages: [],
     instructor: '',
     onlyJoinable: false,
-    onlyWithReplay: false,
     onlyBookmarked: false
   })
 
@@ -69,14 +51,9 @@ export default function OnlineClasses({ onBack }) {
           
           const now = new Date()
           let status = 'waiting'
-          let replayUrl = null
           
           if (lessonDate < now) {
             status = 'completed'
-            // 80% completed lessons have replay
-            if (Math.random() > 0.2) {
-              replayUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
-            }
           } else if (Math.abs(lessonDate - now) < 2 * 60 * 60 * 1000) {
             status = 'started'
           }
@@ -84,13 +61,16 @@ export default function OnlineClasses({ onBack }) {
           // 5% cancelled
           if (Math.random() < 0.05) {
             status = 'cancelled'
-            replayUrl = null
           }
           
           const subject = subjects[classesData.length % subjects.length]
           
+          // Generate 4 digit code padded with zeros, e.g. 0001
+          const code = String(Math.floor(Math.random() * 10000)).padStart(4, '0')
+
           classesData.push({
             id: classesData.length + 1,
+            code: '#' + code,
             title: subject,
             instructor: instructors[classesData.length % instructors.length],
             date: lessonDate,
@@ -98,7 +78,6 @@ export default function OnlineClasses({ onBack }) {
             status: status,
             subject: subject,
             language: languages[classesData.length % languages.length],
-            replayUrl: replayUrl,
             description: `${subject} mövzusu üzrə ətraflı dərs. Nəzəri və praktiki məlumatlar.`,
             bookmarked: Math.random() > 0.9,
             cancelReason: status === 'cancelled' ? 'Texniki səbəblər üzündən ləğv edildi' : null
@@ -141,8 +120,6 @@ export default function OnlineClasses({ onBack }) {
       result = result.filter(l => l.status === 'started')
     } else if (quickFilter === 'completed') {
       result = result.filter(l => l.status === 'completed')
-    } else if (quickFilter === 'replay') {
-      result = result.filter(l => l.status === 'completed' && l.replayUrl)
     } else if (quickFilter === 'bookmarked') {
       result = result.filter(l => bookmarkedLessons.some(b => b.id === l.id))
     }
@@ -171,9 +148,6 @@ export default function OnlineClasses({ onBack }) {
     }
     if (filters.onlyJoinable) {
       result = result.filter(l => l.status === 'started' || (l.status === 'waiting' && Math.abs(l.date - now) < 10 * 60 * 1000))
-    }
-    if (filters.onlyWithReplay) {
-      result = result.filter(l => l.replayUrl)
     }
     if (filters.onlyBookmarked) {
       result = result.filter(l => l.bookmarked)
@@ -222,34 +196,16 @@ export default function OnlineClasses({ onBack }) {
         setToast('Saxlanılanlardan silindi')
         return prev.filter(l => l.id !== lessonId)
       } else {
-        setRightPanelTab('bookmarks')
         setToast('Saxlanılanlara əlavə edildi')
         return [lesson, ...prev]
       }
     })
   }
 
-  const handleRemoveBookmark = (lessonId) => {
-    setBookmarkedLessons(prev => prev.filter(l => l.id !== lessonId))
-  }
-
-  const handleDateSelectFromCalendar = (date) => {
-    setSelectedDate(date)
-    setRightPanelTab('selectedDay')
-  }
-
-  const lessonsForSelectedDate = useMemo(() => {
-    if (!selectedDate) return []
-    return filteredLessons.filter(lesson => {
-      const lessonDate = new Date(lesson.date)
-      return lessonDate.toDateString() === selectedDate.toDateString()
-    })
-  }, [selectedDate, filteredLessons])
-
   return (
-    <div className="flex-1 h-screen overflow-y-auto bg-gray-50">
+    <div className="flex-1 h-full flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b-2 border-gray-200 sticky top-0 z-30 shadow-md">
+      <div className="bg-white border-b-2 border-gray-200 z-30 shadow-md">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-4">
@@ -264,37 +220,11 @@ export default function OnlineClasses({ onBack }) {
                 <p className="text-sm text-gray-600 font-semibold">{filteredLessons.length} dərs tapıldı</p>
               </div>
             </div>
-
-            {/* View Toggle */}
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
-              <button
-                onClick={() => handleViewChange('list')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
-                  view === 'list'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <List className="w-4 h-4" />
-                <span className="hidden sm:inline">Siyahı</span>
-              </button>
-              <button
-                onClick={() => handleViewChange('calendar')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
-                  view === 'calendar'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <CalendarIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">Təqvim</span>
-              </button>
-            </div>
           </div>
 
           {/* Search and Filters */}
           <div className="flex gap-3 flex-wrap sm:flex-nowrap">
-            {/* Date Picker for List View */}
+             {/* Date Picker */}
              <div className="relative">
               <input
                  type="date"
@@ -335,34 +265,7 @@ export default function OnlineClasses({ onBack }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {view === 'calendar' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
-            {/* Left Column: Calendar */}
-            <div className="max-w-full overflow-hidden">
-              <CalendarView
-                lessons={filteredLessons}
-                onSelectLesson={handleViewDetails}
-                onDateSelect={handleDateSelectFromCalendar}
-              />
-            </div>
-
-            {/* Right Panel - Smart Sidebar */}
-            <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
-              <RightPanel
-                activeTab={rightPanelTab}
-                onTabChange={setRightPanelTab}
-                bookmarkedLessons={bookmarkedLessons}
-                onRemoveBookmark={handleRemoveBookmark}
-                selectedDate={selectedDate}
-                lessonsForDate={lessonsForSelectedDate}
-                onJoinLesson={handleJoin}
-                onViewDetails={handleViewDetails}
-              />
-            </div>
-          </div>
-        ) : (
-          <div>
+      <div className="flex-1 overflow-y-auto max-w-7xl mx-auto px-4 lg:px-8 py-8 w-full">
             {/* Next Up Card */}
             {nextLesson && (
               <div className="bg-gradient-to-r from-primary-500 to-primary-700 rounded-2xl p-6 mb-6 shadow-lg">
@@ -456,16 +359,6 @@ export default function OnlineClasses({ onBack }) {
                 Tamamlandı
               </button>
               <button
-                onClick={() => { setQuickFilter('replay'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'replay'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Təkrar videosu olanlar
-              </button>
-              <button
                 onClick={() => { setQuickFilter('bookmarked'); setCurrentPage(1) }}
                 className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
                   quickFilter === 'bookmarked'
@@ -487,7 +380,6 @@ export default function OnlineClasses({ onBack }) {
                       lesson={lesson}
                       onJoin={handleJoin}
                       onViewDetails={handleViewDetails}
-                      onWatchReplay={handleWatchReplay}
                       onToggleBookmark={handleToggleBookmark}
                     />
                   ))}
@@ -558,8 +450,6 @@ export default function OnlineClasses({ onBack }) {
                 <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
               </div>
             )}
-          </div>
-        )}
       </div>
 
       {/* Modals */}
@@ -586,20 +476,6 @@ export default function OnlineClasses({ onBack }) {
         isOpen={isVideoOpen}
         onClose={() => setIsVideoOpen(false)}
       />
-
-      {/* Mobile Right Panel - Only for Calendar View */}
-      {view === 'calendar' && (
-        <MobileRightPanel
-          activeTab={rightPanelTab}
-          onTabChange={setRightPanelTab}
-          bookmarkedLessons={bookmarkedLessons}
-          onRemoveBookmark={handleRemoveBookmark}
-          selectedDate={selectedDate}
-          lessonsForDate={lessonsForSelectedDate}
-          onJoinLesson={handleJoin}
-          onViewDetails={handleViewDetails}
-        />
-      )}
 
       {/* Toast Notification */}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
