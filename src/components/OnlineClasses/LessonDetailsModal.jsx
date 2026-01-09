@@ -1,4 +1,4 @@
-import { X, Calendar, Clock, User, Globe, Play, Video, AlertCircle } from 'lucide-react'
+import { X, Calendar, Clock, User, Globe, Play, Video, AlertCircle, Check } from 'lucide-react'
 
 export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, onWatchReplay }) {
   if (!isOpen || !lesson) return null
@@ -132,7 +132,7 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
                     className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-2xl transition-all shadow-xl shadow-primary-200 flex items-center justify-center gap-2"
                   >
                     <Play className="w-5 h-5 fill-current" />
-                    <span>Dərsə qoşul</span>
+                    <span>Dərsə Başla</span>
                   </button>
              ) : lesson.status === 'waiting' ? (
                  <button
@@ -140,15 +140,15 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
                     className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-2xl transition-all shadow-xl shadow-primary-200 flex items-center justify-center gap-2"
                   >
                     <Play className="w-5 h-5 fill-current" />
-                    <span>Dərsə qoşul</span>
+                    <span>Dərsə Başla</span>
                   </button>
              ) : lesson.status === 'completed' ? (
                  <button
                     onClick={handleAction}
                     className="w-full bg-gray-50 text-gray-600 font-bold py-4 px-6 rounded-2xl border-2 border-gray-200 hover:bg-gray-100 flex items-center justify-center gap-2"
                   >
-                    <Video className="w-5 h-5" />
-                    <span>Təkrarı telegramda izlə</span>
+                    <Check className="w-5 h-5" />
+                    <span>Tamamlandı</span>
                   </button>
              ) : (
                 <button

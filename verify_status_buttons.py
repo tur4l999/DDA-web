@@ -18,9 +18,6 @@ def run(playwright):
         # 1. Verify Status Buttons
         print("Verifying Status Buttons...")
 
-        # We need to find different statuses. The mock data has 'waiting', 'started', 'completed', 'cancelled'.
-
-        # Helper to click and check alert
         def check_alert(button_selector, expected_msg, description):
             print(f"Testing {description}...")
             # Set up dialog handler
@@ -34,6 +31,7 @@ def run(playwright):
             # Find button
             btn = page.locator(button_selector).first
             if btn.count() > 0:
+                print(f"Button found for {description}, clicking...")
                 btn.click()
                 time.sleep(0.5)
                 if alert_message and expected_msg in alert_message[0]:
@@ -43,53 +41,33 @@ def run(playwright):
                 else:
                      print(f"ERROR: {description} Alert mismatch. Got: '{alert_message[0]}', Expected: '{expected_msg}'")
             else:
-                print(f"WARNING: No button found for {description} (Status might not be present in current view).")
+                print(f"WARNING: No button found for {description}.")
 
             page.remove_listener("dialog", handle_dialog)
 
-        # Check Waiting ("Gözləyir") -> "Dərsə qoşul"
-        # Since 'waiting' and 'started' both have "Dərsə qoşul", we rely on the row context or try both.
-        # But 'started' triggers join (maybe alert "Dərsə qoşulunur..."), 'waiting' triggers "Dərs başlamayıb..."
-        # We can look for row that contains "Gözləyir"
+        # Check Waiting ("Gözləyir") -> "Dərsə Başla"
+        check_alert(".group:has-text('Gözləyir') >> button:has-text('Dərsə Başla')",
+                    "Dərs başlamayıb",
+                    "Waiting Status Action")
 
-        waiting_row = page.locator(".group:has-text('Gözləyir')")
-        if waiting_row.count() > 0:
-            check_alert(".group:has-text('Gözləyir') >> button:has-text('Dərsə qoşul')",
-                        "Dərs başlamayıb",
-                        "Waiting Status Action")
-        else:
-            print("No Waiting lessons found.")
-
-        # Check Completed ("Tamamlandı") -> "Təkrarı telegramda izlə"
-        completed_row = page.locator(".group:has-text('Tamamlandı')")
-        if completed_row.count() > 0:
-             check_alert(".group:has-text('Tamamlandı') >> button:has-text('Təkrarı telegramda izlə')",
-                        "Dərs bitmişdir",
-                        "Completed Status Action")
-        else:
-            print("No Completed lessons found.")
+        # Check Completed ("Tamamlandı") -> "Tamamlandı"
+        check_alert(".group:has-text('Tamamlandı') >> button:has-text('Tamamlandı')",
+                    "Dərs bitmişdir",
+                    "Completed Status Action")
 
         # Check Cancelled ("Ləğv edildi") -> "Ləğv edilib"
-        cancelled_row = page.locator(".group:has-text('Ləğv edildi')")
-        if cancelled_row.count() > 0:
-             check_alert(".group:has-text('Ləğv edildi') >> button:has-text('Ləğv edilib')",
-                        "Dərs ləğv edilmiş",
-                        "Cancelled Status Action")
+        check_alert(".group:has-text('Ləğv edildi') >> button:has-text('Ləğv edilib')",
+                    "Dərs ləğv edilmiş",
+                    "Cancelled Status Action")
+
+        # Verify no "Təkrarı telegramda izlə" button exists
+        if page.locator("button:has-text('Təkrarı telegramda izlə')").count() == 0:
+             print("SUCCESS: 'Təkrarı telegramda izlə' button is absent.")
         else:
-            print("No Cancelled lessons found.")
+             print("ERROR: 'Təkrarı telegramda izlə' button was found.")
 
-        # 2. Verify Filter Drawer (Subjects removed)
-        print("Verifying Filter Drawer...")
-        page.click("text=Filtrlər")
-        time.sleep(1)
-
-        if page.locator("text=Mövzular").count() == 0:
-            print("SUCCESS: 'Mövzular' filter section is absent.")
-        else:
-            print("ERROR: 'Mövzular' filter section is still present.")
-
-        # Close drawer
-        page.mouse.click(0, 0)
+        # Take screenshot
+        page.screenshot(path="/home/jules/verification/status_buttons_v3.png")
 
     except Exception as e:
         print(f"Error: {e}")

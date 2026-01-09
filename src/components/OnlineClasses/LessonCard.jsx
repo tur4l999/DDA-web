@@ -1,4 +1,4 @@
-import { Play, Video, Info, User, Clock, Bookmark, AlertCircle } from 'lucide-react'
+import { Play, Video, Info, User, Clock, Bookmark, AlertCircle, Check } from 'lucide-react'
 import { useState } from 'react'
 
 export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBookmark }) {
@@ -140,7 +140,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
                 className="flex-1 sm:flex-none bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-5 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2 min-w-[140px]"
               >
                 <Play className="w-4 h-4 fill-current" />
-                <span>Dərsə qoşul</span>
+                <span>Dərsə Başla</span>
               </button>
          ) : lesson.status === 'waiting' ? (
              <button
@@ -148,15 +148,15 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
                 className="flex-1 sm:flex-none bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-5 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2 min-w-[140px]"
               >
                 <Play className="w-4 h-4 fill-current" />
-                <span>Dərsə qoşul</span>
+                <span>Dərsə Başla</span>
               </button>
          ) : lesson.status === 'completed' ? (
             <button
                 onClick={handleAction}
-                className="flex-1 sm:flex-none bg-white text-gray-600 font-bold py-2.5 px-5 rounded-xl border-2 border-gray-200 hover:bg-gray-50 flex items-center justify-center space-x-2 min-w-[200px]"
+                className="flex-1 sm:flex-none bg-gray-50 text-gray-600 font-bold py-2.5 px-5 rounded-xl border-2 border-gray-200 hover:bg-gray-100 flex items-center justify-center space-x-2 min-w-[140px]"
             >
-                <Video className="w-4 h-4" />
-                <span>Təkrarı telegramda izlə</span>
+                <Check className="w-4 h-4" />
+                <span>Tamamlandı</span>
             </button>
          ) : (
             <button
