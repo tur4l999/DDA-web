@@ -1,13 +1,8 @@
-import { X, User, Globe, Tag, Filter } from 'lucide-react'
+import { X, User, Globe, Filter } from 'lucide-react'
 import { useState } from 'react'
 
 export default function FilterDrawer({ isOpen, onClose, filters, onFilterChange }) {
   const [localFilters, setLocalFilters] = useState(filters)
-
-  const subjects = [
-    'Yol nişanları', 'Trafik işarələri', 'Sürücülük texnikası', 
-    'Təhlükəsizlik', 'Qanun maddələri', 'Praktik məsləhətlər', 'Sual-Cavab'
-  ]
 
   const instructors = [
     'Ə.Talibov', 'R.Əliyev', 'V.Hüseynov', 'N.Quliyev', 
@@ -66,29 +61,6 @@ export default function FilterDrawer({ isOpen, onClose, filters, onFilterChange 
           </div>
 
           <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-
-            {/* Mövzular */}
-            <div>
-              <label className="flex items-center space-x-2 text-sm font-bold text-gray-900 mb-3">
-                <Tag className="w-4 h-4 text-primary-600" />
-                <span>Mövzular</span>
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {subjects.map(subject => (
-                  <button
-                    key={subject}
-                    onClick={() => toggleArrayFilter('subjects', subject)}
-                    className={`px-3 py-2 rounded-xl font-semibold text-xs transition-all border ${
-                      localFilters.subjects.includes(subject)
-                        ? 'bg-primary-50 border-primary-500 text-primary-700'
-                        : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
-                    }`}
-                  >
-                    {subject}
-                  </button>
-                ))}
-              </div>
-            </div>
 
             {/* Dil */}
             <div>

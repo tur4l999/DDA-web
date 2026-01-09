@@ -6,7 +6,7 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
   const getStatusInfo = (status) => {
     const statusMap = {
       waiting: { label: 'Gözləyir', className: 'bg-primary-50 text-primary-700 border-primary-100', icon: '⏰' },
-      started: { label: 'Başladı', className: 'bg-green-50 text-green-700 border-green-100', icon: '🔴' },
+      started: { label: 'Aktiv', className: 'bg-green-50 text-green-700 border-green-100', icon: '🔴' },
       completed: { label: 'Tamamlandı', className: 'bg-gray-50 text-gray-700 border-gray-200', icon: '✓' },
       cancelled: { label: 'Ləğv edildi', className: 'bg-red-50 text-red-700 border-red-100', icon: '✕' }
     }
@@ -24,7 +24,19 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
   }
 
   const statusInfo = getStatusInfo(lesson.status)
-  const canJoin = lesson.status === 'started' || (lesson.status === 'waiting' && Math.abs(lesson.date - new Date()) < 10 * 60 * 1000)
+
+  const handleAction = () => {
+    if (lesson.status === 'waiting') {
+      alert("Dərs başlamayıb. Dərsə saatına yaxın zamanda yenidən yoxlayın.")
+    } else if (lesson.status === 'started') {
+      onJoin?.(lesson)
+      onClose()
+    } else if (lesson.status === 'completed') {
+      alert("Dərs bitmişdir, təkrarını telegramda izləyə bilərsiniz.")
+    } else if (lesson.status === 'cancelled') {
+      alert("Dərs ləğv edilmiş və ya başqa saata keçirilmişdir.")
+    }
+  }
 
   return (
     <>
@@ -114,32 +126,38 @@ export default function LessonDetailsModal({ lesson, isOpen, onClose, onJoin, on
 
           {/* Footer Actions */}
           <div className="p-8 pt-0 flex gap-3">
-             {lesson.status === 'completed' ? (
+             {lesson.status === 'started' ? (
                  <button
-                    disabled
-                    className="w-full bg-gray-50 text-gray-400 font-bold py-4 px-6 rounded-2xl border-2 border-gray-100 cursor-not-allowed flex items-center justify-center gap-2 hover:bg-gray-50"
+                    onClick={handleAction}
+                    className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-2xl transition-all shadow-xl shadow-primary-200 flex items-center justify-center gap-2"
+                  >
+                    <Play className="w-5 h-5 fill-current" />
+                    <span>Dərsə qoşul</span>
+                  </button>
+             ) : lesson.status === 'waiting' ? (
+                 <button
+                    onClick={handleAction}
+                    className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-2xl transition-all shadow-xl shadow-primary-200 flex items-center justify-center gap-2"
+                  >
+                    <Play className="w-5 h-5 fill-current" />
+                    <span>Dərsə qoşul</span>
+                  </button>
+             ) : lesson.status === 'completed' ? (
+                 <button
+                    onClick={handleAction}
+                    className="w-full bg-gray-50 text-gray-600 font-bold py-4 px-6 rounded-2xl border-2 border-gray-200 hover:bg-gray-100 flex items-center justify-center gap-2"
                   >
                     <Video className="w-5 h-5" />
                     <span>Təkrarı telegramda izlə</span>
                   </button>
              ) : (
-                canJoin ? (
-                     <button
-                        onClick={() => { onJoin?.(lesson); onClose() }}
-                        className="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-2xl transition-all shadow-xl shadow-primary-200 flex items-center justify-center gap-2"
-                      >
-                        <Play className="w-5 h-5 fill-current" />
-                        <span>Dərsə qoşul</span>
-                      </button>
-                ) : (
-                    <button
-                        disabled
-                        className="w-full bg-gray-100 text-gray-400 font-bold py-4 px-6 rounded-2xl cursor-not-allowed flex items-center justify-center gap-2"
-                      >
-                        <Play className="w-5 h-5 fill-current" />
-                        <span>Qoşulmaq mümkün deyil</span>
-                      </button>
-                )
+                <button
+                    onClick={handleAction}
+                    className="w-full bg-red-50 text-red-600 font-bold py-4 px-6 rounded-2xl border-2 border-red-200 hover:bg-red-100 flex items-center justify-center gap-2"
+                  >
+                    <AlertCircle className="w-5 h-5" />
+                    <span>Ləğv edilib</span>
+                  </button>
              )}
           </div>
         </div>

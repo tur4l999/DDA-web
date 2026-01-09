@@ -1,4 +1,4 @@
-import { Play, Video, Info, User, Clock, Bookmark } from 'lucide-react'
+import { Play, Video, Info, User, Clock, Bookmark, AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 
 export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBookmark }) {
@@ -12,7 +12,7 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
         icon: '⏰'
       },
       started: {
-        label: 'Başladı',
+        label: 'Aktiv',
         className: 'bg-green-50 text-green-700 border-green-100 animate-pulse',
         icon: '🔴'
       },
@@ -51,12 +51,23 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
   }
 
   const statusInfo = getStatusInfo(lesson.status)
-  const canJoin = lesson.status === 'started' || (lesson.status === 'waiting' && Math.abs(lesson.date - new Date()) < 10 * 60 * 1000)
 
   const handleBookmark = (e) => {
     e.stopPropagation()
     setIsBookmarked(!isBookmarked)
     onToggleBookmark?.(lesson.id, !isBookmarked)
+  }
+
+  const handleAction = () => {
+    if (lesson.status === 'waiting') {
+      alert("Dərs başlamayıb. Dərsə saatına yaxın zamanda yenidən yoxlayın.")
+    } else if (lesson.status === 'started') {
+      onJoin?.(lesson)
+    } else if (lesson.status === 'completed') {
+      alert("Dərs bitmişdir, təkrarını telegramda izləyə bilərsiniz.")
+    } else if (lesson.status === 'cancelled') {
+      alert("Dərs ləğv edilmiş və ya başqa saata keçirilmişdir.")
+    }
   }
 
   return (
@@ -122,31 +133,49 @@ export default function LessonCard({ lesson, onJoin, onViewDetails, onToggleBook
             <Bookmark className={`w-5 h-5 ${isBookmarked ? 'fill-current' : ''}`} />
           </button>
 
-        {(lesson.status === 'started' || (lesson.status === 'waiting' && canJoin)) ? (
-          <button
-            onClick={() => onJoin?.(lesson)}
-            className="flex-1 sm:flex-none bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-5 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2 min-w-[140px]"
-          >
-            <Play className="w-4 h-4 fill-current" />
-            <span>Qoşul</span>
-          </button>
-        ) : lesson.status === 'completed' ? (
-           <button
-            disabled
-            className="flex-1 sm:flex-none bg-gray-50 text-gray-400 font-semibold py-2.5 px-4 rounded-xl border border-gray-200 cursor-not-allowed flex items-center justify-center space-x-2 min-w-[200px]"
-          >
-            <Video className="w-4 h-4" />
-            <span className="whitespace-nowrap">Təkrarı telegramda izlə</span>
-          </button>
-        ) : (
-          <button
+         {/* Dynamic Status Button */}
+         {lesson.status === 'started' ? (
+             <button
+                onClick={handleAction}
+                className="flex-1 sm:flex-none bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-5 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2 min-w-[140px]"
+              >
+                <Play className="w-4 h-4 fill-current" />
+                <span>Dərsə qoşul</span>
+              </button>
+         ) : lesson.status === 'waiting' ? (
+             <button
+                onClick={handleAction}
+                className="flex-1 sm:flex-none bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-5 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center space-x-2 min-w-[140px]"
+              >
+                <Play className="w-4 h-4 fill-current" />
+                <span>Dərsə qoşul</span>
+              </button>
+         ) : lesson.status === 'completed' ? (
+            <button
+                onClick={handleAction}
+                className="flex-1 sm:flex-none bg-white text-gray-600 font-bold py-2.5 px-5 rounded-xl border-2 border-gray-200 hover:bg-gray-50 flex items-center justify-center space-x-2 min-w-[200px]"
+            >
+                <Video className="w-4 h-4" />
+                <span>Təkrarı telegramda izlə</span>
+            </button>
+         ) : (
+            <button
+                onClick={handleAction}
+                className="flex-1 sm:flex-none py-2.5 px-5 border-2 border-red-200 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-all flex items-center justify-center space-x-2 min-w-[140px]"
+            >
+                <AlertCircle className="w-4 h-4" />
+                <span>Ləğv edilib</span>
+            </button>
+         )}
+
+         {/* Details button is now mainly for 'Info', but status button is primary action */}
+         <button
             onClick={() => onViewDetails?.(lesson)}
-            className="flex-1 sm:flex-none py-2.5 px-5 border-2 border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center space-x-2 min-w-[140px]"
-          >
-            <Info className="w-4 h-4" />
-            <span>Detallar</span>
-          </button>
-        )}
+            className="p-2.5 border-2 border-gray-200 text-gray-500 font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center"
+         >
+            <Info className="w-5 h-5" />
+         </button>
+
       </div>
 
     </div>
