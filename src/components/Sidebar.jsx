@@ -2,19 +2,10 @@ import { Home, BookOpen, FileText, BarChart3, Car, HelpCircle, FileCheck, Credit
 import { useState } from 'react'
 
 const menuItems = [
-  { icon: Home, label: 'Əsas səhifə', page: 'dashboard' },
-  { icon: BookOpen, label: 'Təlim mövzuları', page: 'topics' },
+  { icon: BookOpen, label: 'Mövzular', page: 'topics' },
   { icon: Calendar, label: 'Onlayn dərslər', page: 'classes' },
-  { icon: Octagon, label: 'Yol nişanları', page: 'road-signs' },
+  { icon: FileText, label: 'İmtahanlar', page: 'exam' },
   { icon: AlertTriangle, label: 'Cərimələr', page: 'penalties' },
-  { icon: FileText, label: 'İmtahan', page: null },
-  { icon: BarChart3, label: 'Nəticələrim', page: 'results' },
-  { icon: Car, label: 'Praktiki Təcrübə', page: null },
-  { icon: HelpCircle, label: 'Sual-cavab', page: null },
-  { icon: FileCheck, label: 'Appelyasiya', page: null },
-  { icon: CreditCard, label: 'Ödənişlər', page: null },
-  { icon: ShoppingBag, label: 'Online mağaza', page: null },
-  { icon: Monitor, label: 'İmtahan simulyatoru', page: null },
 ]
 
 export default function Sidebar({ isOpen, setIsOpen, isCollapsed, setIsCollapsed, currentPage, setCurrentPage }) {
