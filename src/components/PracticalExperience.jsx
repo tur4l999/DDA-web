@@ -7,7 +7,9 @@ export default function PracticalExperience({ onBack }) {
   // Selection States
   const [gearbox, setGearbox] = useState('automatic') // 'automatic' | 'manual'
   const [vehicle, setVehicle] = useState(null)
+  const [vehicleModel, setVehicleModel] = useState(null)
   const [region, setRegion] = useState('')
+  const [district, setDistrict] = useState('')
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
   const [selectedTime, setSelectedTime] = useState(null)
   const [selectedInstructor, setSelectedInstructor] = useState(null)
@@ -15,12 +17,29 @@ export default function PracticalExperience({ onBack }) {
 
   // Mock Data
   const regions = ['Bakı', 'Sumqayıt', 'Gəncə', 'Xırdalan']
+  const bakuDistricts = ['Nərimanov', 'Yasamal', 'Binəqədi', 'Nəsimi', 'Səbail', 'Xətai', 'Nizami', 'Sabunçu', 'Suraxanı', 'Qaradağ', 'Xəzər', 'Pirallahı']
+
+  const vehicleModels = {
+    moto: [
+      { id: 'm1', name: 'Yamaha MT-07', image: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=400&h=300&fit=crop' },
+      { id: 'm2', name: 'Honda CB650R', image: 'https://images.unsplash.com/photo-1615172282427-9a5752d6486d?w=400&h=300&fit=crop' },
+      { id: 'm3', name: 'Kawasaki Z650', image: 'https://images.unsplash.com/photo-1599819811279-d5ad9cccf838?w=400&h=300&fit=crop' }
+    ],
+    sedan: [
+      { id: 'c1', name: 'Kia Rio', image: 'https://images.unsplash.com/photo-1625231334106-35069f582b2d?w=400&h=300&fit=crop' },
+      { id: 'c2', name: 'Hyundai Accent', image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=400&h=300&fit=crop' },
+      { id: 'c3', name: 'Toyota Corolla', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=300&fit=crop' },
+      { id: 'c4', name: 'Chevrolet Cruze', image: 'https://images.unsplash.com/photo-1619682817481-e994891cd1f5?w=400&h=300&fit=crop' }
+    ]
+  }
+
   const timeSlots = ['09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00']
 
   const instructors = [
     { id: 1, name: 'Tural Məmmədov', rating: 4.9, experience: '5 il', image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&fit=crop' },
     { id: 2, name: 'Aysel Əliyeva', rating: 4.8, experience: '3 il', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop' },
     { id: 3, name: 'Rəşad Kərimov', rating: 5.0, experience: '7 il', image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop' },
+    { id: 4, name: 'Leyla Həsənova', rating: 4.7, experience: '4 il', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop' },
   ]
 
   const history = [
@@ -29,19 +48,34 @@ export default function PracticalExperience({ onBack }) {
   ]
 
   const handleBookNow = () => {
-    if (gearbox && vehicle && region && selectedDate && selectedTime && selectedInstructor) {
+    // Validation
+    const isBaku = region === 'Bakı'
+    const isDistrictValid = !isBaku || (isBaku && district)
+
+    if (gearbox && vehicle && vehicleModel && region && isDistrictValid && selectedDate && selectedTime && selectedInstructor) {
       setShowPaymentModal(true)
     } else {
-        // In a real app, show validation error
         alert("Zəhmət olmasa bütün xanaları seçin")
     }
+  }
+
+  // Handle vehicle type change to reset model
+  const handleVehicleChange = (type) => {
+    setVehicle(type)
+    setVehicleModel(null)
+  }
+
+  // Handle region change to reset district
+  const handleRegionChange = (e) => {
+    setRegion(e.target.value)
+    setDistrict('')
   }
 
   return (
     <div className="flex flex-col h-full bg-gray-50/50">
       {/* Header */}
       <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 px-6 py-4">
-        <div className="max-w-4xl mx-auto w-full flex items-center justify-between">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
             <div className="flex items-center gap-4">
                 {onBack && (
                     <button onClick={onBack} className="p-2 -ml-2 hover:bg-gray-100 rounded-xl transition-colors">
@@ -78,202 +112,273 @@ export default function PracticalExperience({ onBack }) {
       </div>
 
       <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
-        <div className="max-w-4xl mx-auto pb-20">
+        <div className="max-w-7xl mx-auto pb-24">
 
           {activeTab === 'signup' ? (
-            <div className="space-y-8 animate-fade-in">
+            <div className="animate-fade-in space-y-8">
 
-              {/* 1. Gearbox Selection */}
-              <section>
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-700 text-xs">1</span>
-                  Sürətlər qutusu
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { id: 'automatic', label: 'Avtomat', icon: 'A' },
-                    { id: 'manual', label: 'Mexanika', icon: 'M' }
-                  ].map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setGearbox(item.id)}
-                      className={`relative p-6 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center gap-3 group ${
-                        gearbox === item.id
-                          ? 'border-primary-500 bg-primary-50/50'
-                          : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
-                      }`}
-                    >
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold transition-colors ${
-                        gearbox === item.id ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
-                      }`}>
-                        {item.icon}
-                      </div>
-                      <span className={`font-semibold ${gearbox === item.id ? 'text-primary-700' : 'text-gray-700'}`}>
-                        {item.label}
-                      </span>
-                      {gearbox === item.id && (
-                        <div className="absolute top-4 right-4 text-primary-500">
-                          <CheckCircle className="w-5 h-5 fill-primary-500 text-white" />
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+
+                {/* Left Column: Vehicle & Gearbox */}
+                <div className="space-y-8">
+                    {/* 1. Gearbox Selection */}
+                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">1</span>
+                            Sürətlər qutusu
+                        </h3>
+                        <div className="grid grid-cols-2 gap-4">
+                            {[
+                                { id: 'automatic', label: 'Avtomat', icon: 'A' },
+                                { id: 'manual', label: 'Mexanika', icon: 'M' }
+                            ].map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => setGearbox(item.id)}
+                                    className={`relative p-5 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center gap-3 group ${
+                                        gearbox === item.id
+                                        ? 'border-primary-500 bg-primary-50/50'
+                                        : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
+                                    }`}
+                                >
+                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold transition-colors ${
+                                        gearbox === item.id ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
+                                    }`}>
+                                        {item.icon}
+                                    </div>
+                                    <span className={`font-semibold ${gearbox === item.id ? 'text-primary-700' : 'text-gray-700'}`}>
+                                        {item.label}
+                                    </span>
+                                    {gearbox === item.id && (
+                                        <div className="absolute top-3 right-3 text-primary-500">
+                                            <CheckCircle className="w-5 h-5 fill-primary-500 text-white" />
+                                        </div>
+                                    )}
+                                </button>
+                            ))}
                         </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </section>
+                    </section>
 
-              {/* 2. Vehicle Type */}
-              <section>
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-700 text-xs">2</span>
-                  Nəqliyyat növü
-                </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { id: 'moto', label: 'Motosiklet', icon: Bike, disabled: false },
-                    { id: 'sedan', label: 'Avtomobil', icon: Car, disabled: false },
-                    { id: 'truck', label: 'Yük', icon: Truck, disabled: true }
-                  ].map((item) => (
-                    <button
-                      key={item.id}
-                      disabled={item.disabled}
-                      onClick={() => !item.disabled && setVehicle(item.id)}
-                      className={`relative p-4 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center gap-3 ${
-                        item.disabled
-                          ? 'opacity-50 cursor-not-allowed bg-gray-50 border-gray-100 grayscale'
-                          : vehicle === item.id
-                            ? 'border-primary-500 bg-primary-50/50'
-                            : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
-                      }`}
-                    >
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-                        vehicle === item.id ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30' : 'bg-gray-100 text-gray-500'
-                      }`}>
-                        <item.icon className="w-5 h-5" />
-                      </div>
-                      <span className={`font-semibold text-sm ${vehicle === item.id ? 'text-primary-700' : 'text-gray-700'}`}>
-                        {item.label}
-                      </span>
-                      {vehicle === item.id && (
-                        <div className="absolute top-3 right-3 text-primary-500">
-                          <CheckCircle className="w-4 h-4 fill-primary-500 text-white" />
+                    {/* 2. Vehicle Type & Model */}
+                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">2</span>
+                            Nəqliyyat vasitəsi
+                        </h3>
+
+                        <div className="grid grid-cols-3 gap-4 mb-6">
+                            {[
+                                { id: 'moto', label: 'Motosiklet', icon: Bike, disabled: false },
+                                { id: 'sedan', label: 'Avtomobil', icon: Car, disabled: false },
+                                { id: 'truck', label: 'Yük', icon: Truck, disabled: true }
+                            ].map((item) => (
+                                <button
+                                    key={item.id}
+                                    disabled={item.disabled}
+                                    onClick={() => !item.disabled && handleVehicleChange(item.id)}
+                                    className={`relative p-4 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center gap-3 ${
+                                        item.disabled
+                                        ? 'opacity-50 cursor-not-allowed bg-gray-50 border-gray-100 grayscale'
+                                        : vehicle === item.id
+                                            ? 'border-primary-500 bg-primary-50/50'
+                                            : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
+                                    }`}
+                                >
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
+                                        vehicle === item.id ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30' : 'bg-gray-100 text-gray-500'
+                                    }`}>
+                                        <item.icon className="w-5 h-5" />
+                                    </div>
+                                    <span className={`font-semibold text-xs sm:text-sm ${vehicle === item.id ? 'text-primary-700' : 'text-gray-700'}`}>
+                                        {item.label}
+                                    </span>
+                                    {vehicle === item.id && (
+                                        <div className="absolute top-2 right-2 text-primary-500">
+                                            <CheckCircle className="w-4 h-4 fill-primary-500 text-white" />
+                                        </div>
+                                    )}
+                                </button>
+                            ))}
                         </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </section>
 
-              {/* 3. Region Selection */}
-              <section>
-                 <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-700 text-xs">3</span>
-                  Region
-                </h3>
-                <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <select
-                    value={region}
-                    onChange={(e) => setRegion(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-2xl appearance-none text-gray-900 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all cursor-pointer hover:border-gray-300"
-                  >
-                    <option value="" disabled>Regionu seçin</option>
-                    {regions.map(r => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
-                  <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 rotate-90 pointer-events-none" />
+                        {/* Vehicle Models Sub-selection */}
+                        {vehicle && vehicleModels[vehicle] && (
+                            <div className="animate-slide-up">
+                                <h4 className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">Model seçimi</h4>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {vehicleModels[vehicle].map((model) => (
+                                        <button
+                                            key={model.id}
+                                            onClick={() => setVehicleModel(model)}
+                                            className={`group relative overflow-hidden rounded-2xl border-2 text-left transition-all duration-300 ${
+                                                vehicleModel?.id === model.id
+                                                    ? 'border-primary-500 ring-4 ring-primary-500/10'
+                                                    : 'border-transparent hover:border-gray-200'
+                                            }`}
+                                        >
+                                            <div className="aspect-[4/3] w-full">
+                                                <img
+                                                    src={model.image}
+                                                    alt={model.name}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                                            </div>
+                                            <div className="absolute bottom-0 left-0 right-0 p-3">
+                                                <span className="text-white font-bold text-sm block truncate">{model.name}</span>
+                                            </div>
+                                            {vehicleModel?.id === model.id && (
+                                                <div className="absolute top-2 right-2 bg-primary-500 text-white rounded-full p-1">
+                                                    <CheckCircle className="w-4 h-4 fill-current" />
+                                                </div>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </section>
                 </div>
-              </section>
 
-              {/* 4. Date & Time */}
-              <section>
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-700 text-xs">4</span>
-                  Tarix və Saat
-                </h3>
-                <div className="grid md:grid-cols-2 gap-6 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Tarix seçin</label>
-                    <input
-                      type="date"
-                      value={selectedDate}
-                      min={new Date().toISOString().split('T')[0]}
-                      onChange={(e) => setSelectedDate(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Saat seçin</label>
-                    <div className="grid grid-cols-4 gap-2">
-                      {timeSlots.map(time => (
-                        <button
-                          key={time}
-                          onClick={() => setSelectedTime(time)}
-                          className={`py-2 px-1 rounded-lg text-sm font-medium transition-all ${
-                            selectedTime === time
-                              ? 'bg-primary-600 text-white shadow-md shadow-primary-500/30'
-                              : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-transparent hover:border-gray-200'
-                          }`}
-                        >
-                          {time}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </section>
+                {/* Right Column: Region, Time, Instructor */}
+                <div className="space-y-8">
+                    {/* 3. Location */}
+                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">3</span>
+                            Məkan
+                        </h3>
+                        <div className="space-y-4">
+                            <div className="relative">
+                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                <select
+                                    value={region}
+                                    onChange={handleRegionChange}
+                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl appearance-none text-gray-900 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all cursor-pointer hover:border-gray-300"
+                                >
+                                    <option value="" disabled>Regionu seçin</option>
+                                    {regions.map(r => (
+                                        <option key={r} value={r}>{r}</option>
+                                    ))}
+                                </select>
+                                <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 rotate-90 pointer-events-none" />
+                            </div>
 
-              {/* 5. Instructor */}
-              <section>
-                 <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary-100 text-primary-700 text-xs">5</span>
-                  Təlimçi seçimi
-                </h3>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {instructors.map((inst) => (
-                    <button
-                      key={inst.id}
-                      onClick={() => setSelectedInstructor(inst)}
-                      className={`flex items-center gap-4 p-4 rounded-2xl border transition-all text-left group ${
-                        selectedInstructor?.id === inst.id
-                          ? 'border-primary-500 bg-primary-50/50'
-                          : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
-                      }`}
-                    >
-                      <img
-                        src={inst.image}
-                        alt={inst.name}
-                        className={`w-14 h-14 rounded-full object-cover border-2 transition-all ${
-                            selectedInstructor?.id === inst.id ? 'border-primary-500' : 'border-gray-100'
-                        }`}
-                      />
-                      <div>
-                        <h4 className={`font-bold transition-colors ${selectedInstructor?.id === inst.id ? 'text-primary-900' : 'text-gray-900'}`}>
-                            {inst.name}
-                        </h4>
-                        <div className="flex items-center gap-3 text-xs mt-1">
-                          <span className="flex items-center gap-1 text-yellow-500 font-medium">
-                            <Star className="w-3 h-3 fill-current" /> {inst.rating}
-                          </span>
-                          <span className="text-gray-400">•</span>
-                          <span className="text-gray-500">{inst.experience} təcrübə</span>
+                            {/* District Dropdown for Baku */}
+                            {region === 'Bakı' && (
+                                <div className="relative animate-slide-up">
+                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                    <select
+                                        value={district}
+                                        onChange={(e) => setDistrict(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl appearance-none text-gray-900 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all cursor-pointer hover:border-gray-300"
+                                    >
+                                        <option value="" disabled>Rayonu seçin</option>
+                                        {bakuDistricts.map(d => (
+                                            <option key={d} value={d}>{d}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 rotate-90 pointer-events-none" />
+                                </div>
+                            )}
                         </div>
-                      </div>
-                      {selectedInstructor?.id === inst.id && (
-                        <div className="ml-auto text-primary-500">
-                          <CheckCircle className="w-5 h-5 fill-primary-500 text-white" />
+                    </section>
+
+                    {/* 4. Date & Time */}
+                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">4</span>
+                            Tarix və Saat
+                        </h3>
+                        <div className="grid grid-cols-1 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-3">Tarix seçin</label>
+                                <input
+                                    type="date"
+                                    value={selectedDate}
+                                    min={new Date().toISOString().split('T')[0]}
+                                    onChange={(e) => setSelectedDate(e.target.value)}
+                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-3">Saat seçin</label>
+                                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+                                    {timeSlots.map(time => (
+                                        <button
+                                            key={time}
+                                            onClick={() => setSelectedTime(time)}
+                                            className={`py-2 px-1 rounded-lg text-sm font-medium transition-all ${
+                                                selectedTime === time
+                                                ? 'bg-primary-600 text-white shadow-md shadow-primary-500/30'
+                                                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-transparent hover:border-gray-200'
+                                            }`}
+                                        >
+                                            {time}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                      )}
-                    </button>
-                  ))}
+                    </section>
                 </div>
-              </section>
+
+                {/* Full Width: Instructor */}
+                <div className="xl:col-span-2">
+                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">5</span>
+                            Təlimçi seçimi
+                        </h3>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            {instructors.map((inst) => (
+                                <button
+                                    key={inst.id}
+                                    onClick={() => setSelectedInstructor(inst)}
+                                    className={`flex flex-col items-center gap-4 p-5 rounded-2xl border transition-all text-center group ${
+                                        selectedInstructor?.id === inst.id
+                                        ? 'border-primary-500 bg-primary-50/50 ring-1 ring-primary-500/20'
+                                        : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
+                                    }`}
+                                >
+                                    <div className="relative">
+                                        <img
+                                            src={inst.image}
+                                            alt={inst.name}
+                                            className={`w-20 h-20 rounded-full object-cover border-4 transition-all ${
+                                                selectedInstructor?.id === inst.id ? 'border-white shadow-lg' : 'border-gray-50'
+                                            }`}
+                                        />
+                                        {selectedInstructor?.id === inst.id && (
+                                            <div className="absolute bottom-0 right-0 bg-primary-500 text-white rounded-full p-1 border-2 border-white">
+                                                <CheckCircle className="w-3.5 h-3.5 fill-current" />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <h4 className={`font-bold text-base transition-colors ${selectedInstructor?.id === inst.id ? 'text-primary-900' : 'text-gray-900'}`}>
+                                            {inst.name}
+                                        </h4>
+                                        <div className="flex items-center justify-center gap-3 text-xs mt-2">
+                                            <span className="flex items-center gap-1 text-yellow-500 font-bold bg-yellow-50 px-2 py-1 rounded-full">
+                                                <Star className="w-3 h-3 fill-current" /> {inst.rating}
+                                            </span>
+                                            <span className="text-gray-500 bg-gray-50 px-2 py-1 rounded-full font-medium">{inst.experience}</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                </div>
+              </div>
 
               {/* Action Button */}
               <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-xl border-t border-gray-200/50 z-20 flex justify-center lg:static lg:bg-transparent lg:border-none lg:p-0 lg:mt-8">
                 <button
                     onClick={handleBookNow}
-                    disabled={!gearbox || !vehicle || !region || !selectedDate || !selectedTime || !selectedInstructor}
+                    disabled={!gearbox || !vehicle || !vehicleModel || !region || (region === 'Bakı' && !district) || !selectedDate || !selectedTime || !selectedInstructor}
                     className="w-full lg:max-w-xs bg-primary-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary-500/30 hover:bg-primary-700 hover:shadow-primary-600/40 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:shadow-none"
                 >
                     İndi yazıl
@@ -282,7 +387,7 @@ export default function PracticalExperience({ onBack }) {
 
             </div>
           ) : (
-            <div className="space-y-4 animate-fade-in">
+            <div className="space-y-4 animate-fade-in max-w-4xl mx-auto">
               {history.map((item) => (
                 <div key={item.id} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
                   <div className="flex items-center gap-4">
@@ -333,7 +438,13 @@ export default function PracticalExperience({ onBack }) {
                     </div>
                     <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
                         <span className="text-gray-500 text-sm">Nəqliyyat</span>
-                        <span className="font-semibold text-gray-900 capitalize">{vehicle === 'moto' ? 'Motosiklet' : 'Avtomobil'}</span>
+                        <span className="font-semibold text-gray-900 capitalize">{vehicleModel?.name || (vehicle === 'moto' ? 'Motosiklet' : 'Avtomobil')}</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+                        <span className="text-gray-500 text-sm">Məkan</span>
+                        <span className="font-semibold text-gray-900">
+                             {region} {district ? `/ ${district}` : ''}
+                        </span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
                         <span className="text-gray-500 text-sm">Təlimçi</span>
