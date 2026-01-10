@@ -1,4 +1,4 @@
-import { Home, BookOpen, FileText, BarChart3, Car, HelpCircle, FileCheck, CreditCard, ShoppingBag, Monitor, Calendar, AlertTriangle, X, ChevronLeft, ChevronRight, Octagon } from 'lucide-react'
+import { Home, BookOpen, FileText, BarChart3, Car, HelpCircle, FileCheck, CreditCard, ShoppingBag, Monitor, Calendar, AlertTriangle, X, ChevronLeft, ChevronRight, Octagon, FileBadge } from 'lucide-react'
 import { useState } from 'react'
 
 const menuItems = [
@@ -9,6 +9,7 @@ const menuItems = [
   { icon: AlertTriangle, label: 'Cərimələr', page: 'penalties' },
   { icon: FileText, label: 'İmtahan', page: null },
   { icon: BarChart3, label: 'Nəticələrim', page: 'results' },
+  { icon: FileBadge, label: 'Şəhadətnamə', page: 'certificate' },
   { icon: Car, label: 'Praktiki Təcrübə', page: null },
   { icon: HelpCircle, label: 'Sual-cavab', page: null },
   { icon: FileCheck, label: 'Appelyasiya', page: null },

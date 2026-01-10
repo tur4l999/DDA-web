@@ -9,6 +9,7 @@ import RoadSigns from './RoadSigns'
 import UserStatistics from './UserStatistics'
 import ResultsPage from './ResultsPage'
 import ExamPage from './Exam/ExamPage'
+import CertificateApplication from './CertificateApplication'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -36,6 +37,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'exam') {
     return <ExamPage onBack={() => setCurrentPage('dashboard')} onStartExam={(params) => console.log('Start Exam:', params)} />
+  }
+
+  if (currentPage === 'certificate') {
+    return <CertificateApplication onBack={() => setCurrentPage('dashboard')} />
   }
 
   const handleExamClick = (examId) => {
