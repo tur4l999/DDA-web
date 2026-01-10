@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ArrowLeft, Check, Calendar, MapPin, Building, ChevronDown, Award } from 'lucide-react'
 
 const categories = [
@@ -28,8 +28,8 @@ Son 2 il ərzində qəza törədib bədən xəsarəti vurmamısan, spirtli içki
 }
 
 export default function CertificateApplication({ onBack }) {
-  const [step, setStep] = useState('category') // 'category', 'form', 'success'
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [success, setSuccess] = useState(false)
   const [formData, setFormData] = useState({
     city: '',
     address: '',
@@ -38,9 +38,15 @@ export default function CertificateApplication({ onBack }) {
   })
   const [errors, setErrors] = useState({})
 
+  const formRef = useRef(null)
+
   const handleCategorySelect = (cat) => {
     setSelectedCategory(cat)
-    setStep('form')
+    // Optionally reset form if needed, or keep it. For now, keep it to be friendly.
+    // Scroll to form after a short delay to allow render
+    setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
   }
 
   const getRequirements = (cat) => {
@@ -55,17 +61,12 @@ export default function CertificateApplication({ onBack }) {
       if (part === 'B') reqs.push({ title: 'B kateqoriyası', text: requirementsText.B })
       if (part === 'C') reqs.push({ title: 'C kateqoriyası', text: requirementsText.C })
       if (part === 'D') reqs.push({ title: 'D kateqoriyası', text: requirementsText.D })
-      // Specific checks for combined logic if needed, but user gave specific text for BE, CE, DE
     })
 
     // Handle special combined logic based on user provided text keys
     if (cat === 'B+E') reqs = [{ title: 'BE kateqoriyası', text: requirementsText.BE }]
     if (cat === 'C+E') reqs = [{ title: 'CE kateqoriyası', text: requirementsText.CE }]
     if (cat === 'D+E') reqs = [{ title: 'DE kateqoriyası', text: requirementsText.DE }]
-
-    // Fallback/Cleanup for basic combinations that don't match special keys
-    // If we have distinct parts like A+B, we showed A and B above.
-    // If it is BE, CE, DE, we replaced it.
 
     return reqs
   }
@@ -83,10 +84,10 @@ export default function CertificateApplication({ onBack }) {
       return
     }
 
-    setStep('success')
+    setSuccess(true)
   }
 
-  if (step === 'success') {
+  if (success) {
     return (
       <div className="flex-1 flex flex-col h-full bg-gray-50 p-4 lg:p-8">
         <div className="max-w-2xl mx-auto w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center mt-10">
@@ -114,7 +115,7 @@ export default function CertificateApplication({ onBack }) {
       {/* Header */}
       <div className="bg-white border-b border-gray-200/50 px-6 py-4 flex items-center gap-4 sticky top-0 z-20">
         <button
-          onClick={step === 'category' ? onBack : () => setStep('category')}
+          onClick={onBack}
           className="p-2 hover:bg-gray-50 rounded-xl transition-colors text-gray-500 hover:text-gray-900"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -123,43 +124,94 @@ export default function CertificateApplication({ onBack }) {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
-        <div className="max-w-[1000px] mx-auto">
+        <div className="max-w-[1000px] mx-auto space-y-8">
 
-          {step === 'category' ? (
-            <div className="space-y-6">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Kateqoriya seçimi</h2>
-                <p className="text-gray-500">Zəhmət olmasa müraciət etmək istədiyiniz kateqoriyanı seçin</p>
-              </div>
+          {/* Category Selection Grid - Always Visible */}
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Kateqoriya seçimi</h2>
+              <p className="text-gray-500">Zəhmət olmasa müraciət etmək istədiyiniz kateqoriyanı seçin</p>
+            </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {categories.map((cat) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {categories.map((cat) => {
+                const isSelected = selectedCategory === cat
+                return (
                   <button
                     key={cat}
                     onClick={() => handleCategorySelect(cat)}
-                    className="group relative flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-primary-500 hover:shadow-md transition-all duration-300 h-32"
+                    className={`group relative flex flex-col items-center justify-center p-6 rounded-2xl shadow-sm border transition-all duration-300 h-32 ${
+                      isSelected
+                        ? 'bg-primary-50 border-primary-500 ring-2 ring-primary-500 ring-offset-2'
+                        : 'bg-white border-gray-100 hover:border-primary-500 hover:shadow-md'
+                    }`}
                   >
-                    <div className="w-12 h-12 bg-primary-50 text-primary-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-transform ${
+                      isSelected
+                        ? 'bg-primary-500 text-white'
+                        : 'bg-primary-50 text-primary-600 group-hover:scale-110'
+                    }`}>
                       <Award className="w-6 h-6" />
                     </div>
-                    <span className="text-lg font-bold text-gray-900">{cat}</span>
+                    <span className={`text-lg font-bold ${isSelected ? 'text-primary-700' : 'text-gray-900'}`}>
+                      {cat}
+                    </span>
+                    {isSelected && (
+                      <div className="absolute top-3 right-3 w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center text-white">
+                        <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                      </div>
+                    )}
                   </button>
-                ))}
-              </div>
+                )
+              })}
             </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 items-start">
+          </div>
 
-              {/* Form Section */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:p-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                  <span className="bg-primary-50 text-primary-600 px-3 py-1 rounded-lg text-sm">
-                    {selectedCategory}
-                  </span>
-                  Məlumatların doldurulması
-                </h2>
+          {/* Details Section - Appears when category is selected */}
+          {selectedCategory && (
+            <div
+              ref={formRef}
+              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:p-8 animate-fade-in"
+            >
+              <div className="max-w-3xl mx-auto space-y-8">
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Header: Selected Category */}
+                <div className="flex items-center gap-4 pb-6 border-b border-gray-100">
+                  <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600">
+                    <Award className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">Seçilən kateqoriya: <span className="text-primary-600">{selectedCategory}</span></h2>
+                    <p className="text-gray-500 text-sm">Aşağıdakı məlumatları dolduraraq müraciət edə bilərsiniz</p>
+                  </div>
+                </div>
+
+                {/* Requirements Section */}
+                <div className="bg-blue-50/50 rounded-2xl p-6 border border-blue-100 space-y-4">
+                  <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <div className="w-1.5 h-6 bg-blue-500 rounded-full"/>
+                    Tələblər
+                  </h3>
+
+                  <div className="space-y-4 pl-3">
+                    {getRequirements(selectedCategory).map((req, idx) => (
+                      <div key={idx} className="space-y-1.5">
+                        <h4 className="font-bold text-gray-800 text-sm uppercase tracking-wide opacity-80">{req.title}</h4>
+                        <p className="text-gray-700 whitespace-pre-line leading-relaxed text-sm lg:text-base">
+                          {req.text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Application Form */}
+                <form onSubmit={handleSubmit} className="space-y-6 pt-2">
+                  <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <div className="w-1.5 h-6 bg-primary-500 rounded-full"/>
+                    Şəxsi məlumatlar
+                  </h3>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* City Select */}
                     <div className="space-y-2">
@@ -239,28 +291,6 @@ export default function CertificateApplication({ onBack }) {
                   </button>
                 </form>
               </div>
-
-              {/* Requirements Sidebar */}
-              <div className="space-y-6">
-                 <div className="bg-blue-50/50 rounded-2xl p-6 border border-blue-100 sticky top-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                      <Award className="w-5 h-5 text-blue-600" />
-                      Tələblər
-                    </h3>
-
-                    <div className="space-y-6">
-                      {getRequirements(selectedCategory).map((req, idx) => (
-                        <div key={idx} className="space-y-2">
-                          <h4 className="font-bold text-gray-800 text-sm">{req.title}</h4>
-                          <p className="text-sm text-gray-600 whitespace-pre-line leading-relaxed">
-                            {req.text}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                 </div>
-              </div>
-
             </div>
           )}
         </div>
