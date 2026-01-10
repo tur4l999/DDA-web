@@ -10,6 +10,7 @@ import UserStatistics from './UserStatistics'
 import ResultsPage from './ResultsPage'
 import ExamPage from './Exam/ExamPage'
 import CertificateApplication from './CertificateApplication'
+import PracticalExperience from './PracticalExperience'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -41,6 +42,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'certificate') {
     return <CertificateApplication onBack={() => setCurrentPage('dashboard')} />
+  }
+
+  if (currentPage === 'practical-experience') {
+    return <PracticalExperience onBack={() => setCurrentPage('dashboard')} />
   }
 
   const handleExamClick = (examId) => {
