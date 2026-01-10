@@ -9,18 +9,20 @@ const RoadSignModal = ({ sign, categoryName, isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
               {sign.code} {sign.name}
             </h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {categoryName}
-            </p>
+            {categoryName && (
+              <p className="text-sm text-gray-600 mt-1">
+                {categoryName}
+              </p>
+            )}
           </div>
           <button
             onClick={onClose}

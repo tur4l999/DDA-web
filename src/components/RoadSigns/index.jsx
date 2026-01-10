@@ -109,7 +109,7 @@ const RoadSigns = () => {
     <div className="flex flex-col flex-1 h-full overflow-hidden bg-[#F5F7FA]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
-        <div className="max-w-[1400px] mx-auto">
+        <div className="w-full">
           <div>
             <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Yol nişanları</h1>
             <p className="text-xs lg:text-sm text-gray-600 mt-1">
@@ -121,7 +121,7 @@ const RoadSigns = () => {
 
       {/* Main Content */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full max-w-[1400px] mx-auto px-6 py-6">
+        <div className="h-full w-full px-6 py-6">
           <div className="flex flex-col lg:flex-row gap-6 h-full">
             {/* Left Sidebar - Desktop */}
             <aside className="hidden lg:block lg:w-80 flex-shrink-0">
@@ -255,7 +255,7 @@ const RoadSigns = () => {
 
                 {/* Road Signs List */}
                 {filteredSigns.length > 0 ? (
-                  <div className="space-y-6 pb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start pb-6">
                     {filteredSigns.map((sign) => (
                       <RoadSignCard key={sign.id} sign={sign} />
                     ))}
