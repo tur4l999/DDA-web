@@ -1,39 +1,21 @@
 import { useState, useMemo } from 'react'
-import { Search, Filter, List, Calendar as CalendarIcon, ArrowLeft, SlidersHorizontal, Bookmark } from 'lucide-react'
+import { Search, Filter, ArrowLeft, SlidersHorizontal, Calendar as CalendarIcon } from 'lucide-react'
 import FilterDrawer from './FilterDrawer'
 import LessonCard from './LessonCard'
 import LessonDetailsModal from './LessonDetailsModal'
 import VideoPlayerModal from './VideoPlayerModal'
-import CalendarView from './CalendarView'
-import RightPanel from './RightPanel'
-import MobileRightPanel from './MobileRightPanel'
 import Toast from './Toast'
+import SimpleCalendar from './SimpleCalendar'
 
 export default function OnlineClasses({ onBack }) {
-  const [view, setView] = useState('list') // 'list' or 'calendar'
   const [searchQuery, setSearchQuery] = useState('')
-  const [quickFilter, setQuickFilter] = useState('all')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [selectedLesson, setSelectedLesson] = useState(null)
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
   const [isVideoOpen, setIsVideoOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
   const [bookmarkedLessons, setBookmarkedLessons] = useState([])
-  const [rightPanelTab, setRightPanelTab] = useState('bookmarks')
-  const [selectedDate, setSelectedDate] = useState(new Date())
   const [toast, setToast] = useState(null)
-  const itemsPerPage = 9
-
-  // Auto-switch tab based on view mode
-  const handleViewChange = (newView) => {
-    setView(newView)
-    if (newView === 'calendar') {
-      setRightPanelTab('selectedDay')
-      setSelectedDate(new Date())
-    } else {
-      setRightPanelTab('bookmarks')
-    }
-  }
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
   const [filters, setFilters] = useState({
     dateRange: { start: '', end: '' },
@@ -44,7 +26,6 @@ export default function OnlineClasses({ onBack }) {
     languages: [],
     instructor: '',
     onlyJoinable: false,
-    onlyWithReplay: false,
     onlyBookmarked: false
   })
 
@@ -69,14 +50,9 @@ export default function OnlineClasses({ onBack }) {
           
           const now = new Date()
           let status = 'waiting'
-          let replayUrl = null
           
           if (lessonDate < now) {
             status = 'completed'
-            // 80% completed lessons have replay
-            if (Math.random() > 0.2) {
-              replayUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
-            }
           } else if (Math.abs(lessonDate - now) < 2 * 60 * 60 * 1000) {
             status = 'started'
           }
@@ -84,13 +60,14 @@ export default function OnlineClasses({ onBack }) {
           // 5% cancelled
           if (Math.random() < 0.05) {
             status = 'cancelled'
-            replayUrl = null
           }
           
           const subject = subjects[classesData.length % subjects.length]
-          
+          const code = String(Math.floor(Math.random() * 10000)).padStart(4, '0')
+
           classesData.push({
             id: classesData.length + 1,
+            code: '#' + code,
             title: subject,
             instructor: instructors[classesData.length % instructors.length],
             date: lessonDate,
@@ -98,7 +75,6 @@ export default function OnlineClasses({ onBack }) {
             status: status,
             subject: subject,
             language: languages[classesData.length % languages.length],
-            replayUrl: replayUrl,
             description: `${subject} mövzusu üzrə ətraflı dərs. Nəzəri və praktiki məlumatlar.`,
             bookmarked: Math.random() > 0.9,
             cancelReason: status === 'cancelled' ? 'Texniki səbəblər üzündən ləğv edildi' : null
@@ -107,7 +83,7 @@ export default function OnlineClasses({ onBack }) {
       }
     }
     
-    return classesData.sort((a, b) => b.date - a.date)
+    return classesData.sort((a, b) => a.date - b.date) // Sort by date ascending for timeline
   })
 
   // Filtering logic
@@ -124,41 +100,17 @@ export default function OnlineClasses({ onBack }) {
       )
     }
 
-    // Quick filters
-    const now = new Date()
-    if (quickFilter === 'week') {
-      const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
-      result = result.filter(l => l.date >= now && l.date <= weekFromNow)
-    } else if (quickFilter === 'month') {
-      const monthFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
-      result = result.filter(l => l.date >= now && l.date <= monthFromNow)
-    } else if (quickFilter === 'next7') {
-      const next7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
-      result = result.filter(l => l.date >= now && l.date <= next7Days)
-    } else if (quickFilter === 'waiting') {
-      result = result.filter(l => l.status === 'waiting')
-    } else if (quickFilter === 'started') {
-      result = result.filter(l => l.status === 'started')
-    } else if (quickFilter === 'completed') {
-      result = result.filter(l => l.status === 'completed')
-    } else if (quickFilter === 'replay') {
-      result = result.filter(l => l.status === 'completed' && l.replayUrl)
-    } else if (quickFilter === 'bookmarked') {
-      result = result.filter(l => bookmarkedLessons.some(b => b.id === l.id))
-    }
-
     // Advanced filters
+    const now = new Date()
     if (filters.dateRange.start) {
-      result = result.filter(l => l.date >= new Date(filters.dateRange.start))
+      const startDate = new Date(filters.dateRange.start)
+      startDate.setHours(0, 0, 0, 0)
+      result = result.filter(l => l.date >= startDate)
     }
     if (filters.dateRange.end) {
-      result = result.filter(l => l.date <= new Date(filters.dateRange.end))
-    }
-    if (filters.weekdays.length > 0) {
-      result = result.filter(l => filters.weekdays.includes(l.date.getDay()))
-    }
-    if (filters.statuses.length > 0) {
-      result = result.filter(l => filters.statuses.includes(l.status))
+      const endDate = new Date(filters.dateRange.end)
+      endDate.setHours(23, 59, 59, 999)
+      result = result.filter(l => l.date <= endDate)
     }
     if (filters.subjects.length > 0) {
       result = result.filter(l => filters.subjects.includes(l.subject))
@@ -169,34 +121,30 @@ export default function OnlineClasses({ onBack }) {
     if (filters.instructor) {
       result = result.filter(l => l.instructor === filters.instructor)
     }
-    if (filters.onlyJoinable) {
-      result = result.filter(l => l.status === 'started' || (l.status === 'waiting' && Math.abs(l.date - now) < 10 * 60 * 1000))
-    }
-    if (filters.onlyWithReplay) {
-      result = result.filter(l => l.replayUrl)
-    }
     if (filters.onlyBookmarked) {
       result = result.filter(l => l.bookmarked)
     }
 
     return result
-  }, [lessons, searchQuery, quickFilter, filters, bookmarkedLessons])
+  }, [lessons, searchQuery, filters, bookmarkedLessons])
 
-  // Get next upcoming lesson
-  const nextLesson = useMemo(() => {
-    const now = new Date()
-    const upcoming = lessons
-      .filter(l => l.date > now && (l.status === 'waiting' || l.status === 'started'))
-      .sort((a, b) => a.date - b.date)
-    return upcoming[0]
-  }, [lessons])
+  // Group lessons by date
+  const groupedLessons = useMemo(() => {
+    const groups = {}
+    filteredLessons.forEach(lesson => {
+      const dateKey = lesson.date.toISOString().split('T')[0]
+      if (!groups[dateKey]) {
+        groups[dateKey] = {
+          date: lesson.date,
+          lessons: []
+        }
+      }
+      groups[dateKey].lessons.push(lesson)
+    })
 
-  // Pagination
-  const totalPages = Math.ceil(filteredLessons.length / itemsPerPage)
-  const paginatedLessons = filteredLessons.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  )
+    // Sort groups by date
+    return Object.values(groups).sort((a, b) => a.date - b.date)
+  }, [filteredLessons])
 
   const handleJoin = (lesson) => {
     alert(`Dərsə qoşulunur: ${lesson.title}`)
@@ -208,6 +156,7 @@ export default function OnlineClasses({ onBack }) {
   }
 
   const handleWatchReplay = (lesson) => {
+    // This is only for legacy/debug, as button is disabled now
     setSelectedLesson(lesson)
     setIsVideoOpen(true)
   }
@@ -222,35 +171,28 @@ export default function OnlineClasses({ onBack }) {
         setToast('Saxlanılanlardan silindi')
         return prev.filter(l => l.id !== lessonId)
       } else {
-        setRightPanelTab('bookmarks')
         setToast('Saxlanılanlara əlavə edildi')
         return [lesson, ...prev]
       }
     })
   }
 
-  const handleRemoveBookmark = (lessonId) => {
-    setBookmarkedLessons(prev => prev.filter(l => l.id !== lessonId))
+  const formatDateHeader = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+    return date.toLocaleDateString('az-AZ', options)
   }
 
-  const handleDateSelectFromCalendar = (date) => {
-    setSelectedDate(date)
-    setRightPanelTab('selectedDay')
+  const formatDateButton = (dateStr) => {
+      if(!dateStr) return 'Tarix seç'
+      const date = new Date(dateStr)
+      return date.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })
   }
-
-  const lessonsForSelectedDate = useMemo(() => {
-    if (!selectedDate) return []
-    return filteredLessons.filter(lesson => {
-      const lessonDate = new Date(lesson.date)
-      return lessonDate.toDateString() === selectedDate.toDateString()
-    })
-  }, [selectedDate, filteredLessons])
 
   return (
-    <div className="flex-1 h-screen overflow-y-auto bg-gray-50">
+    <div className="flex-1 h-full flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b-2 border-gray-200 sticky top-0 z-30 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-4">
+      <div className="bg-white border-b border-gray-200 z-30 sticky top-0 shadow-sm">
+        <div className="w-full px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-4">
               <button
@@ -264,52 +206,56 @@ export default function OnlineClasses({ onBack }) {
                 <p className="text-sm text-gray-600 font-semibold">{filteredLessons.length} dərs tapıldı</p>
               </div>
             </div>
-
-            {/* View Toggle */}
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
-              <button
-                onClick={() => handleViewChange('list')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
-                  view === 'list'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <List className="w-4 h-4" />
-                <span className="hidden sm:inline">Siyahı</span>
-              </button>
-              <button
-                onClick={() => handleViewChange('calendar')}
-                className={`px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center space-x-2 ${
-                  view === 'calendar'
-                    ? 'bg-white text-primary-600 shadow-md'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <CalendarIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">Təqvim</span>
-              </button>
-            </div>
           </div>
 
           {/* Search and Filters */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap sm:flex-nowrap items-center">
+             {/* Custom Date Picker */}
+             <div className="relative">
+              <button
+                 onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                 className={`h-12 px-4 border-2 rounded-xl focus:outline-none font-semibold flex items-center gap-2 transition-all min-w-[180px]
+                   ${isCalendarOpen || filters.dateRange.start ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-white'}
+                 `}
+              >
+                  <CalendarIcon className="w-5 h-5" />
+                  <span>{formatDateButton(filters.dateRange.start)}</span>
+              </button>
+
+              {isCalendarOpen && (
+                  <>
+                      <div className="fixed inset-0 z-40" onClick={() => setIsCalendarOpen(false)}></div>
+                      <div className="absolute top-14 left-0 z-50">
+                          <SimpleCalendar
+                              selectedDate={filters.dateRange.start}
+                              onChange={(date) => {
+                                  if (date) {
+                                      setFilters(prev => ({ ...prev, dateRange: { start: date, end: date } }))
+                                  } else {
+                                      setFilters(prev => ({ ...prev, dateRange: { start: '', end: '' } }))
+                                  }
+                              }}
+                              onClose={() => setIsCalendarOpen(false)}
+                          />
+                      </div>
+                  </>
+              )}
+            </div>
+
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Mövzu, müəllim və ya açar söz yazın..."
+                placeholder="Mövzu, müəllim axtar..."
                 value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value)
-                  setCurrentPage(1)
-                }}
-                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-semibold"
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 h-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-semibold bg-gray-50 hover:bg-white transition-colors"
               />
             </div>
+
             <button
               onClick={() => setIsFilterOpen(true)}
-              className="px-6 py-3 bg-gray-100 hover:bg-gray-200 border-2 border-gray-200 text-gray-700 font-bold rounded-xl transition-all flex items-center space-x-2"
+              className="h-12 px-6 bg-white hover:bg-gray-50 border-2 border-gray-200 text-gray-700 font-bold rounded-xl transition-all flex items-center space-x-2"
             >
               <SlidersHorizontal className="w-5 h-5" />
               <span className="hidden sm:inline">Filtrlər</span>
@@ -318,231 +264,63 @@ export default function OnlineClasses({ onBack }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-        {view === 'calendar' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,480px)] xl:grid-cols-[1fr_minmax(400px,600px)] gap-6">
-            {/* Left Column: Calendar */}
-            <div className="max-w-full overflow-hidden">
-              <CalendarView
-                lessons={filteredLessons}
-                onSelectLesson={handleViewDetails}
-                onDateSelect={handleDateSelectFromCalendar}
-              />
-            </div>
+      {/* Timeline Content */}
+      <div className="flex-1 overflow-y-auto w-full">
+        <div className="w-full px-4 lg:px-8 py-8">
+            {groupedLessons.length > 0 ? (
+              <div className="space-y-8">
+                {groupedLessons.map((group) => (
+                    <div key={group.date.toISOString()} className="relative pl-6 border-l-4 border-gray-100/50">
+                        {/* Day Header */}
+                        <div className="sticky top-0 bg-gray-50/95 backdrop-blur-sm py-4 z-10 mb-4 border-b border-gray-200/50 -ml-6 pl-6">
+                            <h2 className="text-2xl font-black text-gray-800 capitalize flex items-center gap-3">
+                                <div className="w-3 h-3 rounded-full bg-primary-500 ring-4 ring-primary-100"></div>
+                                {formatDateHeader(group.date)}
+                            </h2>
+                        </div>
 
-            {/* Right Panel - Smart Sidebar */}
-            <div className="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] max-w-full overflow-hidden">
-              <RightPanel
-                activeTab={rightPanelTab}
-                onTabChange={setRightPanelTab}
-                bookmarkedLessons={bookmarkedLessons}
-                onRemoveBookmark={handleRemoveBookmark}
-                selectedDate={selectedDate}
-                lessonsForDate={lessonsForSelectedDate}
-                onJoinLesson={handleJoin}
-                onViewDetails={handleViewDetails}
-              />
-            </div>
-          </div>
-        ) : (
-          <div>
-            {/* Next Up Card */}
-            {nextLesson && (
-              <div className="bg-gradient-to-r from-primary-500 to-primary-700 rounded-2xl p-6 mb-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <p className="text-green-100 font-medium mb-2 text-sm">Növbəti dərs</p>
-                <h3 className="text-xl font-bold text-white mb-3">{nextLesson.title}</h3>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-green-50">
-                  <span className="font-medium">
-                    {(() => {
-                      const d = new Date(nextLesson.date)
-                      const day = String(d.getDate()).padStart(2, '0')
-                      const month = String(d.getMonth() + 1).padStart(2, '0')
-                      const year = d.getFullYear()
-                      const hours = String(d.getHours()).padStart(2, '0')
-                      const minutes = String(d.getMinutes()).padStart(2, '0')
-                      return `${day}.${month}.${year} ${hours}:${minutes}`
-                    })()}
-                  </span>
-                  <span>•</span>
-                  <span className="font-medium">{nextLesson.instructor}</span>
-                  <span>•</span>
-                  <span className="font-medium">{nextLesson.duration} dəq</span>
-                </div>
-              </div>
-              <button
-                onClick={() => handleJoin(nextLesson)}
-                disabled={nextLesson.status !== 'started'}
-                className={`px-6 py-3 rounded-xl font-semibold shadow-md transition-all ${
-                  nextLesson.status === 'started'
-                    ? 'bg-white text-primary-600 hover:bg-gray-50'
-                    : 'bg-white/30 text-white/50 cursor-not-allowed'
-                }`}
-              >
-                {nextLesson.status === 'started' ? 'Dərsə qoşul' : 'Tezliklə'}
-              </button>
-            </div>
-          </div>
-            )}
-
-            {/* Quick Filters */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              <button
-                onClick={() => { setQuickFilter('all'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'all'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Hamısı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('week'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'week'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Bu həftə
-              </button>
-              <button
-                onClick={() => { setQuickFilter('started'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'started'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Başladı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('waiting'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'waiting'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Gözləyir
-              </button>
-              <button
-                onClick={() => { setQuickFilter('completed'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'completed'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Tamamlandı
-              </button>
-              <button
-                onClick={() => { setQuickFilter('replay'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'replay'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Təkrar videosu olanlar
-              </button>
-              <button
-                onClick={() => { setQuickFilter('bookmarked'); setCurrentPage(1) }}
-                className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all ${
-                  quickFilter === 'bookmarked'
-                    ? 'bg-primary-500 text-white shadow-sm'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                }`}
-              >
-                Saxlanılanlar
-              </button>
-            </div>
-
-            {/* Content */}
-            {paginatedLessons.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
-                  {paginatedLessons.map(lesson => (
-                    <LessonCard
-                      key={lesson.id}
-                      lesson={lesson}
-                      onJoin={handleJoin}
-                      onViewDetails={handleViewDetails}
-                      onWatchReplay={handleWatchReplay}
-                      onToggleBookmark={handleToggleBookmark}
-                    />
-                  ))}
-                </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2">
-                    <button
-                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                      disabled={currentPage === 1}
-                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                        currentPage === 1
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      ← Əvvəlki
-                    </button>
-
-                    <div className="flex items-center gap-1">
-                      {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                        let pageNum
-                        if (totalPages <= 5) {
-                          pageNum = i + 1
-                        } else if (currentPage <= 3) {
-                          pageNum = i + 1
-                        } else if (currentPage >= totalPages - 2) {
-                          pageNum = totalPages - 4 + i
-                        } else {
-                          pageNum = currentPage - 2 + i
-                        }
-
-                        return (
-                          <button
-                            key={pageNum}
-                            onClick={() => setCurrentPage(pageNum)}
-                            className={`w-11 h-11 rounded-xl font-bold text-sm transition-all ${
-                              currentPage === pageNum
-                                ? 'bg-primary-600 text-white shadow-lg scale-110'
-                                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
-                            }`}
-                          >
-                            {pageNum}
-                          </button>
-                        )
-                      })}
+                        {/* 2-Column Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-r from-gray-100/50 to-transparent p-4 rounded-3xl -ml-2">
+                            {group.lessons.map(lesson => (
+                                <LessonCard
+                                    key={lesson.id}
+                                    lesson={lesson}
+                                    onJoin={handleJoin}
+                                    onViewDetails={handleViewDetails}
+                                    onToggleBookmark={handleToggleBookmark}
+                                />
+                            ))}
+                        </div>
                     </div>
-
-                    <button
-                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                      disabled={currentPage === totalPages}
-                      className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                        currentPage === totalPages
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      Sonrakı →
-                    </button>
-                  </div>
-                )}
-              </>
+                ))}
+              </div>
             ) : (
-              <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
-                <div className="text-6xl mb-4">🔍</div>
-                <p className="text-xl font-bold text-gray-900 mb-2">Heç bir dərs tapılmadı</p>
-                <p className="text-gray-600">Axtarış və ya filtr parametrlərini dəyişdirin</p>
+              <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
+                <div className="text-6xl mb-4">📅</div>
+                <p className="text-xl font-bold text-gray-900 mb-2">Bu tarixlərdə dərs yoxdur</p>
+                <p className="text-gray-500 font-medium">Başqa tarix seçin və ya filtrləri təmizləyin</p>
+                <button
+                    onClick={() => {
+                        setSearchQuery('')
+                        setFilters({
+                            dateRange: { start: '', end: '' },
+                            weekdays: [],
+                            timeRange: { start: '', end: '' },
+                            statuses: [],
+                            subjects: [],
+                            languages: [],
+                            instructor: '',
+                            onlyJoinable: false,
+                            onlyBookmarked: false
+                        })
+                    }}
+                    className="mt-6 px-6 py-2 bg-primary-50 text-primary-700 font-bold rounded-xl hover:bg-primary-100 transition-colors"
+                >
+                    Filtrləri təmizlə
+                </button>
               </div>
             )}
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Modals */}
@@ -550,10 +328,7 @@ export default function OnlineClasses({ onBack }) {
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
         filters={filters}
-        onFilterChange={(newFilters) => {
-          setFilters(newFilters)
-          setCurrentPage(1)
-        }}
+        onFilterChange={(newFilters) => setFilters(newFilters)}
       />
 
       <LessonDetailsModal
@@ -569,20 +344,6 @@ export default function OnlineClasses({ onBack }) {
         isOpen={isVideoOpen}
         onClose={() => setIsVideoOpen(false)}
       />
-
-      {/* Mobile Right Panel - Only for Calendar View */}
-      {view === 'calendar' && (
-        <MobileRightPanel
-          activeTab={rightPanelTab}
-          onTabChange={setRightPanelTab}
-          bookmarkedLessons={bookmarkedLessons}
-          onRemoveBookmark={handleRemoveBookmark}
-          selectedDate={selectedDate}
-          lessonsForDate={lessonsForSelectedDate}
-          onJoinLesson={handleJoin}
-          onViewDetails={handleViewDetails}
-        />
-      )}
 
       {/* Toast Notification */}
       {toast && <Toast message={toast} onClose={() => setToast(null)} />}
