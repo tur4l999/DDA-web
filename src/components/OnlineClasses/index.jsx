@@ -192,7 +192,7 @@ export default function OnlineClasses({ onBack }) {
     <div className="flex-1 h-full flex flex-col bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 z-30 sticky top-0 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 py-4">
+        <div className="w-full px-4 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-4">
               <button
@@ -266,18 +266,21 @@ export default function OnlineClasses({ onBack }) {
 
       {/* Timeline Content */}
       <div className="flex-1 overflow-y-auto w-full">
-        <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="w-full px-4 lg:px-8 py-8">
             {groupedLessons.length > 0 ? (
               <div className="space-y-8">
                 {groupedLessons.map((group) => (
-                    <div key={group.date.toISOString()}>
-                        <div className="sticky top-0 bg-gray-50/95 backdrop-blur-sm py-3 z-10 mb-2 border-b border-gray-200/50">
-                            <h2 className="text-lg font-black text-gray-800 capitalize flex items-center gap-2">
-                                <span className="w-2 h-8 bg-primary-500 rounded-r-md block -ml-4"></span>
+                    <div key={group.date.toISOString()} className="relative pl-6 border-l-4 border-gray-100/50">
+                        {/* Day Header */}
+                        <div className="sticky top-0 bg-gray-50/95 backdrop-blur-sm py-4 z-10 mb-4 border-b border-gray-200/50 -ml-6 pl-6">
+                            <h2 className="text-2xl font-black text-gray-800 capitalize flex items-center gap-3">
+                                <div className="w-3 h-3 rounded-full bg-primary-500 ring-4 ring-primary-100"></div>
                                 {formatDateHeader(group.date)}
                             </h2>
                         </div>
-                        <div className="space-y-3">
+
+                        {/* 2-Column Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-r from-gray-100/50 to-transparent p-4 rounded-3xl -ml-2">
                             {group.lessons.map(lesson => (
                                 <LessonCard
                                     key={lesson.id}
