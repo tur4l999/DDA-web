@@ -117,10 +117,8 @@ export default function PracticalExperience({ onBack }) {
           {activeTab === 'signup' ? (
             <div className="animate-fade-in space-y-8">
 
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+              <div className="max-w-3xl mx-auto space-y-8">
 
-                {/* Left Column: Vehicle & Gearbox */}
-                <div className="space-y-8">
                     {/* 1. Gearbox Selection */}
                     <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -205,7 +203,7 @@ export default function PracticalExperience({ onBack }) {
                         {vehicle && vehicleModels[vehicle] && (
                             <div className="animate-slide-up">
                                 <h4 className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wider">Model seçimi</h4>
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                     {vehicleModels[vehicle].map((model) => (
                                         <button
                                             key={model.id}
@@ -238,10 +236,7 @@ export default function PracticalExperience({ onBack }) {
                             </div>
                         )}
                     </section>
-                </div>
 
-                {/* Right Column: Region, Time, Instructor */}
-                <div className="space-y-8">
                     {/* 3. Location */}
                     <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -290,7 +285,7 @@ export default function PracticalExperience({ onBack }) {
                             <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">4</span>
                             Tarix və Saat
                         </h3>
-                        <div className="grid grid-cols-1 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-3">Tarix seçin</label>
                                 <input
@@ -303,7 +298,7 @@ export default function PracticalExperience({ onBack }) {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-3">Saat seçin</label>
-                                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+                                <div className="grid grid-cols-4 gap-2">
                                     {timeSlots.map(time => (
                                         <button
                                             key={time}
@@ -321,16 +316,14 @@ export default function PracticalExperience({ onBack }) {
                             </div>
                         </div>
                     </section>
-                </div>
 
-                {/* Full Width: Instructor */}
-                <div className="xl:col-span-2">
+                    {/* 5. Instructor */}
                     <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">5</span>
                             Təlimçi seçimi
                         </h3>
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                             {instructors.map((inst) => (
                                 <button
                                     key={inst.id}
@@ -371,7 +364,6 @@ export default function PracticalExperience({ onBack }) {
                             ))}
                         </div>
                     </section>
-                </div>
               </div>
 
               {/* Action Button */}
