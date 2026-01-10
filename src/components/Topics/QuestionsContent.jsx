@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X } from 'lucide-react'
+import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X, Flag } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
+import ReportQuestionModal from './ReportQuestionModal'
 
 export default function QuestionsContent({ topic }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -9,6 +10,7 @@ export default function QuestionsContent({ topic }) {
   const [isZoomed, setIsZoomed] = useState(false)
   const [showExplanation, setShowExplanation] = useState(false)
   const [activeMediaType, setActiveMediaType] = useState('image') // 'image' or 'video'
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false)
   const scrollContainerRef = useRef(null)
 
   const currentQuestion = TOPIC_QUESTIONS[currentQuestionIndex]
@@ -189,9 +191,22 @@ export default function QuestionsContent({ topic }) {
 
             {/* Question Number & Text */}
             <div className="mb-6">
-              <h1 className="text-xl font-bold text-gray-500 mb-2">
-                {currentQuestionIndex + 1}
-              </h1>
+              <div className="flex items-center justify-between mb-2">
+                <h1 className="text-xl font-bold text-gray-500">
+                  {currentQuestionIndex + 1}
+                </h1>
+
+                <button
+                  onClick={() => setIsReportModalOpen(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all group"
+                  title="Sualda səhvlik bildir"
+                >
+                  <Flag className="w-4 h-4 transition-transform group-hover:rotate-12" />
+                  <span className="text-sm font-medium opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    Səhv bildir
+                  </span>
+                </button>
+              </div>
               <h2 className="text-xl font-bold text-gray-900 leading-relaxed">
                 {currentQuestion.text}
               </h2>
@@ -436,6 +451,14 @@ export default function QuestionsContent({ topic }) {
 
       {/* Image Zoom Portal */}
       {isZoomed && currentQuestion.image && <ImageModal />}
+
+      {/* Report Modal */}
+      <ReportQuestionModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        questionId={currentQuestion.id}
+        questionText={currentQuestion.text}
+      />
     </div>
   )
 }
