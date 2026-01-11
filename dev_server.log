@@ -7,3 +7,4 @@
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+9:24:33 AM [vite] (client) hmr update /src/components/ResultsPage.jsx, /src/index.css

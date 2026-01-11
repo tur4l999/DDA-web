@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ArrowLeft, Calendar, CheckCircle, XCircle, Clock, Award, ChevronRight, AlertCircle, Monitor, BookOpen, Ticket } from 'lucide-react';
+import { ArrowLeft, Calendar, CheckCircle, XCircle, Clock, Award, ChevronRight, AlertCircle, Monitor, BookOpen, Ticket, Eye, MessageSquare } from 'lucide-react';
 
 export default function ResultsPage({ resultId, onBack }) {
   const [selectedId, setSelectedId] = useState(resultId);
@@ -7,20 +7,20 @@ export default function ResultsPage({ resultId, onBack }) {
 
   // Mock Data
   const finalResults = [
-    { id: 101, type: 'final', date: '11.12.2025', time: '10:00', score: 94, status: 'passed', label: 'Final İmtahanı' },
-    { id: 102, type: 'final', date: '09.12.2025', time: '15:10', score: 82, status: 'passed', label: 'Final İmtahanı' },
-    { id: 103, type: 'final', date: '05.12.2025', time: '16:45', score: 68, status: 'failed', label: 'Final İmtahanı' },
+    { id: 101, type: 'final', date: '11.12.2025', time: '10:00', duration: '18 dəq', correctCount: 18, totalCount: 20, score: 94, status: 'passed', label: 'Final İmtahanı' },
+    { id: 102, type: 'final', date: '09.12.2025', time: '15:10', duration: '20 dəq', correctCount: 16, totalCount: 20, score: 82, status: 'passed', label: 'Final İmtahanı' },
+    { id: 103, type: 'final', date: '05.12.2025', time: '16:45', duration: '25 dəq', correctCount: 13, totalCount: 20, score: 68, status: 'failed', label: 'Final İmtahanı' },
   ];
 
   const topicResults = [
-    { id: 201, type: 'topic', date: '10.12.2025', time: '11:20', score: 100, status: 'passed', label: 'Mövzu 3: Yol nişanları' },
-    { id: 202, type: 'topic', date: '08.12.2025', time: '14:30', score: 90, status: 'passed', label: 'Mövzu 2: Ümumi müddəalar' },
+    { id: 201, type: 'topic', date: '10.12.2025', time: '11:20', duration: '12 dəq', correctCount: 10, totalCount: 10, score: 100, status: 'passed', label: 'Mövzu 3: Yol nişanları' },
+    { id: 202, type: 'topic', date: '08.12.2025', time: '14:30', duration: '15 dəq', correctCount: 9, totalCount: 10, score: 90, status: 'passed', label: 'Mövzu 2: Ümumi müddəalar' },
   ];
 
   const ticketResults = [
-    { id: 301, type: 'ticket', date: '12.12.2025', time: '09:15', score: 80, status: 'passed', label: 'Bilet №5' },
-    { id: 302, type: 'ticket', date: '11.12.2025', time: '18:00', score: 60, status: 'failed', label: 'Bilet №2' },
-    { id: 303, type: 'ticket', date: '10.12.2025', time: '12:45', score: 100, status: 'passed', label: 'Bilet №1' },
+    { id: 301, type: 'ticket', date: '12.12.2025', time: '09:15', duration: '10 dəq', correctCount: 8, totalCount: 10, score: 80, status: 'passed', label: 'Bilet №5' },
+    { id: 302, type: 'ticket', date: '11.12.2025', time: '18:00', duration: '14 dəq', correctCount: 6, totalCount: 10, score: 60, status: 'failed', label: 'Bilet №2' },
+    { id: 303, type: 'ticket', date: '10.12.2025', time: '12:45', duration: '9 dəq', correctCount: 10, totalCount: 10, score: 100, status: 'passed', label: 'Bilet №1' },
   ];
 
   // Combine all for lookup in detail view
@@ -39,7 +39,12 @@ export default function ResultsPage({ resultId, onBack }) {
         const isCorrect = Math.random() > 0.3;
         let userOpt = correctOpt;
 
-        if (!isCorrect) {
+        // Sometimes unanswered for variety
+        const isUnanswered = Math.random() > 0.9;
+
+        if (isUnanswered) {
+            userOpt = null;
+        } else if (!isCorrect) {
             const wrongOptions = options.filter(o => o !== correctOpt);
             userOpt = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
         }
@@ -47,7 +52,9 @@ export default function ResultsPage({ resultId, onBack }) {
         return {
             id: i + 1,
             text: `Sual #${i + 1}. Aşağıdakı nişan nəyi bildirir?`,
-            isCorrect: isCorrect,
+            image: "https://images.unsplash.com/photo-1566576912902-192f89a9418e?auto=format&fit=crop&q=80&w=1000",
+            isCorrect: isUnanswered ? false : isCorrect,
+            isUnanswered: isUnanswered,
             userAnswer: userOpt,
             correctAnswer: correctOpt,
             options: ['Dayanmaq qadağandır', 'Giriş qadağandır', 'Sürət həddi', 'Ötmə qadağandır']
@@ -84,43 +91,81 @@ export default function ResultsPage({ resultId, onBack }) {
           <div className="max-w-4xl mx-auto space-y-6">
             {mockQuestions.map((q) => (
               <div key={q.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <div className="flex items-start gap-4">
-                  <div className={`mt-1 flex-shrink-0 ${q.isCorrect ? 'text-green-500' : 'text-red-500'}`}>
-                    {q.isCorrect ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
+                <div className="flex flex-col gap-6">
+                  {/* Header: Status Badge */}
+                  <div className="flex items-center justify-between">
+                      <div className={`px-3 py-1 rounded-lg text-sm font-bold flex items-center gap-2 ${
+                          q.isUnanswered
+                          ? 'bg-gray-100 text-gray-600'
+                          : q.isCorrect
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-red-100 text-red-700'
+                      }`}>
+                          {q.isUnanswered ? (
+                              <>Cavablanmamış</>
+                          ) : q.isCorrect ? (
+                              <><CheckCircle className="w-4 h-4" /> Doğru</>
+                          ) : (
+                              <><XCircle className="w-4 h-4" /> Yanlış</>
+                          )}
+                      </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 mb-4">{q.text}</h3>
 
-                    <div className="space-y-3">
-                      {q.options.map((optText, idx) => {
-                         const optLabel = ['A', 'B', 'C', 'D'][idx];
-                         let itemClass = "p-4 rounded-xl border border-gray-200 flex items-center gap-3";
+                  {/* Content: Image and Question Text Side-by-Side */}
+                  <div className="flex flex-col md:flex-row gap-6">
+                      <div className="w-full md:w-1/3 flex-shrink-0">
+                          <img
+                            src={q.image}
+                            alt={`Sual ${q.id}`}
+                            className="w-full h-auto rounded-xl object-cover border border-gray-100 shadow-sm"
+                          />
+                      </div>
+                      <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900 mb-4 text-lg">{q.text}</h3>
 
-                         const isUserAnswer = optLabel === q.userAnswer;
-                         const isCorrectAnswer = optLabel === q.correctAnswer;
+                          <div className="space-y-3">
+                            {q.options.map((optText, idx) => {
+                                const optLabel = ['A', 'B', 'C', 'D'][idx];
+                                let itemClass = "p-4 rounded-xl border border-gray-200 flex items-center gap-3";
 
-                         if (isUserAnswer) {
-                            itemClass = q.isCorrect
-                                ? "p-4 rounded-xl border border-green-200 bg-green-50 flex items-center gap-3"
-                                : "p-4 rounded-xl border border-red-200 bg-red-50 flex items-center gap-3";
-                         } else if (isCorrectAnswer && !q.isCorrect) {
-                            itemClass = "p-4 rounded-xl border border-green-200 bg-green-50 flex items-center gap-3";
-                         }
+                                const isUserAnswer = optLabel === q.userAnswer;
+                                const isCorrectAnswer = optLabel === q.correctAnswer;
 
-                         return (
-                           <div key={idx} className={itemClass}>
-                             <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
-                               isUserAnswer
-                                 ? (q.isCorrect ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700')
-                                 : (isCorrectAnswer && !q.isCorrect ? 'bg-green-200 text-green-700' : 'bg-gray-100 text-gray-500')
-                             }`}>
-                               {optLabel}
-                             </span>
-                             <span className="text-gray-900 font-medium">{optText}</span>
-                           </div>
-                         );
-                      })}
-                    </div>
+                                if (isUserAnswer) {
+                                    itemClass = q.isCorrect
+                                        ? "p-4 rounded-xl border border-green-200 bg-green-50 flex items-center gap-3"
+                                        : "p-4 rounded-xl border border-red-200 bg-red-50 flex items-center gap-3";
+                                } else if (isCorrectAnswer && !q.isCorrect) {
+                                    itemClass = "p-4 rounded-xl border border-green-200 bg-green-50 flex items-center gap-3";
+                                }
+
+                                return (
+                                <div key={idx} className={itemClass}>
+                                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                                    isUserAnswer
+                                        ? (q.isCorrect ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700')
+                                        : (isCorrectAnswer && !q.isCorrect ? 'bg-green-200 text-green-700' : 'bg-gray-100 text-gray-500')
+                                    }`}>
+                                    {optLabel}
+                                    </span>
+                                    <span className="text-gray-900 font-medium">{optText}</span>
+                                </div>
+                                );
+                            })}
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-gray-100">
+                              <button className="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl transition-colors text-sm font-semibold">
+                                  <Eye className="w-4 h-4" />
+                                  İzaha bax
+                              </button>
+                              <button className="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl transition-colors text-sm font-semibold">
+                                  <MessageSquare className="w-4 h-4" />
+                                  Appelyasiya ver
+                              </button>
+                          </div>
+                      </div>
                   </div>
                 </div>
               </div>
@@ -155,7 +200,7 @@ export default function ResultsPage({ resultId, onBack }) {
                     : 'border-transparent text-gray-500 hover:text-gray-700'
                 }`}
             >
-                FİNAL İMTAHAN NƏTİCƏLƏRİ
+                İMTAHAN SİMULYATOR NƏTİCƏLƏRİ
             </button>
             <button
                 onClick={() => setActiveTab('topic')}
@@ -200,33 +245,41 @@ export default function ResultsPage({ resultId, onBack }) {
                     className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
                 >
                     <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                        result.score >= 70 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
-                    }`}>
-                        {result.type === 'final' && <Monitor className="w-6 h-6" />}
-                        {result.type === 'topic' && <BookOpen className="w-6 h-6" />}
-                        {result.type === 'ticket' && <Ticket className="w-6 h-6" />}
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-gray-900">{result.label}</h4>
-                        <p className="text-sm text-gray-500 flex items-center gap-2 mt-0.5">
-                        <Calendar className="w-3.5 h-3.5" /> {result.date}
-                        <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                        <Clock className="w-3.5 h-3.5" /> {result.time}
-                        </p>
-                    </div>
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                            result.score >= 70 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
+                        }`}>
+                            {result.type === 'final' && <Monitor className="w-6 h-6" />}
+                            {result.type === 'topic' && <BookOpen className="w-6 h-6" />}
+                            {result.type === 'ticket' && <Ticket className="w-6 h-6" />}
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-gray-900">{result.label}</h4>
+                            <p className="text-sm text-gray-500 flex items-center gap-2 mt-0.5">
+                                <Calendar className="w-3.5 h-3.5" /> {result.date}
+                                <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                                <Clock className="w-3.5 h-3.5" /> {result.time}
+                                <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                                <span className="font-medium text-gray-700">{result.duration}</span>
+                            </p>
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-6">
-                    <div className="text-right">
-                        <span className={`block text-xl font-bold ${result.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
-                        {result.score}%
-                        </span>
-                        <span className="text-xs font-medium text-gray-400">
-                        {result.score >= 70 ? 'Keçdi' : 'Kəsilmə'}
-                        </span>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary-600 transition-colors" />
+                        <div className="text-right hidden sm:block">
+                            <span className="block text-sm font-bold text-gray-900">
+                                {result.correctCount}/{result.totalCount}
+                            </span>
+                            <span className="text-xs text-gray-500">Doğru/Ümumi</span>
+                        </div>
+                        <div className="text-right">
+                            <span className={`block text-xl font-bold ${result.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+                            {result.score}%
+                            </span>
+                            <span className="text-xs font-medium text-gray-400">
+                            {result.score >= 70 ? 'Keçdi' : 'Kəsilmə'}
+                            </span>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary-600 transition-colors" />
                     </div>
                 </div>
                 ))}
