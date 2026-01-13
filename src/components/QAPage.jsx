@@ -319,8 +319,8 @@ export default function QAPage({ onBack }) {
         ${selectedQuestionId !== null ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 lg:opacity-100 opacity-0'}
       `}>
         {/* Chat Background Pattern Overlay */}
-         <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-width='1.5'%3E%3Ctext x='60' y='65' font-family='sans-serif' font-weight='bold' font-size='22' text-anchor='middle' fill='%23000000' stroke='none'%3EDDA%3C/text%3E%3Cpath d='M15 15 L25 15 L30 20 L30 30 L25 35 L15 35 L10 30 L10 20 Z' /%3E%3Cpath d='M95 15 L110 40 L80 40 Z' /%3E%3Ccircle cx='25' cy='95' r='14' /%3E%3Crect x='85' y='85' width='26' height='26' rx='4' /%3E%3C/g%3E%3C/svg%3E")`
+         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='150' height='100' viewBox='0 0 150 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-width='1.5'%3E%3Cpath d='M20,10 L30,10 L40,20 L40,30 L30,40 L20,40 L10,30 L10,20 Z' /%3E%3Cpath d='M75,10 L90,25 L75,40 L60,25 Z' /%3E%3Cpath d='M110,10 L140,10 L125,35 Z' /%3E%3Crect x='12' y='62' width='26' height='26' rx='2' /%3E%3Crect x='55' y='65' width='40' height='20' rx='2' /%3E%3Ccircle cx='125' cy='75' r='14' /%3E%3C/g%3E%3C/svg%3E")`
          }}></div>
 
         {selectedQuestion ? (
