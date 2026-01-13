@@ -116,6 +116,12 @@ export default function QAPage({ onBack }) {
   const [selectedQuestionId, setSelectedQuestionId] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // New Ticket Modal State
+  const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
+  const [newTicketSubject, setNewTicketSubject] = useState("");
+  const [newTicketMessage, setNewTicketMessage] = useState("");
+
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
@@ -127,6 +133,34 @@ export default function QAPage({ onBack }) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [selectedQuestionId, questions]);
+
+  const handleCreateTicket = () => {
+    if (!newTicketSubject || !newTicketMessage.trim()) return;
+
+    const newTicket = {
+      id: Date.now(),
+      title: newTicketSubject,
+      status: "active",
+      lastMessage: newTicketMessage,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      unreadCount: 0,
+      messages: [
+        {
+          id: Date.now(),
+          sender: "user",
+          text: newTicketMessage,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          status: "sent"
+        }
+      ]
+    };
+
+    setQuestions([newTicket, ...questions]);
+    setSelectedQuestionId(newTicket.id);
+    setIsNewTicketOpen(false);
+    setNewTicketSubject("");
+    setNewTicketMessage("");
+  };
 
   const handleSendMessage = () => {
     if ((!newMessage.trim()) || !selectedQuestionId) return;
@@ -223,7 +257,10 @@ export default function QAPage({ onBack }) {
               </button>
             <h1 className="text-xl font-bold text-gray-900 tracking-tight">Sual - Cavab</h1>
           </div>
-          <button className="p-2 bg-primary-50 text-primary-600 rounded-xl hover:bg-primary-100 transition-colors">
+          <button
+            onClick={() => setIsNewTicketOpen(true)}
+            className="p-2 bg-primary-50 text-primary-600 rounded-xl hover:bg-primary-100 transition-colors"
+          >
             <Plus className="w-5 h-5" />
           </button>
         </div>
@@ -414,6 +451,66 @@ export default function QAPage({ onBack }) {
           </div>
         )}
       </div>
+
+      {/* New Ticket Modal */}
+      {isNewTicketOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-xl overflow-hidden animate-scale-in">
+            <div className="flex items-center justify-between p-4 border-b border-gray-100">
+              <h3 className="font-bold text-lg text-gray-900">Yeni müraciət</h3>
+              <button
+                onClick={() => setIsNewTicketOpen(false)}
+                className="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Mövzu</label>
+                <select
+                  value={newTicketSubject}
+                  onChange={(e) => setNewTicketSubject(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all text-sm text-gray-900"
+                >
+                  <option value="">Seçin...</option>
+                  <option value="Texniki dəstək">Texniki dəstək</option>
+                  <option value="Ödənişlər">Ödənişlər</option>
+                  <option value="İmtahan sualları">İmtahan sualları</option>
+                  <option value="Təklif və iradlar">Təklif və iradlar</option>
+                  <option value="Digər">Digər</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Mesajınız</label>
+                <textarea
+                  value={newTicketMessage}
+                  onChange={(e) => setNewTicketMessage(e.target.value)}
+                  placeholder="Sualınızı bura yazın..."
+                  rows={4}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all text-sm resize-none text-gray-900 placeholder:text-gray-400"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  onClick={handleCreateTicket}
+                  disabled={!newTicketSubject || !newTicketMessage.trim()}
+                  className={`w-full py-3 px-4 rounded-xl font-bold text-white transition-all transform active:scale-[0.98] ${
+                    !newTicketSubject || !newTicketMessage.trim()
+                      ? 'bg-gray-200 cursor-not-allowed text-gray-400'
+                      : 'bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-500/30'
+                  }`}
+                >
+                  Göndər
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
