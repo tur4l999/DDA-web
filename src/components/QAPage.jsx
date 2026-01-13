@@ -315,11 +315,11 @@ export default function QAPage({ onBack }) {
 
       {/* Right Side - Chat Area */}
       <div className={`
-        flex-1 flex flex-col bg-[#efeae2] relative z-10 transition-transform duration-300 w-full
+        flex-1 flex flex-col bg-[#f0f2f5] relative z-10 transition-transform duration-300 w-full
         ${selectedQuestionId !== null ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 lg:opacity-100 opacity-0'}
       `}>
         {/* Chat Background Pattern Overlay */}
-         <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{
+         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm33.414-6l5.95-5.95L45.95.65l-5.95 5.95 5.95 5.95zM40 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM9 42c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM48 48c0-11.046 8.954-20 20-20s20 8.954 20 20-8.954 20-20 20-20-8.954-20-20zm52.414-6l5.95-5.95-1.414-1.414-5.95 5.95-5.95-5.95-1.414 1.414 5.95 5.95-5.95 5.95 1.414 1.414 5.95-5.95 5.95 5.95 1.414-1.414-5.95-5.95zM24 16c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm0-2c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6zM24 48c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z' fill='%23000000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`
          }}></div>
 
