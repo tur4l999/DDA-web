@@ -319,8 +319,8 @@ export default function QAPage({ onBack }) {
         ${selectedQuestionId !== null ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 lg:opacity-100 opacity-0'}
       `}>
         {/* Chat Background Pattern Overlay */}
-         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm33.414-6l5.95-5.95L45.95.65l-5.95 5.95 5.95 5.95zM40 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM9 42c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM48 48c0-11.046 8.954-20 20-20s20 8.954 20 20-8.954 20-20 20-20-8.954-20-20zm52.414-6l5.95-5.95-1.414-1.414-5.95 5.95-5.95-5.95-1.414 1.414 5.95 5.95-5.95 5.95 1.414 1.414 5.95-5.95 5.95 5.95 1.414-1.414-5.95-5.95zM24 16c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm0-2c-3.314 0-6-2.686-6-6s2.686-6 6-6 6 2.686 6 6-2.686 6-6 6zM24 48c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z' fill='%23000000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`
+         <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-width='1.5'%3E%3Ctext x='60' y='65' font-family='sans-serif' font-weight='bold' font-size='22' text-anchor='middle' fill='%23000000' stroke='none'%3EDDA%3C/text%3E%3Cpath d='M15 15 L25 15 L30 20 L30 30 L25 35 L15 35 L10 30 L10 20 Z' /%3E%3Cpath d='M95 15 L110 40 L80 40 Z' /%3E%3Ccircle cx='25' cy='95' r='14' /%3E%3Crect x='85' y='85' width='26' height='26' rx='4' /%3E%3C/g%3E%3C/svg%3E")`
          }}></div>
 
         {selectedQuestion ? (
