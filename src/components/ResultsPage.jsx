@@ -3,13 +3,18 @@ import { ArrowLeft, Calendar, CheckCircle, XCircle, Clock, Award, ChevronRight, 
 
 export default function ResultsPage({ resultId, onBack }) {
   const [selectedId, setSelectedId] = useState(resultId);
-  const [activeTab, setActiveTab] = useState('final'); // 'final', 'topic', 'ticket'
+  const [activeTab, setActiveTab] = useState('simulator'); // 'simulator', 'final', 'topic', 'ticket'
 
   // Mock Data
+  const simulatorResults = [
+    { id: 101, type: 'simulator', date: '11.12.2025', time: '10:00', duration: '18 dəq', correctCount: 18, totalCount: 20, score: 94, status: 'passed', label: 'Simulyator İmtahanı' },
+    { id: 102, type: 'simulator', date: '09.12.2025', time: '15:10', duration: '20 dəq', correctCount: 16, totalCount: 20, score: 82, status: 'passed', label: 'Simulyator İmtahanı' },
+    { id: 103, type: 'simulator', date: '05.12.2025', time: '16:45', duration: '25 dəq', correctCount: 13, totalCount: 20, score: 68, status: 'failed', label: 'Simulyator İmtahanı' },
+  ];
+
   const finalResults = [
-    { id: 101, type: 'final', date: '11.12.2025', time: '10:00', duration: '18 dəq', correctCount: 18, totalCount: 20, score: 94, status: 'passed', label: 'Final İmtahanı' },
-    { id: 102, type: 'final', date: '09.12.2025', time: '15:10', duration: '20 dəq', correctCount: 16, totalCount: 20, score: 82, status: 'passed', label: 'Final İmtahanı' },
-    { id: 103, type: 'final', date: '05.12.2025', time: '16:45', duration: '25 dəq', correctCount: 13, totalCount: 20, score: 68, status: 'failed', label: 'Final İmtahanı' },
+    { id: 401, type: 'final', date: '14.12.2025', time: '09:00', duration: '28 dəq', correctCount: 19, totalCount: 20, score: 95, status: 'passed', label: 'Final İmtahanı' },
+    { id: 402, type: 'final', date: '13.12.2025', time: '14:30', duration: '30 dəq', correctCount: 17, totalCount: 20, score: 85, status: 'passed', label: 'Final İmtahanı' },
   ];
 
   const topicResults = [
@@ -24,10 +29,11 @@ export default function ResultsPage({ resultId, onBack }) {
   ];
 
   // Combine all for lookup in detail view
-  const allResults = useMemo(() => [...finalResults, ...topicResults, ...ticketResults], []);
+  const allResults = useMemo(() => [...simulatorResults, ...finalResults, ...topicResults, ...ticketResults], []);
 
   // Determine current list to show
-  const currentList = activeTab === 'final' ? finalResults
+  const currentList = activeTab === 'simulator' ? simulatorResults
+                    : activeTab === 'final' ? finalResults
                     : activeTab === 'topic' ? topicResults
                     : ticketResults;
 
@@ -193,6 +199,16 @@ export default function ResultsPage({ resultId, onBack }) {
           {/* Tabs */}
           <div className="px-6 flex overflow-x-auto gap-6 hide-scrollbar">
             <button
+                onClick={() => setActiveTab('simulator')}
+                className={`pb-3 text-sm font-bold border-b-2 transition-colors whitespace-nowrap ${
+                    activeTab === 'simulator'
+                    ? 'border-green-600 text-green-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+            >
+                İMTAHAN SİMULYATOR NƏTİCƏLƏRİ
+            </button>
+            <button
                 onClick={() => setActiveTab('final')}
                 className={`pb-3 text-sm font-bold border-b-2 transition-colors whitespace-nowrap ${
                     activeTab === 'final'
@@ -200,7 +216,7 @@ export default function ResultsPage({ resultId, onBack }) {
                     : 'border-transparent text-gray-500 hover:text-gray-700'
                 }`}
             >
-                İMTAHAN SİMULYATOR NƏTİCƏLƏRİ
+                FİNAL İMTAHANI
             </button>
             <button
                 onClick={() => setActiveTab('topic')}
@@ -228,7 +244,7 @@ export default function ResultsPage({ resultId, onBack }) {
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
           <div className="max-w-4xl mx-auto">
 
-             {activeTab === 'final' && (
+             {activeTab === 'simulator' && (
                  <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4 flex items-start gap-3">
                      <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                      <p className="text-sm text-yellow-800 font-medium">
@@ -248,7 +264,8 @@ export default function ResultsPage({ resultId, onBack }) {
                         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
                             result.score >= 70 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
                         }`}>
-                            {result.type === 'final' && <Monitor className="w-6 h-6" />}
+                            {result.type === 'simulator' && <Monitor className="w-6 h-6" />}
+                            {result.type === 'final' && <Award className="w-6 h-6" />}
                             {result.type === 'topic' && <BookOpen className="w-6 h-6" />}
                             {result.type === 'ticket' && <Ticket className="w-6 h-6" />}
                         </div>
