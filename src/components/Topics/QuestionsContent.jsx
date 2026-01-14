@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X, Flag } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 import ReportQuestionModal from './ReportQuestionModal'
+import WatermarkOverlay from './WatermarkOverlay'
 
 export default function QuestionsContent({ topic }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -97,6 +98,7 @@ export default function QuestionsContent({ topic }) {
               alt="Question"
               className="w-full h-auto object-contain max-h-[50vh]"
             />
+            <WatermarkOverlay />
          </div>
 
          {/* 2. Question Text (Middle) */}
@@ -315,6 +317,7 @@ export default function QuestionsContent({ topic }) {
                            alt="Question"
                            className="w-full h-full object-contain"
                          />
+                         <WatermarkOverlay />
                          <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/5 transition-colors flex items-center justify-center opacity-0 group-hover/image:opacity-100 pointer-events-none">
                             <ZoomIn className="w-10 h-10 text-white drop-shadow-md" />
                          </div>
