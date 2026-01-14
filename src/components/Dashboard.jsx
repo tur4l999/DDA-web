@@ -11,6 +11,7 @@ import ResultsPage from './ResultsPage'
 import ExamPage from './Exam/ExamPage'
 import CertificateApplication from './CertificateApplication'
 import PracticalExperience from './PracticalExperience'
+import AppealsPage from './AppealsPage'
 import QAPage from './QAPage'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
@@ -49,6 +50,8 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
     return <PracticalExperience onBack={() => setCurrentPage('dashboard')} />
   }
 
+  if (currentPage === 'appeals') {
+    return <AppealsPage onBack={() => setCurrentPage('dashboard')} />
   if (currentPage === 'qa') {
     return <QAPage onBack={() => setCurrentPage('dashboard')} />
   }

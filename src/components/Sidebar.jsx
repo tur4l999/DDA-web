@@ -11,6 +11,8 @@ const menuItems = [
   { icon: BarChart3, label: 'Nəticələrim', page: 'results' },
   { icon: FileBadge, label: 'Şəhadətnamə', page: 'certificate' },
   { icon: Car, label: 'Praktiki Təcrübə', page: 'practical-experience' },
+  { icon: HelpCircle, label: 'Sual-cavab', page: null },
+  { icon: FileCheck, label: 'Appelyasiya', page: 'appeals' },
   { icon: HelpCircle, label: 'Sual-cavab', page: 'qa' },
   { icon: FileCheck, label: 'Appelyasiya', page: null },
   { icon: CreditCard, label: 'Ödənişlər', page: null },
