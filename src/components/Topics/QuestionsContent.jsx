@@ -4,6 +4,12 @@ import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 import ReportQuestionModal from './ReportQuestionModal'
 import WatermarkOverlay from './WatermarkOverlay'
 
+// Mock user data - In a real app, this would come from a global context or auth hook
+const CURRENT_USER = {
+  fullName: "Tural Kazımov Rəşad oğlu",
+  phone: "+994 50 123 45 67"
+}
+
 export default function QuestionsContent({ topic }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [userAnswers, setUserAnswers] = useState({})
@@ -92,13 +98,19 @@ export default function QuestionsContent({ topic }) {
        <div className="bg-white rounded-2xl max-w-2xl w-full p-6 flex flex-col gap-6 my-auto relative" onClick={e => e.stopPropagation()}>
 
          {/* 1. Image (Top) */}
-         <div className="w-full bg-gray-50 rounded-xl overflow-hidden border border-gray-100 relative group">
+         <div
+           className="w-full bg-gray-50 rounded-xl overflow-hidden border border-gray-100 relative group"
+           onContextMenu={(e) => e.preventDefault()}
+         >
              <img
               src={currentQuestion.image}
               alt="Question"
               className="w-full h-auto object-contain max-h-[50vh]"
             />
-            <WatermarkOverlay />
+            <WatermarkOverlay
+              text={CURRENT_USER.fullName}
+              subtext={CURRENT_USER.phone}
+            />
          </div>
 
          {/* 2. Question Text (Middle) */}
@@ -311,13 +323,17 @@ export default function QuestionsContent({ topic }) {
                       <div
                         className="w-full h-full relative cursor-zoom-in group/image"
                         onClick={() => setIsZoomed(true)}
+                        onContextMenu={(e) => e.preventDefault()}
                       >
                          <img
                            src={currentQuestion.image}
                            alt="Question"
                            className="w-full h-full object-contain"
                          />
-                         <WatermarkOverlay />
+                         <WatermarkOverlay
+                           text={CURRENT_USER.fullName}
+                           subtext={CURRENT_USER.phone}
+                         />
                          <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/5 transition-colors flex items-center justify-center opacity-0 group-hover/image:opacity-100 pointer-events-none">
                             <ZoomIn className="w-10 h-10 text-white drop-shadow-md" />
                          </div>
