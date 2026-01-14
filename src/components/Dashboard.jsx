@@ -12,6 +12,8 @@ import ExamPage from './Exam/ExamPage'
 import CertificateApplication from './CertificateApplication'
 import PracticalExperience from './PracticalExperience'
 import PaymentsPage from './PaymentsPage'
+import AppealsPage from './AppealsPage'
+import QAPage from './QAPage'
 
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
@@ -51,6 +53,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'payments') {
     return <PaymentsPage onBack={() => setCurrentPage('dashboard')} />
+  if (currentPage === 'appeals') {
+    return <AppealsPage onBack={() => setCurrentPage('dashboard')} />
+  if (currentPage === 'qa') {
+    return <QAPage onBack={() => setCurrentPage('dashboard')} />
   }
 
   const handleExamClick = (examId) => {
@@ -187,7 +193,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               <section className="bg-white rounded-2xl shadow-sm border border-gray-100/50 p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-bold text-gray-900 tracking-tight">Son nəticələr</h3>
-                  <button className="text-xs font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1 px-2.5 py-1.5 hover:bg-primary-50 rounded-lg transition-all">
+                  <button
+                    onClick={() => setCurrentPage('results')}
+                    className="text-xs font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1 px-2.5 py-1.5 hover:bg-primary-50 rounded-lg transition-all"
+                  >
                     Hamısına bax <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
