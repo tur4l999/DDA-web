@@ -4,8 +4,8 @@ import { useState } from 'react'
 const mockTransactions = [
   {
     id: 'TRX-982341',
-    service: 'İmtahan Simulyatoru',
-    category: 'İmtahan',
+    service: 'Balans Artırma',
+    category: 'Balans',
     date: '03 Dek 2023, 14:30',
     amount: '5.00',
     status: 'success',
@@ -13,8 +13,8 @@ const mockTransactions = [
   },
   {
     id: 'TRX-982342',
-    service: 'Bütün Cərimələr',
-    category: 'Cərimə',
+    service: 'Balans Artırma',
+    category: 'Balans',
     date: '01 Dek 2023, 09:15',
     amount: '120.00',
     status: 'success',
@@ -22,8 +22,8 @@ const mockTransactions = [
   },
   {
     id: 'TRX-982343',
-    service: 'Onlayn Dərs (Premium)',
-    category: 'Təhsil',
+    service: 'Balans Artırma',
+    category: 'Balans',
     date: '28 Noy 2023, 16:45',
     amount: '45.00',
     status: 'failed',
@@ -31,8 +31,8 @@ const mockTransactions = [
   },
   {
     id: 'TRX-982344',
-    service: 'Yol Nişanları Kitabçası',
-    category: 'Təhsil',
+    service: 'Balans Artırma',
+    category: 'Balans',
     date: '25 Noy 2023, 11:20',
     amount: '12.50',
     status: 'pending',
@@ -40,8 +40,8 @@ const mockTransactions = [
   },
   {
     id: 'TRX-982345',
-    service: 'Sürücülük Vəsiqəsi Rüsumu',
-    category: 'Dövlət',
+    service: 'Balans Artırma',
+    category: 'Balans',
     date: '20 Noy 2023, 10:00',
     amount: '25.00',
     status: 'success',
@@ -122,18 +122,7 @@ export default function PaymentsPage({ onBack }) {
 
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100/50 relative overflow-hidden group hover:shadow-md transition-shadow">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Wallet className="w-24 h-24 text-primary-600" />
-              </div>
-              <div className="relative">
-                <p className="text-sm font-medium text-gray-500 mb-2">Cəmi xərclənən məbləğ</p>
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-3xl font-bold text-gray-900 tracking-tight">207.50 ₼</h3>
-                  <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">+12% bu ay</span>
-                </div>
-              </div>
-            </div>
+            {/* Removed Total Spent Card */}
 
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100/50 relative overflow-hidden group hover:shadow-md transition-shadow">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -145,7 +134,7 @@ export default function PaymentsPage({ onBack }) {
                   <h3 className="text-3xl font-bold text-gray-900 tracking-tight">5.00 ₼</h3>
                   <span className="text-xs text-gray-400">03.12.2023</span>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">İmtahan Simulyatoru</p>
+                <p className="text-xs text-gray-500 mt-2">Balans Artırma</p>
               </div>
             </div>
           </div>
@@ -214,10 +203,7 @@ export default function PaymentsPage({ onBack }) {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 group-hover:scale-110 transition-transform duration-300">
-                               {trx.category === 'İmtahan' && <CreditCard className="w-5 h-5" />}
-                               {trx.category === 'Cərimə' && <Wallet className="w-5 h-5" />}
-                               {trx.category === 'Təhsil' && <ArrowUpRight className="w-5 h-5" />}
-                               {trx.category === 'Dövlət' && <CheckCircle className="w-5 h-5" />}
+                               <Wallet className="w-5 h-5" />
                             </div>
                             <div>
                               <p className="text-sm font-bold text-gray-900">{trx.service}</p>

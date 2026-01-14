@@ -7,19 +7,6 @@ def verify_payments_page():
         context = browser.new_context()
         page = context.new_page()
 
-        # Navigate to the dashboard
-        # Assuming the app is running on localhost:5173.
-        # In this environment, we might need to assume the server is started or start it.
-        # However, for this specific tool usage, I am verifying the *code logic* primarily via the script structure.
-        # But to actually run it, I need the server running.
-        # I will assume the server is running on 5173 or attempt to visit the file if it's a static build,
-        # but the React app needs a dev server.
-
-        # NOTE: Since I cannot easily start the dev server and keep it running while running this script in the same step easily without background processes,
-        # I will rely on the fact that I've modified the code correctly.
-        # But the instructions say "Create a Playwright verification script... that navigates".
-        # I will write the script assuming the server is at http://localhost:5173.
-
         try:
             page.goto("http://localhost:5173")
 
@@ -27,7 +14,6 @@ def verify_payments_page():
             page.wait_for_selector("text=Ana Səhifə")
 
             # Click on 'Ödənişlər' in the sidebar
-            # The sidebar button text is "Ödənişlər"
             page.click("text=Ödənişlər")
 
             # Verify we are on the payments page
@@ -38,7 +24,7 @@ def verify_payments_page():
             page.wait_for_selector("text=Ödəniş tarixçəsi və status məlumatları")
 
             # Check for Summary Cards
-            page.wait_for_selector("text=Cəmi xərclənən məbləğ")
+            # REMOVED: page.wait_for_selector("text=Cəmi xərclənən məbləğ")
             page.wait_for_selector("text=Son ödəniş")
 
             # Check for Table Headers
@@ -46,8 +32,9 @@ def verify_payments_page():
             page.wait_for_selector("text=Qəbz ID")
 
             # Check for Mock Data
-            page.wait_for_selector("text=İmtahan Simulyatoru")
-            page.wait_for_selector("text=207.50 ₼")
+            # This should now match "Balans Artırma"
+            page.wait_for_selector("text=Balans Artırma")
+            page.wait_for_selector("text=5.00 ₼")
 
             print("Payments page verification successful!")
 
