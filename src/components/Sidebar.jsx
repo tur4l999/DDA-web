@@ -15,7 +15,7 @@ const menuItems = [
   { icon: FileCheck, label: 'Appelyasiya', page: 'appeals' },
   { icon: HelpCircle, label: 'Sual-cavab', page: 'qa' },
   { icon: FileCheck, label: 'Appelyasiya', page: null },
-  { icon: CreditCard, label: 'Ödənişlər', page: null },
+  { icon: CreditCard, label: 'Ödənişlər', page: 'payments' },
   { icon: ShoppingBag, label: 'Online mağaza', page: null },
   { icon: Monitor, label: 'İmtahan simulyatoru', page: null },
 ]
