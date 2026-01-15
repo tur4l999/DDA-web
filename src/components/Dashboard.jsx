@@ -53,8 +53,12 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'payments') {
     return <PaymentsPage onBack={() => setCurrentPage('dashboard')} />
+  }
+
   if (currentPage === 'appeals') {
     return <AppealsPage onBack={() => setCurrentPage('dashboard')} />
+  }
+
   if (currentPage === 'qa') {
     return <QAPage onBack={() => setCurrentPage('dashboard')} />
   }
