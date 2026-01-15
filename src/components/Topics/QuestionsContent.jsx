@@ -1,6 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
-import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X } from 'lucide-react'
+import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X, Flag } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
+import ReportQuestionModal from './ReportQuestionModal'
+import WatermarkOverlay from './WatermarkOverlay'
+
+// Mock user data - In a real app, this would come from a global context or auth hook
+const CURRENT_USER = {
+  fullName: "Tural Kazımov Rəşad oğlu",
+  phone: "+994 50 123 45 67"
+}
 
 export default function QuestionsContent({ topic }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -9,6 +17,7 @@ export default function QuestionsContent({ topic }) {
   const [isZoomed, setIsZoomed] = useState(false)
   const [showExplanation, setShowExplanation] = useState(false)
   const [activeMediaType, setActiveMediaType] = useState('image') // 'image' or 'video'
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false)
   const scrollContainerRef = useRef(null)
 
   const currentQuestion = TOPIC_QUESTIONS[currentQuestionIndex]
@@ -89,11 +98,18 @@ export default function QuestionsContent({ topic }) {
        <div className="bg-white rounded-2xl max-w-2xl w-full p-6 flex flex-col gap-6 my-auto relative" onClick={e => e.stopPropagation()}>
 
          {/* 1. Image (Top) */}
-         <div className="w-full bg-gray-50 rounded-xl overflow-hidden border border-gray-100 relative group">
+         <div
+           className="w-full bg-gray-50 rounded-xl overflow-hidden border border-gray-100 relative group"
+           onContextMenu={(e) => e.preventDefault()}
+         >
              <img
               src={currentQuestion.image}
               alt="Question"
               className="w-full h-auto object-contain max-h-[50vh]"
+            />
+            <WatermarkOverlay
+              text={CURRENT_USER.fullName}
+              subtext={CURRENT_USER.phone}
             />
          </div>
 
@@ -265,13 +281,22 @@ export default function QuestionsContent({ topic }) {
                   </div>
                )}
 
-               {/* Explanation Button */}
-               <div>
+               {/* Explanation Button & Report */}
+               <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowExplanation(!showExplanation)}
                     className="bg-[#22c55e] hover:bg-[#16a34a] text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-sm active:scale-95 flex items-center gap-2"
                   >
                     {showExplanation ? 'İzahı gizlət' : 'İzaha bax'}
+                  </button>
+
+                  <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all border border-gray-200 hover:border-red-100 group font-medium"
+                    title="Sualda səhvlik bildir"
+                  >
+                    <Flag className="w-4 h-4 transition-transform group-hover:rotate-12" />
+                    <span>Səhv bildir</span>
                   </button>
                </div>
             </div>
@@ -298,11 +323,16 @@ export default function QuestionsContent({ topic }) {
                       <div
                         className="w-full h-full relative cursor-zoom-in group/image"
                         onClick={() => setIsZoomed(true)}
+                        onContextMenu={(e) => e.preventDefault()}
                       >
                          <img
                            src={currentQuestion.image}
                            alt="Question"
                            className="w-full h-full object-contain"
+                         />
+                         <WatermarkOverlay
+                           text={CURRENT_USER.fullName}
+                           subtext={CURRENT_USER.phone}
                          />
                          <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/5 transition-colors flex items-center justify-center opacity-0 group-hover/image:opacity-100 pointer-events-none">
                             <ZoomIn className="w-10 h-10 text-white drop-shadow-md" />
@@ -436,6 +466,14 @@ export default function QuestionsContent({ topic }) {
 
       {/* Image Zoom Portal */}
       {isZoomed && currentQuestion.image && <ImageModal />}
+
+      {/* Report Modal */}
+      <ReportQuestionModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        questionId={currentQuestion.id}
+        questionText={currentQuestion.text}
+      />
     </div>
   )
 }
