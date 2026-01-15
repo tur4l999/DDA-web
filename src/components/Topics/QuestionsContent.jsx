@@ -292,11 +292,11 @@ export default function QuestionsContent({ topic }) {
 
                   <button
                     onClick={() => setIsReportModalOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-all font-medium group"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all border border-gray-200 hover:border-red-100 group font-medium"
                     title="Sualda səhvlik bildir"
                   >
-                    <Flag className="w-5 h-5 transition-transform group-hover:rotate-12 stroke-[1.5px]" />
-                    <span className="hidden sm:inline">Səhv bildir</span>
+                    <Flag className="w-4 h-4 transition-transform group-hover:rotate-12" />
+                    <span>Səhv bildir</span>
                   </button>
                </div>
             </div>
