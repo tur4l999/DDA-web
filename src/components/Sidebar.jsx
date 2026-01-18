@@ -3,21 +3,19 @@ import { useState } from 'react'
 
 const menuItems = [
   { icon: Home, label: 'Əsas səhifə', page: 'dashboard' },
-  { icon: BookOpen, label: 'Təlim mövzuları', page: 'topics' },
+  { icon: BookOpen, label: 'Mövzular', page: 'topics' },
   { icon: Calendar, label: 'Onlayn dərslər', page: 'classes' },
   { icon: Octagon, label: 'Yol nişanları', page: 'road-signs' },
   { icon: AlertTriangle, label: 'Cərimələr', page: 'penalties' },
-  { icon: FileText, label: 'İmtahan', page: null },
+  { icon: FileText, label: 'İmtahan', page: 'exam' },
   { icon: BarChart3, label: 'Nəticələrim', page: 'results' },
   { icon: FileBadge, label: 'Şəhadətnamə', page: 'certificate' },
   { icon: Car, label: 'Praktiki Təcrübə', page: 'practical-experience' },
-  { icon: HelpCircle, label: 'Sual-cavab', page: null },
   { icon: FileCheck, label: 'Appelyasiya', page: 'appeals' },
   { icon: HelpCircle, label: 'Sual-cavab', page: 'qa' },
-  { icon: FileCheck, label: 'Appelyasiya', page: null },
   { icon: CreditCard, label: 'Ödənişlər', page: 'payments' },
   { icon: ShoppingBag, label: 'Online mağaza', page: null },
-  { icon: Monitor, label: 'İmtahan simulyatoru', page: null },
+  { icon: Monitor, label: 'SINAQ DYP İMTAHANI', page: null },
 ]
 
 export default function Sidebar({ isOpen, setIsOpen, isCollapsed, setIsCollapsed, currentPage, setCurrentPage }) {

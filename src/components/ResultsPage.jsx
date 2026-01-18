@@ -7,9 +7,9 @@ export default function ResultsPage({ resultId, onBack }) {
 
   // Mock Data
   const simulatorResults = [
-    { id: 101, type: 'simulator', date: '11.12.2025', time: '10:00', duration: '18 dəq', correctCount: 18, totalCount: 20, score: 94, status: 'passed', label: 'Simulyator İmtahanı' },
-    { id: 102, type: 'simulator', date: '09.12.2025', time: '15:10', duration: '20 dəq', correctCount: 16, totalCount: 20, score: 82, status: 'passed', label: 'Simulyator İmtahanı' },
-    { id: 103, type: 'simulator', date: '05.12.2025', time: '16:45', duration: '25 dəq', correctCount: 13, totalCount: 20, score: 68, status: 'failed', label: 'Simulyator İmtahanı' },
+    { id: 101, type: 'simulator', date: '11.12.2025', time: '10:00', duration: '18 dəq', correctCount: 18, totalCount: 20, score: 94, status: 'passed', label: 'SINAQ DYP İMTAHANI' },
+    { id: 102, type: 'simulator', date: '09.12.2025', time: '15:10', duration: '20 dəq', correctCount: 16, totalCount: 20, score: 82, status: 'passed', label: 'SINAQ DYP İMTAHANI' },
+    { id: 103, type: 'simulator', date: '05.12.2025', time: '16:45', duration: '25 dəq', correctCount: 13, totalCount: 20, score: 68, status: 'failed', label: 'SINAQ DYP İMTAHANI' },
   ];
 
   const finalResults = [
@@ -206,7 +206,7 @@ export default function ResultsPage({ resultId, onBack }) {
                     : 'border-transparent text-gray-500 hover:text-gray-700'
                 }`}
             >
-                İMTAHAN SİMULYATOR NƏTİCƏLƏRİ
+                SINAQ DYP İMTAHANI NƏTİCƏLƏRİ
             </button>
             <button
                 onClick={() => setActiveTab('final')}
@@ -248,7 +248,7 @@ export default function ResultsPage({ resultId, onBack }) {
                  <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4 flex items-start gap-3">
                      <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                      <p className="text-sm text-yellow-800 font-medium">
-                         İmtahan simulyatoru üzrə nəticələr 7 gün ərzində aktiv olur.
+                         Sınaq DYP imtahanı üzrə nəticələr 7 gün ərzində aktiv olur.
                      </p>
                  </div>
              )}

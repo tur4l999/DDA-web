@@ -213,7 +213,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                         <Monitor className="w-5 h-5" strokeWidth={1.5} />
                       </div>
                       <div>
-                        <h4 className="font-bold text-gray-900 text-sm">Simulyator İmtahanı</h4>
+                        <h4 className="font-bold text-gray-900 text-sm">SINAQ DYP İMTAHANI</h4>
                         <p className="text-xs text-gray-500 font-medium mt-0.5">03.12.2025 • 19:15</p>
                       </div>
                     </div>

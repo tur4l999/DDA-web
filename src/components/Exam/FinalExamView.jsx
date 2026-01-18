@@ -28,7 +28,7 @@ export default function FinalExamView({ onExamClick }) {
                     </div>
                 </div>
 
-                <h3 className="text-3xl font-black mb-3 text-white tracking-tight">İmtahan Simulyatoru</h3>
+                <h3 className="text-3xl font-black mb-3 text-white tracking-tight">SINAQ DYP İMTAHANI</h3>
                 <p className="text-gray-300 text-sm leading-relaxed max-w-sm font-medium">
                   DYP imtahanındakı kimi real vaxt rejimi və sual ardıcıllığı.
                   Özünüzü real imtahanda hiss edin.

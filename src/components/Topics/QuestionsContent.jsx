@@ -275,9 +275,6 @@ export default function QuestionsContent({ topic }) {
                {isAnswered && (
                   <div className={`flex items-center gap-3 p-4 rounded-xl border ${isCorrect ? 'bg-green-100 border-green-500 text-green-900' : 'bg-red-100 border-red-500 text-red-900'}`}>
                     {isCorrect ? <CheckCircle className="w-6 h-6 text-green-700" /> : <XCircle className="w-6 h-6 text-red-700" />}
-                    <div>
-                      <p className="font-bold">{isCorrect ? 'Düzgün cavab!' : 'Səhv cavab'}</p>
-                    </div>
                   </div>
                )}
 
