@@ -8,3 +8,5 @@ Port 5173 is in use, trying another one...
 
   ➜  Local:   http://localhost:5174/DDA-web/
   ➜  Network: use --host to expose
+4:49:42 PM [vite] (client) hmr update /src/components/Topics/QuestionsContent.jsx, /src/index.css
+4:49:59 PM [vite] (client) hmr update /src/components/Topics/WatermarkOverlay.jsx, /src/index.css
