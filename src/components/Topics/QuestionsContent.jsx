@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X, Flag } from 'lucide-react'
+import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X, Flag, RotateCcw } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 import ReportQuestionModal from './ReportQuestionModal'
 import WatermarkOverlay from './WatermarkOverlay'
@@ -18,6 +18,7 @@ export default function QuestionsContent({ topic }) {
   const [showExplanation, setShowExplanation] = useState(false)
   const [activeMediaType, setActiveMediaType] = useState('image') // 'image' or 'video'
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
+  const [isExamFinished, setIsExamFinished] = useState(false)
   const scrollContainerRef = useRef(null)
 
   const currentQuestion = TOPIC_QUESTIONS[currentQuestionIndex]
@@ -30,11 +31,12 @@ export default function QuestionsContent({ topic }) {
 
   // Timer effect
   useEffect(() => {
+    if (isExamFinished) return
     const timer = setInterval(() => {
       setElapsedTime(prev => prev + 1)
     }, 1000)
     return () => clearInterval(timer)
-  }, [])
+  }, [isExamFinished])
 
   // Auto-scroll pagination
   useEffect(() => {
@@ -88,6 +90,45 @@ export default function QuestionsContent({ topic }) {
 
   const toggleMediaType = () => {
     setActiveMediaType(prev => prev === 'image' ? 'video' : 'image')
+  }
+
+  const handleRestart = () => {
+    setElapsedTime(0)
+    setCurrentQuestionIndex(0)
+    setUserAnswers({})
+    setIsExamFinished(false)
+    setShowExplanation(false)
+  }
+
+  if (isExamFinished) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center animate-in fade-in zoom-in duration-300">
+         <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <CheckCircle className="w-12 h-12 text-green-600" />
+         </div>
+         <h2 className="text-3xl font-bold text-gray-900">İmtahan bitdi!</h2>
+         <p className="text-gray-500 text-lg max-w-md">
+           Nəticələriniz qeydə alındı. Yenidən cəhd etmək üçün aşağıdakı düyməyə klikləyin.
+         </p>
+
+         <div className="flex flex-col gap-2 mt-4">
+             <div className="text-xl font-bold text-gray-900 tabular-nums">
+                Müddət: {formatTime(elapsedTime)}
+             </div>
+             <div className="text-gray-500">
+                Doğru cavablar: {Object.keys(userAnswers).filter(id => userAnswers[id] === TOPIC_QUESTIONS.find(q => q.id === parseInt(id))?.correctAnswer).length} / {TOPIC_QUESTIONS.length}
+             </div>
+         </div>
+
+         <button
+           onClick={handleRestart}
+           className="mt-4 flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl active:scale-95"
+         >
+           <RotateCcw className="w-6 h-6" />
+           Yenidən başla
+         </button>
+      </div>
+    )
   }
 
   const ImageModal = () => (
@@ -402,13 +443,11 @@ export default function QuestionsContent({ topic }) {
 
             <button
               onClick={() => {
-                // In a real implementation, this would trigger result calculation or navigation
                 if (window.confirm('İmtahanı bitirmək istədiyinizə əminsiniz?')) {
-                  // Navigate back or show results logic would go here
-                  window.history.back()
+                  setIsExamFinished(true)
                 }
               }}
-              className="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-red-200 whitespace-nowrap"
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm active:scale-95 whitespace-nowrap"
             >
               İmtahanı bitir
             </button>
