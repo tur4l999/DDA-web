@@ -121,7 +121,6 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
   const filteredPenalties = useMemo(() => {
     return penalties.filter(p => {
       // Filter by category
-      if (filter === 'common' && !p.isCommon) return false
       if (filter === 'video' && (!p.videos || p.videos.length === 0)) return false
       if (filter === 'points' && !p.points) return false
       
@@ -178,18 +177,19 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
            <div className="flex flex-wrap gap-3">
              <FilterButton id="all" label="Bütün cərimələr" />
-             <FilterButton id="common" label="Tez-tez rast gəlinən" />
              <FilterButton id="video" label="Video izahlı" />
              <FilterButton id="points" label="Ballı cərimələr" />
            </div>
 
-           {/* New Button: See all penalties */}
-           <button
-             className="flex-shrink-0 bg-white border border-gray-200 hover:border-primary-500 text-gray-700 hover:text-primary-600 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
-           >
-              <span>Bütün cərimələrə bax</span>
-              <ArrowRight className="w-4 h-4" />
-           </button>
+           {/* New Button: See all penalties - Only visible in topic context */}
+           {topicRelated && (
+             <button
+               className="flex-shrink-0 bg-white border border-gray-200 hover:border-primary-500 text-gray-700 hover:text-primary-600 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
+             >
+                <span>Bütün cərimələrə bax</span>
+                <ArrowRight className="w-4 h-4" />
+             </button>
+           )}
         </div>
       </div>
 
