@@ -6,7 +6,7 @@ import WatermarkOverlay from './WatermarkOverlay'
 
 // Mock user data - In a real app, this would come from a global context or auth hook
 const CURRENT_USER = {
-  fullName: "Tural Kazımov Rəşad oğlu",
+  fullName: "Tural Kazımov",
   phone: "+994 50 123 45 67"
 }
 
