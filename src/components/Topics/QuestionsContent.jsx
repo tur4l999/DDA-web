@@ -394,9 +394,24 @@ export default function QuestionsContent({ topic }) {
 
         <div className="flex items-center justify-between gap-4">
 
-          {/* Timer */}
-          <div className="flex items-center gap-2 text-gray-900 text-xl font-bold tracking-wide tabular-nums whitespace-nowrap">
-            {formatTime(elapsedTime)}
+          {/* Timer & Finish Button */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-gray-900 text-xl font-bold tracking-wide tabular-nums whitespace-nowrap">
+              {formatTime(elapsedTime)}
+            </div>
+
+            <button
+              onClick={() => {
+                // In a real implementation, this would trigger result calculation or navigation
+                if (window.confirm('İmtahanı bitirmək istədiyinizə əminsiniz?')) {
+                  // Navigate back or show results logic would go here
+                  window.history.back()
+                }
+              }}
+              className="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-red-200 whitespace-nowrap"
+            >
+              İmtahanı bitir
+            </button>
           </div>
 
           {/* Pagination Strip */}
