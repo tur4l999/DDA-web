@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X, Flag } from 'lucide-react'
+import { Clock, ZoomIn, CheckCircle, XCircle, HelpCircle, BookOpen, ChevronLeft, ChevronRight, PlayCircle, Image as ImageIcon, Check, X, Flag, RotateCcw } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 import ReportQuestionModal from './ReportQuestionModal'
 import WatermarkOverlay from './WatermarkOverlay'
 
 // Mock user data - In a real app, this would come from a global context or auth hook
 const CURRENT_USER = {
-  fullName: "Tural Kazımov Rəşad oğlu",
+  fullName: "Tural Kazımov",
   phone: "+994 50 123 45 67"
 }
 
@@ -18,6 +18,7 @@ export default function QuestionsContent({ topic }) {
   const [showExplanation, setShowExplanation] = useState(false)
   const [activeMediaType, setActiveMediaType] = useState('image') // 'image' or 'video'
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
+  const [isExamFinished, setIsExamFinished] = useState(false)
   const scrollContainerRef = useRef(null)
 
   const currentQuestion = TOPIC_QUESTIONS[currentQuestionIndex]
@@ -30,11 +31,12 @@ export default function QuestionsContent({ topic }) {
 
   // Timer effect
   useEffect(() => {
+    if (isExamFinished) return
     const timer = setInterval(() => {
       setElapsedTime(prev => prev + 1)
     }, 1000)
     return () => clearInterval(timer)
-  }, [])
+  }, [isExamFinished])
 
   // Auto-scroll pagination
   useEffect(() => {
@@ -88,6 +90,45 @@ export default function QuestionsContent({ topic }) {
 
   const toggleMediaType = () => {
     setActiveMediaType(prev => prev === 'image' ? 'video' : 'image')
+  }
+
+  const handleRestart = () => {
+    setElapsedTime(0)
+    setCurrentQuestionIndex(0)
+    setUserAnswers({})
+    setIsExamFinished(false)
+    setShowExplanation(false)
+  }
+
+  if (isExamFinished) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center animate-in fade-in zoom-in duration-300">
+         <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <CheckCircle className="w-12 h-12 text-green-600" />
+         </div>
+         <h2 className="text-3xl font-bold text-gray-900">İmtahan bitdi!</h2>
+         <p className="text-gray-500 text-lg max-w-md">
+           Nəticələriniz qeydə alındı. Yenidən cəhd etmək üçün aşağıdakı düyməyə klikləyin.
+         </p>
+
+         <div className="flex flex-col gap-2 mt-4">
+             <div className="text-xl font-bold text-gray-900 tabular-nums">
+                Müddət: {formatTime(elapsedTime)}
+             </div>
+             <div className="text-gray-500">
+                Doğru cavablar: {Object.keys(userAnswers).filter(id => userAnswers[id] === TOPIC_QUESTIONS.find(q => q.id === parseInt(id))?.correctAnswer).length} / {TOPIC_QUESTIONS.length}
+             </div>
+         </div>
+
+         <button
+           onClick={handleRestart}
+           className="mt-4 flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl active:scale-95"
+         >
+           <RotateCcw className="w-6 h-6" />
+           Yenidən başla
+         </button>
+      </div>
+    )
   }
 
   const ImageModal = () => (
@@ -271,16 +312,6 @@ export default function QuestionsContent({ topic }) {
 
             {/* Actions Row */}
             <div className="flex flex-col gap-4">
-               {/* Feedback Message */}
-               {isAnswered && (
-                  <div className={`flex items-center gap-3 p-4 rounded-xl border ${isCorrect ? 'bg-green-100 border-green-500 text-green-900' : 'bg-red-100 border-red-500 text-red-900'}`}>
-                    {isCorrect ? <CheckCircle className="w-6 h-6 text-green-700" /> : <XCircle className="w-6 h-6 text-red-700" />}
-                    <div>
-                      <p className="font-bold">{isCorrect ? 'Düzgün cavab!' : 'Səhv cavab'}</p>
-                    </div>
-                  </div>
-               )}
-
                {/* Explanation Button & Report */}
                <div className="flex items-center gap-3">
                   <button
@@ -404,9 +435,22 @@ export default function QuestionsContent({ topic }) {
 
         <div className="flex items-center justify-between gap-4">
 
-          {/* Timer */}
-          <div className="flex items-center gap-2 text-gray-900 text-xl font-bold tracking-wide tabular-nums whitespace-nowrap">
-            {formatTime(elapsedTime)}
+          {/* Timer & Finish Button */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-gray-900 text-xl font-bold tracking-wide tabular-nums whitespace-nowrap">
+              {formatTime(elapsedTime)}
+            </div>
+
+            <button
+              onClick={() => {
+                if (window.confirm('İmtahanı bitirmək istədiyinizə əminsiniz?')) {
+                  setIsExamFinished(true)
+                }
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm active:scale-95 whitespace-nowrap"
+            >
+              İmtahanı bitir
+            </button>
           </div>
 
           {/* Pagination Strip */}
