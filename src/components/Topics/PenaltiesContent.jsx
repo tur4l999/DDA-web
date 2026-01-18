@@ -247,7 +247,7 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                       {penalty.arrest && (
                         <div className="bg-gradient-to-br from-rose-600 to-rose-700 text-white px-2.5 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5">
                           <Lock className="w-3 h-3" />
-                          <span>{penalty.arrest}</span>
+                          <span>Həbs: {penalty.arrest}</span>
                         </div>
                       )}
 
@@ -255,7 +255,7 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                       {penalty.restriction && (
                         <div className="bg-gradient-to-br from-gray-700 to-gray-800 text-white px-2.5 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5">
                           <Ban className="w-3 h-3" />
-                          <span>{penalty.restriction}</span>
+                          <span>Məhdudlaşdırma: {penalty.restriction}</span>
                         </div>
                       )}
 
