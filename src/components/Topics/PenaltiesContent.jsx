@@ -1,4 +1,4 @@
-import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, Video, ArrowRight } from 'lucide-react'
+import { Play, AlertCircle, Info, Clock, Scale, Search, ChevronDown, ChevronUp, Video, ArrowRight, Lock, Ban } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
 export default function PenaltiesContent({ topicRelated = false, onVideoClick }) {
@@ -46,7 +46,7 @@ III. Üç hərəkət zolağı olan ikitərəfli hərəkət yollarında nəqliyya
       fine: '100 ₼',
       fineAmount: 100,
       points: '3 bal',
-      relatedArticles: ['Maddə 48'],
+      restriction: '6 ay',
       fullDescription: `Maddə 48. Nəqliyyat vasitələrinin üstün hərəkət rejimi ilə hərəkəti və bununla əlaqədar digər sürücülərin vəzifələri.
 
 Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestində hərəkəti davam etdirmək ciddi qayda pozuntusudur və qəza şəraiti yaradır.`,
@@ -79,7 +79,7 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
       fine: '150 ₼',
       fineAmount: 150,
       points: '4 bal',
-      relatedArticles: ['Maddə 49'],
+      arrest: '15 gün',
       fullDescription: 'Birtərəfli hərəkət yollarında müəyyən edilmiş hərəkət istiqamətinin əksinə hərəkət etməyə, habelə 1.1, 1.3 və 1.11 üfüqi nişanlanma xətlərinin tələblərini pozmaqla nəqliyyat vasitəsini tam olaraq əks istiqamətli nəqliyyat axınının hərəkət zolağına keçirərək nəqliyyat axınına əks istiqamətdə hərəkət etməyə görə.',
       isCommon: true,
       videos: [
@@ -229,7 +229,7 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                     {/* Tags Row */}
                     <div className="flex items-center flex-wrap gap-2 mb-3">
                       <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-gray-900 text-white shadow-sm">
-                        İXM {penalty.article}
+                        İXM: M. {penalty.article}
                       </span>
 
                       {/* Fine + Points Combined Badge */}
@@ -243,11 +243,21 @@ Svetoforun qırmızı işığında və ya nizamlayıcının qadağanedici jestin
                         )}
                       </div>
 
-                      {penalty.relatedArticles?.map((art, idx) => (
-                         <span key={idx} className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-600 border border-gray-200">
-                           {art}
-                         </span>
-                      ))}
+                      {/* Arrest Badge */}
+                      {penalty.arrest && (
+                        <div className="bg-gradient-to-br from-rose-600 to-rose-700 text-white px-2.5 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5">
+                          <Lock className="w-3 h-3" />
+                          <span>{penalty.arrest}</span>
+                        </div>
+                      )}
+
+                      {/* Restriction Badge */}
+                      {penalty.restriction && (
+                        <div className="bg-gradient-to-br from-gray-700 to-gray-800 text-white px-2.5 py-1 rounded-md text-xs font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5">
+                          <Ban className="w-3 h-3" />
+                          <span>{penalty.restriction}</span>
+                        </div>
+                      )}
 
                       {penalty.videos && penalty.videos.length > 0 && (
                         <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100 gap-1.5">
