@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Search, ChevronDown, List, AlertTriangle, ArrowUpCircle, Ban, Navigation, Info, Wrench, Plus } from 'lucide-react'
+import { Search, ChevronDown, List, AlertTriangle, ArrowUpCircle, Ban, Navigation, Info, Wrench, Plus, LayoutGrid, FileText } from 'lucide-react'
 import RoadSignCard from './RoadSignCard'
 import { roadSignsData } from './roadSignsData'
 
@@ -7,6 +7,7 @@ const RoadSigns = () => {
   const [selectedGroup, setSelectedGroup] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [isMobileGroupsOpen, setIsMobileGroupsOpen] = useState(false)
+  const [viewMode, setViewMode] = useState('grid')
 
   const groups = [
     {
@@ -109,12 +110,38 @@ const RoadSigns = () => {
     <div className="flex flex-col flex-1 h-full overflow-hidden bg-[#F5F7FA]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
-        <div className="w-full">
+        <div className="w-full flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div>
             <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Yol nişanları</h1>
             <p className="text-xs lg:text-sm text-gray-600 mt-1">
               Burada bütün yol nişanlarını qruplar üzrə görə, hər nişanın şəkli və izahı ilə tanış ola bilərsiniz.
             </p>
+          </div>
+
+          {/* View Toggle */}
+          <div className="flex bg-gray-100 p-1 rounded-lg flex-shrink-0 self-start">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-md transition-all flex items-center gap-2 ${
+                viewMode === 'grid'
+                  ? 'bg-white shadow-sm text-gray-900 ring-1 ring-black/5'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
+              }`}
+              title="Kart görünüşü"
+            >
+              <LayoutGrid className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded-md transition-all flex items-center gap-2 ${
+                viewMode === 'list'
+                  ? 'bg-white shadow-sm text-gray-900 ring-1 ring-black/5'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
+              }`}
+              title="Siyahı görünüşü (PDF)"
+            >
+              <FileText className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
@@ -255,11 +282,70 @@ const RoadSigns = () => {
 
                 {/* Road Signs List */}
                 {filteredSigns.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start pb-6">
-                    {filteredSigns.map((sign) => (
-                      <RoadSignCard key={sign.id} sign={sign} />
-                    ))}
-                  </div>
+                  viewMode === 'grid' ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start pb-6">
+                      {filteredSigns.map((sign) => (
+                        <RoadSignCard key={sign.id} sign={sign} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-4 pb-6">
+                      {filteredSigns.map((sign) => (
+                        <div key={sign.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 transition-all hover:shadow-md">
+                          <div className="flex flex-col sm:flex-row gap-6">
+                            {/* Sign Image */}
+                            <div className="flex-shrink-0 w-32 h-32 bg-gray-50 rounded-lg flex items-center justify-center p-4 border border-gray-100">
+                              <img
+                                src={sign.image}
+                                alt={sign.name}
+                                className="max-w-full max-h-full object-contain"
+                              />
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <span className="px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 font-bold text-sm border border-gray-200">
+                                  {sign.code}
+                                </span>
+                                <h3 className="text-lg font-bold text-gray-900">
+                                  {sign.name}
+                                </h3>
+                              </div>
+
+                              <div className="space-y-3">
+                                <div>
+                                  <h4 className="text-sm font-medium text-gray-900 mb-1">Mənası:</h4>
+                                  <p className="text-gray-600 text-sm leading-relaxed">
+                                    {sign.meaning}
+                                  </p>
+                                </div>
+
+                                {sign.detailedDescription && (
+                                  <div>
+                                    <h4 className="text-sm font-medium text-gray-900 mb-1">Ətraflı izahı:</h4>
+                                    <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+                                      {sign.detailedDescription}
+                                    </p>
+                                  </div>
+                                )}
+
+                                {sign.application && (
+                                  <div className="flex items-start gap-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                    <Info className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
+                                    <span>
+                                      <span className="font-medium text-gray-700">Tətbiqi: </span>
+                                      {sign.application}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )
                 ) : (
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
                     <div className="text-4xl mb-4">🔍</div>
