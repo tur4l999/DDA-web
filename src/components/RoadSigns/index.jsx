@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Search, ChevronDown, List, AlertTriangle, ArrowUpCircle, Ban, Navigation, Info, Wrench, Plus } from 'lucide-react'
+import { Search, ChevronDown, List, AlertTriangle, ArrowUpCircle, Ban, Navigation, Info, Wrench, Plus, LayoutGrid, FileText } from 'lucide-react'
 import RoadSignCard from './RoadSignCard'
 import { roadSignsData } from './roadSignsData'
 
@@ -7,6 +7,7 @@ const RoadSigns = () => {
   const [selectedGroup, setSelectedGroup] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [isMobileGroupsOpen, setIsMobileGroupsOpen] = useState(false)
+  const [viewMode, setViewMode] = useState('grid')
 
   const groups = [
     {
@@ -245,21 +246,114 @@ const RoadSigns = () => {
             <main className="flex-1 overflow-y-auto">
               <div className="space-y-6">
                 {/* Group Header */}
-                <div>
-                  <h2 className="text-xl lg:text-2xl font-bold text-gray-900">
-                    {selectedGroup !== 'all' && `${groups.findIndex(g => g.id === selectedGroup)}. `}
-                    {selectedGroupData?.name}
-                  </h2>
-                  <p className="text-sm text-gray-600 mt-1">{selectedGroupData?.description}</p>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-xl lg:text-2xl font-bold text-gray-900">
+                      {selectedGroup !== 'all' && `${groups.findIndex(g => g.id === selectedGroup)}. `}
+                      {selectedGroupData?.name}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">{selectedGroupData?.description}</p>
+                  </div>
+
+                  {/* View Toggle - Moved Here */}
+                  <div className="flex bg-white border border-gray-200 p-1 rounded-lg flex-shrink-0 shadow-sm">
+                    <button
+                      onClick={() => setViewMode('grid')}
+                      className={`p-2 rounded-md transition-all flex items-center gap-2 ${
+                        viewMode === 'grid'
+                          ? 'bg-gray-100 text-gray-900 font-medium'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                      }`}
+                      title="Kart görünüşü"
+                    >
+                      <LayoutGrid className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`p-2 rounded-md transition-all flex items-center gap-2 ${
+                        viewMode === 'list'
+                          ? 'bg-gray-100 text-gray-900 font-medium'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                      }`}
+                      title="Siyahı görünüşü (PDF)"
+                    >
+                      <FileText className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Road Signs List */}
                 {filteredSigns.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start pb-6">
-                    {filteredSigns.map((sign) => (
-                      <RoadSignCard key={sign.id} sign={sign} />
-                    ))}
-                  </div>
+                  viewMode === 'grid' ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start pb-6">
+                      {filteredSigns.map((sign) => (
+                        <RoadSignCard key={sign.id} sign={sign} />
+                      ))}
+                    </div>
+                  ) : (
+                    // List / Document View
+                    <div className="bg-white shadow-lg mx-auto max-w-4xl min-h-[29.7cm] relative">
+                      {/* Paper Effect */}
+                      <div className="p-8 md:p-12 space-y-8">
+                        {filteredSigns.map((sign, index) => (
+                          <div key={sign.id} className={`${
+                            index !== filteredSigns.length - 1 ? 'border-b border-gray-200 pb-8' : ''
+                          }`}>
+                            <div className="flex flex-col sm:flex-row gap-8">
+                              {/* Sign Image - Fixed Size */}
+                              <div className="flex-shrink-0 w-32">
+                                <img
+                                  src={sign.image}
+                                  alt={sign.name}
+                                  className="w-full h-auto object-contain"
+                                />
+                              </div>
+
+                              {/* Content */}
+                              <div className="flex-1">
+                                <div className="flex items-baseline gap-3 mb-3">
+                                  <span className="text-gray-500 font-medium text-sm">
+                                    {sign.code}
+                                  </span>
+                                  <h3 className="text-xl font-bold text-gray-900">
+                                    {sign.name}
+                                  </h3>
+                                </div>
+
+                                <div className="space-y-4">
+                                  <div>
+                                    <span className="block text-sm font-semibold text-gray-900 mb-1">Mənası:</span>
+                                    <p className="text-gray-700 leading-relaxed text-[15px]">
+                                      {sign.meaning}
+                                    </p>
+                                  </div>
+
+                                  {sign.detailedDescription && (
+                                    <div>
+                                      <span className="block text-sm font-semibold text-gray-900 mb-1">Ətraflı izahı:</span>
+                                      <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-line text-justify">
+                                        {sign.detailedDescription}
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  {sign.application && (
+                                    <div className="flex items-start gap-2 text-sm text-gray-500 pt-2">
+                                      <Info className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
+                                      <span>
+                                        <span className="font-medium text-gray-700">Tətbiqi: </span>
+                                        {sign.application}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
                 ) : (
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
                     <div className="text-4xl mb-4">🔍</div>
