@@ -110,38 +110,12 @@ const RoadSigns = () => {
     <div className="flex flex-col flex-1 h-full overflow-hidden bg-[#F5F7FA]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
-        <div className="w-full flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+        <div className="w-full">
           <div>
             <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Yol nişanları</h1>
             <p className="text-xs lg:text-sm text-gray-600 mt-1">
               Burada bütün yol nişanlarını qruplar üzrə görə, hər nişanın şəkli və izahı ilə tanış ola bilərsiniz.
             </p>
-          </div>
-
-          {/* View Toggle */}
-          <div className="flex bg-gray-100 p-1 rounded-lg flex-shrink-0 self-start">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-md transition-all flex items-center gap-2 ${
-                viewMode === 'grid'
-                  ? 'bg-white shadow-sm text-gray-900 ring-1 ring-black/5'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
-              }`}
-              title="Kart görünüşü"
-            >
-              <LayoutGrid className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-md transition-all flex items-center gap-2 ${
-                viewMode === 'list'
-                  ? 'bg-white shadow-sm text-gray-900 ring-1 ring-black/5'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
-              }`}
-              title="Siyahı görünüşü (PDF)"
-            >
-              <FileText className="w-5 h-5" />
-            </button>
           </div>
         </div>
       </div>
@@ -272,12 +246,40 @@ const RoadSigns = () => {
             <main className="flex-1 overflow-y-auto">
               <div className="space-y-6">
                 {/* Group Header */}
-                <div>
-                  <h2 className="text-xl lg:text-2xl font-bold text-gray-900">
-                    {selectedGroup !== 'all' && `${groups.findIndex(g => g.id === selectedGroup)}. `}
-                    {selectedGroupData?.name}
-                  </h2>
-                  <p className="text-sm text-gray-600 mt-1">{selectedGroupData?.description}</p>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-xl lg:text-2xl font-bold text-gray-900">
+                      {selectedGroup !== 'all' && `${groups.findIndex(g => g.id === selectedGroup)}. `}
+                      {selectedGroupData?.name}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">{selectedGroupData?.description}</p>
+                  </div>
+
+                  {/* View Toggle - Moved Here */}
+                  <div className="flex bg-white border border-gray-200 p-1 rounded-lg flex-shrink-0 shadow-sm">
+                    <button
+                      onClick={() => setViewMode('grid')}
+                      className={`p-2 rounded-md transition-all flex items-center gap-2 ${
+                        viewMode === 'grid'
+                          ? 'bg-gray-100 text-gray-900 font-medium'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                      }`}
+                      title="Kart görünüşü"
+                    >
+                      <LayoutGrid className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`p-2 rounded-md transition-all flex items-center gap-2 ${
+                        viewMode === 'list'
+                          ? 'bg-gray-100 text-gray-900 font-medium'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                      }`}
+                      title="Siyahı görünüşü (PDF)"
+                    >
+                      <FileText className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Road Signs List */}
@@ -289,61 +291,67 @@ const RoadSigns = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="space-y-4 pb-6">
-                      {filteredSigns.map((sign) => (
-                        <div key={sign.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 transition-all hover:shadow-md">
-                          <div className="flex flex-col sm:flex-row gap-6">
-                            {/* Sign Image */}
-                            <div className="flex-shrink-0 w-32 h-32 bg-gray-50 rounded-lg flex items-center justify-center p-4 border border-gray-100">
-                              <img
-                                src={sign.image}
-                                alt={sign.name}
-                                className="max-w-full max-h-full object-contain"
-                              />
-                            </div>
-
-                            {/* Content */}
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-2">
-                                <span className="px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 font-bold text-sm border border-gray-200">
-                                  {sign.code}
-                                </span>
-                                <h3 className="text-lg font-bold text-gray-900">
-                                  {sign.name}
-                                </h3>
+                    // List / Document View
+                    <div className="bg-white shadow-lg mx-auto max-w-4xl min-h-[29.7cm] relative">
+                      {/* Paper Effect */}
+                      <div className="p-8 md:p-12 space-y-8">
+                        {filteredSigns.map((sign, index) => (
+                          <div key={sign.id} className={`${
+                            index !== filteredSigns.length - 1 ? 'border-b border-gray-200 pb-8' : ''
+                          }`}>
+                            <div className="flex flex-col sm:flex-row gap-8">
+                              {/* Sign Image - Fixed Size */}
+                              <div className="flex-shrink-0 w-32">
+                                <img
+                                  src={sign.image}
+                                  alt={sign.name}
+                                  className="w-full h-auto object-contain"
+                                />
                               </div>
 
-                              <div className="space-y-3">
-                                <div>
-                                  <h4 className="text-sm font-medium text-gray-900 mb-1">Mənası:</h4>
-                                  <p className="text-gray-600 text-sm leading-relaxed">
-                                    {sign.meaning}
-                                  </p>
+                              {/* Content */}
+                              <div className="flex-1">
+                                <div className="flex items-baseline gap-3 mb-3">
+                                  <span className="text-gray-500 font-medium text-sm">
+                                    {sign.code}
+                                  </span>
+                                  <h3 className="text-xl font-bold text-gray-900">
+                                    {sign.name}
+                                  </h3>
                                 </div>
 
-                                {sign.detailedDescription && (
+                                <div className="space-y-4">
                                   <div>
-                                    <h4 className="text-sm font-medium text-gray-900 mb-1">Ətraflı izahı:</h4>
-                                    <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
-                                      {sign.detailedDescription}
+                                    <span className="block text-sm font-semibold text-gray-900 mb-1">Mənası:</span>
+                                    <p className="text-gray-700 leading-relaxed text-[15px]">
+                                      {sign.meaning}
                                     </p>
                                   </div>
-                                )}
 
-                                {sign.application && (
-                                  <div className="flex items-start gap-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                                    <Info className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
-                                    <span>
-                                      <span className="font-medium text-gray-700">Tətbiqi: </span>
-                                      {sign.application}
-                                    </span>
-                                  </div>
-                                )}
+                                  {sign.detailedDescription && (
+                                    <div>
+                                      <span className="block text-sm font-semibold text-gray-900 mb-1">Ətraflı izahı:</span>
+                                      <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-line text-justify">
+                                        {sign.detailedDescription}
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  {sign.application && (
+                                    <div className="flex items-start gap-2 text-sm text-gray-500 pt-2">
+                                      <Info className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
+                                      <span>
+                                        <span className="font-medium text-gray-700">Tətbiqi: </span>
+                                        {sign.application}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   )
                 ) : (
