@@ -1,11 +1,11 @@
-import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle, Lock } from 'lucide-react'
+import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle, Lock, GraduationCap } from 'lucide-react'
 
 const tabs = [
   { id: 'materials', label: 'Maddələr', icon: BookMarked, requiresPackage: false },
-  { id: 'text', label: 'Dərs materialı', icon: FileText, requiresPackage: false },
+  { id: 'text', label: 'Konspektlər', icon: FileText, requiresPackage: false },
   { id: '3dvideo', label: '3D video', icon: Video, requiresPackage: false },
   { id: 'video', label: 'Video dərs', icon: BookOpen, requiresPackage: true },
-  { id: 'questions', label: 'Suallar', icon: HelpCircle, requiresPackage: false },
+  { id: 'questions', label: 'Testlər', icon: HelpCircle, requiresPackage: false },
   { id: 'contact', label: 'Müəllimlə əlaqə', icon: MessageCircle, requiresPackage: false },
   { id: 'penalties', label: 'Mövzu üzrə Cərimələr', icon: AlertTriangle, requiresPackage: false }
 ]
@@ -60,15 +60,13 @@ export default function TabNavigation({ activeTab, onTabChange, onExamClick, onC
             })}
           </div>
 
-          {/* Primary CTA - İmtahan ver - Added left margin for separation */}
+          {/* Primary CTA - Mövzu imtahanı - Added left margin for separation */}
           <button
             onClick={onExamClick}
-            className="ml-8 flex items-center gap-1.5 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white text-[11px] font-bold rounded-xl transition-all whitespace-nowrap shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40 active:scale-95 flex-shrink-0"
+            className="ml-8 flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white text-xs font-bold rounded-xl transition-all whitespace-nowrap shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 active:scale-95 flex-shrink-0 border border-primary-400/20 group"
           >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span>İmtahan ver</span>
+            <GraduationCap className="w-4 h-4 group-hover:scale-110 transition-transform" strokeWidth={2.5} />
+            <span>Mövzu imtahanı</span>
           </button>
         </div>
       </div>
