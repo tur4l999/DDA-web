@@ -1,9 +1,10 @@
-import { Home, BookOpen, FileText, BarChart3, Car, HelpCircle, FileCheck, CreditCard, ShoppingBag, Monitor, Calendar, AlertTriangle, X, ChevronLeft, ChevronRight, Octagon, FileBadge } from 'lucide-react'
+import { Home, BookOpen, Book, FileText, BarChart3, Car, HelpCircle, FileCheck, CreditCard, ShoppingBag, Monitor, Calendar, AlertTriangle, X, ChevronLeft, ChevronRight, Octagon, FileBadge } from 'lucide-react'
 import { useState } from 'react'
 
 const menuItems = [
   { icon: Home, label: 'Əsas səhifə', page: 'dashboard' },
   { icon: BookOpen, label: 'Mövzular', page: 'topics' },
+  { icon: Book, label: 'Kitablar', page: 'books' },
   { icon: Calendar, label: 'Onlayn dərslər', page: 'classes' },
   { icon: Octagon, label: 'Yol nişanları', page: 'road-signs' },
   { icon: AlertTriangle, label: 'Cərimələr', page: 'penalties' },
