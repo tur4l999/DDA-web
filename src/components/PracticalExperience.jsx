@@ -157,10 +157,58 @@ export default function PracticalExperience({ onBack }) {
                         </div>
                     </section>
 
-                    {/* 2. Vehicle Type & Model */}
+                    {/* 2. Instructor */}
                     <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">2</span>
+                            Təlimçi seçimi
+                        </h3>
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            {instructors.map((inst) => (
+                                <button
+                                    key={inst.id}
+                                    onClick={() => setSelectedInstructor(inst)}
+                                    className={`flex flex-col items-center gap-4 p-5 rounded-2xl border transition-all text-center group ${
+                                        selectedInstructor?.id === inst.id
+                                        ? 'border-primary-500 bg-primary-50/50 ring-1 ring-primary-500/20'
+                                        : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
+                                    }`}
+                                >
+                                    <div className="relative">
+                                        <img
+                                            src={inst.image}
+                                            alt={inst.name}
+                                            className={`w-20 h-20 rounded-full object-cover border-4 transition-all ${
+                                                selectedInstructor?.id === inst.id ? 'border-white shadow-lg' : 'border-gray-50'
+                                            }`}
+                                        />
+                                        {selectedInstructor?.id === inst.id && (
+                                            <div className="absolute bottom-0 right-0 bg-primary-500 text-white rounded-full p-1 border-2 border-white">
+                                                <CheckCircle className="w-3.5 h-3.5 fill-current" />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <h4 className={`font-bold text-base transition-colors ${selectedInstructor?.id === inst.id ? 'text-primary-900' : 'text-gray-900'}`}>
+                                            {inst.name}
+                                        </h4>
+                                        <div className="flex items-center justify-center gap-3 text-xs mt-2">
+                                            <span className="flex items-center gap-1 text-yellow-500 font-bold bg-yellow-50 px-2 py-1 rounded-full">
+                                                <Star className="w-3 h-3 fill-current" /> {inst.rating}
+                                            </span>
+                                            <span className="text-gray-500 bg-gray-50 px-2 py-1 rounded-full font-medium">{inst.experience}</span>
+                                        </div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* 3. Vehicle Type & Model */}
+                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">3</span>
                             Nəqliyyat vasitəsi
                         </h3>
 
@@ -237,10 +285,10 @@ export default function PracticalExperience({ onBack }) {
                         )}
                     </section>
 
-                    {/* 3. Location */}
+                    {/* 4. Location */}
                     <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">3</span>
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">4</span>
                             Məkan
                         </h3>
                         <div className="space-y-4">
@@ -279,10 +327,10 @@ export default function PracticalExperience({ onBack }) {
                         </div>
                     </section>
 
-                    {/* 4. Date & Time */}
+                    {/* 5. Date & Time */}
                     <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">4</span>
+                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">5</span>
                             Tarix və Saat
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -317,53 +365,6 @@ export default function PracticalExperience({ onBack }) {
                         </div>
                     </section>
 
-                    {/* 5. Instructor */}
-                    <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                        <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                            <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-100 text-primary-700 text-sm font-bold">5</span>
-                            Təlimçi seçimi
-                        </h3>
-                        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            {instructors.map((inst) => (
-                                <button
-                                    key={inst.id}
-                                    onClick={() => setSelectedInstructor(inst)}
-                                    className={`flex flex-col items-center gap-4 p-5 rounded-2xl border transition-all text-center group ${
-                                        selectedInstructor?.id === inst.id
-                                        ? 'border-primary-500 bg-primary-50/50 ring-1 ring-primary-500/20'
-                                        : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
-                                    }`}
-                                >
-                                    <div className="relative">
-                                        <img
-                                            src={inst.image}
-                                            alt={inst.name}
-                                            className={`w-20 h-20 rounded-full object-cover border-4 transition-all ${
-                                                selectedInstructor?.id === inst.id ? 'border-white shadow-lg' : 'border-gray-50'
-                                            }`}
-                                        />
-                                        {selectedInstructor?.id === inst.id && (
-                                            <div className="absolute bottom-0 right-0 bg-primary-500 text-white rounded-full p-1 border-2 border-white">
-                                                <CheckCircle className="w-3.5 h-3.5 fill-current" />
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <h4 className={`font-bold text-base transition-colors ${selectedInstructor?.id === inst.id ? 'text-primary-900' : 'text-gray-900'}`}>
-                                            {inst.name}
-                                        </h4>
-                                        <div className="flex items-center justify-center gap-3 text-xs mt-2">
-                                            <span className="flex items-center gap-1 text-yellow-500 font-bold bg-yellow-50 px-2 py-1 rounded-full">
-                                                <Star className="w-3 h-3 fill-current" /> {inst.rating}
-                                            </span>
-                                            <span className="text-gray-500 bg-gray-50 px-2 py-1 rounded-full font-medium">{inst.experience}</span>
-                                        </div>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    </section>
               </div>
 
               {/* Action Button */}
@@ -429,6 +430,10 @@ export default function PracticalExperience({ onBack }) {
                         <span className="font-semibold text-gray-900 capitalize">{gearbox === 'automatic' ? 'Avtomat' : 'Mexanika'}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
+                        <span className="text-gray-500 text-sm">Təlimçi</span>
+                        <span className="font-semibold text-gray-900">{selectedInstructor?.name}</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
                         <span className="text-gray-500 text-sm">Nəqliyyat</span>
                         <span className="font-semibold text-gray-900 capitalize">{vehicleModel?.name || (vehicle === 'moto' ? 'Motosiklet' : 'Avtomobil')}</span>
                     </div>
@@ -437,10 +442,6 @@ export default function PracticalExperience({ onBack }) {
                         <span className="font-semibold text-gray-900">
                              {region} {district ? `/ ${district}` : ''}
                         </span>
-                    </div>
-                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
-                        <span className="text-gray-500 text-sm">Təlimçi</span>
-                        <span className="font-semibold text-gray-900">{selectedInstructor?.name}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
                         <span className="text-gray-500 text-sm">Zaman</span>
