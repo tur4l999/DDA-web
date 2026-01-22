@@ -280,6 +280,7 @@ export default function OnlineClasses({ onBack }) {
                         <div className="sticky top-0 bg-gray-50/95 backdrop-blur-sm py-4 z-10 mb-4 border-b border-gray-200/50 -ml-6 pl-6">
                             <h2 className="text-2xl font-black text-gray-800 capitalize flex items-center gap-3">
                                 <div className="w-3 h-3 rounded-full bg-primary-500 ring-4 ring-primary-100"></div>
+                                <CalendarIcon className="w-6 h-6 text-gray-400" />
                                 {formatDateHeader(group.date)}
                             </h2>
                         </div>
