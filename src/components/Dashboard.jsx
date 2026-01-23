@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, Monitor, Wallet, Ticket } from 'lucide-react'
+import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, ChevronDown, Monitor, Wallet, Ticket, Lock } from 'lucide-react'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
@@ -18,6 +18,14 @@ import QAPage from './QAPage'
 export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) {
   const [language, setLanguage] = useState('az')
   const [selectedResultId, setSelectedResultId] = useState(null)
+  const [category, setCategory] = useState('Sürücülük dərsləri')
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false)
+
+  const categories = [
+    { id: 'driving', label: 'Sürücülük dərsləri', locked: false },
+    { id: 'moped', label: 'A1 Moped dərsləri', locked: true },
+    { id: 'taxi', label: 'Taksi hazırlığı', locked: true }
+  ]
 
   if (currentPage === 'classes') {
     return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
@@ -93,6 +101,45 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               <Menu className="w-5 h-5" />
             </button>
             <h2 className="hidden lg:block text-lg font-bold text-gray-900 tracking-tight">Ana Səhifə</h2>
+
+            <div className="hidden lg:block h-6 w-[1px] bg-gray-200 mx-2"></div>
+
+            <div className="relative hidden lg:block">
+              <button
+                onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all shadow-sm"
+              >
+                {category}
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isCategoryDropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-lg shadow-gray-200/50 p-1.5 z-50 animate-scale-in origin-top-left">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      disabled={cat.locked}
+                      onClick={() => {
+                        if (!cat.locked) {
+                          setCategory(cat.label);
+                          setIsCategoryDropdownOpen(false);
+                        }
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        category === cat.label
+                          ? 'bg-primary-50 text-primary-700'
+                          : cat.locked
+                            ? 'text-gray-400 cursor-not-allowed bg-gray-50/50'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                    >
+                      {cat.label}
+                      {cat.locked && <Lock className="w-3.5 h-3.5 opacity-50" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           
           <div className="flex items-center gap-3 sm:gap-4">
@@ -232,7 +279,7 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
             {/* Right Sidebar Column */}
             <div className="space-y-6 sticky top-6">
               <ProfileCard />
-              <OnlineClassCard maxItems={3} showViewAll={true} setCurrentPage={setCurrentPage} />
+              <OnlineClassCard maxItems={2} showViewAll={true} setCurrentPage={setCurrentPage} />
             </div>
 
           </div>
