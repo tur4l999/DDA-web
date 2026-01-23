@@ -3,6 +3,7 @@ import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, Boo
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
+import BooksPage from './BooksPage'
 import TopicsPage from './Topics'
 import PenaltiesPage from './PenaltiesPage'
 import RoadSigns from './RoadSigns'
@@ -29,6 +30,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
 
   if (currentPage === 'classes') {
     return <OnlineClasses onBack={() => setCurrentPage('dashboard')} />
+  }
+
+  if (currentPage === 'books') {
+    return <BooksPage onBack={() => setCurrentPage('dashboard')} />
   }
 
   if (currentPage === 'topics') {
