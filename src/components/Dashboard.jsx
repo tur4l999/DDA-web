@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, ChevronDown, Monitor, Wallet, Ticket } from 'lucide-react'
+import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, ChevronDown, Monitor, Wallet, Ticket, Lock } from 'lucide-react'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
@@ -22,9 +22,9 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false)
 
   const categories = [
-    'Sürücülük dərsləri',
-    'A1 Moped dərsləri',
-    'Taksi hazırlığı'
+    { id: 'driving', label: 'Sürücülük dərsləri', locked: false },
+    { id: 'moped', label: 'A1 Moped dərsləri', locked: true },
+    { id: 'taxi', label: 'Taksi hazırlığı', locked: true }
   ]
 
   if (currentPage === 'classes') {
@@ -117,18 +117,24 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
                 <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-lg shadow-gray-200/50 p-1.5 z-50 animate-scale-in origin-top-left">
                   {categories.map((cat) => (
                     <button
-                      key={cat}
+                      key={cat.id}
+                      disabled={cat.locked}
                       onClick={() => {
-                        setCategory(cat);
-                        setIsCategoryDropdownOpen(false);
+                        if (!cat.locked) {
+                          setCategory(cat.label);
+                          setIsCategoryDropdownOpen(false);
+                        }
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        category === cat
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        category === cat.label
                           ? 'bg-primary-50 text-primary-700'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          : cat.locked
+                            ? 'text-gray-400 cursor-not-allowed bg-gray-50/50'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }`}
                     >
-                      {cat}
+                      {cat.label}
+                      {cat.locked && <Lock className="w-3.5 h-3.5 opacity-50" />}
                     </button>
                   ))}
                 </div>
