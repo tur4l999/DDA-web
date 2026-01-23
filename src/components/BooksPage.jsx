@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, Book, ChevronLeft, ChevronRight, X, Lock, Smartphone } from 'lucide-react'
+import { ArrowLeft, Book, ChevronLeft, ChevronRight, X, Lock, Smartphone, Library, ShoppingBag, ShoppingCart } from 'lucide-react'
 import WatermarkOverlay from './Topics/WatermarkOverlay'
 
 const LimitModal = ({ isOpen, onClose }) => {
@@ -29,13 +29,19 @@ const LimitModal = ({ isOpen, onClose }) => {
 
 export default function BooksPage({ onBack }) {
   const [selectedBook, setSelectedBook] = useState(null)
+  const [activeTab, setActiveTab] = useState('library') // 'library' | 'store'
 
   const [currentPageIndex, setCurrentPageIndex] = useState(0)
   const [showLimitModal, setShowLimitModal] = useState(false)
 
-  const books = [
+  const myBooks = [
     { id: 1, title: 'Yol Hərəkəti Qaydaları', author: 'DDA Nəşriyyatı', coverColor: 'bg-primary-500' },
-    { id: 2, title: 'İnzibati Xətalar Məcəlləsi', author: 'DDA Nəşriyyatı', coverColor: 'bg-amber-500' },
+  ]
+
+  const storeBooks = [
+    { id: 2, title: 'İnzibati Xətalar Məcəlləsi', author: 'DDA Nəşriyyatı', coverColor: 'bg-amber-500', price: '12.00 ₼' },
+    { id: 3, title: 'Sürücülük Vəsiqəsi İmtahanı', author: 'DDA Nəşriyyatı', coverColor: 'bg-emerald-500', price: '15.00 ₼' },
+    { id: 4, title: 'Yol Nişanları Kataloqu', author: 'DDA Nəşriyyatı', coverColor: 'bg-blue-500', price: '8.50 ₼' },
   ]
 
   // Mock Content
@@ -176,37 +182,123 @@ Maddə 60. Xəbərdarlıq nişanları
   return (
     <div className="flex-1 flex flex-col h-screen bg-gray-50 overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200/50 px-6 py-4 sticky top-0 z-20 shadow-sm">
-             <div className="flex items-center gap-4 max-w-[1600px] mx-auto w-full">
-                <button onClick={onBack} className="p-2 -ml-2 text-gray-500 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-colors">
-                   <ArrowLeft className="w-5 h-5" />
-                </button>
-                <h1 className="text-xl font-bold text-gray-900 tracking-tight">Kitabxana</h1>
+        <header className="bg-white border-b border-gray-200/50 px-4 py-4 sticky top-0 z-20 shadow-sm">
+             <div className="max-w-[1600px] mx-auto w-full">
+               <div className="flex items-center gap-4 mb-6">
+                  <button onClick={onBack} className="p-2 -ml-2 text-gray-500 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-colors">
+                     <ArrowLeft className="w-5 h-5" />
+                  </button>
+                  <h1 className="text-xl font-bold text-gray-900 tracking-tight">Kitabxana</h1>
+               </div>
+
+               {/* Navigation Tabs */}
+               <div className="flex p-1 bg-gray-100/80 rounded-xl w-full max-w-2xl mx-auto backdrop-blur-sm">
+                  <button
+                    onClick={() => setActiveTab('library')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                      activeTab === 'library'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
+                    }`}
+                  >
+                    <Library className={`w-4 h-4 ${activeTab === 'library' ? 'text-primary-600' : ''}`} strokeWidth={2} />
+                    Əldə etdiklərim
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('store')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                      activeTab === 'store'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
+                    }`}
+                  >
+                    <ShoppingBag className={`w-4 h-4 ${activeTab === 'store' ? 'text-primary-600' : ''}`} strokeWidth={2} />
+                    Mağaza
+                  </button>
+               </div>
              </div>
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
-            <div className="max-w-[1600px] mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 lg:gap-6">
-                {books.map(book => (
-                    <button
-                        key={book.id}
-                        onClick={() => setSelectedBook(book)}
-                        className="group flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-card hover:-translate-y-1 transition-all duration-300 text-left h-full"
-                    >
-                        <div className={`aspect-[2/3] w-full ${book.coverColor} p-6 flex items-center justify-center relative overflow-hidden group-hover:brightness-95 transition-all`}>
-                             <Book className="w-12 h-12 lg:w-16 lg:h-16 text-white/60 transform group-hover:scale-110 transition-transform duration-500" />
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="max-w-[1600px] mx-auto">
+                {activeTab === 'library' && (
+                  <>
+                    {myBooks.length > 0 ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 lg:gap-6">
+                          {myBooks.map(book => (
+                              <button
+                                  key={book.id}
+                                  onClick={() => setSelectedBook(book)}
+                                  className="group flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-card hover:-translate-y-1 transition-all duration-300 text-left h-full"
+                              >
+                                  <div className={`aspect-[2/3] w-full ${book.coverColor} p-6 flex items-center justify-center relative overflow-hidden group-hover:brightness-95 transition-all`}>
+                                      <Book className="w-12 h-12 lg:w-16 lg:h-16 text-white/60 transform group-hover:scale-110 transition-transform duration-500" />
+                                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
-                             {/* Spine Effect */}
-                             <div className="absolute left-0 top-0 bottom-0 w-1 bg-white/20" />
-                             <div className="absolute left-1 top-0 bottom-0 w-[1px] bg-black/10" />
-                        </div>
-                        <div className="p-4 flex-1 flex flex-col">
-                            <h3 className="font-bold text-gray-900 text-sm lg:text-base line-clamp-2 mb-1 group-hover:text-primary-600 transition-colors">{book.title}</h3>
-                            <p className="text-xs text-gray-500 mt-auto">{book.author}</p>
-                        </div>
-                    </button>
-                ))}
+                                      {/* Spine Effect */}
+                                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-white/20" />
+                                      <div className="absolute left-1 top-0 bottom-0 w-[1px] bg-black/10" />
+                                  </div>
+                                  <div className="p-4 flex-1 flex flex-col">
+                                      <h3 className="font-bold text-gray-900 text-sm lg:text-base line-clamp-2 mb-1 group-hover:text-primary-600 transition-colors">{book.title}</h3>
+                                      <p className="text-xs text-gray-500 mb-3">{book.author}</p>
+                                      <div className="mt-auto pt-3 border-t border-gray-100 w-full">
+                                        <span className="text-xs font-semibold text-primary-600 flex items-center justify-center gap-1.5 py-2 bg-primary-50 rounded-lg group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                            <Book className="w-3.5 h-3.5" />
+                                            Oxu
+                                        </span>
+                                      </div>
+                                  </div>
+                              </button>
+                          ))}
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-64 text-center">
+                         <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-4">
+                            <Book className="w-8 h-8 text-gray-400" />
+                         </div>
+                         <h3 className="text-lg font-bold text-gray-900 mb-1">Kitabxananız boşdur</h3>
+                         <p className="text-gray-500 text-sm mb-4">Mağaza bölməsindən yeni kitablar əldə edə bilərsiniz.</p>
+                         <button onClick={() => setActiveTab('store')} className="text-primary-600 font-semibold text-sm hover:underline">Mağazaya keç</button>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {activeTab === 'store' && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 lg:gap-6">
+                      {storeBooks.map(book => (
+                          <div
+                              key={book.id}
+                              className="group flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-card hover:-translate-y-1 transition-all duration-300 text-left h-full"
+                          >
+                              <div className={`aspect-[2/3] w-full ${book.coverColor} p-6 flex items-center justify-center relative overflow-hidden group-hover:brightness-95 transition-all`}>
+                                  <Book className="w-12 h-12 lg:w-16 lg:h-16 text-white/60 transform group-hover:scale-110 transition-transform duration-500" />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+
+                                  {/* Spine Effect */}
+                                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-white/20" />
+                                  <div className="absolute left-1 top-0 bottom-0 w-[1px] bg-black/10" />
+
+                                  {/* Price Tag Overlay */}
+                                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-lg shadow-sm">
+                                     <span className="text-xs font-bold text-gray-900">{book.price}</span>
+                                  </div>
+                              </div>
+                              <div className="p-4 flex-1 flex flex-col">
+                                  <h3 className="font-bold text-gray-900 text-sm lg:text-base line-clamp-2 mb-1 group-hover:text-primary-600 transition-colors">{book.title}</h3>
+                                  <p className="text-xs text-gray-500 mb-3">{book.author}</p>
+                                  <div className="mt-auto w-full">
+                                    <button className="w-full flex items-center justify-center gap-2 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 active:scale-95 transition-all shadow-lg shadow-gray-900/10">
+                                        <ShoppingCart className="w-4 h-4" />
+                                        Əldə et
+                                    </button>
+                                  </div>
+                              </div>
+                          </div>
+                      ))}
+                  </div>
+                )}
             </div>
         </main>
     </div>
