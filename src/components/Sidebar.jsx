@@ -4,7 +4,7 @@ import { useState } from 'react'
 const menuItems = [
   { icon: Home, label: 'Əsas səhifə', page: 'dashboard' },
   { icon: BookOpen, label: 'Mövzular', page: 'topics' },
-  { icon: Book, label: 'Kitablar', page: 'books' },
+  { icon: Book, label: 'PDF Kitablar', page: 'books' },
   { icon: Calendar, label: 'Onlayn dərslər', page: 'classes' },
   { icon: Octagon, label: 'Yol nişanları', page: 'road-signs' },
   { icon: AlertTriangle, label: 'Cərimələr', page: 'penalties' },
