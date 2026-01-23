@@ -188,7 +188,10 @@ Maddə 60. Xəbərdarlıq nişanları
                   <button onClick={onBack} className="p-2 -ml-2 text-gray-500 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-colors">
                      <ArrowLeft className="w-5 h-5" />
                   </button>
-                  <h1 className="text-xl font-bold text-gray-900 tracking-tight">PDF Kitablar</h1>
+                  <div>
+                    <h1 className="text-xl font-bold text-gray-900 tracking-tight">PDF Kitablar</h1>
+                    <p className="text-xs text-gray-500 font-medium mt-1">Müəllif hüquqları qorunur! Hər hansı üsulla kopyalamaq qadağandır.</p>
+                  </div>
                </div>
 
                {/* Navigation Tabs */}
