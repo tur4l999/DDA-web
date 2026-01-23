@@ -178,14 +178,19 @@ export default function OnlineClasses({ onBack }) {
   }
 
   const formatDateHeader = (date) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-    return date.toLocaleDateString('az-AZ', options)
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
+    return `${day}.${month}.${year}`
   }
 
   const formatDateButton = (dateStr) => {
       if(!dateStr) return 'Tarix seç'
       const date = new Date(dateStr)
-      return date.toLocaleDateString('az-AZ', { day: 'numeric', month: 'long', year: 'numeric' })
+      const day = String(date.getDate()).padStart(2, '0')
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const year = date.getFullYear()
+      return `${day}.${month}.${year}`
   }
 
   return (
@@ -275,6 +280,7 @@ export default function OnlineClasses({ onBack }) {
                         <div className="sticky top-0 bg-gray-50/95 backdrop-blur-sm py-4 z-10 mb-4 border-b border-gray-200/50 -ml-6 pl-6">
                             <h2 className="text-2xl font-black text-gray-800 capitalize flex items-center gap-3">
                                 <div className="w-3 h-3 rounded-full bg-primary-500 ring-4 ring-primary-100"></div>
+                                <CalendarIcon className="w-6 h-6 text-gray-400" />
                                 {formatDateHeader(group.date)}
                             </h2>
                         </div>
