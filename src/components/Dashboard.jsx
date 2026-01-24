@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, ChevronDown, Monitor, Wallet, Ticket, Lock } from 'lucide-react'
+import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, ChevronDown, Monitor, Wallet, Ticket, Lock, Check, Plus } from 'lucide-react'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
@@ -21,6 +21,10 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
   const [selectedResultId, setSelectedResultId] = useState(null)
   const [category, setCategory] = useState('Sürücülük dərsləri')
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false)
+
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false)
+  const [isBalanceOpen, setIsBalanceOpen] = useState(false)
+  const [isTicketOpen, setIsTicketOpen] = useState(false)
 
   const categories = [
     { id: 'driving', label: 'Sürücülük dərsləri', locked: false },
@@ -153,26 +157,130 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               <span className="text-gray-900 font-bold text-xs">44 gün</span>
             </div>
 
-            <div className="hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2">
-              <Wallet className="w-3.5 h-3.5 text-primary-600" />
-              <span className="text-gray-900 font-bold text-xs">50.00 ₼</span>
+            <div className="relative hidden sm:block">
+              <button
+                onClick={() => setIsBalanceOpen(!isBalanceOpen)}
+                className={`hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2 hover:bg-gray-50 transition-all ${isBalanceOpen ? 'ring-2 ring-primary-100 border-primary-200' : ''}`}
+              >
+                <Wallet className="w-3.5 h-3.5 text-primary-600" />
+                <span className="text-gray-900 font-bold text-xs">50.00 ₼</span>
+              </button>
+
+              {isBalanceOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsBalanceOpen(false)} />
+                  <div className="absolute top-full right-0 mt-3 w-72 bg-white border border-gray-100 rounded-2xl shadow-xl shadow-gray-200/50 p-4 z-50 animate-scale-in origin-top-right">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-gray-900">Balansım</span>
+                      <span className="text-sm font-bold text-primary-600">50.00 ₼</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-50 rounded-xl mb-4 border border-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center text-primary-600">
+                          <Wallet className="w-5 h-5" strokeWidth={1.5} />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 font-medium mb-0.5">Cari balans</p>
+                          <p className="text-base font-bold text-gray-900">50.00 ₼</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setCurrentPage('payments');
+                        setIsBalanceOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold py-3 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-95"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Balansı artır
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
 
-            <div className="hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2">
-              <Ticket className="w-3.5 h-3.5 text-amber-500" />
-              <span className="text-gray-900 font-bold text-xs">5 bilet</span>
+            <div className="relative hidden sm:block">
+              <button
+                onClick={() => setIsTicketOpen(!isTicketOpen)}
+                className={`hidden sm:flex items-center bg-white rounded-xl px-4 py-2 shadow-sm border border-gray-100 gap-2 hover:bg-gray-50 transition-all ${isTicketOpen ? 'ring-2 ring-primary-100 border-primary-200' : ''}`}
+              >
+                <Ticket className="w-3.5 h-3.5 text-amber-500" />
+                <span className="text-gray-900 font-bold text-xs">5 bilet</span>
+              </button>
+
+              {isTicketOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsTicketOpen(false)} />
+                  <div className="absolute top-full right-0 mt-3 w-72 bg-white border border-gray-100 rounded-2xl shadow-xl shadow-gray-200/50 p-4 z-50 animate-scale-in origin-top-right">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-gray-900">Biletlər</span>
+                      <span className="text-sm font-bold text-amber-500">5 ədəd</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-50 rounded-xl mb-4 border border-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
+                          <Ticket className="w-5 h-5" strokeWidth={1.5} />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 font-medium mb-0.5">Mövcud biletlər</p>
+                          <p className="text-base font-bold text-gray-900">5 ədəd</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setCurrentPage('payments');
+                        setIsTicketOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold py-3 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-95"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Balansı artır
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
             
-            <div className="hidden sm:flex items-center bg-white rounded-xl px-3 py-2 gap-2 shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
-              <Globe className="w-3.5 h-3.5 text-gray-500" />
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="bg-transparent text-xs text-gray-700 font-medium focus:outline-none cursor-pointer appearance-none pr-4"
+            <div className="relative hidden sm:block">
+              <button
+                onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+                className={`hidden sm:flex items-center bg-white rounded-xl px-3 py-2 gap-2 shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 transition-all ${isLanguageOpen ? 'ring-2 ring-primary-100 border-primary-200' : ''}`}
               >
-                <option value="az">AZ</option>
-                <option value="ru">RU</option>
-              </select>
+                <Globe className="w-3.5 h-3.5 text-gray-500" />
+                <span className="text-xs text-gray-700 font-bold uppercase">{language}</span>
+                <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform duration-300 ${isLanguageOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isLanguageOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsLanguageOpen(false)} />
+                  <div className="absolute top-full right-0 mt-2 w-32 bg-white border border-gray-100 rounded-xl shadow-lg shadow-gray-200/50 p-1.5 z-50 animate-scale-in origin-top-right">
+                    {['az', 'ru'].map((lang) => (
+                      <button
+                        key={lang}
+                        onClick={() => {
+                          setLanguage(lang);
+                          setIsLanguageOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          language === lang
+                            ? 'bg-primary-50 text-primary-700'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        }`}
+                      >
+                        <span className="uppercase">{lang}</span>
+                        {language === lang && <Check className="w-3.5 h-3.5" />}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="h-6 w-[1px] bg-gray-200 mx-1 hidden sm:block"></div>

@@ -72,6 +72,16 @@ export default function UserStatistics({ onExamClick }) {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <BarChart3 className="w-6 h-6" strokeWidth={1.5} />
+          </div>
+          <div>
+            <p className="text-xs text-gray-500 font-medium mb-0.5">Nəticələrim</p>
+            <h4 className="text-2xl font-bold text-gray-900">45</h4>
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow">
           <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
             <BookOpen className="w-6 h-6" strokeWidth={1.5} />
           </div>
@@ -98,16 +108,6 @@ export default function UserStatistics({ onExamClick }) {
           <div>
             <p className="text-xs text-gray-500 font-medium mb-0.5">İmtahan Şansı</p>
             <h4 className="text-2xl font-bold text-gray-900">Yüksək</h4>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-            <BarChart3 className="w-6 h-6" strokeWidth={1.5} />
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-medium mb-0.5">Nəticələrim</p>
-            <h4 className="text-2xl font-bold text-gray-900">45</h4>
           </div>
         </div>
       </div>
