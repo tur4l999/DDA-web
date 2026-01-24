@@ -2,12 +2,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { ArrowLeft, Check, X, RotateCcw, Eye, ArrowRight } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
-export default function TopicExam({ onClose, topic }) {
-  // Take first 10 questions and force correct answer to index 1 (Option 2)
-  const [questions] = useState(() => {
-    return TOPIC_QUESTIONS.slice(0, 10).map(q => ({
+export default function ExamRunner({ onClose, data }) {
+  // Use passed data or fallback to TOPIC_QUESTIONS
+  const [questions, setQuestions] = useState(() => {
+    const rawData = data || TOPIC_QUESTIONS
+    return rawData.slice(0, 10).map(q => ({
       ...q,
-      correctAnswer: 1 // Force correct answer to 2nd option
+      correctAnswer: 1 // Force correct answer to 2nd option for now (as requested)
     }))
   })
 
@@ -28,7 +29,7 @@ export default function TopicExam({ onClose, topic }) {
       setTimeLeft(prev => {
         if (prev <= 0) {
           setIsFinished(true)
-          setResult('fail') // Time out count as fail? Or just end? Usually fail.
+          setResult('fail')
           return 0
         }
         return prev - 1
@@ -106,7 +107,7 @@ export default function TopicExam({ onClose, topic }) {
                   Digər mövzuya keçid et
                 </button>
                 <button
-                  onClick={onClose} // Or handle results view logic
+                  onClick={onClose}
                   className="w-full py-4 bg-[#333] hover:bg-[#444] text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2"
                 >
                   <Eye className="w-5 h-5" />
@@ -192,13 +193,6 @@ export default function TopicExam({ onClose, topic }) {
         {/* Options */}
         <div className="w-full flex flex-col gap-3">
           {currentQuestion.options.map((option, idx) => {
-            // Determine styles based on interaction
-            // Since we don't show correct answer immediately unless it's the one we picked (feedback phase),
-            // checking "feedback" state is enough.
-            // Actually requirement: "Cavab doğru olarsa, cavab yaşıl olacaq... Və ya səhf olarsa, həm cavab qırmızı olacaq"
-            // This means we only color the clicked one?
-            // "lakin burada cavab seçiləndə doğru cavab göstərilməyəcək" -> Only show feedback for selected.
-
             const isSelected = answers[currentQuestion.id] === idx
             let btnClass = "w-full p-4 bg-[#242424] hover:bg-[#333] rounded-xl text-left transition-all border border-transparent text-gray-200 font-medium"
 
@@ -238,20 +232,38 @@ export default function TopicExam({ onClose, topic }) {
 
           {/* Pagination */}
           <div className="flex items-center gap-2">
-            {questions.map((_, idx) => (
-              <div
-                key={idx}
-                className={`w-8 h-8 rounded flex items-center justify-center text-sm font-bold border transition-colors ${
-                  idx === currentIndex
-                    ? 'bg-gray-200 text-gray-900 border-gray-200'
-                    : idx < currentIndex
-                      ? 'bg-[#333] text-gray-500 border-gray-700'
-                      : 'bg-transparent text-gray-600 border-gray-700'
-                }`}
-              >
-                {idx + 1}
-              </div>
-            ))}
+            {questions.map((q, idx) => {
+              // Styling logic:
+              // Current: Gray
+              // Answered Correct: Green
+              // Answered Wrong: Red
+              // Unanswered: Default
+
+              let classes = "w-8 h-8 rounded flex items-center justify-center text-sm font-bold border transition-colors "
+
+              if (idx === currentIndex) {
+                classes += "bg-gray-500 text-white border-gray-500 shadow-lg shadow-gray-500/20"
+              } else if (answers[q.id] !== undefined) {
+                 const isCorrect = answers[q.id] === q.correctAnswer
+                 if (isCorrect) {
+                   classes += "bg-green-600 text-white border-green-600 shadow-lg shadow-green-600/20"
+                 } else {
+                   classes += "bg-red-600 text-white border-red-600 shadow-lg shadow-red-600/20"
+                 }
+              } else {
+                // Future / Unanswered
+                classes += "bg-[#333] text-gray-500 border-gray-700"
+              }
+
+              return (
+                <div
+                  key={idx}
+                  className={classes}
+                >
+                  {idx + 1}
+                </div>
+              )
+            })}
           </div>
 
           {/* Timer */}

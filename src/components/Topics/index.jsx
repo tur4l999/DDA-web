@@ -13,7 +13,8 @@ import AskTeacherModal from './AskTeacherModal'
 import QuestionThreadModal from './QuestionThreadModal'
 import PaywallModal from './PaywallModal'
 import Toast from './Toast'
-import TopicExam from './TopicExam'
+import ExamRunner from '../Exam/ExamRunner'
+import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
 export default function TopicsPage({ onBack }) {
   const [isExamMode, setIsExamMode] = useState(false)
@@ -184,7 +185,7 @@ export default function TopicsPage({ onBack }) {
   }
 
   if (isExamMode) {
-    return <TopicExam onClose={() => setIsExamMode(false)} topic={currentTopic} />
+    return <ExamRunner onClose={() => setIsExamMode(false)} data={TOPIC_QUESTIONS} />
   }
 
   const renderContent = () => {

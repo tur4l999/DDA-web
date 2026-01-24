@@ -4,40 +4,36 @@ import TicketsView from './TicketsView'
 import TopicsView from './TopicsView'
 import FinalExamView from './FinalExamView'
 import PaywallModal from '../Topics/PaywallModal'
+import ExamRunner from './ExamRunner'
+import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
 export default function ExamPage({ onBack, onStartExam }) {
   const [activeTab, setActiveTab] = useState('tickets') // 'tickets' | 'topics' | 'final'
   const [isPaywallOpen, setIsPaywallOpen] = useState(false)
+  const [activeExam, setActiveExam] = useState(null)
 
   const handleTicketClick = (ticketId) => {
-    // Logic to start ticket exam
-    console.log('Start ticket:', ticketId)
-    if (onStartExam) onStartExam({ type: 'ticket', id: ticketId })
+    // Start ticket exam with dummy questions
+    setActiveExam({ type: 'ticket', id: ticketId, data: TOPIC_QUESTIONS })
   }
 
   const handleTopicClick = (topicId) => {
-    // Logic to start topic exam
-    console.log('Start topic:', topicId)
-    if (onStartExam) onStartExam({ type: 'topic', id: topicId })
+    // Start topic exam
+    setActiveExam({ type: 'topic', id: topicId, data: TOPIC_QUESTIONS })
   }
 
   const handleFinalExamClick = (type) => {
-    // Logic to start final exam
-    console.log('Start final exam:', type)
     if (type === 'simulator') {
-       // Check if user has premium (mock check)
-       // For now, simulator opens paywall if not purchased
-       // But user prompt didn't strictly say simulator is locked, just "Premium".
-       // However, TicketsView explicitly asked for locking.
-       // Let's assume simulator is paid feature so it might trigger paywall too if not bought.
-       // For this task, I'll just trigger the start callback, but arguably it should show paywall.
-       // User prompt: "Simulyator imtahanı pulludur" (Simulator exam is paid).
-       // I'll add a check or just let it pass for now as the prompt focused on UI.
-       // But consistency suggests showing paywall. Let's toggle it for demo.
+       // Simulator is premium
        setIsPaywallOpen(true)
        return
     }
-    if (onStartExam) onStartExam({ type: 'final', mode: type })
+    // Start final exam
+    setActiveExam({ type: 'final', mode: type, data: TOPIC_QUESTIONS })
+  }
+
+  if (activeExam) {
+    return <ExamRunner onClose={() => setActiveExam(null)} data={activeExam.data} />
   }
 
   const renderContent = () => {
