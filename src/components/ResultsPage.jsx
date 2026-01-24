@@ -74,7 +74,7 @@ export default function ResultsPage({ resultId, onBack }) {
 
     return (
       <div className="flex-1 flex flex-col h-screen overflow-hidden bg-gray-50">
-        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-4 sticky top-0 z-30">
+        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-4 sticky top-0 z-30 shadow-sm">
           <button
             onClick={() => setSelectedId(null)}
             className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-500"
@@ -83,10 +83,10 @@ export default function ResultsPage({ resultId, onBack }) {
           </button>
           <div>
             <h2 className="text-lg font-bold text-gray-900">{result.label}</h2>
-            <div className="flex items-center gap-3 text-xs text-gray-500 mt-0.5">
-              <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {result.date}</span>
-              <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {result.time}</span>
-              <span className={`font-bold ${result.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
+              <span className="flex items-center gap-1.5 px-2 py-0.5 bg-gray-100 rounded text-gray-600 font-medium"><Calendar className="w-3.5 h-3.5" /> {result.date}</span>
+              <span className="flex items-center gap-1.5 px-2 py-0.5 bg-gray-100 rounded text-gray-600 font-medium"><Clock className="w-3.5 h-3.5" /> {result.time}</span>
+              <span className={`flex items-center gap-1.5 px-2 py-0.5 rounded font-bold ${result.score >= 70 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                 {result.score}% {result.score >= 70 ? '(Keçdi)' : '(Kəsilmə)'}
               </span>
             </div>
@@ -94,13 +94,13 @@ export default function ResultsPage({ resultId, onBack }) {
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
-          <div className="max-w-4xl mx-auto space-y-6">
+          <div className="max-w-5xl mx-auto space-y-8">
             {mockQuestions.map((q) => (
-              <div key={q.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <div key={q.id} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="flex flex-col gap-6">
                   {/* Header: Status Badge */}
                   <div className="flex items-center justify-between">
-                      <div className={`px-3 py-1 rounded-lg text-sm font-bold flex items-center gap-2 ${
+                      <div className={`px-4 py-1.5 rounded-full text-sm font-bold flex items-center gap-2 ${
                           q.isUnanswered
                           ? 'bg-gray-100 text-gray-600'
                           : q.isCorrect
@@ -118,55 +118,60 @@ export default function ResultsPage({ resultId, onBack }) {
                   </div>
 
                   {/* Content: Image and Question Text Side-by-Side */}
-                  <div className="flex flex-col md:flex-row gap-6">
-                      <div className="w-full md:w-1/3 flex-shrink-0">
+                  {/* Desktop: Image Right (md:order-last), Text Left */}
+                  {/* Mobile: Image Top (order-first default), Text Bottom */}
+                  <div className="flex flex-col md:flex-row gap-8">
+                      {/* Image Container */}
+                      <div className="w-full md:w-1/3 flex-shrink-0 md:order-last">
                           <img
                             src={q.image}
                             alt={`Sual ${q.id}`}
-                            className="w-full h-auto rounded-xl object-cover border border-gray-100 shadow-sm"
+                            className="w-full h-auto rounded-2xl object-cover border border-gray-100 shadow-sm"
                           />
                       </div>
+
+                      {/* Text/Options Container */}
                       <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 mb-4 text-lg">{q.text}</h3>
+                          <h3 className="font-bold text-gray-900 mb-6 text-xl leading-relaxed">{q.text}</h3>
 
                           <div className="space-y-3">
                             {q.options.map((optText, idx) => {
                                 const optLabel = ['A', 'B', 'C', 'D'][idx];
-                                let itemClass = "p-4 rounded-xl border border-gray-200 flex items-center gap-3";
+                                let itemClass = "p-4 rounded-xl border-2 border-transparent bg-gray-50 flex items-center gap-4 transition-all hover:bg-gray-100 cursor-pointer";
 
                                 const isUserAnswer = optLabel === q.userAnswer;
                                 const isCorrectAnswer = optLabel === q.correctAnswer;
 
                                 if (isUserAnswer) {
                                     itemClass = q.isCorrect
-                                        ? "p-4 rounded-xl border border-green-200 bg-green-50 flex items-center gap-3"
-                                        : "p-4 rounded-xl border border-red-200 bg-red-50 flex items-center gap-3";
+                                        ? "p-4 rounded-xl border-2 border-green-500 bg-green-50 flex items-center gap-4"
+                                        : "p-4 rounded-xl border-2 border-red-500 bg-red-50 flex items-center gap-4";
                                 } else if (isCorrectAnswer && !q.isCorrect) {
-                                    itemClass = "p-4 rounded-xl border border-green-200 bg-green-50 flex items-center gap-3";
+                                    itemClass = "p-4 rounded-xl border-2 border-green-500 bg-green-50 flex items-center gap-4";
                                 }
 
                                 return (
                                 <div key={idx} className={itemClass}>
-                                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                                    <span className={`w-10 h-10 rounded-lg flex items-center justify-center text-base font-bold flex-shrink-0 shadow-sm ${
                                     isUserAnswer
-                                        ? (q.isCorrect ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700')
-                                        : (isCorrectAnswer && !q.isCorrect ? 'bg-green-200 text-green-700' : 'bg-gray-100 text-gray-500')
+                                        ? (q.isCorrect ? 'bg-green-600 text-white' : 'bg-red-600 text-white')
+                                        : (isCorrectAnswer && !q.isCorrect ? 'bg-green-600 text-white' : 'bg-white text-gray-500 border border-gray-200')
                                     }`}>
                                     {optLabel}
                                     </span>
-                                    <span className="text-gray-900 font-medium">{optText}</span>
+                                    <span className={`text-base font-medium ${isUserAnswer || isCorrectAnswer ? 'text-gray-900' : 'text-gray-700'}`}>{optText}</span>
                                 </div>
                                 );
                             })}
                           </div>
 
                           {/* Action Buttons */}
-                          <div className="flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-gray-100">
-                              <button className="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl transition-colors text-sm font-semibold">
+                          <div className="flex flex-wrap items-center gap-4 mt-8 pt-6 border-t border-gray-100">
+                              <button className="flex items-center gap-2 px-5 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl transition-colors text-sm font-bold">
                                   <Eye className="w-4 h-4" />
                                   İzaha bax
                               </button>
-                              <button className="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl transition-colors text-sm font-semibold">
+                              <button className="flex items-center gap-2 px-5 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-xl transition-colors text-sm font-bold">
                                   <MessageSquare className="w-4 h-4" />
                                   Appelyasiya ver
                               </button>
@@ -185,7 +190,7 @@ export default function ResultsPage({ resultId, onBack }) {
   // List View
   return (
     <div className="flex-1 flex flex-col h-screen overflow-hidden bg-gray-50">
-       <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+       <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm">
           <div className="px-6 py-4 flex items-center gap-4">
             <button
                 onClick={onBack}
@@ -193,51 +198,29 @@ export default function ResultsPage({ resultId, onBack }) {
             >
                 <ArrowLeft className="w-5 h-5" />
             </button>
-            <h2 className="text-lg font-bold text-gray-900">Nəticələrim</h2>
+            <h2 className="text-xl font-bold text-gray-900">Nəticələrim</h2>
           </div>
 
-          {/* Tabs */}
-          <div className="px-6 flex overflow-x-auto gap-6 hide-scrollbar">
-            <button
-                onClick={() => setActiveTab('simulator')}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === 'simulator'
-                    ? 'border-green-600 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                }`}
-            >
-                SINAQ DYP İMTAHANI NƏTİCƏLƏRİ
-            </button>
-            <button
-                onClick={() => setActiveTab('final')}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === 'final'
-                    ? 'border-green-600 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                }`}
-            >
-                FİNAL İMTAHANI
-            </button>
-            <button
-                onClick={() => setActiveTab('topic')}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === 'topic'
-                    ? 'border-green-600 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                }`}
-            >
-                MÖVZU İMTAHAN NƏTİCƏLƏRİ
-            </button>
-            <button
-                onClick={() => setActiveTab('ticket')}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === 'ticket'
-                    ? 'border-green-600 text-green-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                }`}
-            >
-                BİLETLƏR ÜZRƏ NƏTİCƏLƏR
-            </button>
+          {/* Tabs - Pill Style */}
+          <div className="px-6 pb-4 flex overflow-x-auto gap-3 hide-scrollbar">
+            {[
+                { id: 'simulator', label: 'SINAQ DYP İMTAHANI' },
+                { id: 'final', label: 'FİNAL İMTAHANI' },
+                { id: 'topic', label: 'MÖVZU İMTAHANI' },
+                { id: 'ticket', label: 'BİLETLƏR' }
+            ].map(tab => (
+                <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all whitespace-nowrap shadow-sm ${
+                        activeTab === tab.id
+                        ? 'bg-green-600 text-white shadow-green-200'
+                        : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                    }`}
+                >
+                    {tab.label}
+                </button>
+            ))}
           </div>
         </header>
 
@@ -245,10 +228,12 @@ export default function ResultsPage({ resultId, onBack }) {
           <div className="max-w-4xl mx-auto">
 
              {activeTab === 'simulator' && (
-                 <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-xl p-4 flex items-start gap-3">
-                     <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                     <p className="text-sm text-yellow-800 font-medium">
-                         Sınaq DYP imtahanı üzrə nəticələr 7 gün ərzində aktiv olur.
+                 <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm">
+                     <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                        <AlertCircle className="w-5 h-5 text-amber-600" />
+                     </div>
+                     <p className="text-sm text-amber-900 font-medium">
+                         Sınaq DYP imtahanı üzrə nəticələr <span className="font-bold">7 gün</span> ərzində aktiv olur.
                      </p>
                  </div>
              )}
@@ -258,52 +243,60 @@ export default function ResultsPage({ resultId, onBack }) {
                 <div
                     key={result.id}
                     onClick={() => setSelectedId(result.id)}
-                    className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group"
+                    className="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between group gap-4"
                 >
-                    <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                    <div className="flex items-center gap-5">
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm ${
                             result.score >= 70 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
                         }`}>
-                            {result.type === 'simulator' && <Monitor className="w-6 h-6" />}
-                            {result.type === 'final' && <Award className="w-6 h-6" />}
-                            {result.type === 'topic' && <BookOpen className="w-6 h-6" />}
-                            {result.type === 'ticket' && <Ticket className="w-6 h-6" />}
+                            {result.type === 'simulator' && <Monitor className="w-7 h-7" />}
+                            {result.type === 'final' && <Award className="w-7 h-7" />}
+                            {result.type === 'topic' && <BookOpen className="w-7 h-7" />}
+                            {result.type === 'ticket' && <Ticket className="w-7 h-7" />}
                         </div>
                         <div>
-                            <h4 className="font-bold text-gray-900">{result.label}</h4>
-                            <p className="text-sm text-gray-500 flex items-center gap-2 mt-0.5">
-                                <Calendar className="w-3.5 h-3.5" /> {result.date}
+                            <h4 className="font-bold text-gray-900 text-lg">{result.label}</h4>
+                            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mt-1">
+                                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {result.date}</span>
                                 <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                                <Clock className="w-3.5 h-3.5" /> {result.time}
+                                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {result.time}</span>
                                 <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                                <span className="font-medium text-gray-700">{result.duration}</span>
-                            </p>
+                                <span className="font-medium text-gray-700 bg-gray-100 px-2 py-0.5 rounded-md">{result.duration}</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center justify-between sm:justify-end gap-6 sm:pl-4 border-t sm:border-t-0 pt-4 sm:pt-0">
                         <div className="text-right hidden sm:block">
-                            <span className="block text-sm font-bold text-gray-900">
+                            <span className="block text-base font-bold text-gray-900">
                                 {result.correctCount}/{result.totalCount}
                             </span>
-                            <span className="text-xs text-gray-500">Doğru/Ümumi</span>
+                            <span className="text-xs text-gray-500 font-medium">Doğru</span>
                         </div>
-                        <div className="text-right">
-                            <span className={`block text-xl font-bold ${result.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
-                            {result.score}%
-                            </span>
-                            <span className="text-xs font-medium text-gray-400">
-                            {result.score >= 70 ? 'Keçdi' : 'Kəsilmə'}
-                            </span>
+                        <div className="text-right flex items-center gap-4">
+                            <div className="text-right">
+                                <span className={`block text-2xl font-bold tabular-nums ${result.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+                                {result.score}%
+                                </span>
+                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full inline-block mt-0.5 ${
+                                    result.score >= 70 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                                }`}>
+                                {result.score >= 70 ? 'Keçdi' : 'Kəsilmə'}
+                                </span>
+                            </div>
+                            <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-green-600 transition-colors" />
                         </div>
-                        <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-primary-600 transition-colors" />
                     </div>
                 </div>
                 ))}
 
                 {currentList.length === 0 && (
-                    <div className="text-center py-12">
-                        <p className="text-gray-400">Bu kateqoriya üzrə nəticə tapılmadı.</p>
+                    <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200">
+                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                            <BookOpen className="w-8 h-8" />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900">Nəticə tapılmadı</h3>
+                        <p className="text-gray-500 mt-1">Bu kateqoriya üzrə hələ heç bir imtahan verməmisiniz.</p>
                     </div>
                 )}
              </div>
