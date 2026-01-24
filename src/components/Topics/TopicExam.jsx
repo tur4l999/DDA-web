@@ -157,9 +157,11 @@ export default function TopicExam({ onClose, topic }) {
     <div className="fixed inset-0 z-50 bg-[#1a1a1a] flex flex-col text-white">
       {/* Feedback Overlay */}
       {feedback && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
-          <div className={`text-4xl font-bold animate-in zoom-in duration-300 ${
-            feedback.type === 'correct' ? 'text-green-500' : 'text-red-500'
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <div className={`px-8 py-4 rounded-2xl shadow-2xl text-2xl md:text-3xl font-bold animate-in zoom-in duration-300 text-white ${
+            feedback.type === 'correct'
+              ? 'bg-green-600 shadow-green-900/50'
+              : 'bg-red-600 shadow-red-900/50'
           }`}>
             {feedback.message}
           </div>
