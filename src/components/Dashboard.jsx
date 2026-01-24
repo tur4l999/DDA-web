@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, ChevronDown, Monitor, Wallet, Ticket, Lock, Check } from 'lucide-react'
+import { Menu, Settings, Bell, Globe, BookOpen, Video, HelpCircle, FileText, BookMarked, AlertTriangle, BarChart3, Calendar, ChevronRight, ChevronDown, Monitor, Wallet, Ticket, Lock, Check, Plus } from 'lucide-react'
 import OnlineClassCard from './OnlineClassCard'
 import ProfileCard from './ProfileCard'
 import OnlineClasses from './OnlineClasses'
@@ -169,14 +169,32 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               {isBalanceOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setIsBalanceOpen(false)} />
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg shadow-gray-200/50 p-2 z-50 animate-scale-in origin-top-right">
+                  <div className="absolute top-full right-0 mt-3 w-72 bg-white border border-gray-100 rounded-2xl shadow-xl shadow-gray-200/50 p-4 z-50 animate-scale-in origin-top-right">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-gray-900">Balansım</span>
+                      <span className="text-sm font-bold text-primary-600">50.00 ₼</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-50 rounded-xl mb-4 border border-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center text-primary-600">
+                          <Wallet className="w-5 h-5" strokeWidth={1.5} />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 font-medium mb-0.5">Cari balans</p>
+                          <p className="text-base font-bold text-gray-900">50.00 ₼</p>
+                        </div>
+                      </div>
+                    </div>
+
                     <button
                       onClick={() => {
                         setCurrentPage('payments');
                         setIsBalanceOpen(false);
                       }}
-                      className="w-full bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow-sm"
+                      className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold py-3 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-95"
                     >
+                      <Plus className="w-4 h-4" />
                       Balansı artır
                     </button>
                   </div>
@@ -196,14 +214,32 @@ export default function Dashboard({ onMenuClick, currentPage, setCurrentPage }) 
               {isTicketOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setIsTicketOpen(false)} />
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg shadow-gray-200/50 p-2 z-50 animate-scale-in origin-top-right">
+                  <div className="absolute top-full right-0 mt-3 w-72 bg-white border border-gray-100 rounded-2xl shadow-xl shadow-gray-200/50 p-4 z-50 animate-scale-in origin-top-right">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-semibold text-gray-900">Biletlər</span>
+                      <span className="text-sm font-bold text-amber-500">5 ədəd</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-50 rounded-xl mb-4 border border-gray-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
+                          <Ticket className="w-5 h-5" strokeWidth={1.5} />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 font-medium mb-0.5">Mövcud biletlər</p>
+                          <p className="text-base font-bold text-gray-900">5 ədəd</p>
+                        </div>
+                      </div>
+                    </div>
+
                     <button
                       onClick={() => {
                         setCurrentPage('payments');
                         setIsTicketOpen(false);
                       }}
-                      className="w-full bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow-sm"
+                      className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold py-3 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-95"
                     >
+                      <Plus className="w-4 h-4" />
                       Balansı artır
                     </button>
                   </div>
