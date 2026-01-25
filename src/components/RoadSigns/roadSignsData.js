@@ -65,6 +65,32 @@ export const roadSignsData = [
     commonMistake: true,
     detailedDescription: 'Piyada keçidi yaxınlığında sürət azaldılmalı və yolu keçən piyadalara mütləq üstünlük verilməlidir. Keçiddə dayanmaq qadağandır.'
   },
+  {
+    id: 'w6',
+    code: '1.23',
+    name: 'Uşaqlar',
+    category: 'warning',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Zeichen_136-10.svg/240px-Zeichen_136-10.svg.png',
+    meaning: 'Yolun uşaq müəssisələrinin (məktəb, bağça və s.) yaxınlığından keçdiyini bildirir.',
+    application: 'Məktəb və bağçaların yaxınlığında.',
+    specialCases: 'Uşaqların yola qəfil çıxma ehtimalı yüksəkdir.',
+    examImportance: 'high',
+    commonMistake: true,
+    detailedDescription: 'Bu nişan sürücüləri ərazidə uşaqların ola biləcəyi barədə xəbərdar edir. Sürət azaldılmalı və hər an dayanmağa hazır olunmalıdır.'
+  },
+  {
+    id: 'w7',
+    code: '1.26',
+    name: 'Vəhşi heyvanlar',
+    category: 'warning',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Zeichen_142.svg/240px-Zeichen_142.svg.png',
+    meaning: 'Yolda vəhşi heyvanların çıxma ehtimalının olduğunu bildirir.',
+    application: 'Meşə zolaqları və qoruqların ərazisindən keçən yollarda.',
+    specialCases: 'Gecə vaxtı heyvanların gözləri işığa həssas olur, diqqətli olun.',
+    examImportance: 'medium',
+    commonMistake: false,
+    detailedDescription: 'Meşəlik ərazilərdə vəhşi heyvanların yola çıxması qəza riski yaradır. Bu nişan olan ərazidə sürət həddini aşmaq təhlükəlidir.'
+  },
 
   // Priority Signs (Üstünlük nişanları)
   {
@@ -212,6 +238,32 @@ export const roadSignsData = [
     commonMistake: true,
     detailedDescription: 'Bu nişan uzun müddətli dayanmağı qadağan edir, ancaq qısa müddət (adətən 3-5 dəqiqə) dayanıb sərnişin endirmək olar.'
   },
+  {
+    id: 'pr8',
+    code: '3.1',
+    name: 'Giriş qadağandır',
+    category: 'prohibitory',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Zeichen_267.svg/240px-Zeichen_267.svg.png',
+    meaning: 'Bütün nəqliyyat vasitələrinin bu istiqamətdə girişini qadağan edir.',
+    application: 'Birtərəfli yolların əks istiqamətində.',
+    specialCases: 'Yolun əks tərəfindən hərəkət ola bilər (birtərəfli yol).',
+    examImportance: 'high',
+    commonMistake: true,
+    detailedDescription: 'Xalq arasında "Kirpiç" kimi tanınan bu nişan, həmin istiqamətdə hərəkətin tamamilə qadağan olunduğunu bildirir. Sürücü alternativ yollardan istifadə etməlidir.'
+  },
+  {
+    id: 'pr9',
+    code: '3.19',
+    name: 'Geriyə dönmək qadağandır',
+    category: 'prohibitory',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Zeichen_272.svg/240px-Zeichen_272.svg.png',
+    meaning: 'Bu kəsişmədə və ya yol hissəsində geriyə dönməni (U-turn) qadağan edir.',
+    application: 'Dar yollarda, intensiv kəsişmələrdə.',
+    specialCases: 'Sola dönmək icazəlidir (əgər başqa qadağa yoxdursa).',
+    examImportance: 'high',
+    commonMistake: true,
+    detailedDescription: 'Bu nişan yalnız geriyə dönməni qadağan edir. Sola dönmək üçün maneə yoxdursa, sola dönmək olar.'
+  },
 
   // Mandatory Signs (Məcburi nişanlar)
   {
@@ -332,6 +384,19 @@ export const roadSignsData = [
     examImportance: 'low',
     commonMistake: false,
     detailedDescription: 'Dayanacaq yerində vasitəni səliqə ilə və digər avtomobillərə mane olmayacaq şəkildə yerləşdirmək lazımdır.'
+  },
+  {
+    id: 'i5',
+    code: '5.19',
+    name: 'Dalan',
+    category: 'information',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Zeichen_357.svg/240px-Zeichen_357.svg.png',
+    meaning: 'Yolun keçid imkanı olmayan (kor) hissəsini bildirir.',
+    application: 'Çıxışı olmayan küçələrin girişində.',
+    specialCases: 'Daxil olmaq olar, lakin qarşı tərəfdən çıxış yoxdur.',
+    examImportance: 'medium',
+    commonMistake: false,
+    detailedDescription: 'Dalan nişanı sürücüyə yolun sonunun bağlı olduğunu xəbər verir, belə ki, geri qayıtmaq üçün geriyə dönməli olacaqsınız.'
   },
 
   // Service Signs (Xidmət nişanları)
