@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Search, ChevronDown, List, AlertTriangle, ArrowUpCircle, Ban, Navigation, Info, Wrench, Plus, LayoutGrid, FileText } from 'lucide-react'
 import RoadSignCard from './RoadSignCard'
+import RoadSignModal from './RoadSignModal'
 import { roadSignsData } from './roadSignsData'
 
 const RoadSigns = () => {
@@ -8,6 +9,7 @@ const RoadSigns = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [isMobileGroupsOpen, setIsMobileGroupsOpen] = useState(false)
   const [viewMode, setViewMode] = useState('grid')
+  const [selectedSign, setSelectedSign] = useState(null)
 
   const groups = [
     {
@@ -287,7 +289,11 @@ const RoadSigns = () => {
                   viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start pb-6">
                       {filteredSigns.map((sign) => (
-                        <RoadSignCard key={sign.id} sign={sign} />
+                        <RoadSignCard
+                          key={sign.id}
+                          sign={sign}
+                          onClick={() => setSelectedSign(sign)}
+                        />
                       ))}
                     </div>
                   ) : (
@@ -296,16 +302,20 @@ const RoadSigns = () => {
                       {/* Paper Effect */}
                       <div className="p-8 md:p-12 space-y-8">
                         {filteredSigns.map((sign, index) => (
-                          <div key={sign.id} className={`${
+                        <div
+                          key={sign.id}
+                          onClick={() => setSelectedSign(sign)}
+                          className={`${
                             index !== filteredSigns.length - 1 ? 'border-b border-gray-200 pb-8' : ''
-                          }`}>
+                          } cursor-pointer hover:opacity-75 transition-opacity group`}
+                        >
                             <div className="flex flex-col sm:flex-row gap-8">
                               {/* Sign Image - Fixed Size */}
                               <div className="flex-shrink-0 w-32">
                                 <img
                                   src={sign.image}
                                   alt={sign.name}
-                                  className="w-full h-auto object-contain"
+                                  className="w-full h-auto object-contain group-hover:scale-105 transition-transform"
                                 />
                               </div>
 
@@ -370,6 +380,14 @@ const RoadSigns = () => {
           </div>
         </div>
       </div>
+
+      <RoadSignModal
+        sign={selectedSign}
+        categoryName={selectedSign ? groups.find(g => g.id === selectedSign.category)?.name : ''}
+        allSigns={filteredSigns}
+        isOpen={!!selectedSign}
+        onClose={() => setSelectedSign(null)}
+      />
     </div>
   )
 }
