@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ArrowLeft, Check, X, RotateCcw, Eye, ArrowRight } from 'lucide-react'
+import { ArrowLeft, Check, X, RotateCcw, Eye, ArrowRight, Flag } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
 export default function ExamRunner({ onClose, data }) {
@@ -19,8 +19,26 @@ export default function ExamRunner({ onClose, data }) {
   const [feedback, setFeedback] = useState(null) // { type: 'correct'|'incorrect', message: string }
   const [isFinished, setIsFinished] = useState(false)
   const [result, setResult] = useState(null) // 'pass' | 'fail'
+  const [showExitConfirmation, setShowExitConfirmation] = useState(false)
 
   const currentQuestion = questions[currentIndex]
+
+  const handleFinishExam = () => {
+    const correctCount = questions.reduce((acc, q) => {
+      if (answers[q.id] === q.correctAnswer) {
+        return acc + 1
+      }
+      return acc
+    }, 0)
+
+    if (correctCount >= 9) {
+      setResult('pass')
+    } else {
+      setResult('fail')
+    }
+    setIsFinished(true)
+    setShowExitConfirmation(false)
+  }
 
   // Timer
   useEffect(() => {
@@ -156,6 +174,30 @@ export default function ExamRunner({ onClose, data }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-[#1a1a1a] flex flex-col text-white">
+      {/* Exit Confirmation Modal */}
+      {showExitConfirmation && (
+        <div className="fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-[#242424] rounded-2xl p-6 max-w-sm w-full border border-gray-800 shadow-2xl">
+            <h3 className="text-xl font-bold text-white mb-2">İmtahanı bitirmək?</h3>
+            <p className="text-gray-400 mb-6">İmtahanı bitirmək istədiyinizə əminsiniz? Nəticələr hesablanacaq.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowExitConfirmation(false)}
+                className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl font-semibold transition-colors"
+              >
+                Ləğv et
+              </button>
+              <button
+                onClick={handleFinishExam}
+                className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-colors"
+              >
+                Bitir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Feedback Overlay */}
       {feedback && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center">
@@ -223,11 +265,11 @@ export default function ExamRunner({ onClose, data }) {
         <div className="max-w-[1600px] mx-auto flex items-center justify-between">
 
           <button
-            onClick={onClose}
-            className="flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white transition-colors border border-gray-700 hover:border-gray-500 rounded-lg text-sm font-bold uppercase tracking-wider"
+            onClick={() => setShowExitConfirmation(true)}
+            className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white transition-all rounded-xl text-sm font-bold uppercase tracking-wider shadow-lg shadow-red-600/20"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Geriyə
+            <Flag className="w-5 h-5" />
+            İmtahanı Bitir
           </button>
 
           {/* Pagination */}
