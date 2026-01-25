@@ -18,6 +18,11 @@ Every time changes are pushed to the `main` branch, a GitHub Action workflow run
 
 The site should now be live at your GitHub Pages URL (e.g., `https://username.github.io/DDA-web/`).
 
+### Manual Deployment
+To deploy manually using the `gh-pages` package:
+1. Run `npm install`
+2. Run `npm run deploy` (This builds the project and pushes `dist` to `gh-pages` branch)
+
 ### Local Development
 To run the project locally:
 ```bash
