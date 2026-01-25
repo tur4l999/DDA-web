@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { ArrowLeft, Check, X, RotateCcw, Eye, ArrowRight, Flag } from 'lucide-react'
+import { ArrowLeft, Check, X, RotateCcw, Eye, ArrowRight } from 'lucide-react'
 import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
 export default function ExamRunner({ onClose, data }) {
@@ -268,7 +268,6 @@ export default function ExamRunner({ onClose, data }) {
             onClick={() => setShowExitConfirmation(true)}
             className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white transition-all rounded-xl text-sm font-bold uppercase tracking-wider shadow-lg shadow-red-600/20"
           >
-            <Flag className="w-5 h-5" />
             İmtahanı Bitir
           </button>
 
