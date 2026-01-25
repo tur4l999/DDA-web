@@ -13,8 +13,11 @@ import AskTeacherModal from './AskTeacherModal'
 import QuestionThreadModal from './QuestionThreadModal'
 import PaywallModal from './PaywallModal'
 import Toast from './Toast'
+import ExamRunner from '../Exam/ExamRunner'
+import { TOPIC_QUESTIONS } from '../../data/topicQuestions'
 
 export default function TopicsPage({ onBack }) {
+  const [isExamMode, setIsExamMode] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false)
   const [activeTab, setActiveTab] = useState('materials')
@@ -49,7 +52,7 @@ export default function TopicsPage({ onBack }) {
   }
 
   const handleExamClick = () => {
-    alert('İmtahana başlanır...')
+    setIsExamMode(true)
   }
 
   const handleContactTeacher = () => {
@@ -179,6 +182,10 @@ export default function TopicsPage({ onBack }) {
   const progress = {
     completed: 4,
     total: 24
+  }
+
+  if (isExamMode) {
+    return <ExamRunner onClose={() => setIsExamMode(false)} data={TOPIC_QUESTIONS} />
   }
 
   const renderContent = () => {
