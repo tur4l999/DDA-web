@@ -3,9 +3,12 @@
 > vite
 
 
-  VITE v6.4.1  ready in 423 ms
+  VITE v6.4.1  ready in 236 ms
 
   ➜  Local:   http://localhost:5173/DDA-web/
   ➜  Network: use --host to expose
-6:45:53 PM [vite] (client) hmr update /src/components/PracticalExperience.jsx, /src/index.css
-6:48:24 PM [vite] (client) hmr update /src/components/PracticalExperience.jsx, /src/index.css
+7:24:22 PM [vite] (client) page reload verification/page_dump.html
+7:24:22 PM [vite] (client) page reload verification/page_dump.html
+7:25:47 PM [vite] (client) page reload verification/ticket_page_dump.html
+7:25:47 PM [vite] (client) page reload verification/ticket_page_dump.html
+7:26:03 PM [vite] (client) page reload verification/ticket_page_dump.html
