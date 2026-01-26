@@ -6,6 +6,7 @@ import TextContent from './TextContent'
 import VideoContent from './VideoContent'
 import ThreeDVideoContent from './ThreeDVideoContent'
 import QuestionsContent from './QuestionsContent'
+import OpenQuestionsContent from './OpenQuestionsContent'
 import PenaltiesContent from './PenaltiesContent'
 import ArticlesContent from './ArticlesContent'
 import VideoModal from '../Penalties/VideoModal'
@@ -200,6 +201,8 @@ export default function TopicsPage({ onBack }) {
         return <VideoContent />
       case 'questions':
         return <QuestionsContent topic={currentTopic} />
+      case 'open_questions':
+        return <OpenQuestionsContent />
       case 'penalties':
         return <PenaltiesContent topicRelated={true} onVideoClick={handleVideoClick} />
       default:

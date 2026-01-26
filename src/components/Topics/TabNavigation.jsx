@@ -1,4 +1,4 @@
-import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle, Lock, GraduationCap } from 'lucide-react'
+import { FileText, Video, HelpCircle, BookOpen, BookMarked, MessageCircle, AlertTriangle, Lock, GraduationCap, FileQuestion } from 'lucide-react'
 
 const tabs = [
   { id: 'materials', label: 'Maddələr', icon: BookMarked, requiresPackage: false },
@@ -6,6 +6,7 @@ const tabs = [
   { id: '3dvideo', label: '3D video', icon: Video, requiresPackage: false },
   { id: 'video', label: 'Video dərs', icon: BookOpen, requiresPackage: true },
   { id: 'questions', label: 'Testlər', icon: HelpCircle, requiresPackage: false },
+  { id: 'open_questions', label: 'Açıq tipli suallar', icon: FileQuestion, requiresPackage: false },
   { id: 'contact', label: 'Müəllimlə əlaqə', icon: MessageCircle, requiresPackage: false },
   { id: 'penalties', label: 'Mövzu üzrə Cərimələr', icon: AlertTriangle, requiresPackage: false }
 ]
