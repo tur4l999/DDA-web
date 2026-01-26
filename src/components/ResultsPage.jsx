@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ArrowLeft, Calendar, CheckCircle, XCircle, Clock, Award, ChevronRight, AlertCircle, Monitor, BookOpen, Ticket, Eye, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Calendar, CheckCircle, XCircle, Clock, Award, ChevronRight, AlertCircle, Monitor, BookOpen, Ticket, Eye, MessageSquare, TrendingUp, PieChart, List, Play } from 'lucide-react';
 
 export default function ResultsPage({ resultId, onBack }) {
   const [selectedId, setSelectedId] = useState(resultId);
@@ -36,6 +36,15 @@ export default function ResultsPage({ resultId, onBack }) {
                     : activeTab === 'final' ? finalResults
                     : activeTab === 'topic' ? topicResults
                     : ticketResults;
+
+  // Calculate Stats
+  const stats = useMemo(() => {
+    if (currentList.length === 0) return null;
+    const total = currentList.length;
+    const passed = currentList.filter(r => r.score >= 70).length;
+    const avgScore = Math.round(currentList.reduce((acc, curr) => acc + curr.score, 0) / total);
+    return { total, passed, avgScore };
+  }, [currentList]);
 
   // Mock Questions for Detail View
   const mockQuestions = useMemo(() => {
@@ -207,7 +216,7 @@ export default function ResultsPage({ resultId, onBack }) {
                 { id: 'simulator', label: 'SINAQ DYP İMTAHANI' },
                 { id: 'final', label: 'FİNAL İMTAHANI' },
                 { id: 'topic', label: 'MÖVZU İMTAHANI' },
-                { id: 'ticket', label: 'BİLETLƏR' }
+                { id: 'ticket', label: 'BİLET İMTAHANI' }
             ].map(tab => (
                 <button
                     key={tab.id}
@@ -227,6 +236,39 @@ export default function ResultsPage({ resultId, onBack }) {
         <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
           <div className="max-w-4xl mx-auto">
 
+             {/* Stats Summary */}
+             {stats && (
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                     <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                         <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                             <List className="w-6 h-6" />
+                         </div>
+                         <div>
+                             <p className="text-sm text-gray-500 font-medium">Ümumi İmtahan</p>
+                             <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+                         </div>
+                     </div>
+                     <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                         <div className="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                             <TrendingUp className="w-6 h-6" />
+                         </div>
+                         <div>
+                             <p className="text-sm text-gray-500 font-medium">Uğurlu Nəticə</p>
+                             <p className="text-2xl font-bold text-gray-900">{stats.passed}</p>
+                         </div>
+                     </div>
+                     <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                         <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                             <PieChart className="w-6 h-6" />
+                         </div>
+                         <div>
+                             <p className="text-sm text-gray-500 font-medium">Orta Göstərici</p>
+                             <p className="text-2xl font-bold text-gray-900">{stats.avgScore}%</p>
+                         </div>
+                     </div>
+                 </div>
+             )}
+
              {activeTab === 'simulator' && (
                  <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm">
                      <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
@@ -238,65 +280,80 @@ export default function ResultsPage({ resultId, onBack }) {
                  </div>
              )}
 
-             <div className="grid gap-4">
+             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {currentList.map((result) => (
                 <div
                     key={result.id}
                     onClick={() => setSelectedId(result.id)}
-                    className="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between group gap-4"
+                    className="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer flex flex-col justify-between group gap-4 relative overflow-hidden"
                 >
-                    <div className="flex items-center gap-5">
-                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm ${
-                            result.score >= 70 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
-                        }`}>
-                            {result.type === 'simulator' && <Monitor className="w-7 h-7" />}
-                            {result.type === 'final' && <Award className="w-7 h-7" />}
-                            {result.type === 'topic' && <BookOpen className="w-7 h-7" />}
-                            {result.type === 'ticket' && <Ticket className="w-7 h-7" />}
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-gray-900 text-lg">{result.label}</h4>
-                            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mt-1">
-                                <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {result.date}</span>
-                                <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {result.time}</span>
-                                <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                                <span className="font-medium text-gray-700 bg-gray-100 px-2 py-0.5 rounded-md">{result.duration}</span>
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0 ${
+                                result.score >= 70
+                                ? 'bg-gradient-to-br from-green-50 to-green-100 text-green-600'
+                                : 'bg-gradient-to-br from-red-50 to-red-100 text-red-600'
+                            }`}>
+                                {result.type === 'simulator' && <Monitor className="w-7 h-7" />}
+                                {result.type === 'final' && <Award className="w-7 h-7" />}
+                                {result.type === 'topic' && <BookOpen className="w-7 h-7" />}
+                                {result.type === 'ticket' && <Ticket className="w-7 h-7" />}
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-gray-900 text-lg leading-tight line-clamp-1">{result.label}</h4>
+                                <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mt-1.5">
+                                    <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {result.date}</span>
+                                    <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {result.time}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between sm:justify-end gap-6 sm:pl-4 border-t sm:border-t-0 pt-4 sm:pt-0">
-                        <div className="text-right hidden sm:block">
-                            <span className="block text-base font-bold text-gray-900">
-                                {result.correctCount}/{result.totalCount}
-                            </span>
-                            <span className="text-xs text-gray-500 font-medium">Doğru</span>
+                    <div className="flex items-end justify-between border-t border-gray-50 pt-4 mt-2">
+                        <div>
+                             <span className="text-xs text-gray-500 font-medium block mb-0.5">Müddət</span>
+                             <span className="font-bold text-gray-700 bg-gray-50 px-2 py-1 rounded-lg text-sm">{result.duration}</span>
                         </div>
-                        <div className="text-right flex items-center gap-4">
+
+                        <div className="text-right flex items-center gap-3">
                             <div className="text-right">
-                                <span className={`block text-2xl font-bold tabular-nums ${result.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+                                <span className={`block text-3xl font-bold tabular-nums leading-none ${result.score >= 70 ? 'text-green-600' : 'text-red-600'}`}>
                                 {result.score}%
                                 </span>
-                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full inline-block mt-0.5 ${
+                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full inline-block mt-1 uppercase tracking-wider ${
                                     result.score >= 70 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                                 }`}>
                                 {result.score >= 70 ? 'Keçdi' : 'Kəsilmə'}
                                 </span>
                             </div>
-                            <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-green-600 transition-colors" />
                         </div>
+                    </div>
+
+                    {/* Progress Bar at bottom */}
+                    <div className="absolute bottom-0 left-0 h-1 bg-gray-100 w-full">
+                        <div
+                            className={`h-full ${result.score >= 70 ? 'bg-green-500' : 'bg-red-500'}`}
+                            style={{ width: `${result.score}%` }}
+                        ></div>
                     </div>
                 </div>
                 ))}
 
                 {currentList.length === 0 && (
-                    <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200">
-                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
-                            <BookOpen className="w-8 h-8" />
+                    <div className="col-span-1 lg:col-span-2 text-center py-20 bg-white rounded-3xl border border-dashed border-gray-200 flex flex-col items-center">
+                        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 text-gray-400">
+                            <BookOpen className="w-10 h-10" />
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900">Nəticə tapılmadı</h3>
-                        <p className="text-gray-500 mt-1">Bu kateqoriya üzrə hələ heç bir imtahan verməmisiniz.</p>
+                        <h3 className="text-xl font-bold text-gray-900">Nəticə tapılmadı</h3>
+                        <p className="text-gray-500 mt-2 max-w-sm">Bu kateqoriya üzrə hələ heç bir imtahan verməmisiniz. Biliklərinizi yoxlamaq üçün imtahana başlayın.</p>
+                        <button
+                            onClick={onBack}
+                            className="mt-8 flex items-center gap-2 px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-green-200 hover:shadow-green-300"
+                        >
+                            <Play className="w-5 h-5 fill-current" />
+                            İmtahana Başla
+                        </button>
                     </div>
                 )}
              </div>
