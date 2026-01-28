@@ -3,25 +3,31 @@ Saytın redesign
 
 ## Deployment
 
-This project is configured to automatically deploy to GitHub Pages using GitHub Actions.
+This project is configured to deploy to GitHub Pages using **GitHub Actions**.
 
 ### How it works
-Every time changes are pushed to the `main` branch, a GitHub Action workflow runs `npm install`, `npm run build`, and deploys the contents of the `dist/` directory to the `gh-pages` branch.
+Every time changes are pushed to the `main` branch, a GitHub Action workflow builds the React app and uploads the `dist` artifact to GitHub Pages.
 
-### Setup Instructions
+### Setup Instructions (Required)
 1. Go to your repository **Settings**.
 2. Navigate to the **Pages** section (on the left sidebar).
 3. Under **Build and deployment**:
-   - Source: Select **Deploy from a branch**.
-   - Branch: Select **gh-pages** and ensure the folder is **/(root)**.
+   - **Source**: Select **GitHub Actions**.
+   - (The Branch selector will disappear, which is correct).
+4. Go to **Actions** -> **General** (sidebar).
+   - Scroll to **Workflow permissions**.
+   - Select **Read and write permissions**.
    - Click **Save**.
 
-The site should now be live at your GitHub Pages URL (e.g., `https://username.github.io/DDA-web/`).
+The site will automatically deploy after your next push to `main`.
 
-### Manual Deployment
-To deploy manually using the `gh-pages` package:
-1. Run `npm install`
-2. Run `npm run deploy` (This builds the project and pushes `dist` to `gh-pages` branch)
+### Local Verification
+To verify the build locally:
+```bash
+npm install
+npm run build
+# Check that dist/index.html uses relative paths (e.g., /DDA-web/assets/...)
+```
 
 ### Local Development
 To run the project locally:
